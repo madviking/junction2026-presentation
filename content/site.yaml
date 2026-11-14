@@ -16,7 +16,7 @@ event: Junction 2026 · AstraZeneca — Equal Care Across Finland
 # (needs the app running; see the script header).
 hero_screens:
   - src: /media/screens/slider-01-language.png
-    alt: "Silta's first screen: a list of languages under a red Emergency? Call 112 button."
+    alt: "Silta's first screen: 'Choose your language' with a red 112 call button and a grid of 13 languages."
     caption: Pick your language. The 112 button stays on every screen.
   - src: /media/screens/slider-02-body-map.png
     alt: "'What worries you?' with a body figure, body-part buttons and picture cards with speaker buttons."
@@ -25,7 +25,7 @@ hero_screens:
     alt: "The chest is highlighted on the body figure and the 'A cough for over 3 weeks' card is ticked."
     caption: Tap the chest and only chest symptoms stay. No name, no ID.
   - src: /media/screens/slider-04-route.png
-    alt: "'Where do you get health care?' with three guiding questions, a free-text box and a Tap to speak button."
+    alt: "'Where do you get health care?' with route cards, each with a speaker button, and a free-text box with a microphone button."
     caption: Where do you get care? Answer by card, by typing or by speaking.
   - src: /media/screens/slider-05-door.png
     alt: "'Contact the county health station and ask for an assessment today', then the call script in Finnish with English meanings."
@@ -92,6 +92,17 @@ rollout:
         - Native-speaker and clinical review of every language.
 
 # Keys are used by printouts (`qr: consumer`) and the "Try the app" page.
+# The "Try the app" page shows the links named in `link_groups`, in that order;
+# `source` appears under its technical section. Other keys (e.g. `site`) stay
+# available to printouts but are not listed there.
+link_groups:
+  - title: For residents
+    lede: What a resident sees — the app, the screening letter and its guide, and the phone line.
+    links: [consumer, screening_letter, screening_guide, phone]
+  - title: For the county
+    lede: What county staff see — anonymous figures, and the tools to run the content.
+    links: [county, admin]
+
 links:
   consumer:
     label: Silta for residents
@@ -125,8 +136,14 @@ links:
   admin:
     label: Admin
     url: https://fond-useful-corgi.eur-1.aiven.app/admin
-    description: Edit and publish texts, approve audio, usage and audit. Test users are in the password manager.
+    description: Edit and publish texts, approve audio, usage and audit.
     icon: settings
+    # Public on purpose: a view-only account that sees every admin page and cannot change
+    # anything (tech/backend/admin/service.ts, DEMO_VIEWER). The sign-in page shows it too.
+    # Team editor accounts stay in the password manager.
+    demo_login:
+      email: demo@silta.test
+      password: silta-demo-viewer
   source:
     label: Source code
     url: https://github.com/madviking/junction2026tech

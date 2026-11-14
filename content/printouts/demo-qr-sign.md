@@ -1,6 +1,6 @@
 ---
 title: Try Silta — table sign
-description: Big QR code for the review table. Opens the live app (the `consumer` link in content/site.yaml).
+description: Big QR sign for the review table. Opens the app.
 qr: consumer
 layout: sign
 tags: [sign, demo]

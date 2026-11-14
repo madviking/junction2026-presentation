@@ -1,6 +1,6 @@
 ---
 title: Silta — one-page summary
-description: A4 handout for jury, mentors and the review table. QR code opens the app.
+description: A4 project summary for judges and mentors.
 qr: consumer
 tags: [handout, jury]
 ---

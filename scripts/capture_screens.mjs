@@ -48,6 +48,12 @@ async function describe(words) {
   await page.getByRole('button', { name: 'Check', exact: true }).click()
 }
 
+/** The "How long have you had them?" step that follows the symptom step. */
+async function answerDuration() {
+  await page.getByRole('button', { name: '2 to 4 weeks' }).click()
+  await page.getByRole('button', { name: 'Continue', exact: true }).click()
+}
+
 async function startVisit(lang) {
   await page.goto(`${base}/r/${lang}`)
   await page.getByText(await text(lang, 'ui.journey.start.button'), { exact: true }).click()
@@ -68,8 +74,9 @@ await page.getByRole('button', { name: 'Chest, breast and armpit' }).click()
 await page.getByRole('button', { name: 'A cough for over 3 weeks' }).click()
 await shot('03-body-map-chosen')
 
-// 4-5. Where the person gets care, then the door with the Finnish call script.
+// 4-5. How long (not shot), where the person gets care, then the door with the Finnish call script.
 await page.getByRole('button', { name: 'Continue', exact: true }).click()
+await answerDuration()
 await page.getByRole('button', { name: 'I live in Finland and have a home municipality' }).waitFor()
 await shot('04-route')
 await page.getByRole('button', { name: 'I live in Finland and have a home municipality' }).click()
@@ -94,6 +101,7 @@ if (process.argv.includes('--with-matching')) {
   await shot('partner-gemini-symptom', page.getByLabel('Describe in your own words'))
   await symptomReadback.getByRole('button', { name: 'Yes' }).click()
   await page.getByRole('button', { name: 'Continue', exact: true }).click()
+  await answerDuration()
 
   await page.getByRole('button', { name: 'I live in Finland and have a home municipality' }).waitFor()
   await describe('I study at the University of Helsinki')

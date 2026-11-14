@@ -36,18 +36,12 @@
         </dl>
         {% endif %}
 
-        {% if m.live or m.planned %}
+        {% if m.live %}
         <div class="silta-glance-status">
           {% if m.live %}
           <div>
             <h2 class="silta-glance-title"><i class="ti ti-circle-check" aria-hidden="true"></i> Working today</h2>
             <ul>{% for item in m.live %}<li>{{ item }}</li>{% endfor %}</ul>
-          </div>
-          {% endif %}
-          {% if m.planned %}
-          <div class="is-planned">
-            <h2 class="silta-glance-title"><i class="ti ti-clock" aria-hidden="true"></i> Next</h2>
-            <ul>{% for item in m.planned %}<li>{{ item }}</li>{% endfor %}</ul>
           </div>
           {% endif %}
         </div>

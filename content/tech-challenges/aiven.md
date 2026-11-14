@@ -3,12 +3,12 @@ title: Best Use of Aiven
 partner: Aiven
 organiser: Aiven
 logo: /media/logos/aiven.png
-summary: Aiven for PostgreSQL in Finland is Silta's single store for content, audio, anonymous visits and county figures.
+summary: Aiven runs Silta, with the API and the resident app on Aiven Runtime and everything they must remember in one Aiven for PostgreSQL database.
 order: 10
 criteria_source: brain/challenges/tech/aiven-best-use.md
 # Glance: rendered as visuals at the top of the page (see AGENTS.md, Tech-partner pages).
 fit:
-  foundation: One Aiven for PostgreSQL database in Finland holds everything Silta must remember.
+  foundation: One Aiven for PostgreSQL database holds everything Silta must remember.
   steps:
     language: Every text in every language, versioned
     describe: Each tap stored as card ids, never free text
@@ -19,20 +19,15 @@ fit:
 numbers:
 - value: '1'
   label: database for content, audio, visits and county figures
-- value: FI
-  label: data stored in Finland (Google Cloud europe-north1)
+- value: EU
+  label: data stored in the EU, in the same Google Cloud region as the app
 - value: '0'
   label: names, ID numbers, phone numbers or emails stored
 live:
-- Aiven for PostgreSQL in Finland, with pgvector
+- Aiven for PostgreSQL with pgvector, same region as the app
 - Silta migrations applied; CI migrates on every push
-- Health check over TLS from the self-hosted image
-- All tables working end to end in the local app and tests
-planned:
-- API on Aiven Runtime next to the database
-- pgvector retrieval over public Finnish health sources
-- Job that deletes expired visits
-- Small-number suppression in the county view
+- API and resident app running on Aiven Runtime
+- All tables working end to end in the app and tests
 ---
 ## How Silta uses Aiven
 
@@ -45,9 +40,9 @@ Silta has one database, `silta`, and in the cloud it is **Aiven for PostgreSQL**
 - **Cost and audit.** Every paid AI or voice call writes a usage row with its cost, and every admin change writes an audit row (`backend/llm/`, `backend/voice/`, `backend/admin/`).
 
 Why Aiven:
-- **Stored data stays in Finland.** The service runs on Google Cloud `europe-north1` (Finland) (`docs/deployment.md`). For people asked to share worries about cancer, where their data is kept matters.
+- **Stored data stays in the EU.** The database runs on Google Cloud `europe-west4` (Netherlands). We created it in Finland, but Aiven Runtime does not run there, so on 14 Nov we moved the database to the app's region (`docs/deployment.md`). For people asked to share worries about cancer, where their data is kept matters.
 - **Plain PostgreSQL.** Encore.ts runs the same migrations locally and in tests. Against Aiven they run as forward-only SQL files with golang-migrate, so local and cloud schemas match (`backend/db/README.md`).
-- **Same region as the app.** Our rule is that the app and the database run in the same cloud and region; Aiven Runtime can host the API next to the database (`docs/decisions/0002-encore-ts-on-aiven.md`).
+- **Same region as the app.** Our rule is that the app and the database run in the same cloud and region. From a laptop about 160 ms away, each query took roughly 350 ms; on Aiven Runtime the API sits next to the database (`docs/decisions/0002-encore-ts-on-aiven.md`, `docs/deployment.md`).
 
 ## Architecture
 
@@ -59,28 +54,13 @@ Why Aiven:
 | 4 | The API connects to Aiven for PostgreSQL over TLS; secrets come from environment variables, not the repo | `backend/infra.config.json` |
 | 5 | `/api/health` checks the database round trip and that pgvector is installed | `backend/health/` |
 
-## What is live vs planned
+## What is live
 
-Live:
-- The Aiven for PostgreSQL service in `europe-north1`, with the `vector` extension installed and the first Silta migrations applied (`docs/deployment.md`). CI is set up to apply new migrations on every push to `main`.
-- The self-hosted image, run from a laptop against Aiven, answered `/api/health` with Postgres and pgvector OK over TLS (verified 14 Nov, `docs/deployment.md`).
-- The CI pipeline that builds the image and migrates Aiven (`.github/workflows/readiness.yml`).
+- The API and the resident app run on Aiven Runtime next to the database. The deployed `/api/health` answers `environment: aiven` with Postgres and pgvector OK (checked 14 Nov; https://easily-smart-aphid.eur-1.aiven.app/api/health).
+- The Aiven for PostgreSQL service `silta-pg` in `google-europe-west4`, with the `vector` extension installed and the first Silta migrations applied (`docs/deployment.md`). CI is set up to apply new migrations on every push to `main`.
+- The CI pipeline that builds the image, migrates Aiven and redeploys both Runtime apps on every green push to `main` (`.github/workflows/readiness.yml`).
 - All the tables above, working end to end in the local app and in tests (`brain/notes/2026-11-14-0735-silta-app-walkthrough.md`).
-
-In progress or planned:
-- Running the API on Aiven Runtime next to the database. The manifest is ready; the first Runtime deploy is not yet recorded in the docs. The demo currently runs locally on Encore's own Postgres.
-- Deploying the frontend (`docs/deployment.md`, "Open").
-- Using pgvector for retrieval over public Finnish health sources. The extension is installed, but no embeddings table exists yet (`backend/db/migrations/2_init_silta.up.sql`).
-- Deleting expired visits. Visits stop being readable after their expiry date and a resident can delete their own visit, but no job removes expired rows yet.
-- Small-number suppression in the county view (`brain/notes/2026-11-14-0735-silta-app-walkthrough.md`, "Known gaps").
-
-## What the challenge asks
-
-- Use at least one Aiven service as a meaningful part of the project and show what it enables.
-- One well-executed service can be as strong as several combined.
-- Judging: meaningful use of Aiven 40%, technical implementation 30%, impact on the overall solution 20%, creativity 10%.
-- Prizes: €1,000, €750 and €500 (`brain/challenges/tech/aiven-best-use.md`).
 
 ## Why it matters for the people we serve
 
-Language minorities are asked to trust a new tool with worries about cancer. Keeping the data in one Finnish-region database that holds no names or contact details, only hashed codes and card ids, makes that promise simple to keep and simple to check. The same database gives counties anonymous, by-language numbers on where people get stuck, without tracking anyone.
+Language minorities are asked to trust a new tool with worries about cancer. Keeping the data in one EU database that holds no names or contact details, only hashed codes and card ids, makes that promise simple to keep and simple to check. The same database gives counties anonymous, by-language numbers on where people get stuck, without tracking anyone.

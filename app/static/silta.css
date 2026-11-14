@@ -243,7 +243,6 @@ body:has(.silta-report) { background: var(--silta-surface); }
 
 .silta-glance-status { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px 32px; }
 .silta-glance-status .silta-glance-title { color: var(--silta-lake); }
-.silta-glance-status .is-planned .silta-glance-title { color: var(--silta-muted); }
 .silta-glance-status ul { margin: 0; padding-left: 20px; display: grid; gap: 4px; font-size: 16px; }
 
 .silta-glance-shot { margin: 0; display: grid; gap: 10px; justify-items: center; }
@@ -380,3 +379,15 @@ dialog.pw-pop::backdrop { background: rgba(10, 20, 25, .4); }
 .silta-pw-notes { font-size: 14px; color: var(--silta-muted); }
 .silta-pw-notes summary { cursor: pointer; color: var(--silta-ink); font-weight: 700; }
 .silta-pw-notes ul { padding-left: 18px; display: grid; gap: 4px; margin: 8px 0; }
+
+/* try page: technical information row */
+.silta-tech-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+.silta-tech-info .silta-eyebrow { margin-bottom: 4px; }
+.silta-tech-info a { word-break: break-all; }
+
+/* View-only demo login under the Admin link (try and landing pages). */
+.silta-demo-login {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--tblr-border-color);
+}

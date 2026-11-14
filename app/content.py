@@ -249,8 +249,15 @@ def materials() -> list[Item]:
 
 
 def printouts() -> list[Item]:
+    """Every file in content/printouts/. PDFs take their card text from _descriptions.yaml."""
     root = settings.content_dir() / "printouts"
-    return [_describe(root, p) for p in _visible_files(root)]
+    notes_file = root / "_descriptions.yaml"
+    notes = (yaml.safe_load(_read(notes_file)) or {}) if notes_file.exists() else {}
+    items = [_describe(root, p) for p in _visible_files(root)]
+    for item in items:
+        if not item.description:
+            item.description = str(notes.get(item.path, ""))
+    return items
 
 
 def safe_file(folder: str, rel_path: str) -> Path | None:

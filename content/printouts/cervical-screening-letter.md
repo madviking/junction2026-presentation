@@ -1,6 +1,6 @@
 ---
 title: Example cervical screening letter — 13 languages
-description: A Helsinki-style invitation to cervical screening with the Silta QR code, in all 13 Silta languages, and the picture guide the code opens. QR code opens the guide.
+description: Sample screening invitation with the Silta QR code, in 13 languages.
 qr: screening_guide
 tags: [screening, letter, cervical, languages]
 ---

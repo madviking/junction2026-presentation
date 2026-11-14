@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_demo_login.html" import demo_login %}
 {% from "_slider.html" import phone_slider %}
 {% block body %}
 <main class="page-body">
@@ -97,6 +98,7 @@
               <i class="ti ti-{{ link.icon }} silta-link-icon"></i>
               <h3 class="card-title mt-2 mb-1">{{ link.label }}</h3>
               <p class="text-secondary mb-0">{{ link.description }}</p>
+              {% if link.demo_login %}{{ demo_login(link.demo_login) }}{% endif %}
             </div>
           </a>
         </div>

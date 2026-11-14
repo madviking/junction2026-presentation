@@ -4,12 +4,13 @@ partner: ElevenLabs
 organiser: MLH
 logo: /media/logos/mlh.png
 logo_alt: MLH logo
-summary: ElevenLabs reads every card and instruction aloud in 13 languages and turns spoken answers into text where speech recognition is good enough.
+summary: ElevenLabs reads Silta aloud in 13 languages, listens where speech recognition is good enough, and answers the phone line in the caller's language.
 order: 20
 criteria_source: brain/challenges/tech/mlh-elevenlabs.md
 # Glance: rendered as visuals at the top of the page (see AGENTS.md, Tech-partner pages).
 fit:
   steps:
+    language: On the phone, press a key or say your language
     describe: Picture cards read aloud; spoken answers become text
     route: Route cards read aloud
     visit: Visit-card next steps read aloud
@@ -23,25 +24,17 @@ numbers:
 - value: 1×
   label: each clip generated once and cached; an edited text never plays old audio
 live:
+- Phone line on a real number; an agent answers in the caller's language
 - Text-to-speech in all 13 languages, cached, one real clip per language
-- Speech-to-text for English and Finnish, real calls
-- Speech-to-text biased towards Finnish health care words
-- Spoken answer to read-back, in browser tests
+- Speech-to-text with read-back, biased towards Finnish health care words
 - Admin upload and approval of human recordings
-planned:
-- Phone line: an ElevenLabs agent answers a real number (simulated call passes)
-- Running on the deployed app
-- Native-speaker review of the 11 placeholder languages' texts and audio
-- Speech-to-text tried for real in the nine added languages
-- Human Somali recordings
-- Kurdish, cards-first with human recordings
 screenshots:
 - src: /media/screens/slider-02-body-map.png
   alt: "'What worries you?' with a body figure and big picture cards, each with a speaker button."
   caption: For people who read little, every picture card has a speaker button that plays ElevenLabs audio.
 - src: /media/screens/slider-04-route.png
-  alt: "'Where do you get health care?' with a speaker button on each question and a Tap to speak microphone."
-  caption: Every question plays aloud. Tap to speak sends the answer to ElevenLabs Scribe.
+  alt: "'Where do you get health care?' with a speaker button on each route card and a microphone button next to the text box."
+  caption: Every card plays aloud. The microphone sends a spoken answer to ElevenLabs Scribe.
 - src: /media/screens/slider-05-door.png
   alt: "The call script: each Finnish sentence and its meaning, each with its own speaker button."
   caption: The sentence to say on the phone. One button plays the Finnish, the other its meaning.
@@ -61,8 +54,8 @@ Many people Silta is for read Finnish poorly, and some read their own language p
   - Every language except Somali: voice in and voice out.
   - Somali: audio out only. Voice input is refused on purpose, and Somali speakers use the cards.
 - **Human recordings win.** In the admin, a native speaker's recording can be uploaded for any text. Once approved it replaces the generated clip. Generated Somali audio can never be marked approved; only a human recording can (`backend/voice/admin.ts`).
-- **A phone line for people without the app.** The caller presses a number or just says their language (a keypad menu in ten languages, each line spoken in its own language). An ElevenLabs agent with Gemini as its brain then talks with the caller in that language and calls two live Silta endpoints as tools: compose the care path, and look up the doors, hours and interpreter rules in the caller's area. It reads the Finnish sentence slowly so the caller can repeat it to the health station. Voice recording is off. Simulated callers passed end to end against the deployed API in Russian, Arabic (chosen by keypad) and Ukrainian (chosen by voice); a real call from a Finnish mobile reached the agent, the keypad press switched it to Finnish, and the voice started about 1.6 s after the caller stopped speaking (`scripts/phone_agent.py`, `docs/proof/2026-11-14/phone-agent.md`).
-- **Spend under control.** Every call writes a usage row with characters, seconds and cost. A spend cap stops new calls; stored audio keeps playing (`backend/voice/providers.config.ts`). After the overnight build, the usage page showed about $0.016 of ElevenLabs spend in the development database (`brain/notes/2026-11-14-0735-silta-app-walkthrough.md`).
+- **A phone line for people without the app.** The caller presses a number or just says their language (a keypad menu in 11 languages, each line spoken in its own language). An ElevenLabs agent with Gemini as its brain then talks with the caller in that language and calls two live Silta endpoints as tools: compose the care path, and look up the doors, hours and interpreter rules in the caller's area. It reads the Finnish sentence slowly so the caller can repeat it to the health station. Voice recording is off (`scripts/phone_agent.py`).
+- **Spend under control.** Every ElevenLabs request writes a usage row with characters, seconds and cost. A spend cap stops new calls; stored audio keeps playing (`backend/voice/providers.config.ts`). After the overnight build, the usage page showed about $0.016 of ElevenLabs spend in the development database (`brain/notes/2026-11-14-0735-silta-app-walkthrough.md`).
 
 ## Architecture
 
@@ -76,27 +69,13 @@ Many people Silta is for read Finnish poorly, and some read their own language p
 | Swedish, Russian, Estonian, Ukrainian, Arabic, Persian, Mandarin, Cantonese, Vietnamese, Thai | yes | yes | unchecked |
 | Somali | no, cards instead | yes | unchecked, never approvable |
 
-## What is live vs planned
+## What is live
 
-Live (local app and tests):
+- The phone line, +1 878 425 5777. A real call on 14 Nov went the whole way: the caller pressed 3 for English, described irregular bowel movements, said they have no residence in Finland; the agent called `compose_care_path` on the deployed API, named the county necessary-care route or a volunteer clinic and the free interpreter, then answered a question about cost (108 s, ElevenLabs conversation `conv_2001m7d35dngfm4a2h32nbwwnfdx`). On another call a keypad press switched the agent to Finnish, and the voice started about 1.6 s after the caller stopped speaking. Simulated callers in Russian, Arabic (chosen by keypad) and Ukrainian (chosen by voice) passed end to end (`docs/proof/2026-11-14/phone-agent.md`).
 - Text-to-speech in all 13 languages, one real round trip per language, with caching (`docs/proof/2026-11-14/voice.md`).
-- Speech-to-text for English and Finnish with real calls; the Somali request is refused as designed (same file). One live English call with the glossary key terms on `scribe_v3` returned "Kela card" (local backend, 14 Nov); whether the key terms improve accuracy on real speech is not yet measured.
+- Speech-to-text for English and Finnish with real API calls; the Somali request is refused as designed (same file). One live English call with the glossary key terms on `scribe_v3` returned "Kela card" (local backend, 14 Nov); whether the key terms improve accuracy on real speech is not yet measured.
 - Spoken input through to the read-back in the browser tests, using a test clip made with ElevenLabs text-to-speech (`frontend/e2e/`, `brain/notes/2026-11-14-0735-silta-app-walkthrough.md`).
 - Admin upload, approval and the rule that an approved human recording wins.
-
-Planned or not yet done:
-- Running on the deployed app; today this runs locally.
-- Audio for texts built from several pieces (the door title with the place, time limits, the code line).
-- Audio for the body figure's question and body-part buttons; today only the picture cards under it play aloud.
-- Native-speaker review of the texts and audio in the 11 placeholder languages (all but English and Finnish; the nine added languages are machine-translated), and human Somali recordings. Speech-to-text has not yet been tried for real in the nine added languages. Nobody has yet listened to the generated clips to check pronunciation.
-- Kurdish, which ElevenLabs does not offer as voice output (`brain/sources/2026-11-13-elevenlabs-language-coverage.md`); planned cards-first with human recordings.
-- Zero-retention processing. It is enterprise-only, so ElevenLabs may keep request logs (`backend/voice/README.md`).
-
-## What the challenge asks
-
-- Give the hack a voice with ElevenLabs: natural, human-sounding, expressive AI audio.
-- The organiser's text asks for "fully autonomous audio experiences" in the project, from voice apps to narration.
-- Prize: wireless earbuds, one overall winner (`brain/challenges/tech/mlh-elevenlabs.md`).
 
 ## Why it matters for the people we serve
 

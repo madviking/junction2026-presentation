@@ -32,7 +32,7 @@ one-pagers, charts, mock-ups, exports, PDFs.
 | `content/site.yaml` | Name, punchline, facts, app links, video URL, team | everywhere |
 | `content/landing.md` | One-page project description | `/` |
 | `content/presentation.md` | Slides (`---` between slides, `Note:` for speaker notes) | `/presentation` (PDF: `/presentation?print-pdf`) |
-| `content/printouts/*.md` | A4 pages; frontmatter `qr: consumer` adds a QR code, `layout: sign` for a big sign | `/printouts` |
+| `content/printouts/*.md` | A4 pages; frontmatter `qr: consumer` adds a QR code, `layout: sign` for a big sign. Each printout needs a short `description` (one line, shown on its box); PDFs get theirs in `_descriptions.yaml` | `/printouts` |
 | `content/tech-challenges/<slug>.md` | One page per tech challenge we enter (frontmatter: `title`, `partner`, `organiser`, `logo`, `summary`, `order`, plus the glance fields in "Tech-partner pages" below) | `/tech`, `/tech/<slug>` |
 | `content/materials/` | Team-internal artefacts + `_links.yaml` for external ones | `/team` (password) |
 | `content/media/` | Public images and video used by pages and slides | `/media/...` |
@@ -81,9 +81,9 @@ mostly visually, how their technology fits into Silta**, and can then drill down
 
 - **Keep them current.** When Silta's use of a partner grows, shrinks or changes
   (in `../tech` or anywhere else), update that partner's page in the same task:
-  `summary`, `fit.steps`, `numbers`, `live`/`planned` and the use-case text in the
+  `summary`, `fit.steps`, `numbers`, `live` and the use-case text in the
   details. A new partner gets a new page. Every claim points to a file in `../tech`
-  or `../brain`; an item moves from `planned` to `live` only with proof.
+  or `../brain`; an item goes into `live` only with proof. The pages show what works, not a roadmap.
 - **Glance (frontmatter, rendered as visuals at the top):**
   - `summary`: one sentence, partner technology → what it does for residents.
   - `fit.steps`: map of journey step id → what the partner does at that step, at
@@ -92,11 +92,12 @@ mostly visually, how their technology fits into Silta**, and can then drill down
   - `fit.foundation` (optional): one line for a partner that sits under every step
     (e.g. the database); drawn as a band beneath the journey.
   - `numbers`: up to three `{value, label}` facts, each traceable to a source.
-  - `live` / `planned`: up to four short phrases each.
+  - `live`: up to four short phrases.
   - optional `screenshot` (`/media/...`) and `screenshot_alt`.
 - **Details (Markdown body):** each `##` section becomes a collapsed drill-down
-  panel, in this order: how Silta uses it, architecture, what is live vs planned,
-  what the challenge asks, why it matters. Keep the body as careful as its sources.
+  panel, in this order: how Silta uses it, architecture, what is live,
+  why it matters. The pages are read by the partner companies' own people, so they do not
+  restate the challenge brief. Keep the body as careful as its sources.
 
 ## Adding a chart
 

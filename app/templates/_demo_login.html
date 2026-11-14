@@ -1,0 +1,7 @@
+{% macro demo_login(login) %}
+<div class="silta-demo-login">
+  <p class="silta-eyebrow mb-1">View-only demo account</p>
+  <p class="mb-0">Email <code>{{ login.email }}</code> · Password <code>{{ login.password }}</code></p>
+  <p class="text-secondary small mb-0">Opens every admin page; nothing you change is saved.</p>
+</div>
+{% endmacro %}

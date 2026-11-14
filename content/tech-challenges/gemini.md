@@ -3,7 +3,7 @@ title: Best Use of Gemini API
 partner: Google DeepMind
 organiser: Google DeepMind
 logo: /media/logos/google-deepmind.png
-summary: Gemini Decision 1 matches what a resident types or says to one card from a fixed set, with probabilities, so Silta asks instead of guessing.
+summary: Gemini Decision 1 matches a resident's own words to one card, so Silta asks instead of guessing; Gemini 2.5 Flash runs the phone line.
 order: 30
 criteria_source: brain/challenges/tech/google-deepmind-gemini-api.md
 # Glance: rendered as visuals at the top of the page (see AGENTS.md, Tech-partner pages).
@@ -20,17 +20,10 @@ numbers:
 - value: 1 tap
   label: by the person before any match changes the journey
 live:
-- Card matching for symptoms, routes and outcomes (reached through OpenRouter today)
-- Read-back when confident, the cards when unsure
-- Identifiers removed before text leaves the backend
-- Answer cards for 14 Finnish health care words (Kela card, lähete, OmaKanta …)
-- Logged evaluation on synthetic English and Finnish input
+- Card matching for symptoms, routes and outcomes, read back when confident (reached through OpenRouter today)
+- Gemini 2.5 Flash drives the ElevenLabs phone agent on a real number
 - Photo of a letter → what it is, the facts as printed and what to do, in the person's language (Gemini 3.1 Flash-Lite, image + JSON schema; reached through OpenRouter today)
-planned:
-- Phone line: Gemini 2.5 Flash drives the ElevenLabs phone agent (simulated call passes)
-- Switch card matching to the direct Gemini API adapter
-- Generated answers from public Finnish health sources, with links
-- Evaluation in real resident wording, incl. Somali and Arabic
+- Identifiers removed before text leaves the backend
 screenshots:
 - src: /media/screens/partner-gemini-symptom.png
   alt: "'I found a hard lump in my left breast last week' typed in; Silta asks 'Did you mean: A new lump or swelling?' with Yes and No."
@@ -78,25 +71,13 @@ screenshots:
 | Decide what to show | Read-back or cards, by confidence and margin | `backend/cards/service.ts` |
 | Person confirms | Only a tap changes the journey | `frontend/src/features/journey/` |
 
-## What is live vs planned
+## What is live
 
-Live (local app, tests and one logged evaluation):
+- The phone line. Gemini 2.5 Flash is the brain of the ElevenLabs phone agent: it talks with the caller, picks the lane and route, and calls the deployed Silta API to compose the care path. A real 108 s call in English on 14 Nov went from symptom to the right door and a follow-up about cost (ElevenLabs conversation `conv_2001m7d35dngfm4a2h32nbwwnfdx`, `scripts/phone_agent.py`, `docs/proof/2026-11-14/phone-agent.md`).
 - Card matching with Gemini Decision 1 in the running app, for symptoms, routes and outcomes, with the read-back and the fallback to cards (`brain/notes/2026-11-14-0735-silta-app-walkthrough.md`).
 - A live evaluation on a labelled set of 48 synthetic English and Finnish inputs: every confident answer was correct, all 5 questions about health care words got the right answer card, and every vague or off-topic input fell back to the cards, for $0.005 (`docs/proof/2026-11-14/classifier-eval.md`). The set was written by the builder, so it shows the wiring and the guard rails, not an independent accuracy figure.
 - The direct Gemini API adapter for both Decisions and `generateContent`, each proven with a live smoke call (`backend/llm/README.md`).
 - "I got a letter": the person photographs a letter they cannot read; Gemini 3.1 Flash-Lite reads the photo and answers as one JSON object that follows our schema: a letter type from a closed set, the date, place and phone number copied as printed, and a short explanation with steps in the person's language (`backend/letters/`, `backend/llm/service.ts` `extract`). Checked in the running local app on 14 Nov with the app's own Finnish example invitation, in Somali and Arabic (`docs/proof/2026-11-14/letter-result-so.png`, `letter-result-ar.png`). This is generated text, so the screen labels it machine-made and tells the person to check date, time and place against the paper. The photo is sent once and never stored or logged; the model makes no urgency decision. Tried on one example letter only, not evaluated on real letters.
-
-In progress or planned:
-- In the current build the `cards.match` feature reaches Gemini Decision 1 through OpenRouter. Switching it to the direct Gemini API adapter is a one-line change of `provider` in `backend/llm/integrations.ts`; it has not been made yet.
-- Building the knowledge base from public Finnish health sources (wellbeing services counties, Terveyskylä, THL, Cancer Society of Finland) into checked plain-language pages, with Gemini matching a question to the official source and showing it with a link.
-- Help with translation drafts for native-speaker review.
-- An evaluation set in real resident wording, including Somali and Arabic input.
-
-## What the challenge asks
-
-- A meaningful, innovative and technically impressive use of the Gemini API, going beyond "adding an LLM to an app".
-- The submission should explain the problem, how Gemini is integrated, what makes the use innovative, and why Gemini is important to the solution.
-- Prizes: €4,000 plus $1,000 Google Cloud credits per team member, €2,000 and €1,000 (`brain/challenges/tech/google-deepmind-gemini-api.md`).
 
 ## Why it matters for the people we serve
 

@@ -28,7 +28,7 @@ def basic(password: str) -> dict:
         ("/pathway/archive", "Where in the screening pathway the gap appears"),
         ("/presentation", 'class="reveal"'),
         ("/video", "The video is not up yet"),
-        ("/try", "Demo path"),
+        ("/try", "For residents"),
         ("/printouts", "one-page summary"),
         ("/printouts/one-pager.md", "<svg"),
         ("/team", "Shared materials"),
@@ -47,6 +47,24 @@ def test_try_page_lists_phone_line_and_screening_letter(client):
     assert "+1 878 425 5777" in html
     assert "/letter/cervical/en" in html
     assert "/r/en/learn/cervical" in html
+
+
+def test_admin_demo_login_is_shown_on_try_and_landing_pages(client):
+    demo = content.site()["links"]["admin"]["demo_login"]
+    assert demo["email"] == "demo@silta.test"
+    for path in ("/try", "/"):
+        html = client.get(path).text
+        assert demo["email"] in html and demo["password"] in html, path
+        assert "View-only demo account" in html, path
+
+
+def test_try_page_groups_links(client):
+    html = client.get("/try").text
+    residents, county = html.index("For residents"), html.index("For the county")
+    tech = html.index("Technical information")
+    assert residents < html.index("Silta phone line") < county < html.index("Admin") < tech
+    assert tech < html.index("github.com/madviking/junction2026tech")
+    assert "mostly-awaited-flounder" not in html  # no card for the site itself
 
 
 def test_screening_letter_printout_links_every_language(client):
@@ -213,7 +231,7 @@ def test_tech_page_glance_shows_journey_fit(client, tmp_path, monkeypatch):
     (tmp_path / "content" / "tech-challenges" / "zz-glance.md").write_text(
         "---\ntitle: Best use of Glance\npartner: Glance\nsummary: We glance.\norder: 999\n"
         "fit:\n  steps:\n    describe: Turns words into a card\n  foundation: Holds every step\n"
-        "numbers:\n  - value: '3'\n    label: steps touched\nlive: [Card matching]\nplanned: [Somali input]\n---\n\n"
+        "numbers:\n  - value: '3'\n    label: steps touched\nlive: [Card matching]\n---\n\n"
         "## Details\n\nBody.\n",
         encoding="utf-8",
     )
@@ -222,7 +240,8 @@ def test_tech_page_glance_shows_journey_fit(client, tmp_path, monkeypatch):
     assert "Turns words into a card" in text and "Holds every step" in text
     assert 'data-step="describe" data-used="true"' in text
     assert 'data-step="county" data-used="false"' in text
-    assert "steps touched" in text and "Card matching" in text and "Somali input" in text
+    assert "steps touched" in text and "Card matching" in text
+    assert "> Next</h2>" not in text  # no planned box in the glance
     assert 'data-step="describe" data-used="true"' in client.get("/tech").text  # mini strip on the index card
 
 
@@ -261,3 +280,9 @@ def test_partner_page_screen_slider(client, slug):
         assert (settings.content_dir() / screen["src"].removeprefix("/")).is_file(), screen["src"]
         assert f'src="{screen["src"]}"' in html
         assert str(escape(screen["alt"])) in html
+
+
+def test_every_printout_has_a_short_description():
+    for item in content.printouts():
+        assert item.description, f"{item.path} has no description"
+        assert len(item.description) <= 80, f"{item.path}: description too long"

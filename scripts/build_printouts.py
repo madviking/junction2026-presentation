@@ -278,10 +278,10 @@ html, body { background: #fff; color: var(--ink); font-family: "Noto Sans", "Not
 .multi .brand { font-size: 26pt; }
 .multi .tagline { text-align: end; line-height: 1.5; max-width: 130mm; word-break: keep-all; }
 .multi .rows { padding: 3mm 14mm 0; display: grid; grid-template-columns: 1fr 1fr; column-gap: 9mm; }
-.multi .row { display: grid; align-content: start; gap: .6mm; padding: 2.8mm 0; border-bottom: .3mm solid var(--line); }
+.multi .row { display: grid; align-content: start; gap: .5mm; padding: 2.2mm 0; border-bottom: .3mm solid var(--line); }
 .multi .lname { font-size: 7.5pt; font-weight: 700; color: var(--petrol); text-transform: uppercase; letter-spacing: .05em; }
-.multi .rtitle { font-size: 13.5pt; font-weight: 800; line-height: 1.2; }
-.multi .rline { font-size: 8.8pt; line-height: 1.35; color: #2e353e; }
+.multi .rtitle { font-size: 12.5pt; font-weight: 800; line-height: 1.2; }
+.multi .rline { font-size: 8.4pt; line-height: 1.3; color: #2e353e; }
 .multi .mid { display: grid; grid-template-columns: 50mm 1fr; gap: 8mm; padding: 5mm 14mm 0; align-items: start; }
 .multi .qrbig { display: grid; gap: 2mm; justify-items: center; }
 .multi .qrbig .qr { width: 48mm; height: 48mm; }

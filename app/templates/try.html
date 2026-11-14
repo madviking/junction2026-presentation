@@ -1,5 +1,25 @@
 {% extends "base.html" %}
 {% block title %}Try the app — {{ site.name }}{% endblock %}
+
+{% from "_demo_login.html" import demo_login %}
+
+{% macro link_card(link) %}
+<div class="card h-100">
+  <div class="card-body">
+    <div class="d-flex align-items-center gap-2 mb-2">
+      <i class="ti ti-{{ link.icon }} silta-link-icon"></i>
+      <h3 class="card-title m-0">{{ link.label }}</h3>
+    </div>
+    <p class="text-secondary">{{ link.description }}</p>
+    <p class="silta-url mb-0"><code>{{ link.display or link.url }}</code></p>
+    {% if link.demo_login %}{{ demo_login(link.demo_login) }}{% endif %}
+  </div>
+  <div class="card-footer">
+    <a class="btn btn-primary w-100" href="{{ link.url }}">{{ link.action or "Open" }} <i class="ti ti-{{ 'phone' if link.url.startswith('tel:') else 'external-link' }} ms-1"></i></a>
+  </div>
+</div>
+{% endmacro %}
+
 {% block body %}
 <main class="page-body">
   <div class="container-xl">
@@ -7,44 +27,43 @@
       <p class="silta-eyebrow">Access</p>
       <h1 class="page-title">Try the app</h1>
     </div>
-    <div class="row row-cards">
-      {% for key, link in site.links.items() %}
-      <div class="col-md-6 col-lg-4">
-        <div class="card h-100">
-          <div class="card-body">
-            <div class="d-flex align-items-center gap-2 mb-2">
-              <i class="ti ti-{{ link.icon }} silta-link-icon"></i>
-              <h2 class="card-title m-0">{{ link.label }}</h2>
-            </div>
-            <p class="text-secondary">{{ link.description }}</p>
-            <p class="silta-url"><code>{{ link.display or link.url }}</code></p>
+
+    {% for group in site.link_groups %}
+    <section class="silta-section">
+      <h2>{{ group.title }}</h2>
+      {% if group.lede %}<p class="text-secondary silta-lede">{{ group.lede }}</p>{% endif %}
+      <div class="row row-cards">
+        {% for key in group.links if site.links[key] %}
+        <div class="col-md-6">{{ link_card(site.links[key]) }}</div>
+        {% endfor %}
+      </div>
+
+    </section>
+    {% endfor %}
+
+    <section class="silta-section">
+      <h2>Technical information</h2>
+      <div class="card">
+        <div class="card-body silta-tech-info">
+          {% if site.links.source %}
+          <div>
+            <p class="silta-eyebrow">Source code</p>
+            <p class="mb-1">{{ site.links.source.description }}</p>
+            <a href="{{ site.links.source.url }}"><i class="ti ti-brand-github me-1"></i>{{ site.links.source.url | replace("https://", "") }}</a>
           </div>
-          <div class="card-footer">
-            <a class="btn btn-primary w-100" href="{{ link.url }}">{{ link.action or "Open" }} <i class="ti ti-{{ 'phone' if link.url.startswith('tel:') else 'external-link' }} ms-1"></i></a>
+          {% endif %}
+          <div>
+            <p class="silta-eyebrow">Built with</p>
+            <p class="mb-0">{{ site.technologies | join(" · ") }}</p>
+          </div>
+          <div>
+            <p class="silta-eyebrow">Tech partners</p>
+            <p class="mb-1">Where Aiven, Gemini and ElevenLabs fit in the resident's journey.</p>
+            <a href="/tech">How we use each tech partner <i class="ti ti-arrow-right"></i></a>
           </div>
         </div>
       </div>
-      {% endfor %}
-    </div>
-    <div class="card mt-4">
-      <div class="card-body">
-        <h2 class="card-title">Demo path</h2>
-        <ol class="mb-0">
-          <li>Pick a language → Start → “I have a symptom” → pick or say “a new lump”.</li>
-          <li>Route card → the door, with the Finnish call script and time limits.</li>
-          <li>“Nobody answered” twice → the escalation ladder. The emergency button works from any stage.</li>
-          <li>“I got an appointment” → “My visit is now” → visit card with the anonymous code.</li>
-          <li>Clinician view <code>/clinic/&lt;code&gt;</code>: the Finnish one-screen summary.</li>
-          <li>County view: anonymous counts by stage, outcome and language.</li>
-        </ol>
-        <h2 class="card-title mt-4">Second way in: “I got a screening letter”</h2>
-        <ol class="mb-0">
-          <li>Open the example letter (any language) and scan its QR code, or tap “I got a letter about cervical screening” on the start screen.</li>
-          <li>The guide: why it matters → what happens at the visit → your rights, with Finnish sentences to show at the desk → after the visit → common questions.</li>
-          <li>Phone instead of screen: call <a href="tel:+18784255777">+1 878 425 5777</a> and speak your language.</li>
-        </ol>
-      </div>
-    </div>
+    </section>
   </div>
 </main>
 {% endblock %}
