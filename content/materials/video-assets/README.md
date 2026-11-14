@@ -30,6 +30,18 @@ frame of every clip.
 **The headline number is now "27% fewer come"** (a relative drop, as in deck v3), not "about 20
 points". Update the voice-over in `../video-strategy.html` to match.
 
+## Generated with Google AI Studio
+
+Some of the video footage, including footage with a person in it, was generated with the video
+generation in Google AI Studio (team, 14 Nov). The person is generated, not a real resident or
+clinician; Hodan is a composite. Those clips are not in this folder.
+
+- Add here which shots they are and the prompts used, so the Gemini partner page
+  (`content/tech-challenges/gemini.md`) can point to them.
+- `../video-storylines.md` ("Generative AI: where it helps and where it doesn't") rules out generated faces of patients or nurses and
+  a synthetic speaker presented as a person. If a generated person stays in the cut, say on screen
+  or on the end card that the footage is AI-generated.
+
 ## Other folders
 
 - **`screens/`**: real app screens from the live Silta app, 390×844 CSS px at 3×.

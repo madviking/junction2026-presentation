@@ -1,4 +1,4 @@
-"""Silta project site: landing page, pathway data page, deck, video, printouts, app links, team materials."""
+"""Silta project site: landing page, deck (with the pathway data slide), video, printouts, app links, team materials."""
 
 from __future__ import annotations
 
@@ -32,7 +32,6 @@ templates.env.globals["asset"] = asset
 
 NAV = (
     ("home", "/", "Silta", "home"),
-    ("pathway", "/pathway", "Pathway", "route"),
     ("presentation", "/presentation", "Presentation", "presentation"),
     ("video", "/video", "Video", "movie"),
     ("printouts", "/printouts", "Printouts", "printer"),
@@ -49,7 +48,11 @@ def render(request: Request, template: str, active: str, **context) -> HTMLRespo
 
 
 def qr_svg(url: str) -> Markup:
-    return Markup(segno.make(url, error="m").svg_inline(scale=6, border=0, dark="#142028"))
+    qr = segno.make(url, error="m")
+    width, height = qr.symbol_size(scale=6, border=0)
+    svg = qr.svg_inline(scale=6, border=0, dark="#142028")
+    # segno sets a fixed width/height and no viewBox; with one, CSS can resize the code without cropping it
+    return Markup(svg.replace("<svg ", f'<svg viewBox="0 0 {width} {height}" ', 1))
 
 
 @app.get("/healthz", response_class=PlainTextResponse)
@@ -62,13 +65,23 @@ def landing(request: Request):
     return render(request, "landing.html", "home", landing=content.landing())
 
 
-@app.get("/pathway", response_class=HTMLResponse)
-def pathway(request: Request):
+# The pathway (routes into cancer care) is a slide in the deck: /presentation#/pathway embeds
+# /presentation/pathway, a bare page without the site menu. The old URLs point at that slide.
+PATHWAY_SLIDE = "/presentation#/pathway"
+
+
+@app.get("/presentation/pathway", response_class=HTMLResponse)
+def pathway_embed(request: Request):
     data = content.pathway()
     available = charts.by_id()
     wanted = {c for step in data["steps"].values() for row in step.get("charts", []) for c in row}
     rendered = {name: available[name].render() for name in sorted(wanted) if name in available}
-    return render(request, "pathway.html", "pathway", pathway=data, charts=rendered)
+    return render(request, "pathway.html", "presentation", pathway=data, charts=rendered, embed=True)
+
+
+@app.get("/pathway")
+def pathway_redirect():
+    return RedirectResponse(PATHWAY_SLIDE, status_code=307)
 
 
 @app.get("/pathway/archive", response_class=HTMLResponse)
@@ -78,17 +91,42 @@ def pathway_archive(request: Request):
     available = charts.by_id()
     wanted = [s["figure"]["chart"] for s in story.get("sections", []) if s.get("figure")]
     rendered = {name: available[name].render() for name in wanted if name in available}
-    return render(request, "dashboard.html", "pathway", story=story, charts=rendered)
+    return render(request, "dashboard.html", "presentation", story=story, charts=rendered)
 
 
 @app.get("/dashboard")
 def dashboard_redirect():
-    return RedirectResponse("/pathway", status_code=307)
+    return RedirectResponse(PATHWAY_SLIDE, status_code=307)
 
 
+# The site's deck is v3: Hodan's path with drill-ins, one layout system
+# (content/presentation-v3.yaml, app/static/deck-v3.css, rules in
+# content/materials/silta-design-system.html). Earlier decks stay reachable.
 @app.get("/presentation", response_class=HTMLResponse)
 def presentation(request: Request):
+    return templates.TemplateResponse(
+        request, "presentation_v3.html", {"site": content.site(), "deck": content.deck_v3()}
+    )
+
+
+@app.get("/presentation/v3")
+def presentation_v3_redirect():
+    return RedirectResponse("/presentation", status_code=307)
+
+
+# Deck v1 (content/presentation.md), the first deck.
+@app.get("/presentation/v1", response_class=HTMLResponse)
+def presentation_v1(request: Request):
     meta, slides = content.slides()
+    return templates.TemplateResponse(
+        request, "presentation.html", {"site": content.site(), "meta": meta, "slides": slides}
+    )
+
+
+# Deck v2 (content/presentation-v2.md), built from the master narrative.
+@app.get("/presentation/v2", response_class=HTMLResponse)
+def presentation_v2(request: Request):
+    meta, slides = content.slides("presentation-v2.md")
     return templates.TemplateResponse(
         request, "presentation.html", {"site": content.site(), "meta": meta, "slides": slides}
     )
@@ -114,7 +152,8 @@ def tech_page(request: Request, slug: str):
 
 @app.get("/try", response_class=HTMLResponse)
 def try_app(request: Request):
-    return render(request, "try.html", "try")
+    consumer = (content.site().get("links") or {}).get("consumer")
+    return render(request, "try.html", "try", qr=qr_svg(consumer["url"]) if consumer else "")
 
 
 @app.get("/printouts", response_class=HTMLResponse)

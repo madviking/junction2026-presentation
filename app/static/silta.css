@@ -3,6 +3,7 @@
 :root,
 [data-bs-theme="light"] {
   --silta-bg: #f6f7f5;
+  --silta-sand-soft: #f1ede3;
   --silta-surface: #ffffff;
   --silta-ink: #142028;
   --silta-muted: #56636b;
@@ -29,6 +30,7 @@
 }
 [data-bs-theme="dark"] {
   --silta-bg: #0f1619;
+  --silta-sand-soft: #262420;
   --silta-surface: #162026;
   --silta-ink: #e5ecef;
   --silta-muted: #98a7ae;
@@ -61,6 +63,11 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .silta-nav { background: var(--silta-surface); border-bottom: 1px solid var(--silta-line); }
 .silta-brand { font-family: var(--silta-font-display); font-weight: 800; font-size: 24px; color: var(--silta-lake) !important; }
 .silta-nav .nav-item.active .nav-link { color: var(--silta-lake); }
+.silta-nav .navbar-brand { margin-right: 40px; }
+@media (min-width: 768px) {
+  .silta-nav .navbar-nav { gap: 10px; }
+  .silta-nav .navbar-nav .nav-link { padding-left: 10px; padding-right: 10px; }
+}
 #theme-toggle { background: none; border: 0; color: var(--silta-muted); font-size: 20px; }
 [data-bs-theme="dark"] .theme-dark-hide, [data-bs-theme="light"] .theme-light-hide { display: none; }
 
@@ -88,6 +95,16 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .silta-highlights strong { display: block; font-family: var(--silta-font-display); font-weight: 800; font-size: 19px; line-height: 1.15; color: var(--silta-ink); }
 .silta-highlights span { display: block; margin-top: 3px; font-size: 14px; line-height: 1.3; color: var(--silta-muted); }
 .silta-cta { display: flex; flex-wrap: wrap; gap: 10px; }
+/* the three hero buttons stay on one row from wide-tablet width up */
+@media (min-width: 820px) {
+  .silta-cta { flex-wrap: nowrap; }
+  .silta-cta .btn { white-space: nowrap; padding-left: 16px; padding-right: 16px; font-size: 17px; }
+  .silta-cta .btn .me-2 { margin-right: 6px !important; }
+}
+@media (min-width: 820px) and (max-width: 1399.98px) {
+  .silta-cta { gap: 8px; }
+  .silta-cta .btn { font-size: 16px; padding-left: 13px; padding-right: 13px; }
+}
 .silta-phone { margin: 0; width: 260px; border-radius: 32px; padding: 10px; background: var(--silta-ink); box-shadow: 0 20px 50px rgba(20, 32, 40, .25); }
 .silta-phone img { display: block; width: 100%; border-radius: 24px; }
 [data-bs-theme="dark"] .silta-phone { background: #2a3a42; }
@@ -95,10 +112,10 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 /* landing phone slider (scroll-snap; script in landing.html) */
 .silta-slider { display: grid; justify-items: center; gap: 12px; width: 260px; }
 .silta-slider .silta-phone { width: 100%; }
-.silta-slider-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; border-radius: 24px; scrollbar-width: none; overscroll-behavior-x: contain; }
+.silta-slider-track { display: flex; background: #ffffff; overflow-x: auto; scroll-snap-type: x mandatory; border-radius: 24px; scrollbar-width: none; overscroll-behavior-x: contain; }
 .silta-slider-track::-webkit-scrollbar { display: none; }
 .silta-slider-track:focus-visible { outline: 3px solid var(--silta-lake); outline-offset: 4px; }
-.silta-slide { flex: 0 0 100%; margin: 0; scroll-snap-align: center; }
+.silta-slide { flex: 0 0 100%; margin: 0; scroll-snap-align: center; box-sizing: border-box; padding: 18px 14px; background: #ffffff; } /* white screen margin around the (light) app screenshot */
 .silta-slide img { display: block; width: 100%; height: auto; border-radius: 0; }
 .silta-slider-caption { margin: 0; min-height: 3.9em; color: var(--silta-ink); font-size: 15px; line-height: 1.3; text-align: center; text-wrap: balance; }
 .silta-slider-nav { display: flex; align-items: center; gap: 8px; }
@@ -117,18 +134,60 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .silta-fact-value { text-wrap: balance; }
 .silta-more { margin: 12px 0 0; text-align: right; font-weight: 700; }
 
-/* landing: Goal 3 link and rollout stages */
-.silta-goal { margin-top: 24px; }
-.silta-goal-points { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px 28px; margin-top: 20px; }
-.silta-goal-point { border-top: 3px solid var(--silta-lake); padding-top: 12px; }
-.silta-goal-point h3, .silta-stage h3 { font-size: 19px; font-weight: 800; margin: 0 0 6px; }
-.silta-goal-point p { margin: 0; }
-.silta-goal-also { margin: 20px 0 0; color: var(--silta-muted); }
-.silta-goal-also a { font-weight: 700; white-space: nowrap; }
-.silta-stages { list-style: none; padding: 0; margin: 20px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
-.silta-stage ul { margin: 10px 0 0; padding-left: 18px; display: grid; gap: 6px; }
-.silta-stage-now { border-color: var(--silta-lake); box-shadow: inset 0 4px 0 var(--silta-lake); }
-.silta-stage-now .silta-eyebrow { color: var(--silta-lake); }
+/* landing: Goal 3, rollout and "where Silta fits" share one block layout: eyebrow, title, lede, cards */
+.silta-block > .silta-eyebrow { margin-bottom: 8px; }
+.silta-block > h2 { font-size: clamp(24px, 3vw, 32px); font-weight: 800; margin: 0 0 12px; }
+.silta-cards { list-style: none; padding: 0; margin: 28px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+.silta-card { box-shadow: inset 0 4px 0 var(--silta-line); }
+.silta-card-accent { box-shadow: inset 0 4px 0 var(--silta-lake); }
+.silta-card-accent .silta-eyebrow { color: var(--silta-lake); }
+.silta-card .card-body { padding: 28px; }
+.silta-card h3 { font-size: 19px; font-weight: 800; margin: 0 0 10px; }
+.silta-card p, .silta-card li { line-height: 1.6; }
+.silta-card p:last-child { margin-bottom: 0; }
+.silta-card ul { margin: 14px 0 0; padding-left: 18px; display: grid; gap: 10px; }
+.silta-card .silta-card-src { margin-top: 12px; font-size: 14px; color: var(--silta-muted); }
+
+/* landing: where Silta fits on the routes into care (simplified pathway slide) */
+.silta-fit-figure { margin: 28px 0 0; background: var(--silta-surface); border: 1px solid var(--silta-line); border-radius: 8px; padding: 24px; }
+.silta-fit-scroll { overflow-x: auto; }
+.silta-fit-map { display: block; width: 100%; min-width: 680px; height: auto; font-family: var(--silta-font-body); }
+.silta-fit-map .fit-zone { fill: var(--silta-lake-soft); }
+.silta-fit-map .fit-zone-label { font: 800 22px var(--silta-font-display); fill: var(--silta-lake); }
+.silta-fit-map .fit-zone-care { fill: var(--silta-sand-soft); }
+.silta-fit-map .fit-zone-label-care { fill: var(--silta-muted); }
+.silta-fit-map .fit-zone-tag { font: 600 12px var(--silta-font-data); letter-spacing: .08em; text-transform: uppercase; fill: var(--silta-muted); }
+.silta-fit-map .fit-route { font: 600 13px var(--silta-font-data); letter-spacing: .08em; text-transform: uppercase; fill: var(--silta-ink); }
+.silta-fit-map .fit-line { fill: none; stroke: var(--silta-lake); stroke-width: 3; }
+.silta-fit-map .fit-line-care { stroke: var(--silta-muted); stroke-dasharray: 8 6; stroke-width: 2.5; }
+.silta-fit-map .fit-arrow { fill: var(--silta-muted); }
+.silta-fit-map .fit-node { fill: var(--silta-surface); stroke: var(--silta-lake); stroke-width: 3; }
+.silta-fit-map .fit-node-care { stroke: var(--silta-muted); }
+.silta-fit-map .fit-label { font-size: 15px; fill: var(--silta-ink); }
+/* legend columns line up with the two zones of the map (676 and 316 of 1000 units, 8 apart) */
+.silta-fit-legend { display: grid; grid-template-columns: 67.6fr 31.6fr; column-gap: 0.8%; margin-top: 20px; }
+.silta-fit-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+.silta-fit-planned { padding-left: 20px; }
+.silta-fit-planned .silta-eyebrow { display: none; }
+.silta-fit-planned .silta-fit-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.silta-fit-num.silta-fit-num-planned { background: transparent; color: var(--silta-muted); border: 2px dashed var(--silta-muted); }
+.silta-fit-planned .silta-fit-steps div strong { color: var(--silta-muted); }
+.silta-fit-steps li { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; }
+.silta-fit-num { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--silta-lake); color: var(--tblr-primary-fg); font: 700 14px var(--silta-font-data); }
+.silta-fit-steps div strong { display: block; font-family: var(--silta-font-display); font-weight: 800; font-size: 17px; line-height: 1.2; color: var(--silta-ink); }
+.silta-fit-steps div span { display: block; margin-top: 4px; font-size: 14.5px; line-height: 1.45; color: var(--silta-muted); }
+.silta-fit-note { margin-top: 24px; }
+.silta-fit-note p { font-size: 17px; line-height: 1.6; margin: 0; }
+@media (max-width: 991.98px) {
+  .silta-fit-legend { grid-template-columns: 1fr; row-gap: 24px; }
+  .silta-fit-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .silta-fit-planned { padding: 16px; border-radius: 8px; background: var(--silta-sand-soft); }
+  .silta-fit-planned .silta-eyebrow { display: block; }
+}
+@media (max-width: 575.98px) {
+  .silta-fit-figure { padding: 16px; }
+  .silta-fit-steps, .silta-fit-planned .silta-fit-steps { grid-template-columns: 1fr; }
+}
 
 /* long-form text */
 .silta-prose { max-width: 70ch; padding: 24px 0; }
@@ -285,44 +344,37 @@ body:has(.silta-report) { background: var(--silta-surface); }
   .silta-step[data-used="false"] { padding: 6px 12px; }
 }
 
-/* ---- Pathway page (/pathway; static/pathway.js, templates/pathway.html + _pathway.html) ----
-   One card: info panel on top, route map, Silta bands. Two colours: ink for structure, coral for gaps.
+/* ---- Pathway slide (/presentation/pathway, embedded in the deck; static/pathway.js, templates/pathway.html + _pathway.html) ----
+   Laid out like the deck's other infographic slide (content/media/ways-in.html): headline and view tabs, the map
+   full width, a card over the map for the step or band clicked, Silta bands below, legend and drill-down links at
+   the bottom. Two colours: ink for structure, coral for gaps (lake for costs in the Impact view).
    Line style shows the evidence: solid = by native language, dotted = another way, dashed grey = not measured. */
-.silta-pathway { --pw-faint: #b9c2c0; --pw-band: #eef1ef; --pw-band-on: #dde3e0; --pw-shadow: rgba(20, 32, 40, .18);
+.silta-pathway { --pw-faint: #b9c2c0; --pw-band: #e4e9e6; --pw-band-on: #dde3e0; --pw-shadow: rgba(20, 32, 40, .18);
   font-family: var(--silta-font-body); font-size: 16px; line-height: 1.55; margin: 0; display: flex; flex-direction: column; min-width: 0; }
 [data-bs-theme="dark"] .silta-pathway { --pw-faint: #4a5a61; --pw-band: #1d2a30; --pw-band-on: #2a3a41; --pw-shadow: rgba(0, 0, 0, .55); }
 .silta-pathway p { margin: 0; }
 .pw-eyebrow, .pw-label { font: 600 11.5px var(--silta-font-data); letter-spacing: .08em; text-transform: uppercase; color: var(--silta-muted); margin: 0; }
-.pw-card { background: var(--silta-surface); border: 1px solid var(--silta-line); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
-.pw-card > * { min-width: 0; }
-
-.pw-panel { background: var(--silta-surface); border: 1px solid var(--silta-line); border-radius: 12px; box-shadow: 0 6px 20px -8px var(--pw-shadow);
-  padding: 16px 20px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 32px; min-height: 12rem; align-content: start; }
-.pw-panel > * { min-width: 0; }
-.pw-panel h3 { font: 800 22px/1.15 var(--silta-font-display); margin: 6px 0; text-wrap: balance; }
-.pw-panel p { max-width: 72ch; }
-.pw-panel.pw-empty { grid-template-columns: 1fr; place-items: center; align-content: center; text-align: center; color: var(--silta-muted); }
 .pw-tag { display: inline-flex; align-items: center; gap: 8px; font: 600 11px var(--silta-font-data); letter-spacing: .05em; text-transform: uppercase; color: var(--silta-muted); }
 .pw-tag svg { flex: none; }
 .pw-src { font: 500 12px/1.5 var(--silta-font-data); color: var(--silta-muted); margin-top: 8px !important; }
-.pw-more { font: 700 14px var(--silta-font-body); color: var(--silta-ink); background: none; border: 1px solid var(--silta-line); border-radius: 999px; padding: 4px 14px; cursor: pointer; white-space: nowrap; }
+.pw-more { justify-self: start; font: 700 14px var(--silta-font-body); color: var(--silta-ink); background: none; border: 1px solid var(--silta-line); border-radius: 999px; padding: 4px 14px; cursor: pointer; white-space: nowrap; }
 .pw-more:hover { border-color: var(--silta-ink); }
 
-.pw-legend { display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: 13px; color: var(--silta-muted); align-items: center; }
+.pw-legend { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 13px; color: var(--silta-muted); align-items: center; }
 .pw-legend svg { vertical-align: middle; margin-right: 6px; }
 .pw-gapkey { color: var(--silta-coral); font-weight: 700; }
-.pw-scroll { overflow-x: auto; }
-.pw-canvas { min-width: 760px; display: flex; flex-direction: column; gap: 6px; }
 svg.pw-routes { display: block; width: 100%; height: auto; font-family: var(--silta-font-body); }
-.pw-routes text { fill: var(--silta-ink); font-size: 13px; }
-.pw-routes .pw-route { font: 600 11px var(--silta-font-data); letter-spacing: .08em; fill: var(--silta-muted); text-transform: uppercase; }
-.pw-routes .pw-sub { fill: var(--silta-muted); font-size: 12px; }
+.pw-routes text { fill: var(--silta-ink); font-size: 14px; }
+.pw-routes .pw-route { font: 600 11.5px var(--silta-font-data); letter-spacing: .08em; fill: var(--silta-muted); text-transform: uppercase; }
+.pw-routes .pw-sub { fill: var(--silta-muted); font-size: 12.5px; }
 .pw-arrow { fill: var(--pw-faint); }
 .pw-seg { fill: none; stroke-linecap: round; }
 .pw-seg.pw-lang { stroke: var(--silta-ink); stroke-width: 3.5; }
 .pw-seg.pw-other { stroke: var(--silta-ink); stroke-width: 3; stroke-dasharray: .1 7; }
 .pw-seg.pw-none { stroke: var(--pw-faint); stroke-width: 2.5; stroke-dasharray: 7 6; }
-.pw-node { cursor: pointer; outline: none; }
+.pw-node { cursor: pointer; outline: none; transition: opacity .2s; }
+svg.pw-focus .pw-node:not(.pw-lit) { opacity: .3; }
+svg.pw-focus .pw-node.pw-lit .pw-ring { opacity: .45; }
 .pw-node .pw-dot { fill: var(--silta-surface); stroke: var(--silta-ink); stroke-width: 2.5; }
 .pw-node.pw-lang .pw-dot { fill: var(--silta-ink); }
 .pw-node.pw-none .pw-dot { stroke: var(--pw-faint); }
@@ -334,15 +386,13 @@ svg.pw-routes { display: block; width: 100%; height: auto; font-family: var(--si
 .pw-pill rect { fill: var(--silta-coral); }
 .pw-pill text { fill: var(--silta-surface); font: 700 12.5px var(--silta-font-data); }
 
-.pw-silta { border-top: 1px solid var(--silta-line); padding-top: 10px; display: flex; flex-direction: column; gap: 4px; }
-.pw-silta-head { display: flex; gap: 12px; align-items: baseline; margin-bottom: 2px; font-size: 13px; color: var(--silta-muted); }
-.pw-sbar { display: block; height: 22px; padding: 0 10px; border: 0; border-radius: 6px; background: var(--pw-band); color: var(--silta-muted);
-  font: 600 12px/22px var(--silta-font-data); text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
+.pw-silta { border-top: 1px solid var(--silta-line); padding-top: 8px; display: flex; flex-direction: column; gap: 5px; }
+.pw-sbars { position: relative; height: calc(var(--rows, 1) * 24px - 4px); }
+.pw-sbar { position: absolute; top: calc(var(--row, 0) * 24px); height: 20px; padding: 0 10px; border: 0; border-radius: 6px; background: var(--pw-band); color: var(--silta-muted);
+  font: 600 12.5px/20px var(--silta-font-data); text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
 .pw-sbar:hover { color: var(--silta-ink); }
 .pw-sbar.pw-on, .pw-sbar.pw-on:hover { background: var(--silta-lake); color: var(--silta-surface); }
-.pw-sbar[aria-expanded="true"] { color: var(--silta-lake); box-shadow: inset 0 0 0 1.5px var(--silta-lake); }
-.pw-sbar.pw-on[aria-expanded="true"] { color: var(--silta-surface); box-shadow: 0 0 0 2px var(--silta-surface), 0 0 0 3.5px var(--silta-lake); }
-.pw-sinfo { margin: 2px 0 8px !important; font-size: 14.5px; max-width: 72ch; }
+.pw-sbar[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--silta-bg), 0 0 0 3.5px var(--silta-lake); }
 .silta-pathway button:focus-visible, .pw-pop button:focus-visible { outline: 2px solid var(--silta-ink); outline-offset: 2px; }
 
 dialog.pw-pop { border: 1px solid var(--silta-line); border-radius: 14px; background: var(--silta-surface); color: var(--silta-ink); padding: 20px 22px;
@@ -365,25 +415,142 @@ dialog.pw-pop::backdrop { background: rgba(10, 20, 25, .4); }
 .pw-pop td.pw-gapv { color: var(--silta-coral); font-weight: 700; }
 .pw-pop tr.pw-total td { font-weight: 700; border-bottom: 0; }
 .pw-note { font-size: 14px; color: var(--silta-muted); margin: 0 0 6px; max-width: 80ch; }
-@media (prefers-reduced-motion: no-preference) { .pw-node .pw-ring { transition: opacity .15s; } .pw-sbar { transition: background .15s, color .15s; } }
+@media (prefers-reduced-motion: no-preference) { .pw-node .pw-ring { transition: opacity .15s; } .pw-sbar { transition: background .15s, color .15s; } .pw-over { transition: opacity .15s; } }
 
-.silta-pw-page { max-width: 1072px; width: 100%; min-width: 0; margin: 0 auto; padding: 32px 16px 64px; display: flex; flex-direction: column; gap: 24px; }
-.silta-pw-page > * { min-width: 0; }
-.silta-pw-head { display: flex; flex-direction: column; gap: 10px; }
-.silta-pw-head h1 { font: 800 clamp(28px, 4.4vw, 42px)/1.1 var(--silta-font-display); letter-spacing: -.015em; margin: 0; text-wrap: balance; }
-.silta-pw-lede { font-size: 18px; color: var(--silta-muted); max-width: 70ch; margin: 0; }
-.silta-pw-lede b { color: var(--silta-ink); }
-.silta-pw-limits { display: flex; flex-direction: column; gap: 10px; max-width: 80ch; }
-.silta-pw-limits h2 { font: 800 21px/1.2 var(--silta-font-display); margin: 0; }
+.silta-pw-limits { display: flex; flex-direction: column; gap: 10px; }
+.silta-pw-limits h2, .silta-pw-impact h2 { font: 800 19px/1.2 var(--silta-font-display); margin: 8px 0 0; }
 .silta-pw-limits > ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 15px; }
+.silta-pw-limits ul.pw-srclist { font-size: 13.5px; color: var(--silta-muted); }
 .silta-pw-notes { font-size: 14px; color: var(--silta-muted); }
 .silta-pw-notes summary { cursor: pointer; color: var(--silta-ink); font-weight: 700; }
 .silta-pw-notes ul { padding-left: 18px; display: grid; gap: 4px; margin: 8px 0; }
 
-/* try page: technical information row */
-.silta-tech-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
-.silta-tech-info .silta-eyebrow { margin-bottom: 4px; }
-.silta-tech-info a { word-break: break-all; }
+/* Try page (/try): hero with the live app in a phone, then one card per way in, each led by a picture. */
+.silta-try-hero { display: grid; grid-template-columns: minmax(0, 560px) minmax(0, 1fr) auto; gap: 40px; align-items: center; padding: 40px 0 32px; }
+.silta-try-jump a { color: inherit; text-decoration: none; }
+.silta-try-jump a:hover strong { color: var(--silta-lake); }
+.silta-try-jump strong { font-size: 17px; }
+.silta-try-jump li { padding: 13px 0; }
+.silta-try-card { scroll-margin-top: 24px; }
+.silta-try-title { font-size: clamp(36px, 5.2vw, 64px); line-height: 1; font-weight: 800; color: var(--silta-lake); margin: 0 0 18px; max-width: 14ch; }
+.silta-try-scan { display: flex; align-items: center; gap: 24px; padding: 20px; border: 1px solid var(--silta-line); border-radius: 16px; background: var(--silta-surface); max-width: 560px; }
+.silta-try-qr { flex: none; width: 132px; padding: 10px; background: #ffffff; border-radius: 10px; border: 1px solid var(--silta-line); }
+.silta-try-qr svg { display: block; width: 100%; height: auto; }
+.silta-try-scan-title { font-family: var(--silta-font-display); font-weight: 800; font-size: 20px; line-height: 1.2; margin: 0 0 6px; }
+.silta-try-scan .silta-url code { font-size: 13px; }
+/* The live app: rendered at a 390 x 835 phone viewport and scaled by --s, inside a white screen
+   margin like the landing slider's. Maximised (.is-max, static/try-live.js) it becomes a fixed
+   overlay on a darkened page and the script sets --s to fit the window; the iframe never moves
+   in the DOM, so the app keeps its state. */
+.silta-try-live { justify-self: center; }
+.silta-live { --s: .66; --pad-x: 14px; --pad-y: 20px; margin: 0; display: grid; justify-items: center; gap: 12px; }
+.silta-live .silta-phone { width: auto; }
+.silta-live-screen { padding: var(--pad-y) var(--pad-x); border-radius: 24px; background: #ffffff; }
+.silta-live-view { position: relative; width: calc(390px * var(--s)); height: calc(835px * var(--s)); overflow: hidden; border-radius: 6px; background: #ffffff top / 100% auto no-repeat; }
+.silta-live-view iframe { position: absolute; top: 0; left: 0; width: 390px; height: 835px; border: 0; transform: scale(var(--s)); transform-origin: 0 0; opacity: 0; transition: opacity .3s; }
+.silta-live-view iframe.is-loaded { opacity: 1; }
+.silta-live figcaption { display: grid; justify-items: center; gap: 8px; }
+.silta-live-label { display: flex; align-items: center; gap: 8px; color: var(--silta-muted); font: 600 13px var(--silta-font-data); letter-spacing: .04em; }
+.silta-live-dot { width: 9px; height: 9px; border-radius: 50%; background: #2f9e5b; box-shadow: 0 0 0 4px rgba(47, 158, 91, .18); }
+.silta-live-toggle { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border: 1px solid var(--silta-line); border-radius: 999px; background: var(--silta-surface);
+  color: var(--silta-ink); font: 700 14px var(--silta-font-body); cursor: pointer; }
+.silta-live-toggle:hover { border-color: var(--silta-lake); color: var(--silta-lake); }
+.silta-live-toggle .ti { font-size: 18px; }
+.silta-live.is-max { position: fixed; inset: 0; z-index: 1050; --pad-x: 18px; --pad-y: 26px; align-content: center; gap: 16px;
+  background: rgba(6, 12, 15, .92); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.silta-live.is-max .silta-phone { box-shadow: 0 30px 80px rgba(0, 0, 0, .6); background: #2a3a42; }
+.silta-live.is-max .silta-live-label { color: #b8c6cc; }
+.silta-live.is-max .silta-live-toggle { background: transparent; border-color: rgba(255, 255, 255, .3); color: #ffffff; }
+.silta-live.is-max .silta-live-toggle:hover { border-color: #ffffff; }
+body.silta-live-open { overflow: hidden; }
+/* the QR panel beside the maximised phone */
+.silta-live-side { display: none; }
+.silta-live.is-max { grid-template-columns: auto auto; justify-content: center; column-gap: clamp(32px, 6vw, 96px); }
+.silta-live.is-max > .silta-phone { grid-column: 1; grid-row: 1; }
+.silta-live.is-max > figcaption { grid-column: 1; grid-row: 2; }
+.silta-live.is-max .silta-live-side { display: grid; justify-items: center; gap: 10px; grid-column: 2; grid-row: 1 / span 2; align-self: center; max-width: 300px; text-align: center; }
+.silta-live-qr { width: clamp(180px, 22vw, 280px); padding: 16px; background: #ffffff; border-radius: 16px; }
+.silta-live-qr svg { display: block; width: 100%; height: auto; }
+.silta-live-side-title { margin: 8px 0 0; font: 800 clamp(20px, 2vw, 28px)/1.15 var(--silta-font-display); color: #ffffff; text-wrap: balance; }
+.silta-live-side-url { margin: 0; font: 500 14px var(--silta-font-data); color: #b8c6cc; word-break: break-all; }
+@media (max-width: 899.98px) { .silta-live.is-max .silta-live-side { display: none; } }
+@media (prefers-reduced-motion: no-preference) {
+  .silta-live.is-max { animation: silta-live-in .2s ease-out; }
+  @keyframes silta-live-in { from { background: rgba(6, 12, 15, 0); } }
+}
+
+.silta-try-cards { list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 24px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.silta-try-cards-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.silta-try-card { overflow: hidden; display: flex; flex-direction: column; }
+.silta-try-card .card-body { padding: 22px 24px 8px; display: flex; flex-direction: column; gap: 10px; }
+.silta-try-card h3 { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 800; margin: 0; }
+.silta-try-card h3 .ti { font-size: 24px; color: var(--silta-lake); }
+.silta-try-card .card-body > p { margin: 0; line-height: 1.55; }
+.silta-try-card .card-body > .silta-eyebrow { margin: -4px 0 0; }
+.silta-try-action { margin-top: auto; padding: 14px 24px 24px; }
+.silta-try-number { font: 700 22px var(--silta-font-data); letter-spacing: .02em; color: var(--silta-ink); }
+
+/* picture area at the top of each card */
+.silta-try-media { position: relative; height: 280px; overflow: hidden; background: var(--silta-lake-soft); border-bottom: 1px solid var(--silta-line); }
+.silta-try-media-phone { display: flex; justify-content: center; padding-top: 28px; }
+.silta-try-media-phone .silta-phone { width: 210px; padding: 8px 8px 0; border-radius: 28px 28px 0 0; box-shadow: 0 16px 40px rgba(20, 32, 40, .22); }
+.silta-try-media-phone .silta-phone img { border-radius: 20px 20px 0 0; }
+.silta-try-media-paper { background: var(--silta-sand-soft); }
+.silta-try-paper { position: absolute; left: 50%; top: 26px; width: 230px; height: 330px; object-fit: cover; object-position: top; transform: translateX(-62%) rotate(-3deg);
+  background: #fff; box-shadow: 0 12px 30px rgba(20, 32, 40, .18); }
+/* a magnified view of the QR box at the bottom of the same letter */
+.silta-try-zoom { position: absolute; right: 14px; bottom: 22px; width: 62%; max-width: 250px; height: auto; border-radius: 10px;
+  background: #fff; border: 3px solid var(--silta-lake); box-shadow: 0 10px 26px rgba(20, 32, 40, .25); transform: rotate(2deg); }
+.silta-try-media-browser { height: 300px; display: flex; justify-content: center; padding: 28px 28px 0; }
+.silta-browser { width: 100%; max-width: 560px; border-radius: 12px 12px 0 0; overflow: hidden; background: #ffffff; box-shadow: 0 16px 40px rgba(20, 32, 40, .2); border: 1px solid var(--silta-line); border-bottom: 0; }
+.silta-browser-bar { display: flex; align-items: center; gap: 6px; padding: 9px 12px; background: #eef1ef; border-bottom: 1px solid #d6ddd8; }
+.silta-browser-bar i { width: 10px; height: 10px; border-radius: 50%; background: #c9d1cd; }
+.silta-browser-bar span { margin-left: 8px; flex: 1; min-width: 0; padding: 2px 10px; border-radius: 6px; background: #ffffff; color: #56636b; font: 500 11.5px var(--silta-font-data); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.silta-browser img { display: block; width: 100%; height: auto; }
+[data-bs-theme="dark"] .silta-browser { border-color: #2a3a42; }
+
+/* the phone line's keypad menu */
+.silta-try-media-keypad { display: grid; align-content: center; justify-items: center; gap: 12px; padding: 20px; background: var(--silta-ink); }
+[data-bs-theme="dark"] .silta-try-media-keypad { background: #0b1114; }
+.silta-keypad { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 92px); gap: 8px; }
+.silta-keypad li { display: grid; justify-items: center; gap: 1px; padding: 6px 4px; border-radius: 12px; background: rgba(255, 255, 255, .08); color: #e5ecef; }
+.silta-keypad li:last-child { grid-column: 1 / -1; }
+.silta-keypad b { font: 700 18px/1.1 var(--silta-font-data); color: #ffffff; }
+.silta-keypad span { font-size: 11.5px; line-height: 1.2; color: #b8c6cc; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.silta-keypad-or { margin: 0; color: #b8c6cc; font: 600 12px var(--silta-font-data); letter-spacing: .06em; text-transform: uppercase; }
+
+/* language chips under the letter and the guide */
+.silta-langs { list-style: none; margin: 2px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.silta-langs a { display: inline-block; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--silta-line); font-size: 13.5px; color: var(--silta-ink); text-decoration: none; }
+.silta-langs a:hover { border-color: var(--silta-lake); color: var(--silta-lake); }
+.silta-langs a[aria-current="true"] { background: var(--silta-lake-soft); border-color: var(--silta-lake); color: var(--silta-lake); font-weight: 700; }
+
+.silta-try-tech .silta-meta { margin-top: 4px; }
+.silta-try-tech h3 { font-size: 20px; font-weight: 800; }
+.silta-try-tech a { word-break: break-word; }
+
+@media (max-width: 1199.98px) {
+  .silta-try-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 1199.98px) {
+  .silta-try-hero { grid-template-columns: minmax(0, 1fr) auto; }
+  .silta-try-jump { grid-column: 1; grid-row: 2; width: auto; max-width: 560px; justify-self: stretch; }
+  .silta-try-live { grid-column: 2; grid-row: 1 / span 2; }
+}
+@media (max-width: 767.98px) {
+  .silta-try-hero { grid-template-columns: 1fr; }
+  .silta-try-jump { grid-row: auto; }
+}
+@media (max-width: 767.98px) {
+  .silta-try-hero { padding-top: 24px; }
+  /* on a phone the reader already holds a phone: no embedded phone, no QR code */
+  .silta-try-live, .silta-try-qr { display: none; }
+  .silta-try-scan { padding: 0; border: 0; background: none; }
+  .silta-try-scan-title { display: none; }
+  .silta-try-cards, .silta-try-cards-2 { grid-template-columns: 1fr; }
+  .silta-try-media { height: 240px; }
+  .silta-try-media-browser { height: 240px; padding: 20px 16px 0; }
+}
 
 /* View-only demo login under the Admin link (try and landing pages). */
 .silta-demo-login {
@@ -399,13 +566,6 @@ dialog.pw-pop::backdrop { background: rgba(10, 20, 25, .4); }
 
 /* Pathway views: Analysis (gaps, coral) and Impact (costs, lake). data-mode on .silta-pw-page; pathway.js switches it. */
 .silta-pw-page[data-mode="analysis"] .pw-for-impact, .silta-pw-page[data-mode="impact"] .pw-for-analysis { display: none; }
-.pw-modes { display: inline-flex; align-self: flex-start; gap: 2px; padding: 3px; background: var(--pw-band); border-radius: 999px; }
-.pw-mode { display: inline-flex; align-items: baseline; gap: 6px; border: 0; border-radius: 999px; background: none; color: var(--silta-muted);
-  padding: 5px 14px; cursor: pointer; font: 400 12.5px/1.3 var(--silta-font-body); white-space: nowrap; }
-.pw-mode b { font: 700 14px/1.3 var(--silta-font-display); color: var(--silta-ink); }
-.pw-mode:hover b { color: var(--silta-lake); }
-.pw-mode[aria-pressed="true"] { background: var(--silta-surface); color: var(--silta-muted); box-shadow: 0 1px 3px var(--pw-shadow); }
-.pw-mode[data-pw-mode="impact"][aria-pressed="true"] b { color: var(--silta-lake); }
 .pw-pill .pw-pill-sub { font: 500 10.5px var(--silta-font-data); }
 .pw-pill.pw-cost rect { fill: var(--silta-lake); }
 .pw-pill.pw-ctx rect { fill: var(--silta-surface); stroke: var(--silta-muted); stroke-width: 1.3; }
@@ -417,10 +577,8 @@ dialog.pw-pop::backdrop { background: rgba(10, 20, 25, .4); }
 .pw-steps.pw-groups td:last-child { color: var(--silta-ink); font-size: inherit; }
 .pw-costkey { color: var(--silta-lake); font-weight: 700; }
 .pw-tag.pw-costtag { color: var(--silta-lake); }
-.pw-panel.pw-empty b { color: var(--silta-ink); }
 
 .silta-pw-impact { display: flex; flex-direction: column; gap: 14px; }
-.silta-pw-impact h2 { font: 800 21px/1.2 var(--silta-font-display); margin: 8px 0 0; }
 .pw-finds { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
 .pw-find { background: var(--silta-surface); border: 1px solid var(--silta-line); border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px; }
 .pw-find-v { font: 800 30px/1.05 var(--silta-font-display); color: var(--silta-coral); font-variant-numeric: tabular-nums; margin-top: 4px; }
@@ -435,22 +593,48 @@ table.pw-steps { border-collapse: collapse; width: 100%; font-size: 14.5px; back
 .pw-steps td:last-child { color: var(--silta-muted); font-size: 13px; }
 .pw-steps tr:last-child td { border-bottom: 0; }
 
+/* Slide layout. The deck frames it at 1280x700 (embed=True in app/main.py: no menu, light theme). */
+html:has(.silta-pw-page), html:has(.silta-pw-page) body { height: 100%; overflow: hidden; background: var(--silta-bg); }
+.silta-pw-page { --pw-faint: #b9c2c0; --pw-shadow: rgba(20, 32, 40, .18);
+  height: 100vh; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 10px; padding: 22px 40px 12px; }
+.pw-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 8px 32px; }
+.pw-top h1 { font: 800 44px/1.05 var(--silta-font-display); letter-spacing: -.015em; margin: 0; text-wrap: balance; }
+.pw-top h1 em { font-style: normal; color: var(--silta-coral); }
+.pw-modes { display: flex; gap: 22px; }
+.pw-mode { border: 0; background: none; padding: 4px 0; cursor: pointer; font: 700 15px var(--silta-font-body); color: var(--silta-muted);
+  border-bottom: 3px solid transparent; white-space: nowrap; }
+.pw-mode:hover { color: var(--silta-ink); }
+.pw-mode[aria-pressed="true"] { color: var(--silta-ink); border-bottom-color: var(--silta-ink); }
+/* Width follows the height left for the map (viewBox 1000x420), so map and bands always fit the slide; the bands
+   share the map's width, so they stay on its x scale. 285px = everything on the slide except the map. */
+.silta-pathway { display: flex; flex-direction: column; justify-content: center; gap: 8px; min-height: 0;
+  width: min(100%, calc((100vh - 285px) * 1000 / 420)); justify-self: center; }
+.pw-map { position: relative; }
+/* The card over the map: at rest bottom right (the takeaway), on a click on the side away from what was clicked. */
+.pw-over { position: absolute; width: 400px; max-height: 100%; overflow-y: auto; background: var(--silta-surface); border: 1px solid var(--silta-line);
+  border-radius: 12px; box-shadow: 0 14px 34px -12px var(--pw-shadow); padding: 14px 18px; display: grid; gap: 6px; align-content: start; font-size: 15px; line-height: 1.45; }
+.pw-over p { margin: 0; }
+.pw-over h3 { font: 800 21px/1.15 var(--silta-font-display); margin: 2px 28px 2px 0; text-wrap: balance; }
+.pw-over.pw-at-right { top: 0; right: 0; }
+.pw-over.pw-at-left { top: 0; left: 0; }
+.pw-over.pw-at-rest { right: 0; bottom: 0; width: 360px; font-size: 14.5px; box-shadow: none; background: transparent; border: 0; padding: 0; color: var(--silta-muted); }
+.pw-over.pw-at-rest b { color: var(--silta-ink); }
+.pw-over-x { position: absolute; top: 6px; right: 8px; }
+.pw-hint { display: flex; gap: 8px; align-items: baseline; font-size: 13.5px; }
+.pw-hint i { flex: none; width: 9px; height: 9px; border-radius: 50%; background: var(--silta-coral); display: inline-block; }
+.silta-pw-page[data-mode="impact"] .pw-hint i { background: var(--silta-lake); }
+/* Deck arrival (pathway.js): primed = hidden, ready to play when the deck shows the slide. */
+.pw-primed .pw-paths, .pw-primed .pw-for-analysis > .pw-pill, .pw-primed .pw-for-impact > .pw-pill,
+.pw-primed .pw-silta, .pw-primed .pw-over { opacity: 0; }
+.pw-sbar { transform-origin: 0 50%; }
+.pw-silta-tag { color: var(--silta-lake); }
+.pw-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 24px; }
+.pw-links { display: flex; gap: 20px; }
+.pw-textbtn { border: 0; background: none; padding: 0; cursor: pointer; color: var(--silta-lake); font: 700 14px var(--silta-font-body);
+  text-decoration: underline; text-underline-offset: 3px; }
+.silta-pathway button:focus-visible, .silta-pw-page button:focus-visible, .pw-node:focus-visible .pw-ring { outline: 2px solid var(--silta-ink); outline-offset: 2px; opacity: 1; }
+
 /* Landing page: more air between and inside sections */
 .silta-landing .silta-section { padding: 32px 0; }
 .silta-landing .silta-section > h2 { margin-bottom: 20px; }
 .silta-landing .silta-lede { line-height: 1.6; margin-bottom: 0; }
-.silta-landing .silta-goal { margin-top: 40px; }
-.silta-landing .silta-goal-points { gap: 32px 40px; margin-top: 36px; }
-.silta-landing .silta-goal-point { padding-top: 18px; }
-.silta-landing .silta-goal-point h3, .silta-landing .silta-stage h3 { margin-bottom: 10px; }
-.silta-landing .silta-goal-point p { line-height: 1.65; }
-.silta-landing .silta-goal-also { margin-top: 32px; }
-.silta-landing .silta-stages { gap: 24px; margin-top: 32px; }
-.silta-landing .silta-stage .card-body { padding: 28px; }
-.silta-landing .silta-stage ul { margin-top: 14px; gap: 10px; }
-.silta-landing .silta-prose { padding: 8px 0; }
-.silta-landing .silta-prose h2 { margin-top: 32px; margin-bottom: 16px; }
-.silta-landing .silta-prose ol, .silta-landing .silta-prose ul { gap: 8px; margin-bottom: 20px; }
-.silta-landing .row-cards .card-body { padding: 28px; }
-.silta-landing .silta-link-icon { font-size: 40px; }
-.silta-landing .row-cards .card-title { font-size: 20px; font-weight: 700; margin-top: 14px !important; margin-bottom: 8px !important; }

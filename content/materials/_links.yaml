@@ -45,6 +45,11 @@
   description: One screen for the acquisition and findability part of the pitch. 15 channels flow through three ways in to Silta; click a channel, a way in or a phase for evidence, plan and measurement. Same page as content/media/ways-in.html, which the deck embeds as a slide. Private until shared.
   tags: [acquisition, presentation]
   updated: 2026-11-14
+- title: Silta master narrative (claude.ai)
+  url: https://claude.ai/artifact/DHRiswvKwMTPrbj9njK7YY
+  description: The one story behind the video, live pitch and deck v2. Six beats, personas, number bank, compliance, maturity, adoption ladder, tech partners, jury Q&A, what we don't claim. Same page as master-narrative.html.
+  tags: [pitch, video, narrative]
+  updated: 2026-11-14
 - title: Pitch video strategy (claude.ai)
   url: https://claude.ai/artifact/MLrf2wXWvCUKSvhQfkiuoz
   description: The letter in the drawer — one scenario (Hodan, cervical screening), the data, why we start with the resident rather than the county, and the adoption ladder. Filmed with screen recordings, a table top and graphics. Same page as video-strategy.html. Private until shared.

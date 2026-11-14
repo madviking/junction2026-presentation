@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% from "_demo_login.html" import demo_login %}
 {% from "_slider.html" import phone_slider %}
 {% block body %}
 <main class="page-body silta-landing">
@@ -13,7 +12,7 @@
         {% if site.lede %}<p class="silta-hero-lede">{{ site.lede }}</p>{% endif %}
         <div class="silta-cta">
           {% if site.links.consumer %}
-          <a class="btn btn-primary btn-lg" href="{{ site.links.consumer.url }}"><i class="ti ti-device-mobile me-2"></i>Try Silta</a>
+          <a class="btn btn-primary btn-lg" href="{{ site.links.consumer.url }}"><i class="ti ti-device-mobile me-2"></i>Try the live demo</a>
           {% endif %}
           <a class="btn btn-lg" href="/video"><i class="ti ti-player-play me-2"></i>Watch the video</a>
           <a class="btn btn-lg" href="/presentation"><i class="ti ti-presentation me-2"></i>See the deck</a>
@@ -42,29 +41,32 @@
     </section>
 
     {% if site.goal3 %}
-    <section class="silta-section silta-goal" aria-labelledby="goal3-title">
-      <p class="silta-eyebrow">National Cancer Strategy 2026–2035</p>
+    <section class="silta-section silta-block" aria-labelledby="goal3-title">
+      <p class="silta-eyebrow">{{ site.goal3.eyebrow }}</p>
       <h2 id="goal3-title">{{ site.goal3.title }}</h2>
       <p class="silta-lede">{{ site.goal3.lede }}</p>
-      <div class="silta-goal-points">
+      <ul class="silta-cards">
         {% for point in site.goal3.points %}
-        <div class="silta-goal-point">
-          <h3>{{ point.indicator }}</h3>
-          <p>{{ point.text }}</p>
-        </div>
+        <li class="card silta-card silta-card-accent">
+          <div class="card-body">
+            <h3>{{ point.indicator }}</h3>
+            <p>{{ point.text }}</p>
+            {% if point.src %}<p class="silta-card-src">{{ point.src_label or "Source" }}: {% set src_url = site.links[point.src_link].url if point.src_link else point.src_url %}{% if src_url %}<a href="{{ src_url }}">{{ point.src }}</a>{% else %}{{ point.src }}{% endif %}</p>{% endif %}
+          </div>
+        </li>
         {% endfor %}
-      </div>
-      <p class="silta-goal-also">{{ site.goal3.also }} <a href="/pathway">See the evidence, step by step <i class="ti ti-arrow-right"></i></a></p>
+      </ul>
     </section>
     {% endif %}
 
     {% if site.rollout %}
-    <section class="silta-section" aria-labelledby="rollout-title">
+    <section class="silta-section silta-block" aria-labelledby="rollout-title">
+      <p class="silta-eyebrow">{{ site.rollout.eyebrow }}</p>
       <h2 id="rollout-title">{{ site.rollout.title }}</h2>
       <p class="silta-lede">{{ site.rollout.lede }}</p>
-      <ol class="silta-stages">
+      <ol class="silta-cards">
         {% for stage in site.rollout.stages %}
-        <li class="card silta-stage{% if loop.first %} silta-stage-now{% endif %}">
+        <li class="card silta-card{% if loop.first %} silta-card-accent{% endif %}">
           <div class="card-body">
             <p class="silta-eyebrow">{{ stage.when }} · {{ stage.status }}</p>
             <h3>{{ stage.title }}</h3>
@@ -76,9 +78,7 @@
     </section>
     {% endif %}
 
-    <section class="silta-prose">
-      {{ landing.html | safe }}
-    </section>
+    {% include "_paths_fit.html" %}
 
     {% if site.video.kind != "none" %}
     <section class="silta-section">
@@ -86,25 +86,6 @@
       {% include "_video.html" %}
     </section>
     {% endif %}
-
-    <section class="silta-section">
-      <h2>Try it</h2>
-      <div class="row row-cards">
-        {% for key in ["consumer", "county", "admin", "source"] if site.links[key] %}
-        {% set link = site.links[key] %}
-        <div class="col-sm-6 col-lg-3">
-          <a class="card card-link card-link-pop h-100" href="{{ link.url }}">
-            <div class="card-body">
-              <i class="ti ti-{{ link.icon }} silta-link-icon"></i>
-              <h3 class="card-title mt-2 mb-1">{{ link.label }}</h3>
-              <p class="text-secondary mb-0">{{ link.description }}</p>
-              {% if link.demo_login %}{{ demo_login(link.demo_login) }}{% endif %}
-            </div>
-          </a>
-        </div>
-        {% endfor %}
-      </div>
-    </section>
 
     <section class="silta-section silta-meta">
       <div>

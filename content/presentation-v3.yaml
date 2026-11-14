@@ -1,0 +1,436 @@
+# Deck v3 — the site's presentation (/presentation). Two people, two ways into Silta, the data
+# one click away. Template app/templates/presentation_v3.html, styles app/static/deck-v3.css,
+# rules and video specs content/materials/silta-design-system.html.
+#
+# Each slide: layout, id, kicker, title (may use <em>), line (one sentence), the visual for its
+# layout, drills (foot chips: kind person | county | euro | data), source (one short line), notes.
+# Rules: one sentence on the slide; everything else in a drill-in; every number has a public source
+# (name the publisher or study, never a repo path). Screens: content/media/screens/v3/
+# (scripts/capture_v3_screens.mjs) and content/media/screens/.
+# Internal traceability for every number: brain notes/2026-11-14-0130-…, 0145-…, 1630-… and
+# sources/2026-11-14-cancerregistry-screening-by-language.md.
+
+title: Silta — Junction 2026
+path: [Letter, Symptom, Found, Service, Visit]
+
+# Shared by the "gap" slide and any drill-in with chart: screening.
+screening_bars:
+  - {label: Breast, rel: "−27%", dom: 83.2, oth: 60.8}
+  - {label: Cervical, rel: "−26%", dom: 76.2, oth: 56.3}
+  - {label: Colorectal, rel: "−28%", dom: 74.5, oth: 53.4}
+
+# Gap in percentage points between native and other-language invitees, by year (Cancer Registry).
+gap_trend:
+  - {label: Breast, tone: ink, dy: -6, points: [[2020, 19.9], [2021, 19.4], [2022, 21.8], [2023, 22.0], [2024, 22.4]]}
+  - {label: Cervical, tone: coral, dy: 20, points: [[2020, 15.6], [2021, 16.1], [2022, 17.7], [2023, 17.7], [2024, 19.9]]}
+  - {label: Colorectal, tone: muted, dy: 5, points: [[2022, 21.8], [2023, 21.4], [2024, 21.1]]}
+
+slides:
+  - layout: opener
+    id: hodan
+    kicker: Helsinki · cervical screening
+    title: Meet Hodan.
+    line: "She is 54 and has lived in Helsinki for years. Her language is Somali. She opens her second invitation to cervical screening, puts it away, and doesn't go."
+    letter: /media/screens/v3/letter-fi.png
+    letter_alt: "A cervical screening invitation in Finnish, addressed to Hodan Warsame in Helsinki."
+    source: "Hodan is a composite of the women in the data that follows."
+    notes: "Open on a person, not a number. Let the letter slide into the drawer before speaking."
+
+  - layout: number
+    id: gap
+    kicker: She is not alone
+    title: "Same letter.<br><em>27% fewer come.</em>"
+    line: "People whose native language is not Finnish or Swedish attend cancer screening far less, in every programme."
+    drills:
+      - kind: data
+        label: The data
+        title: The gap is wide, and growing
+        chart: screening
+        trend: true
+        items:
+          - text: "Relative drop = other-language attendance ÷ native attendance, e.g. 60.8 ÷ 83.2 for breast. 1 in 9 people in Finland (646,392) has another native language."
+            source: "Finnish Cancer Registry, screening by native language 2020–2024 · Statistics Finland 2025"
+      - kind: person
+        label: For Hodan
+        title: Women like Hodan attend least
+        items:
+          - value: "19% vs 67%"
+            text: "Somali-origin women vs Finnish women attending cervical screening."
+            source: "Peer-reviewed study of migrant-origin women in Finland (PMC7663516)"
+          - value: "46% vs 73%"
+            text: "Africa-born vs Finland-born women, cervical screening 2019–2023: still <b>26% lower</b> after adjusting for age, education and residence."
+            source: "Finnish Cancer Registry study, November 2026"
+      - kind: county
+        label: For the county
+        title: The gap is concentrated
+        items:
+          - value: "147,482"
+            text: "foreign-language residents in Helsinki, 21.2% of the city. Somali is its second-largest foreign language."
+            source: "Statistics Finland, population by language 2025"
+          - value: "51%"
+            text: "of Finland's foreign-language residents live in Helsinki, Vantaa–Kerava and Länsi-Uusimaa, the three areas with the lowest breast-screening attendance."
+            source: "Statistics Finland 2025 · Sotkanet"
+    source: "Finnish Cancer Registry, 2024"
+    notes: "The 27% is relative, not percentage points: breast 83.2 vs 60.8, cervical 76.2 vs 56.3, colorectal 74.5 vs 53.4."
+
+  - layout: stages
+    id: earlier
+    kicker: Why it matters
+    title: Found earlier, <em>treated more easily.</em>
+    line: "The earlier cancer is found, the easier and cheaper it is to treat. Screening finds it before symptoms start; cervical screening, even before it becomes cancer."
+    stages:
+      - {tone: early, label: Precancer, text: "Cervical screening finds cell changes before they become cancer."}
+      - {tone: early, label: Local, text: "Small, not spread. Simpler treatment."}
+      - {tone: late, label: Spread nearby, text: "Lymph nodes involved. More treatment."}
+      - {tone: late, label: Advanced, text: "Hardest to treat, highest cost."}
+    marks:
+      - {value: "€15,100", text: "lower treatment cost per breast cancer found local instead of node-positive"}
+      - {value: "€30,170", text: "lower lifetime cost per colorectal cancer found at stage I instead of stage III"}
+    drills:
+      - kind: person
+        label: For Hodan
+        title: What a missed screening means for her
+        items:
+          - value: "1.8×"
+            text: "Women who skip cervical screening have about 1.8 times the cervical cancer rate of women who attend."
+            source: "Our analysis of Finnish Cancer Registry data, 2020–2024"
+      - kind: county
+        label: For the county
+        title: Missed screenings, and growing
+        items:
+          - value: "≈16,560"
+            text: "screenings missed every year compared with equal attendance: breast 5,556, cervical 6,844, colorectal 4,161."
+            source: "Our calculation from Finnish Cancer Registry data, 2024"
+          - value: "×2 by 2035"
+            text: "31,000–39,000 missed a year if the gap stays as it is, because the invited group keeps growing."
+            source: "Our projection from Statistics Finland population data"
+      - kind: euro
+        label: In euros
+        title: Earlier stage, lower cost
+        items:
+          - value: "€24,400 vs €39,500"
+            text: "ten-year specialist cost of a breast cancer found local vs node-positive."
+            source: "Duodecim, 2019"
+          - value: "€26,630 → €69,890"
+            text: "lifetime cost of colorectal cancer from stage I to stage IV."
+            source: "Norwegian cost model, applied to Finland"
+    source: "Treatment costs: Duodecim 2019 · Norwegian colorectal cost model"
+    notes: "Earlier is easier and cheaper. Do not claim lives saved or net savings."
+
+  - layout: intro
+    id: routes
+    kicker: Three routes into cancer care
+    line: "A screening letter, a symptom, or a test a doctor orders. On every route, people with another native language meet gaps. <b>Only screening is counted by language: 57% of them attend, against 78%.</b>"
+    notes: "The entryway to the diagram. 57% vs 78%: other-language invitees vs Finnish, Swedish and Sámi speakers, all three programmes, 2024 (Finnish Cancer Registry). The other routes have studies by origin, not by language."
+
+  - layout: embed
+    id: pathway
+    src: /presentation/pathway
+    title: "The routes into cancer care, the gap at each step and where Silta helps. Click a step for its evidence."
+    notes: "The journey with its data. The gap opens at the first step; once people are in care, breast and cervical follow-up is equal (colposcopy 87.1% vs 84.8%). Two routes matter for Silta: the screening letter (Hodan) and noticing a symptom (Olga)."
+
+  - layout: intro
+    id: silta
+    notes: "Silta enters here. Name, meaning and punchline come from content/site.yaml, as on the front page. Then the two ways in."
+
+  - layout: morph
+    id: letter
+    kicker: First way in · the letter
+    kicker_intro: true   # the kicker opens large in the centre, then moves to its place (deck-v3.js)
+    path: 1
+    title: Turning invitations <em>into visits.</em>
+    line: "Hodan scans the code on her letter. Silta explains the screening in Somali, with pictures and a voice."
+    from: {kind: paper, src: /media/screens/v3/letter-fi.png, pos: "center bottom", alt: "The foot of Hodan's Finnish screening letter with the Silta QR code and one line in 14 languages."}
+    screens:
+      - {src: /media/screens/v3/guide-so-start.png, alt: "The cervical screening guide in Somali: an envelope picture, a short introduction with a listen button and five parts."}
+      - {src: /media/screens/v3/guide-so-why.png, alt: "Part 1 of 5 in Somali, 'Why it matters', with a picture and a listen button."}
+    drills:
+      - kind: person
+        label: For Hodan
+        title: She understands what will happen
+        items:
+          - text: "Five short parts with pictures: why, the visit, her rights, after, common questions. Each one read aloud. No login, no name."
+            source: "Silta app, cervical guide in 14 languages"
+          - value: "≈40%"
+            text: "of people born abroad say their Finnish or Swedish has kept them from getting care."
+            source: "MoniSuomi survey, THL"
+      - kind: county
+        label: For the county
+        title: Translation alone is not enough
+        items:
+          - value: "46.5% vs 47.4%"
+            text: "attendance with an invitation translated into the language of origin vs the standard letter: no effect. Silta explains the next step and the person's rights."
+            source: "Randomised trial, Norway (n = 11,347)"
+          - text: "The QR strip is one printed block on a letter the county already sends."
+            source: "Silta printouts"
+      - kind: euro
+        label: In euros
+        title: Booked slots that stay empty
+        items:
+          - value: "up to €1.95M"
+            text: "a year: breast-screening slots booked for people who do not come (upper bound; units overbook)."
+            source: "Our calculation from Cancer Registry data and Ministry unit costs"
+    source: "Screens from the running app"
+    notes: "Press → once: the letter shrinks away and the guide appears in its place."
+
+  - layout: screens
+    id: noticed
+    kicker: Second way in · a symptom
+    kicker_intro: true
+    path: 2
+    title: "“I noticed <em>something.”</em>"
+    line: "Olga, 58, has found a lump. She taps where it is, or says it in her own words. Silta never rates her symptoms."
+    screens:
+      - {src: /media/screens/slider-02-body-map.png, alt: "'What worries you?' with a body figure and picture cards, each with a speaker button."}
+      - {src: /media/screens/partner-gemini-symptom.png, alt: "Olga types 'I found a hard lump in my left breast last week'; Silta asks back: did you mean 'A new lump or swelling'?"}
+      - {src: /media/screens/slider-06-body-map-ar.png, alt: "The same screen in Arabic, laid out right to left."}
+    drills:
+      - kind: person
+        label: For Olga
+        title: Works for people who don't read well
+        items:
+          - text: "Every card has a picture and a speaker button. In her own words, Gemini finds the matching card and asks before using it. Somali answers by cards with human-recorded audio; Arabic and Persian run right to left. An Urgent help button on every screen leads to 112."
+            source: "Silta app"
+          - text: "She can ask for a female professional; Silta words it as a request, not a guarantee."
+            source: "Silta app"
+      - kind: county
+        label: For the county
+        title: Nothing like it exists in these languages
+        items:
+          - text: "Omaolo, Maisa, Lunna and 116117 work in Finnish, Swedish and partly English. No symptom-based navigator was found in Somali, Arabic or Russian."
+            source: "Our check of county and national services, November 2026"
+      - kind: euro
+        label: In euros
+        title: Earlier contact, earlier stage
+        items:
+          - value: "€15,100"
+            text: "lower treatment cost per breast cancer found local instead of node-positive."
+            source: "Duodecim, 2019"
+    source: "Olga is a composite person · screens from the running app"
+    notes: "The second route into care. No Finnish data measures it by language, so it supports the screening story rather than leading it."
+
+  - layout: screens
+    id: door
+    kicker: Both ways · the right service
+    path: 4
+    title: The right service, <em>and the words to say.</em>
+    line: "Hodan needs to rebook her screening; Olga needs an assessment. Silta shows each the right service and the Finnish sentences to say."
+    screens:
+      - {src: /media/screens/v3/path-route.png, alt: "'Where do you get health care?' with route cards such as 'I live in Finland and have a home municipality'."}
+      - {src: /media/screens/slider-05-door.png, alt: "'Contact the county health station and ask for an assessment today', then the Finnish call script."}
+      - {src: /media/screens/v3/path-script.png, alt: "'Your card in Finnish': the Finnish sentences with their meaning and a play button for each."}
+    drills:
+      - kind: person
+        label: For them
+        title: They know who to call and what to say
+        items:
+          - text: "The service that matches their right to care, the Finnish sentences with audio, the right to a free interpreter, and the legal time limits. If nobody answers, Silta gives the next step."
+            source: "Silta app"
+      - kind: county
+        label: Where the data comes from
+        title: The real service path, with a source for every fact
+        items:
+          - value: "5 counties"
+            text: "Helsinki, Länsi-Uusimaa, Kymenlaakso, Etelä-Pohjanmaa and Pohjois-Pohjanmaa: the right service for each route to care, how each stage works and the screening programmes."
+            source: "Silta service-path data"
+          - value: "180+"
+            text: "source links: the counties' own web pages, Sotkanet, THL and the Cancer Registry. A fact is published only with its source and the date someone checked it."
+            source: "Silta service-path data"
+          - text: "Time limits are national, so the county changes the service but never the clock."
+            source: "Health Care Act; Patient Act"
+    source: "Screens shown in English for the audience"
+    notes: "Finding your way is the hardest barrier. The answer is structured, sourced data per county, kept current in the admin."
+
+  - layout: screens
+    id: visit
+    kicker: Both ways · at the visit
+    path: 5
+    title: Understood <em>at the visit.</em>
+    line: "Olga describes it in Russian. At the visit she shows the doctor a Finnish summary on her own phone."
+    screens:
+      - {src: /media/screens/v3/olga-cards-ru.png, alt: "Olga's symptom screen in Russian: the chest chosen on the body figure and 'A new lump or swelling' ticked."}
+      - {src: /media/screens/v3/olga-summary-fi.png, alt: "The Finnish summary on her phone: interpreter needed, the symptom 'Uusi kyhmy tai turvotus', the route to care and the visit date."}
+    drills:
+      - kind: person
+        label: For Olga
+        title: She is understood, and stays anonymous
+        items:
+          - text: "She answers in her own language; the doctor reads the same answers in Finnish, built from checked phrases. No name, no ID."
+            source: "Silta app"
+          - value: "22% vs 12%"
+            text: "clinically consequential errors with an ad-hoc interpreter vs a professional one. The summary asks the doctor to book a professional interpreter."
+            source: "Flores et al., Annals of Emergency Medicine 2012"
+      - kind: county
+        label: For the county
+        title: A prepared visit
+        items:
+          - value: "32 vs 28 min"
+            text: "of provider time for an interpreted vs a non-interpreted visit. A summary read in 30 seconds wins time back."
+            source: "US primary care study (PMC1494905)"
+          - text: "When screening is overdue, the clinic can act right there, for example with a self-sample where the county uses them."
+            source: "YouScreen, London primary care"
+      - kind: euro
+        label: In euros
+        title: Visit time is the expensive part
+        items:
+          - value: "€125 / €51"
+            text: "average cost of a primary-care doctor visit / nurse contact."
+            source: "THL unit costs, 2024"
+    source: "Olga's screen (Russian) and her Finnish summary, from the running app"
+    notes: "The doctor does not need any system: Olga shows the summary on her phone."
+
+  - layout: cards
+    id: county
+    kicker: For the wellbeing services county
+    title: What's in it <em>for the county.</em>
+    line: "More people screened, better-prepared visits and data it never had, without an IT project or personal data."
+    cards:
+      - {tag: Sub-goal 1.3, title: More people screened, text: "Reaches invitees the letter alone does not. Measured with the registry's attendance by native language."}
+      - {tag: Visits, title: Prepared patients, text: "The situation and the interpreter language are known before the visit starts."}
+      - {tag: Data, title: The first step, visible, text: "Anonymous counts of where people stop, by language. No register records this today."}
+      - {tag: Cost, title: No IT project, text: "Works today without integration or personal data. A QR strip on letters is the first step."}
+    drills:
+      - kind: county
+        label: How a county joins
+        title: Nothing needed to start. Each step adds something.
+        items:
+          - value: "0"
+            text: "<b>On its own.</b> Residents find Silta through community channels and search. Live today."
+            source: "Silta"
+          - value: "1"
+            text: "<b>QR code on the invitation letters.</b> One printed strip reaches every invitee holding the letter."
+            source: "Silta printouts"
+          - value: "2"
+            text: "<b>Posters and visit-prep cards at health stations</b>, so people prepare before they come."
+            source: "Silta printouts"
+          - value: "Later"
+            text: "A prompt in the patient record; national content from Terveyskylä; the county as data controller."
+            source: "Silta roadmap"
+      - kind: euro
+        label: In euros
+        title: The money is already there
+        items:
+          - value: "€121M"
+            text: "a year reaches Helsinki through the foreign-language criterion of county funding. None of it is earmarked."
+            source: "Ministry of Finance funding criteria; our calculation"
+          - value: "€400k"
+            text: "for counties, HUS and NGOs, 2026–2028: targeted, multilingual screening communication."
+            source: "National Cancer Strategy roadmap 2026–2031, action 1.3.1"
+      - kind: data
+        label: The county view
+        title: Anonymous counts by stage and language
+        image: {src: /media/screens/v3/county-journeys.png, alt: "County view, 'Silta journeys': counts are anonymous, with no visit codes, times or personal data; journeys by language and stage (local test data)."}
+        items:
+          - text: "No visit codes, no times, no personal data, and no targeting of individuals by language. Shown here with local test data."
+            source: "Silta county view"
+    source: "National Cancer Strategy 2026–2035, sub-goal 1.3: equal screening, whatever your native language"
+    notes: "Ask: a Helsinki pilot of steps 1–2, measured with the registry table the county already gets."
+
+  - layout: cards
+    id: safe
+    kicker: Trust
+    title: Safe to use <em>today.</em>
+    line: "Built to stay on the right side of medical-device, privacy and AI rules, so people can use it before any county joins."
+    cards:
+      - {tag: EU MDR Rule 11, title: Not a medical device, text: "No diagnosis, no urgency rating. An Urgent help button on every screen leads to 112."}
+      - {tag: GDPR Art. 9, title: No personal data, text: "No names, IDs, phones or emails. A code that expires."}
+      - {tag: EU AI Act, title: AI that asks first, text: "Gemini suggests; the person confirms with one tap."}
+      - {tag: Patient Act §5, title: Interpreter first, text: "The summary asks for a free professional interpreter."}
+    drills:
+      - kind: data
+        label: How it's enforced
+        title: Rules built into the product
+        items:
+          - text: "The route for a symptom comes from clinician-reviewed content, never from the model. No urgency decision is left to AI."
+            source: "Silta app"
+          - text: "Visit codes are stored hashed and expire after 90 days; the person can delete their data."
+            source: "Silta app"
+          - text: "Every published fact has a source and a checked date. Every admin change is logged and can be rolled back."
+            source: "Silta admin"
+      - kind: data
+        label: What we don't claim
+        title: Said out loud, so the numbers can be trusted
+        items:
+          - text: "<b>Language is not proven to cause the gap.</b> It survives controls for breast and colorectal screening; for cervical, municipal variation tracks unemployment."
+            source: "Our analysis of Cancer Registry and Statistics Finland data"
+          - text: "<b>No lives-saved figures.</b> We show cost per screening and break-even points only."
+            source: "Our analysis"
+          - text: "<b>No symptom-route data by language exists</b> in Finland, so the symptom route supports the story rather than leading it."
+            source: "National Cancer Strategy 2026–2035, section 2.5"
+          - text: "<b>Hodan and Olga are composite people.</b> The registry records language and birth region, not religion."
+            source: "Finnish Cancer Registry"
+    source: "EU MDR · GDPR · EU AI Act · Patient Act (785/1992)"
+    notes: "Each rule is a design decision you can see in the product."
+
+  - layout: intro
+    id: reach
+    kicker: Getting Silta in front of people
+    title: How do Hodan and Olga <em>find Silta?</em>
+    line: "Through the letter they already get, a card or poster from their community, or by asking their phone. Fifteen channels, each with its evidence and a plan."
+    notes: "Silta only helps if people find it. The next slide maps every channel; click one for its evidence."
+
+  - layout: embed
+    id: ways-in
+    src: /media/ways-in.html
+    title: "How people find Silta: 15 channels. Click a channel for its evidence and plan."
+    notes: "How Hodan and Olga find Silta in the first place: the QR code on the letter, a help card or poster from their community, or asking their phone. Every answer is its own page per language, topic and county, so search engines and AI assistants can cite it. Nothing here needs the county."
+
+  - layout: facts
+    id: running
+    kicker: Built this weekend
+    title: Already <em>running.</em>
+    line: "A live product on real data, not a mock-up."
+    facts:
+      - {value: "14", label: "languages, every card read aloud"}
+      - {value: "316", label: "automated tests, backend and end-to-end"}
+      - {value: "5", label: "counties' service paths mapped, stage by stage"}
+      - {value: "180+", label: "source links behind those facts"}
+    logos:
+      - {src: /media/logos/google-deepmind.png, alt: Google DeepMind}
+      - {src: /media/logos/aiven.png, alt: Aiven}
+      - {src: /media/logos/mlh.png, alt: MLH}
+    drills:
+      - kind: data
+        label: Gemini
+        title: Gemini asks instead of guessing
+        items:
+          - text: "Matches a person's own words to one card and asks back; reads a photo of a letter into a fixed format; runs the phone line. No urgency decision is left to the model."
+            source: "Silta app"
+      - kind: data
+        label: ElevenLabs
+        title: Voice for people who don't read
+        items:
+          - text: "Reads Silta aloud in 14 languages, listens in 13, and answers a phone line in the caller's language. Somali uses cards and human audio on purpose. Each clip is generated once and cached."
+            source: "Silta app"
+      - kind: data
+        label: Aiven
+        title: One database, in the EU, with no personal data
+        items:
+          - text: "API and app on Aiven Runtime; content, audio, visit codes, service paths and county figures in one Aiven for PostgreSQL with pgvector. Every green push redeploys."
+            source: "Silta app"
+    source: "Counts from the Silta code base, 14 November 2026"
+    notes: "Re-count tests before the final submission."
+
+  - layout: close
+    id: close
+    kicker: Helsinki pilot
+    title: Silta works before the first appointment, <em>from today.</em>
+    line: "Hodan's next letter carries a QR code. A pilot in Helsinki: the code on the invitations and Silta at the health stations, measured with the registry's attendance by native language."
+    letter: /media/screens/v3/letter-fi.png
+    letter_alt: "Hodan's screening letter coming back out of the drawer."
+    qr: /media/printouts/letter-qr-block.png
+    source: "National Cancer Strategy 2026–2035 · Goal 3 and sub-goal 1.3"
+    notes: "Close on the same letter, now with the QR strip, rising out of the drawer."
+
+  - layout: team
+    id: team
+    kicker: The team
+    title: Built by <em>a family.</em>
+    line: "Three Railos at one table this weekend: product and pitch, backend and data, design and story."
+    photo: ""   # /media/team.jpg when the photo is ready
+    people:
+      - {name: Timo Railo, role: "Product, architecture, pitch"}
+      - {name: Mea Railo, role: "Backend, data"}
+      - {name: Milla Railo, role: "UX, design, video, data storytelling"}
+    source: "Junction 2026 · AstraZeneca — Equal Care Across Finland"
+    notes: "Add the photo as content/media/team.jpg and set photo: /media/team.jpg."

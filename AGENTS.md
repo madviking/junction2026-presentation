@@ -1,7 +1,7 @@
 # AGENTS.md — Silta project site (junction2026-presentation)
 
 The team's public face and shared shelf for Junction 2026: the landing page, the
-pathway data page, the deck, the video, printouts, links to the app, and the team's
+deck (with the pathway data slide), the video, printouts, links to the app, and the team's
 internal materials. Python (FastAPI + Jinja), Tabler UI kit, Plotly charts, one
 Docker image. The product itself lives in `../tech` (`junction2026tech`); the
 knowledge base lives in `../brain` (`junction2026`).
@@ -31,15 +31,18 @@ one-pagers, charts, mock-ups, exports, PDFs.
 | --- | --- | --- |
 | `content/site.yaml` | Name, punchline, facts, app links, video URL, team | everywhere |
 | `content/landing.md` | One-page project description | `/` |
-| `content/presentation.md` | Slides (`---` between slides, `Note:` for speaker notes) | `/presentation` (PDF: `/presentation?print-pdf`) |
+| `content/presentation.md` | Deck v1 (first deck). Slides (`---` between slides, `Note:` for speaker notes, `<!-- class: x -->` / `<!-- id: x -->` on a slide's first lines; an `embed` slide is one iframe) | `/presentation/v1` |
+| `content/presentation-v2.md` | Deck v2, built from the master narrative (`content/materials/master-narrative.html`); same slide format; v2-only styles at the end of `app/static/deck.css` | `/presentation/v2` |
+| `content/presentation-v3.yaml` | **The site's deck** (v3): Hodan's and Olga's paths with drill-in sheets (person / county / euros / data). One layout system: `app/templates/presentation_v3.html`, `app/static/deck-v3.css`, `app/static/deck-v3.js`; rules and video specs in `content/materials/silta-design-system.html`. Screens in `content/media/screens/v3/` from `node scripts/capture_v3_screens.mjs` (local app on :5300). `/presentation/v3` redirects here | `/presentation` (PDF: `/presentation?print-pdf`) |
+| `app/templates/try.html` | Try the app: the live resident app in a phone (iframe) with a QR code, then one card per way in, each led by a picture. Links, previews, language chips and the phone keypad come from `links`, `link_groups` and `languages` in `content/site.yaml`; county and admin screens in `content/media/screens/try/` from `node scripts/capture_try_screens.mjs` (local app on :5300, view-only demo account) | `/try` |
 | `content/printouts/*.md` | A4 pages; frontmatter `qr: consumer` adds a QR code, `layout: sign` for a big sign. Each printout needs a short `description` (one line, shown on its box); PDFs get theirs in `_descriptions.yaml` | `/printouts` |
 | `content/tech-challenges/<slug>.md` | One page per tech challenge we enter (frontmatter: `title`, `partner`, `organiser`, `logo`, `summary`, `order`, plus the glance fields in "Tech-partner pages" below) | `/tech`, `/tech/<slug>` |
 | `content/materials/` | Team-internal artefacts + `_links.yaml` for external ones | `/team` (password) |
 | `content/media/` | Public images and video used by pages and slides | `/media/...` |
 | `content/data/*.csv` | Dashboard data, each traced to a brain source (`content/data/README.md`) | — |
-| `content/data/pathway.json` | The pathway page: three routes into care (map nodes), Silta bands, and per step the evidence level, text, popup tables, notes and `charts` (rows of chart ids), plus limitations and sources | `/pathway` |
-| `app/charts/*.py` | One module per chart, auto-discovered; shown on a pathway step via `charts` | `/pathway`, `/pathway/archive` |
-| `content/dashboard_archive.yaml` | The earlier report-style data page, kept for reference | `/pathway/archive` (`/dashboard` redirects to `/pathway`) |
+| `content/data/pathway.json` | The pathway slide: title (`title_html` colours the key words), three routes into care (map nodes), Silta bands, and per step the evidence level, text, popup tables, notes and `charts` (rows of chart ids), plus limitations and sources. Rendered menu-less at `/presentation/pathway` (`app/templates/pathway.html`, laid out like `content/media/ways-in.html`: details in a card over the map, findings and limitations in a popup) and embedded in the deck | `/presentation#/pathway` (`/pathway` redirects there) |
+| `app/charts/*.py` | One module per chart, auto-discovered; shown on a pathway step via `charts` | `/presentation/pathway`, `/pathway/archive` |
+| `content/dashboard_archive.yaml` | The earlier report-style data page, kept for reference | `/pathway/archive` (`/dashboard` redirects to the pathway slide) |
 | `app/main.py` | Routes. `app/content.py` loads content, `app/auth.py` guards `/team` | — |
 | `compose.aiven.yaml` | Aiven Runtime manifest (hosting); `compose.yaml` = plain Docker host; `local.compose.yaml` = live-edit overlay | — |
 | `app/templates/`, `app/static/` | Jinja templates, Silta CSS on top of Tabler, deck and print CSS | — |
@@ -55,7 +58,7 @@ in two layers:
    diagram, a key number, a screenshot) with one sentence that states the takeaway.
    A judge who reads only this layer still gets the point.
 2. **Drill down.** Method, caveats, the full data and the reasoning sit below it or
-   behind it: collapsed panels, linked pages, the pathway page, the brain repo. Nothing
+   behind it: collapsed panels, linked pages, the pathway slide, the brain repo. Nothing
    is hidden, but none of it comes first.
 
 How we write:
@@ -108,8 +111,8 @@ mostly visually, how their technology fits into Silta**, and can then drill down
    `(figure, table)`. Start from `new_figure(p)` and use only palette keys (`p["lake"]`,
    `p["coral"]`, `p["reference"]`, ...), never raw colors, so light and dark both work.
 3. One axis per chart, a legend for two or more series, a data table, a hover template.
-4. To show it on the pathway page, add its module name to a step's `charts` rows in `content/data/pathway.json` (charts in one row sit side by side in that step's data popup).
-5. `make test`, then look at `/pathway` in both themes.
+4. To show it on the pathway slide, add its module name to a step's `charts` rows in `content/data/pathway.json` (charts in one row sit side by side in that step's data popup).
+5. `make test`, then look at the pathway slide (`/presentation#/pathway`; it is always light, like the deck).
 
 ## Run
 

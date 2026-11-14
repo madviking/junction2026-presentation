@@ -9,15 +9,15 @@ meaning: Finnish for “bridge”
 # ("Equal Care Across Finland"); the audience is minorities in general, not only language.
 punchline: Equal cancer care for minorities in Finland starts before the first appointment.
 # One line under the punchline: what Silta does.
-lede: Silta takes a person from a symptom or a screening letter to the right door and a visit both sides understand, in their own language and without logging in.
+lede: Silta takes a person from a symptom or a screening letter to the right service and a visit both sides understand, in their own language and without logging in.
 event: Junction 2026 · AstraZeneca — Equal Care Across Finland
 
 # Landing-page phone slider, in journey order. Recapture with `node scripts/capture_screens.mjs`
 # (needs the app running; see the script header).
 hero_screens:
   - src: /media/screens/slider-01-language.png
-    alt: "Silta's first screen: 'Choose your language' with a red 112 call button and a grid of 13 languages."
-    caption: Pick your language. The 112 button stays on every screen.
+    alt: "Silta's first screen: 'Choose your language' with a red Urgent help button and a grid of 14 languages."
+    caption: Pick your language. The Urgent help button, which leads to 112, stays on every screen.
   - src: /media/screens/slider-02-body-map.png
     alt: "'What worries you?' with a body figure, body-part buttons and picture cards with speaker buttons."
     caption: Hard to read? Tap where it is on the body. Every card has a picture and a speaker button.
@@ -29,7 +29,7 @@ hero_screens:
     caption: Where do you get care? Answer by card, by typing or by speaking.
   - src: /media/screens/slider-05-door.png
     alt: "'Contact the county health station and ask for an assessment today', then the call script in Finnish with English meanings."
-    caption: The right door, and the words to say in Finnish, with their meaning and audio.
+    caption: The right service, and the words to say in Finnish, with their meaning and audio.
   - src: /media/screens/slider-06-body-map-ar.png
     alt: "The same symptom screen in Arabic, laid out right to left."
     caption: The same screen in Arabic, right to left.
@@ -40,30 +40,41 @@ highlights:
     title: Works from day one
     text: No county contract or integration needed
   - icon: shield-check
-    title: Fully anonymous
-    text: Complies with regulation
+    title: No personal data
+    text: Not a medical device by design
   - icon: language
-    title: 13 languages
+    title: 14 languages
     text: Read aloud, tap, type or speak
 
 # Landing page: how Silta connects to Goal 3 of the National Cancer Strategy 2026-2035.
-# Indicators from the strategy (Figure 1, p. 5); numbers from brain ideas/silta.md and
-# sources/2026-11-13-web-research-minorities-screening.md.
+# Indicators from the strategy (Figure 1, p. 5). Numbers: lung-cancer intervals from brain
+# sources/2026-11-13-web-research-az-gaps-interventions.md (UEF Kuittinen, unpublished, via Yle MOT);
+# screening gap from sources/2026-11-14-cancerregistry-screening-by-language.md (2024: breast 22.4,
+# cervical 19.9, colorectal 21.1 pp); 16,561 from notes/2026-11-14-1630-silta-financial-lean-case.md.
+# Each point can carry `src` + `src_url` (shown as "Source: ..."); `src_link` uses a key from `links`; `src_label` changes the prefix.
 goal3:
+  eyebrow: National Cancer Strategy 2026–2035
   title: "Goal 3: equal and effective cancer care"
-  lede: Goal 3 is measured by treatment starting on time, cancer mortality and survival. For minorities, the time is lost before the first contact, and that is where Silta works.
+  lede: Goal 3 is measured by treatment starting on time, cancer mortality and survival. For people with another native language, the gap opens before the first contact, where no register looks. That is where Silta works.
   points:
     - indicator: Treatment within target times
-      text: In lung cancer, over 50 of about 155 days pass between the first symptom and the first contact (provisional Finnish study). Silta shortens that part with the right door, the words to say in Finnish and a reminder to call if nothing arrives.
+      text: In lung cancer, over 50 of about 155 days pass before the first contact. Silta shortens that part with the right service, the words to say in Finnish and a reminder to call if nothing arrives.
+      src: UEF study (unpublished), reported by Yle MOT
+      src_url: https://yle.fi/a/74-20251023
     - indicator: Mortality and survival
-      text: Screening and earlier contact find cancer at an earlier stage. People with another native language attend screening about 20 points less often, so the room to improve is largest here.
+      text: People with another native language attend screening 20–22 points less often in all three programmes. Attending like Finnish and Swedish speakers would mean 16,561 more people screened a year.
+      src: Finnish Cancer Registry, 2024
+      src_url: https://stats.cancerregistry.fi/joukkistilastot/
     - indicator: A number a county can follow
-      text: Registers do not record the steps before the first contact. Silta counts them anonymously, by stage and language, in the county view.
-  also: Also serves Goal 2 (80% screening attendance in every county) and sub-goal 1.3 (equal attendance regardless of native language).
+      text: Registers do not record the steps before the first contact. Silta counts them anonymously, by stage and language.
+      src_label: Live
+      src: county view
+      src_link: county
 
 # Landing page: safe to use now, and how it grows into the health system.
 # Sources: brain ideas/silta.md sections 5-6 and 8 (EU MDR Rule 11, GDPR Art. 9), ideas/silta-service-paths.md.
 rollout:
+  eyebrow: Regulation and rollout
   title: Safe to use today, without waiting for the health system
   lede: Silta is built to stay on the information side of medical-device and privacy rules, so residents can use it before any county or doctor takes part.
   stages:
@@ -73,7 +84,7 @@ rollout:
       items:
         - "Not a medical device by design: no diagnosis and no urgency rating (EU MDR Rule 11)."
         - "No personal data: no names, ID numbers, phone numbers or emails (GDPR Art. 9)."
-        - Official guidance with a link to its source. 112 and 116117 on every screen.
+        - Official guidance with a link to its source. An Urgent help button on every screen leads to 112.
         - Prepares the visit. It does not replace a professional interpreter.
     - when: Next
       title: With a county
@@ -91,34 +102,97 @@ rollout:
         - The county as data controller, with its own impact assessment.
         - Native-speaker and clinical review of every language.
 
+# Landing page: where Silta sits on the routes into cancer care. A simplified version of the
+# pathway slide (content/data/pathway.json: nodes and the Silta bands); drawn by
+# app/templates/_paths_fit.html. Steps follow the bands find/prepare, navigate, atvisit+clinician, after.
+paths_fit:
+  eyebrow: Where Silta fits
+  title: Three ways into cancer care. Silta helps on each one until the diagnostic exam.
+  lede: People reach cancer care through a screening letter, a symptom they notice or a test a doctor orders. Silta works in the steps before specialist care takes over.
+  steps:
+    - title: Understand
+      text: The screening letter or the symptom, explained in your own language.
+    - title: Find the right service
+      text: Who to contact in your county, and the words to say in Finnish.
+    - title: At the visit
+      text: A visit card. The clinician reads a one-screen Finnish summary.
+    - title: After the visit
+      text: What happens next, and when to call if nothing arrives.
+  # Shown in the specialist-care zone of the figure: not built yet.
+  planned:
+    tag: Planned
+    items:
+      - Help navigate the treatment path
+      - Own-language support and patient information
+
 # Keys are used by printouts (`qr: consumer`) and the "Try the app" page.
-# The "Try the app" page shows the links named in `link_groups`, in that order;
-# `source` appears under its technical section. Other keys (e.g. `site`) stay
-# available to printouts but are not listed there.
+# The "Try the app" page embeds `consumer` live in its hero, then shows the links named in
+# `link_groups`, in that order; `source` appears under its technical section. Other keys
+# (e.g. `site`) stay available to printouts but are not listed there.
+# Per link, optional for that page: `preview` (kind: paper | phone | browser, src, alt, caption; a
+# paper preview also zooms into `zoom_src` at the bottom of the sheet), `languages: true`
+# (one chip per entry in `languages` below; the link's "/en" segment is swapped for the code),
+# `menu` (the phone line's keypad menu), `short` (its line in the hero's jump list).
 link_groups:
-  - title: For residents
-    lede: What a resident sees — the app, the screening letter and its guide, and the phone line.
-    links: [consumer, screening_letter, screening_guide, phone]
-  - title: For the county
-    lede: What county staff see — anonymous figures, and the tools to run the content.
+  - eyebrow: For residents
+    title: The letter, its guide, and a phone line
+    lede: A screening letter carries a QR code to a picture guide in the resident's language. People who do not read can call and speak instead.
+    links: [screening_letter, screening_guide, phone]
+  - eyebrow: For the county
+    title: Anonymous figures and the content tools
+    lede: County staff see counts by stage, outcome and language, never a person. The team edits texts, approves audio and watches spend in admin.
     links: [county, admin]
+
+# The 14 languages of the letter and the guide (tech: resident languages). Native names.
+languages:
+  - {code: fi, name: Suomi}
+  - {code: sv, name: Svenska}
+  - {code: en, name: English}
+  - {code: ru, name: Русский}
+  - {code: et, name: Eesti}
+  - {code: uk, name: Українська}
+  - {code: ar, name: العربية, dir: rtl}
+  - {code: so, name: Soomaali}
+  - {code: fa, name: فارسی, dir: rtl}
+  - {code: zh, name: 中文}
+  - {code: yue, name: 粵語}
+  - {code: vi, name: Tiếng Việt}
+  - {code: th, name: ไทย}
+  - {code: bg, name: Български}
 
 links:
   consumer:
     label: Silta for residents
     url: https://fond-useful-corgi.eur-1.aiven.app/
-    description: The mobile web app. Pick a language, describe what you noticed, find the right door.
+    description: The mobile web app. Pick a language, describe what you noticed, find the right service.
     icon: device-mobile
   screening_guide:
     label: Screening guide (cervical)
     url: https://fond-useful-corgi.eur-1.aiven.app/r/en/learn/cervical
-    description: What the screening letter's QR code opens. A five-part picture guide in 13 languages — why, the visit, your rights, after, common questions. Swap "en" in the address for so, ar, ru, uk, fa, et, sv, fi, zh, yue, vi or th.
+    description: What the letter's QR code opens. Five short parts with pictures and audio — why, the visit, your rights, after, common questions.
     icon: school
+    action: Open the guide
+    short: What the QR code opens
+    languages: true
+    preview:
+      kind: phone
+      src: /media/screens/v3/guide-so-why.png
+      alt: "The guide in Somali: part 1 of 5, 'why it matters', a microscope picture and a speaker button."
+      caption: Somali, part 1 of 5
   screening_letter:
     label: Example screening letter
     url: https://fond-useful-corgi.eur-1.aiven.app/letter/cervical/en
-    description: A cervical screening invitation as a Helsinki resident gets it, with the Silta QR code. Every language, printable. All versions are on the printouts page.
+    description: A cervical screening invitation as a Helsinki resident gets it, with the Silta QR code at the bottom. Printable; all versions are on the printouts page.
     icon: mail-opened
+    action: Open the letter
+    short: In 14 languages, with a QR code
+    languages: true
+    preview:
+      kind: paper
+      src: /media/screens/v3/letter-fi.png
+      alt: "The Finnish cervical screening invitation: the time, place and PIN, and at the bottom a QR code box."
+      zoom_src: /media/screens/try/letter-fi-qr.png
+      caption: Finnish letter, QR code at the bottom
   # The product's own demo phone line (Twilio number on the ElevenLabs agent
   # "Silta phone line", tech/scripts/phone_agent.py) — public by design, not a personal number.
   phone:
@@ -126,18 +200,43 @@ links:
     url: tel:+18784255777
     display: +1 878 425 5777
     action: Call
-    description: Call and talk to Silta in your language. A keypad menu picks the language, or just speak; the agent finds the right door for your area. US number; calls from Finland are international.
+    short: Speak instead of reading
+    description: Talk to Silta in your language. Press a key or just speak; the agent finds the right service for your area. US number; calls from Finland are international.
     icon: phone-call
+    # The greeting's keypad menu (tech/scripts/phone_agent.py, MENU and MORE).
+    menu:
+      - {key: "1", name: Suomi}
+      - {key: "2", name: Svenska}
+      - {key: "3", name: English}
+      - {key: "4", name: Русский}
+      - {key: "5", name: Українська}
+      - {key: "6", name: العربية, dir: rtl}
+      - {key: "7", name: Soomaali}
+      - {key: "8", name: فارسی, dir: rtl}
+      - {key: "9", name: Eesti}
+      - {key: "0", name: "Tiếng Việt · 中文"}
   county:
     label: County view
     url: https://fond-useful-corgi.eur-1.aiven.app/county/helsinki
-    description: Public figures and anonymous counts by stage, outcome and language.
+    description: Public figures for Helsinki, and anonymous counts by stage, outcome and language. Refreshes every 15 seconds.
     icon: map-2
+    action: Open the county view
+    short: Counts by language, never a person
+    preview:
+      kind: browser
+      src: /media/screens/try/county.png
+      alt: "The Helsinki county view: foreign-language share of residents 21.2 %, and breast and cervical screening participation."
   admin:
     label: Admin
     url: https://fond-useful-corgi.eur-1.aiven.app/admin
-    description: Edit and publish texts, approve audio, usage and audit.
+    description: Edit and publish texts in every language, approve audio, see spend and the audit log.
     icon: settings
+    action: Open admin
+    short: View-only demo account
+    preview:
+      kind: browser
+      src: /media/screens/try/admin-content.png
+      alt: "Silta admin, Content: 749 texts with a review status per language, signed in as the view-only demo viewer."
     # Public on purpose: a view-only account that sees every admin page and cannot change
     # anything (tech/backend/admin/service.ts, DEMO_VIEWER). The sign-in page shows it too.
     # Team editor accounts stay in the password manager.
@@ -178,7 +277,7 @@ journey:
     icon: message-dots
     side: resident
   - id: route
-    label: Find the right door
+    label: Find the right service
     icon: door
     side: resident
   - id: visit

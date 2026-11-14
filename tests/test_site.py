@@ -1,4 +1,5 @@
 import base64
+import re
 
 import pytest
 from markupsafe import escape
@@ -24,9 +25,14 @@ def basic(password: str) -> dict:
     [
         ("/healthz", "ok"),
         ("/", "Silta"),
-        ("/pathway", "Where people fall out of cancer care"),
+        ("/presentation/pathway", "Where people fall out of cancer care"),
         ("/pathway/archive", "Where in the screening pathway the gap appears"),
         ("/presentation", 'class="reveal"'),
+        ("/presentation/v2", "Same letter. Twenty points fewer come."),
+        ("/team/m/master-narrative.html", "Silta Master Narrative"),
+        ("/team/m/silta-design-system.html", "Silta Design System"),
+        ("/presentation", "Meet Hodan."),
+        ("/presentation/v1", "A bridge to cancer care"),
         ("/video", "The video is not up yet"),
         ("/try", "For residents"),
         ("/printouts", "one-page summary"),
@@ -49,22 +55,55 @@ def test_try_page_lists_phone_line_and_screening_letter(client):
     assert "/r/en/learn/cervical" in html
 
 
-def test_admin_demo_login_is_shown_on_try_and_landing_pages(client):
+def test_admin_demo_login_is_shown_on_try_page(client):
     demo = content.site()["links"]["admin"]["demo_login"]
     assert demo["email"] == "demo@silta.test"
-    for path in ("/try", "/"):
-        html = client.get(path).text
-        assert demo["email"] in html and demo["password"] in html, path
-        assert "View-only demo account" in html, path
+    html = client.get("/try").text
+    assert demo["email"] in html and demo["password"] in html
+    assert "View-only demo account" in html
+
+
+def test_landing_shows_where_silta_fits_and_no_try_section(client):
+    html = client.get("/").text
+    assert 'class="silta-fit-map"' in html
+    for step in content.site()["paths_fit"]["steps"]:
+        assert step["title"] in html
+    for item in content.site()["paths_fit"]["planned"]["items"]:
+        assert item in html
+    assert "<h2>Try it</h2>" not in html
+    assert "One journey, five steps" not in html
+    assert "Only 3 of 11 pathway steps" not in html
+
+
+def test_team_link_sits_apart_on_the_right(client):
+    html = client.get("/").text
+    right = html.index('navbar-nav ms-md-auto')
+    assert html.index('href="/try"') < right < html.index('href="/team"')
 
 
 def test_try_page_groups_links(client):
     html = client.get("/try").text
     residents, county = html.index("For residents"), html.index("For the county")
     tech = html.index("Technical information")
-    assert residents < html.index("Silta phone line") < county < html.index("Admin") < tech
+    # the hero's jump list names the cards too, so look from the residents' section on
+    assert residents < html.index("Silta phone line", residents) < county < html.index("Admin", county) < tech
     assert tech < html.index("github.com/madviking/junction2026tech")
     assert "mostly-awaited-flounder" not in html  # no card for the site itself
+
+
+def test_try_page_is_visual(client):
+    site = content.site()
+    html = client.get("/try").text
+    assert f'<iframe src="{site["links"]["consumer"]["url"]}"' in html  # the live app in the hero
+    assert "data-live-toggle" in html and "/static/try-live.js" in html  # maximise for a demo
+    assert "<svg" in html  # QR code to the app
+    for lang in site["languages"]:  # chips for the letter and the guide
+        assert f'/letter/cervical/{lang["code"]}"' in html
+        assert f'/r/{lang["code"]}/learn/cervical"' in html
+    for item in site["links"]["phone"]["menu"]:  # the phone line's keypad menu
+        assert f"<b>{item['key']}</b>" in html
+    for key in ["screening_letter", "screening_guide", "phone", "county", "admin"]:
+        assert f'href="#try-{key}"' in html and f'id="try-{key}"' in html
 
 
 def test_screening_letter_printout_links_every_language(client):
@@ -72,7 +111,7 @@ def test_screening_letter_printout_links_every_language(client):
     response = client.get("/printouts/cervical-screening-letter.md")
     assert response.status_code == 200
     assert "<svg" in response.text  # QR code to the guide
-    for lang in ["fi", "sv", "en", "ru", "et", "uk", "ar", "so", "fa", "zh", "yue", "vi", "th"]:
+    for lang in ["fi", "sv", "en", "ru", "et", "uk", "ar", "so", "fa", "zh", "yue", "vi", "th", "bg"]:
         assert f"/letter/cervical/{lang}" in response.text
         assert f"/r/{lang}/learn/cervical" in response.text
 
@@ -158,14 +197,26 @@ def test_dashboard_story_is_complete():
             assert section.get("source"), f"{section['id']} has no source"
 
 
-def test_dashboard_redirects_to_pathway(client):
-    response = client.get("/dashboard", follow_redirects=False)
+@pytest.mark.parametrize("old", ["/pathway", "/dashboard"])
+def test_old_data_urls_redirect_to_pathway_slide(client, old):
+    response = client.get(old, follow_redirects=False)
     assert response.status_code == 307
-    assert response.headers["location"] == "/pathway"
+    assert response.headers["location"] == "/presentation#/pathway"
+
+
+def test_pathway_is_a_deck_slide_not_a_menu_item(client):
+    deck = client.get("/presentation").text
+    assert '<section class="l-embed" id="pathway">' in deck
+    assert 'src="/presentation/pathway"' in deck
+    landing = client.get("/").text
+    assert 'href="/pathway"' not in landing
+    embed = client.get("/presentation/pathway").text
+    assert "silta-nav" not in embed and "theme-toggle" not in embed
+    assert '<base target="_blank">' in embed
 
 
 def test_pathway_embeds_data_and_step_charts(client):
-    html = client.get("/pathway").text
+    html = client.get("/presentation/pathway").text
     assert 'id="pathway-data"' in html
     assert "/static/pathway.js" in html
     assert "Limitations" in html
@@ -214,7 +265,7 @@ def test_pathway_impact_view_is_complete_and_rendered(client):
     for table in (impact["table"], impact["groups"]):
         assert all(len(row) == len(table["head"]) for row in table["rows"])
     assert impact["groups"]["title"] and impact["groups"]["note"]
-    html = client.get("/pathway").text
+    html = client.get("/presentation/pathway").text
     assert impact["groups"]["title"].replace("'", "&#39;") in html
     assert 'data-pw-mode="analysis"' in html and 'data-pw-mode="impact"' in html
     assert "Key findings" in html and impact["findings"][0]["label"] in html
@@ -307,3 +358,36 @@ def test_every_printout_has_a_short_description():
     for item in content.printouts():
         assert item.description, f"{item.path} has no description"
         assert len(item.description) <= 80, f"{item.path}: description too long"
+
+
+def test_deck_v3_uses_one_layout_system(client):
+    """Deck v3: every slide renders, every image exists, every chip opens its own sheet."""
+    deck = content.deck_v3()
+    html = client.get("/presentation").text
+    assert "/static/deck-v3.css" in html and "/static/deck-v3.js" in html
+    assert html.count("<section") == len(deck["slides"])
+    allowed = {"opener", "number", "stages", "embed", "intro", "morph", "screens", "cards", "facts", "close", "team"}
+    for slide in deck["slides"]:
+        assert slide["layout"] in allowed, slide["id"]
+        assert f'id="{slide["id"]}"' in html
+        assert not re.search(r"brain |sources/|backend/|\.md\b", slide.get("source", "")), slide["id"]
+        images = [slide.get("letter"), slide.get("qr"), (slide.get("from") or {}).get("src")]
+        images += [s["src"] for s in slide.get("screens", [])] + [l["src"] for l in slide.get("logos", [])]
+        for src in filter(None, images):
+            assert (settings.content_dir() / src.removeprefix("/")).is_file(), src
+        for i, drill in enumerate(slide.get("drills", []), start=1):
+            assert drill["kind"] in {"person", "county", "euro", "data"}
+            sheet = f'{slide["id"]}-{i}'
+            assert f'data-drill="{sheet}"' in html and f'id="{sheet}"' in html
+            if drill.get("image"):
+                assert (settings.content_dir() / drill["image"]["src"].removeprefix("/")).is_file()
+            for item in drill.get("items", []):
+                assert item.get("source"), f"{sheet}: an item has no source"
+                assert not re.search(r"brain |sources/|backend/|\.md|\.ya?ml", item["source"]), f"{sheet}: internal reference in {item['source']!r}"
+
+
+def test_v3_is_the_default_deck_and_old_decks_stay(client):
+    assert client.get("/presentation/v3", follow_redirects=False).headers["location"] == "/presentation"
+    assert "/static/deck-v3.css" in client.get("/presentation").text
+    assert "/static/deck.css" in client.get("/presentation/v1").text
+    assert "/static/deck.css" in client.get("/presentation/v2").text

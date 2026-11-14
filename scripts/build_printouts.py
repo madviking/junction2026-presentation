@@ -272,19 +272,19 @@ html, body { background: #fff; color: var(--ink); font-family: "Noto Sans", "Not
 .a6 .note { font-size: 8pt; line-height: 1.35; margin: 3.5mm 6mm 0; padding: 2.5mm 3mm; background: var(--petrol-soft); border-radius: 1.5mm; }
 .a6 .small { font-size: 6.5pt; padding: 3mm 6mm 0; margin-top: auto; }
 
-/* A4 multilingual: up to 12 language rows in two columns */
+/* A4 multilingual: up to 14 language rows in two columns */
 .a4 { width: 210mm; height: 297mm; }
 .multi .band { padding: 6mm 14mm; font-size: 8pt; gap: 8mm; }
 .multi .brand { font-size: 26pt; }
 .multi .tagline { text-align: end; line-height: 1.5; max-width: 130mm; word-break: keep-all; }
 .multi .rows { padding: 3mm 14mm 0; display: grid; grid-template-columns: 1fr 1fr; column-gap: 9mm; }
-.multi .row { display: grid; align-content: start; gap: .5mm; padding: 2.2mm 0; border-bottom: .3mm solid var(--line); }
+.multi .row { display: grid; align-content: start; gap: .4mm; padding: 1.5mm 0; border-bottom: .3mm solid var(--line); }
 .multi .lname { font-size: 7.5pt; font-weight: 700; color: var(--petrol); text-transform: uppercase; letter-spacing: .05em; }
-.multi .rtitle { font-size: 12.5pt; font-weight: 800; line-height: 1.2; }
-.multi .rline { font-size: 8.4pt; line-height: 1.3; color: #2e353e; }
-.multi .mid { display: grid; grid-template-columns: 50mm 1fr; gap: 8mm; padding: 5mm 14mm 0; align-items: start; }
+.multi .rtitle { font-size: 11.5pt; font-weight: 800; line-height: 1.2; }
+.multi .rline { font-size: 8pt; line-height: 1.25; color: #2e353e; }
+.multi .mid { display: grid; grid-template-columns: 50mm 1fr; gap: 8mm; padding: 4mm 14mm 0; align-items: start; }
 .multi .qrbig { display: grid; gap: 2mm; justify-items: center; }
-.multi .qrbig .qr { width: 48mm; height: 48mm; }
+.multi .qrbig .qr { width: 44mm; height: 44mm; }
 .multi .qrbig .link { font-size: 7.5pt; text-align: center; }
 .multi .staff { background: var(--petrol-soft); border-radius: 3mm; padding: 5mm; font-size: 9.5pt; line-height: 1.45; display: grid; gap: 2mm; }
 .multi .staff b { color: var(--petrol); text-transform: uppercase; font-size: 8pt; letter-spacing: .06em; }

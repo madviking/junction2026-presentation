@@ -37,6 +37,15 @@ Note: Digital-clinic figure: Kujansivu et al., Scand J Prim Health Care 2026, re
 
 ---
 
+<!-- class: embed -->
+<!-- id: pathway -->
+<iframe class="embed" src="/presentation/pathway" title="Where people fall out of cancer care: three routes into care, the gap at each step and where Silta helps. Click a step for its evidence, or switch to the Impact view for costs."></iframe>
+
+Note:
+Interactive. Three routes into cancer care (screening letter, symptom, doctor's suggestion) merge at the diagnostic exam. Analysis view: coral pills are the significant gaps by native language. Impact view: who is not reached and what it costs. Click a step for its text and source, "Show data" for charts and tables; click a Silta band for what Silta does there. Scroll inside the slide for key findings, the step-by-step cost table and limitations. Direct link: /presentation#/pathway (the old /pathway redirects here).
+
+---
+
 ## Silta follows one person
 
 1. Find information in your own language
