@@ -380,7 +380,6 @@ dialog.pw-pop::backdrop { background: rgba(10, 20, 25, .4); }
 .silta-pw-notes summary { cursor: pointer; color: var(--silta-ink); font-weight: 700; }
 .silta-pw-notes ul { padding-left: 18px; display: grid; gap: 4px; margin: 8px 0; }
 
-<<<<<<< Updated upstream
 /* try page: technical information row */
 .silta-tech-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
 .silta-tech-info .silta-eyebrow { margin-bottom: 4px; }
@@ -392,7 +391,7 @@ dialog.pw-pop::backdrop { background: rgba(10, 20, 25, .4); }
   padding-top: 0.75rem;
   border-top: 1px solid var(--tblr-border-color);
 }
-=======
+
 /* Pathway views: Analysis (gaps, coral) and Impact (costs, lake). data-mode on .silta-pw-page; pathway.js switches it. */
 .silta-pw-page[data-mode="analysis"] .pw-for-impact, .silta-pw-page[data-mode="impact"] .pw-for-analysis { display: none; }
 .pw-modes { display: inline-flex; align-self: flex-start; gap: 2px; padding: 3px; background: var(--pw-band); border-radius: 999px; }
@@ -430,4 +429,3 @@ table.pw-steps { border-collapse: collapse; width: 100%; font-size: 14.5px; back
 .pw-steps td:nth-child(2) { font-variant-numeric: tabular-nums; }
 .pw-steps td:last-child { color: var(--silta-muted); font-size: 13px; }
 .pw-steps tr:last-child td { border-bottom: 0; }
->>>>>>> Stashed changes
