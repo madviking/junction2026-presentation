@@ -46,9 +46,23 @@ One-time setup (Aiven project `appzio-d111`, the same as the app backend):
 
 4. Check `https://<public-url>/healthz` answers `ok` and `/team` asks for the password.
 
-Updates: a push does not redeploy. Runtime → application → Actions → **Deploy latest commit**.
-Content (texts, slides, charts, materials) is baked into the image, so every content
-change needs a push and a redeploy. Pin the exact commit you show to judges.
+### Automatic deploys
+
+Aiven Runtime does not deploy on push by itself. `.github/workflows/deploy.yml` runs the tests
+on every push to `main` and then calls the Aiven API endpoint behind the console's
+**Deploy latest commit** button. It needs one repository secret, `AIVEN_TOKEN`:
+
+1. Aiven Console → user menu (top right) → **Tokens** → Generate token. Give it a description
+   (`github deploy junction2026-presentation`) and a session duration that covers the event.
+2. Store it without showing it: `gh secret set AIVEN_TOKEN -R madviking/junction2026-presentation`
+   and paste the token at the prompt.
+
+Manual fallback: Runtime → `site` → **Deploy latest commit**, or GitHub → Actions → deploy →
+Run workflow.
+
+Content (texts, slides, charts, materials) is baked into the image, so a content change goes
+live with the deploy that follows its push (a few minutes). Before judging, stop pushing
+changes you have not checked: whatever is on `main` is what judges see.
 
 ## Host on any Docker host
 

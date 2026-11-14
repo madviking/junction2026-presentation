@@ -1,0 +1,64 @@
+# Test, then redeploy the site on Aiven Runtime, on every push to main.
+# Aiven Runtime does not deploy on push by itself, so this calls the same endpoint as the
+# console's "Deploy latest commit" button. Needs the repository secret AIVEN_TOKEN
+# (an Aiven API token; see README "Automatic deploys").
+name: deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  AIVEN_PROJECT: appzio-d111
+  AIVEN_SERVICE: site
+  SITE_URL: https://mostly-awaited-flounder.eur-1.aiven.app
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - uses: actions/setup-python@v5.3.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+      - run: pip install -r requirements-dev.txt
+      - run: python -m pytest -q
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Redeploy on Aiven Runtime
+        env:
+          AIVEN_TOKEN: ${{ secrets.AIVEN_TOKEN }}
+        run: |
+          if [ -z "$AIVEN_TOKEN" ]; then
+            echo "::error::Repository secret AIVEN_TOKEN is not set; see README 'Automatic deploys'."
+            exit 1
+          fi
+          status=$(curl -sS -o response.txt -w '%{http_code}' -X POST \
+            -H "Authorization: aivenv1 $AIVEN_TOKEN" \
+            "https://api.aiven.io/v1/project/$AIVEN_PROJECT/service/$AIVEN_SERVICE/application/redeploy")
+          echo "Aiven answered HTTP $status"
+          if [ "$status" -ge 300 ]; then cat response.txt; exit 1; fi
+
+      - name: Check the site still answers
+        run: |
+          # The old version keeps serving while the new one builds; this only catches a broken site.
+          for i in $(seq 1 30); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 "$SITE_URL/healthz" || true)
+            if [ "$code" = "200" ]; then echo "healthz 200"; exit 0; fi
+            sleep 10
+          done
+          echo "::error::$SITE_URL/healthz did not answer 200"
+          exit 1

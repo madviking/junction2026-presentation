@@ -67,8 +67,8 @@ Port 8400. `APP_ENV=local` leaves `/team` open without a password; any other val
 fails closed (503) until `TEAM_PASSWORD` is set. Link URLs in `site.yaml` can be
 overridden per deployment with `SILTA_<KEY>_URL` (e.g. `SILTA_CONSUMER_URL`).
 
-Hosted on Aiven Runtime from `compose.aiven.yaml` (steps in `README.md`). Pushing to
-`main` does not redeploy; redeploy by hand in the Aiven Console. Changing the Runtime
+Hosted on Aiven Runtime from `compose.aiven.yaml` (steps in `README.md`). Every push to
+`main` runs the tests and redeploys through `.github/workflows/deploy.yml` (secret `AIVEN_TOKEN`). Changing the Runtime
 application, its variables or any Aiven service needs the user's approval.
 
 ## Rules
