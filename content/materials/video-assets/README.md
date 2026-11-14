@@ -35,16 +35,20 @@ points". Update the voice-over in `../video-strategy.html` to match.
 Some of the video footage, including footage with a person in it, was generated with the video
 generation in Google AI Studio (team, 14 Nov). The person is generated, not a real resident or
 clinician; Hodan is a composite. The clips are in `generated/` (1280×720, 24 fps, sound muted in
-the edit):
+the edit; Olga's clips are 1920×1080):
 
 | File | Shot | Length | Place in the cut |
 | --- | --- | --- | --- |
 | `generated/hodan-01-opening-the-letter.mp4` | Hodan in her kitchen opens the envelope | 15 s | 0:00, before `01-questions` |
 | `generated/hodan-02-reading-the-letter.mp4` | She reads the Finnish letter, unsure | 10 s | right after, before `01-questions` |
+| `generated/olga-01-she-notices.mp4` | Olga at the wardrobe mirror, her hand over her chest (prompt shot 1) | 8 s | 1:15, opens the Olga beat (optional) |
+| `generated/olga-02-who-to-call.mp4` | At the kitchen table with her phone, unsure (shot 2) | 8 s | 1:15 |
+| `generated/olga-03-the-call.mp4` | On the phone by the window, reading from the tablet (shot 4) | 8 s | 1:20 (optional) |
+| `generated/olga-04-at-the-visit.mp4` | She shows her phone to a female doctor (shot 5) | 8 s | 1:25; lay `olga-summary-fi.png` over the phone if its screen shows |
 
 Both show brand packaging in the background (a coffee packet and mugs); crop or blur them if they
 draw the eye. Still to add: the prompts used, so the Gemini partner page
-(`content/tech-challenges/gemini.md`) can point to them. Olga's prompts are in `../video-prompts-olga.md`.
+(`content/tech-challenges/gemini.md`) can point to them. Olga's prompts are in `../video-prompts-olga.md`; shot 3 (she taps the phone) is not generated yet.
 - `../video-storylines.md` ("Generative AI: where it helps and where it doesn't") rules out generated faces of patients or nurses and
   a synthetic speaker presented as a person. If a generated person stays in the cut, say on screen
   or on the end card that the footage is AI-generated.
