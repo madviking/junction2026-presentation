@@ -1,0 +1,20 @@
+# Production-like: the image with content baked in. Hosting uses this file.
+#   docker compose up -d --build
+# Local editing (content/ and app/ mounted, auto-reload): `make up` adds compose.dev.yaml.
+name: silta-site
+
+services:
+  site:
+    build: .
+    image: silta-site:latest
+    environment:
+      APP_ENV: ${APP_ENV:-production}
+      TEAM_PASSWORD: ${TEAM_PASSWORD:-}
+      SILTA_CONSUMER_URL: ${SILTA_CONSUMER_URL:-}
+      SILTA_COUNTY_URL: ${SILTA_COUNTY_URL:-}
+      SILTA_ADMIN_URL: ${SILTA_ADMIN_URL:-}
+      SILTA_SITE_URL: ${SILTA_SITE_URL:-}
+      PORT: ${PORT:-8400}
+    ports:
+      - "${SITE_BIND:-127.0.0.1}:${SITE_PORT:-8400}:${PORT:-8400}"
+    restart: unless-stopped

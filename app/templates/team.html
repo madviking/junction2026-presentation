@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Team materials — {{ site.name }}{% endblock %}
+{% block body %}
+<main class="page-body">
+  <div class="container-xl">
+    <div class="silta-page-head">
+      <p class="silta-eyebrow"><i class="ti ti-lock"></i> Team only</p>
+      <h1 class="page-title">Shared materials</h1>
+      <p class="text-secondary silta-lede">Everything the team and our agents make lands here: drop files into <code>content/materials/</code>. Newest first.</p>
+    </div>
+    {% if tags %}
+    <div class="silta-filters mb-3" role="group" aria-label="Filter by tag">
+      <button type="button" class="btn btn-sm active" data-tag="">All</button>
+      {% for t in tags %}<button type="button" class="btn btn-sm" data-tag="{{ t }}">{{ t }}</button>{% endfor %}
+    </div>
+    {% endif %}
+    <div class="card">
+      <div class="list-group list-group-flush">
+        {% for item in items %}
+        {% set href = item.url if item.kind == "link" else "/team/m/" ~ item.path %}
+        <div class="list-group-item silta-material" data-tags="{{ item.tags | join(' ') }}">
+          <div class="row align-items-center g-3">
+            <div class="col-auto"><span class="avatar silta-kind"><i class="ti ti-{{ item.icon }}"></i></span></div>
+            <div class="col text-truncate">
+              <a class="silta-material-title" href="{{ href }}"{% if item.kind in ("html", "link", "pdf") %} target="_blank" rel="noopener"{% endif %}>{{ item.title }}</a>
+              <div class="text-secondary text-truncate">{{ item.description or item.path or item.url }}</div>
+            </div>
+            <div class="col-auto d-none d-md-flex gap-1">
+              {% for t in item.tags %}<span class="badge bg-secondary-lt">{{ t }}</span>{% endfor %}
+            </div>
+            <div class="col-auto silta-src">{{ item.updated }}</div>
+            {% if item.kind != "link" %}
+            <div class="col-auto"><a class="btn btn-sm btn-icon btn-ghost-secondary" href="/team/m/{{ item.path }}?download=1" aria-label="Download {{ item.title }}"><i class="ti ti-download"></i></a></div>
+            {% endif %}
+          </div>
+        </div>
+        {% else %}
+        <div class="list-group-item text-secondary">Nothing here yet. Add files to <code>content/materials/</code>.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
+{% block scripts %}
+<script>
+  document.querySelectorAll("[data-tag]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var tag = btn.dataset.tag;
+      document.querySelectorAll("[data-tag]").forEach(function (b) { b.classList.toggle("active", b === btn); });
+      document.querySelectorAll(".silta-material").forEach(function (row) {
+        row.hidden = tag !== "" && row.dataset.tags.split(" ").indexOf(tag) === -1;
+      });
+    });
+  });
+</script>
+{% endblock %}

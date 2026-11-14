@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ item.title }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+  <link rel="stylesheet" href="/static/print.css">
+</head>
+<body class="layout-{{ item.meta.layout or 'page' }}">
+  <nav class="toolbar">
+    <a href="/printouts">← Printouts</a>
+    <button type="button" onclick="window.print()">Print / Save as PDF</button>
+  </nav>
+  <article class="sheet">
+    <div class="sheet-body">{{ body | safe }}</div>
+    {% if qr %}
+    <aside class="sheet-qr">
+      {{ qr }}
+      <p>{{ qr_url }}</p>
+    </aside>
+    {% endif %}
+  </article>
+</body>
+</html>

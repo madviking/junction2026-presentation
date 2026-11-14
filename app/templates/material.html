@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}{{ item.title }} — {{ site.name }}{% endblock %}
+{% block body %}
+<main class="page-body">
+  <div class="container-xl silta-narrow">
+    <p class="silta-eyebrow"><a href="/team"><i class="ti ti-arrow-left"></i> Shared materials</a></p>
+    <div class="card">
+      <div class="card-body silta-prose">
+        <p class="silta-src">{{ item.path }} · {{ item.updated }}{% if item.author %} · {{ item.author }}{% endif %}</p>
+        {{ body | safe }}
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

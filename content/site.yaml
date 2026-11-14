@@ -1,0 +1,72 @@
+# Site-wide settings. Edit freely; changes show on reload (no rebuild needed with `make up`).
+# Links can be overridden per deployment with env vars: SILTA_<KEY>_URL (e.g. SILTA_CONSUMER_URL).
+
+name: Silta
+meaning: Finnish for “bridge”
+punchline: Helps language minorities in Finland act on possible cancer symptoms and use screening, in their own language.
+event: Junction 2026 · AstraZeneca — Equal Care Across Finland
+
+hero_image: /media/screens/01-language-picker.png
+
+facts:
+  - value: "646,392"
+    label: people in Finland speak a language other than Finnish, Swedish or Sámi — 11.4% of the population (2025).
+    source: Statistics Finland, table 11rm
+  - value: "60.8%"
+    label: of invitees whose native language is not Finnish, Swedish or Sámi attended breast screening in 2024, against 83.2% of everyone else.
+    source: Finnish Cancer Registry
+  - value: "+4.3 pp"
+    label: The cervical screening gap grew from 15.6 to 19.9 points between 2020 and 2024.
+    source: Finnish Cancer Registry
+  - value: "45.1%"
+    label: breast screening attendance among women born in Africa, against 83.1% for women born in Finland (2024).
+    source: Finnish Cancer Registry
+
+# Keys are used by printouts (`qr: consumer`) and the "Try the app" page.
+links:
+  consumer:
+    label: Silta for residents
+    url: http://localhost:5300/
+    description: The mobile web app. Pick a language, describe what you noticed, find the right door.
+    icon: device-mobile
+  county:
+    label: County view
+    url: http://localhost:5300/county/helsinki
+    description: Public figures and anonymous counts by stage, outcome and language.
+    icon: map-2
+  admin:
+    label: Admin
+    url: http://localhost:5300/admin
+    description: Edit and publish texts, approve audio, usage and audit. Test users are in the password manager.
+    icon: settings
+  source:
+    label: Source code
+    url: https://github.com/madviking/junction2026tech
+    description: Encore.ts backend, React + Mantine frontend, PostgreSQL with pgvector on Aiven.
+    icon: brand-github
+  site:
+    label: This site
+    url: http://localhost:8400/
+    description: Landing page, data, deck and video.
+    icon: world
+
+# YouTube, Vimeo or a direct .mp4 URL. Leave empty until the video is up.
+video:
+  url: ""
+  caption: Pitch video, under 2 minutes.
+
+challenges:
+  - AstraZeneca — Equal Care Across Finland
+  - Aiven — Best use of Aiven
+  - MLH — Best use of ElevenLabs
+  - Google DeepMind — Best use of the Gemini API
+
+technologies: [Encore.ts, React, Mantine, PostgreSQL + pgvector on Aiven, Google Gemini API, ElevenLabs]
+
+team:
+  - name: Timo Railo
+    role: Product, architecture, pitch
+  - name: Mea Railo
+    role: Backend, data
+  - name: Milla Railo
+    role: UX, design, video, data storytelling

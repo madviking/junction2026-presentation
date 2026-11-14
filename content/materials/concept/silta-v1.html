@@ -1,0 +1,373 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Silta concept v1</title>
+<meta name="description" content="First concept page: journey, privacy model, voice coverage and flash cards.">
+<meta name="tags" content="concept">
+<meta name="updated" content="2026-11-13">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: a concept brief that walks the bridge — who it serves, six steps across, the privacy model, voice coverage, how people find it, and what is still missing. Lake blue = Silta, coral = gaps and decisions, birch white ground. */
+:root {
+  --bg: #f6f7f5;
+  --surface: #ffffff;
+  --sunken: #ebeee9;
+  --ink: #142028;
+  --muted: #56636b;
+  --line: #d6ddd8;
+  --lake: #1d5f8a;
+  --lake-soft: #dcebf5;
+  --coral: #c2512f;
+  --coral-soft: #fae4dc;
+  --moss: #3b7a4a;
+  --moss-soft: #e0efe3;
+  --gold: #8a6400;
+  --gold-soft: #f5ead0;
+  --font-display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Atkinson Hyperlegible", Verdana, system-ui, sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1619; --surface: #162026; --sunken: #1c2930; --ink: #e5ecef; --muted: #98a7ae; --line: #27363d;
+    --lake: #7cbbe6; --lake-soft: #18323f; --coral: #f08f6c; --coral-soft: #3a2119; --moss: #7fcf92; --moss-soft: #183022; --gold: #e7c15c; --gold-soft: #352b12;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1619; --surface: #162026; --sunken: #1c2930; --ink: #e5ecef; --muted: #98a7ae; --line: #27363d;
+  --lake: #7cbbe6; --lake-soft: #18323f; --coral: #f08f6c; --coral-soft: #3a2119; --moss: #7fcf92; --moss-soft: #183022; --gold: #e7c15c; --gold-soft: #352b12;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 32px 80px;
+}
+.wrap { max-width: 1100px; margin: 0 auto; display: grid; gap: 56px; }
+h1, h2, h3 { font-family: var(--font-display); margin: 0; text-wrap: balance; letter-spacing: -0.015em; }
+h1 { font-size: clamp(56px, 11vw, 120px); line-height: 0.9; font-weight: 800; color: var(--lake); }
+h2 { font-size: clamp(24px, 3.2vw, 32px); font-weight: 800; line-height: 1.12; }
+h3 { font-size: 18.5px; font-weight: 600; line-height: 1.25; }
+p { margin: 0; }
+a { color: var(--lake); text-underline-offset: 2px; }
+ul { margin: 0; padding-left: 20px; display: grid; gap: 5px; }
+.eyebrow { font: 600 12px var(--font-data); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.lede { color: var(--muted); max-width: 66ch; font-size: 17.5px; }
+.num { font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+section { display: grid; gap: 20px; }
+.head { display: grid; gap: 8px; }
+button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid var(--lake); outline-offset: 2px; }
+
+/* hero */
+.hero { display: grid; gap: 22px; }
+.hero .meaning { font: 600 13px var(--font-data); color: var(--muted); letter-spacing: 0.05em; }
+.hero .claim { font-family: var(--font-display); font-weight: 600; font-size: clamp(22px, 3.4vw, 32px); line-height: 1.2; max-width: 30ch; }
+.principles { display: flex; flex-wrap: wrap; gap: 8px; }
+.principles span { font: 700 14px var(--font-body); padding: 7px 13px; border-radius: 999px; background: var(--lake-soft); color: var(--lake); }
+.principles span.c { background: var(--coral-soft); color: var(--coral); }
+
+/* bridge */
+.bridge { position: relative; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; padding-top: 30px; }
+.bridge::before { content: ""; position: absolute; left: 4%; right: 4%; top: 8px; height: 22px; border: 3px solid var(--lake); border-bottom: none; border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
+.pier { background: var(--surface); border: 1px solid var(--line); border-top: 4px solid var(--lake); border-radius: 10px; padding: 14px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.pier.doc { border-top-color: var(--moss); }
+.pier .n { font: 600 12px var(--font-data); color: var(--lake); }
+.pier.doc .n { color: var(--moss); }
+.pier h3 { font-size: 17px; }
+.pier p { font-size: 14px; color: var(--muted); }
+.pier ul { font-size: 13.5px; padding-left: 16px; }
+.pier .ai { font-size: 12.5px; background: var(--sunken); border-radius: 6px; padding: 6px 8px; }
+@media (max-width: 960px) { .bridge { grid-template-columns: repeat(3, minmax(0, 1fr)); } .bridge::before { display: none; } .bridge { padding-top: 0; } }
+@media (max-width: 560px) { .bridge { grid-template-columns: 1fr; } }
+
+.who { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; }
+.who > div { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 4px; align-content: start; }
+.who > div.primary { border-color: var(--lake); background: var(--lake-soft); }
+.who b { font-size: 16px; }
+.who span { font-size: 14px; color: var(--muted); }
+
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; }
+.box { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.box ul { font-size: 15px; }
+.code { font: 600 clamp(22px, 4vw, 30px) var(--font-data); letter-spacing: 0.06em; color: var(--lake); background: var(--lake-soft); border-radius: 10px; padding: 12px 16px; text-align: center; }
+.flow { display: grid; gap: 6px; font-size: 14.5px; }
+.flow div { display: grid; grid-template-columns: 26px 1fr; gap: 8px; }
+.flow div b { font: 600 13px var(--font-data); color: var(--lake); }
+
+.tbl { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow-x: auto; }
+.tbl table { width: 100%; border-collapse: collapse; min-width: 720px; font-size: 14.5px; }
+.tbl th, .tbl td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.tbl th { font: 600 12px var(--font-data); letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+.tbl tr:last-child td { border-bottom: none; }
+.lv { font: 600 12px var(--font-data); padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.lv.ex { background: var(--moss-soft); color: var(--moss); }
+.lv.hi { background: var(--lake-soft); color: var(--lake); }
+.lv.gd { background: var(--gold-soft); color: var(--gold); }
+.lv.md { background: var(--coral-soft); color: var(--coral); }
+.lv.no { background: var(--sunken); color: var(--muted); }
+
+.disc { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.disc .box h3 { color: var(--lake); }
+.disc .box li b { color: var(--ink); }
+
+/* gaps */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.chip { font: 700 14px var(--font-body); color: var(--ink); background: var(--surface); border: 1.5px solid var(--line); border-radius: 999px; padding: 6px 13px; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--coral); border-color: var(--coral); color: var(--surface); }
+.gaps { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
+.gap { background: var(--surface); border: 1px solid var(--line); border-left: 5px solid var(--coral); border-radius: 10px; padding: 14px 16px; display: grid; gap: 8px; align-content: start; }
+.gap.pilot { border-left-color: var(--gold); }
+.gap.later { border-left-color: var(--line); }
+.gap-top { display: flex; justify-content: space-between; gap: 10px; align-items: start; }
+.gap h3 { font-size: 16.5px; }
+.gap p { font-size: 14.5px; color: var(--muted); }
+.gap .fix { font-size: 14px; color: var(--ink); }
+.gap .fix b { color: var(--coral); }
+.gap.pilot .fix b { color: var(--gold); }
+.prio { font: 600 11px var(--font-data); padding: 2px 8px; border-radius: 999px; white-space: nowrap; background: var(--coral-soft); color: var(--coral); }
+.gap.pilot .prio { background: var(--gold-soft); color: var(--gold); }
+.gap.later .prio { background: var(--sunken); color: var(--muted); }
+.done { display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--muted); cursor: pointer; }
+.done input { width: 16px; height: 16px; accent-color: var(--moss); }
+.gap.is-done { opacity: 0.55; }
+
+.research { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 4px; }
+</style>
+
+<div class="wrap">
+  <header class="hero">
+    <span class="eyebrow">Junction 2026 · team 3rdGen · AstraZeneca · Equal Care Across Finland</span>
+    <h1>Silta</h1>
+    <span class="meaning">silta (Finnish) = bridge</span>
+    <p class="claim">From “something feels wrong” to the right care in Finland, in your own language.</p>
+    <p class="lede">Built first for people who don't speak Finnish well, and useful for anyone who finds the health system hard to navigate. Silta helps people find services, prepare for a visit, understand the path through care, and be understood by the doctor. It helps clinicians get a clearer, faster visit, and gives counties a view of where language minorities fall out of the pathway.</p>
+    <div class="principles">
+      <span>Your language, by voice, tap or typing</span>
+      <span>No names: an individual code</span>
+      <span>Routes to real Finnish services</span>
+      <span>Flash cards where voice AI is weak</span>
+      <span class="c">Not a diagnosis tool</span>
+    </div>
+  </header>
+
+  <section aria-labelledby="who-h">
+    <div class="head"><span class="eyebrow">Who it serves</span><h2 id="who-h">Language minorities first, everyone welcome</h2></div>
+    <div class="who">
+      <div class="primary"><b>Language minorities</b><span>646,392 people (11.4%) speak a language other than Finnish, Swedish or Sámi. Largest: Russian, Estonian, Ukrainian, Arabic, English, Somali, Persian.</span></div>
+      <div><b>People with low health literacy</b><span>Including Finnish speakers who struggle with forms, phone queues and medical words.</span></div>
+      <div><b>Older people and people with disabilities</b><span>Large text, audio, simple steps, works without an account.</span></div>
+      <div><b>Newcomers to Finland or a new region</b><span>Who to call, what it costs, what happens next, depending on residence status and county.</span></div>
+      <div><b>Family helpers and community workers</b><span>Helping someone else is common; Silta should make that easy and private.</span></div>
+      <div><b>Clinicians and counties</b><span>A prepared, structured visit; and a county view of gaps and actions.</span></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="journey-h">
+    <div class="head"><span class="eyebrow">The six goals, as one journey</span><h2 id="journey-h">Across the bridge</h2>
+      <p class="lede">Each step lists what the person gets and where AI helps. The sixth step is the clinician's side of the same visit.</p></div>
+    <div class="bridge">
+      <article class="pier"><span class="n">1 · FIND</span><h3>Service information in my language</h3><p>Plain-language answers about symptoms, screening, services and rights.</p><ul><li>Search or ask in your language</li><li>Every answer cites a Finnish public source</li><li>Read aloud for low literacy</li></ul><div class="ai">AI: grounded answers over a vetted corpus; translation with a checked phrase library</div></article>
+      <article class="pier"><span class="n">2 · PREPARE</span><h3>Get ready for the visit</h3><p>Describe what's happening by speaking, tapping pictures or writing.</p><ul><li>Body map and symptom checklist (not a diagnosis)</li><li>Since when, getting worse, other signs</li><li>Preferences: female clinician, interpreter, comfort with a cervical sample</li></ul><div class="ai">AI: speech-to-text, structuring free text into the checklist, read-back to confirm</div></article>
+      <article class="pier"><span class="n">3 · NAVIGATE</span><h3>Who to contact, in my region</h3><p>The right door for your county and situation, and what to expect.</p><ul><li>Health centre, occupational health, 116117, 112</li><li>Finnish call script to read aloud or show</li><li>How to ask for a free interpreter; costs and fees</li></ul><div class="ai">AI: picks the path from county + situation; generates the Finnish script</div></article>
+      <article class="pier"><span class="n">4 · AT THE VISIT</span><h3>Be understood</h3><p>Flash cards to point at when words fail, alongside an interpreter.</p><ul><li>Cards for symptoms, pain scale, duration, body parts</li><li>Each card shows Finnish and your language</li><li>Show the prepared visit card by QR</li></ul><div class="ai">AI: none needed live; cards are pre-translated and checked</div></article>
+      <article class="pier"><span class="n">5 · AFTER</span><h3>Know what happens next</h3><p>What the doctor said, in your language, and when to expect what.</p><ul><li>Referral, tests, results in OmaKanta</li><li>Typical and legal waiting times</li><li>When and how to chase if nothing arrives</li></ul><div class="ai">AI: plain-language explanation of what you type or say the doctor told you</div></article>
+      <article class="pier doc"><span class="n">6 · FOR THE CLINICIAN</span><h3>A prepared, structured visit</h3><p>A one-screen Finnish summary the patient brings.</p><ul><li>Symptoms already marked, in Finnish</li><li>Preferences known in advance</li><li>Prompts: tests to consider; overdue screening → offer a self-sampling kit</li></ul><div class="ai">AI: Finnish summary with back-translation; prompts from rules, not the model</div></article>
+    </div>
+  </section>
+
+  <section aria-labelledby="privacy-h">
+    <div class="head"><span class="eyebrow">Privacy model</span><h2 id="privacy-h">An individual code instead of an identity</h2>
+      <p class="lede">Silta never asks for a name, personal identity code, phone number or email. Health information is stored only against a random code that the person holds.</p></div>
+    <div class="two">
+      <div class="box">
+        <div class="code" aria-label="Example individual code">SLT · 7K3Q · 9PXM</div>
+        <div class="flow">
+          <div><b>1</b><span>The app creates a random code on the phone. No sign-up.</span></div>
+          <div><b>2</b><span>The person prepares the visit; answers are saved against the code, encrypted.</span></div>
+          <div><b>3</b><span>At the visit they show the code or a QR; the clinician opens a read-only Finnish summary.</span></div>
+          <div><b>4</b><span>The data deletes itself after a set time (for example 90 days), or at once on request.</span></div>
+        </div>
+      </div>
+      <div class="box">
+        <h3>What still has to be true</h3>
+        <ul>
+          <li>Pseudonymous health data can still be personal data under GDPR if it can be linked to a person, so a data protection impact assessment and a clear data controller (the county, in a pilot) are needed.</li>
+          <li>Voice audio goes to ElevenLabs for transcription: process and discard it, never store recordings, and check ElevenLabs' data-processing and retention terms.</li>
+          <li>Losing the code means losing the data, by design. Offer a printable card with the code.</li>
+          <li>Analytics are anonymous counts only (language, county, step reached).</li>
+          <li>A quick-exit button and no history on shared phones, for people whose phone is checked by others.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="voice-h">
+    <div class="head"><span class="eyebrow">ElevenLabs coverage, checked 13 Nov 2026</span><h2 id="voice-h">Voice works well for some languages, not all</h2>
+      <p class="lede">Speech-to-text accuracy tiers are from ElevenLabs' Scribe documentation; text-to-speech from its model language lists. Where voice is weak, Silta has to work by tapping first.</p></div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Language</th><th>Speakers in Finland</th><th>Speech-to-text</th><th>Text-to-speech</th><th>Design consequence</th></tr></thead>
+        <tbody>
+          <tr><td>Russian</td><td class="num">102,618</td><td><span class="lv ex">Excellent</span></td><td><span class="lv ex">All models</span></td><td>Full voice flow</td></tr>
+          <tr><td>Estonian</td><td class="num">48,495</td><td><span class="lv ex">Excellent</span></td><td><span class="lv hi">Eleven v3 only</span></td><td>Full voice flow on v3</td></tr>
+          <tr><td>Ukrainian</td><td class="num">46,696</td><td><span class="lv ex">Excellent</span></td><td><span class="lv ex">All models</span></td><td>Full voice flow</td></tr>
+          <tr><td>Arabic</td><td class="num">44,956</td><td><span class="lv gd">Good</span></td><td><span class="lv ex">All models</span></td><td>Voice plus read-back confirmation; right-to-left layout</td></tr>
+          <tr><td>Somali</td><td class="num">28,167</td><td><span class="lv md">Moderate</span></td><td><span class="lv hi">Eleven v3 only</span></td><td><b>Flash-card flow</b> with native-speaker-checked phrases and human-recorded audio</td></tr>
+          <tr><td>Persian (Farsi)</td><td class="num">24,047</td><td><span class="lv hi">High</span></td><td><span class="lv hi">Eleven v3 only</span></td><td>Voice on v3; right-to-left layout</td></tr>
+          <tr><td>Chinese (Mandarin)</td><td class="num">20,320</td><td><span class="lv hi">High</span></td><td><span class="lv ex">All models</span></td><td>Full voice flow</td></tr>
+          <tr><td>Albanian</td><td class="num">19,600</td><td><span class="lv no">Not listed</span></td><td><span class="lv no">None</span></td><td>Text and pictures; pre-recorded audio for key phrases</td></tr>
+          <tr><td>Kurdish</td><td class="num">18,460</td><td><span class="lv md">Moderate</span></td><td><span class="lv no">None</span></td><td><b>Flash-card flow</b> with human-recorded audio; choose dialect (Sorani or Kurmanji)</td></tr>
+          <tr><td>Vietnamese</td><td class="num">17,682</td><td><span class="lv ex">Excellent</span></td><td><span class="lv hi">v3 and Flash</span></td><td>Full voice flow</td></tr>
+          <tr><td>Turkish</td><td class="num">13,790</td><td><span class="lv ex">Excellent</span></td><td><span class="lv ex">All models</span></td><td>Full voice flow</td></tr>
+          <tr><td>Finnish, Swedish, English</td><td class="num">–</td><td><span class="lv ex">Excellent</span></td><td><span class="lv ex">All models</span></td><td>Clinician side and everyone else</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="eyebrow" style="text-transform:none;letter-spacing:0">Moderate = 25–50% word error rate in ElevenLabs' own tiers. Language counts: Statistics Finland 2025.</p>
+    <div class="two">
+      <div class="box" style="border-color:var(--lake);background:var(--lake-soft)">
+        <span class="eyebrow">Our edge</span>
+        <h3>Cards first where voice AI is weak</h3>
+        <p>For Somali and Kurdish, Silta does not try to make poor speech recognition and synthetic voices work. It uses a simplified flash-card flow: pictures, a body map and short phrases, each card checked by a native speaker and paired with audio recorded by a human voice. The person taps; the card shows Finnish to the clinician and their own language to them.</p>
+        <p>The same cards power the visit-preparation checklist and the in-visit communication, so one checked phrase set does both jobs. These are also the languages where the screening gap is largest: women born in Africa attend cervical screening at 46%, and Somali-background women at 19% in an earlier study.</p>
+      </div>
+      <div class="box">
+        <h3>Why this is stronger</h3>
+        <ul>
+          <li>No transcription errors to catch: the person picks the meaning, so nothing is misheard.</li>
+          <li>No machine-translation risk in clinical terms: every phrase is fixed and reviewed.</li>
+          <li>Works for low literacy: pictures plus a human voice reading the card.</li>
+          <li>Works offline and on old phones once the cards are cached.</li>
+          <li>Extends to Albanian, Tigrinya, Dari and others with no ElevenLabs support at all: record the phrases once, reuse them everywhere.</li>
+          <li>Voice stays available for languages where it is excellent (Russian, Ukrainian, Estonian, Turkish, Vietnamese).</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="disc-h">
+    <div class="head"><span class="eyebrow">Discoverability</span><h2 id="disc-h">How people find Silta when they need it</h2>
+      <p class="lede">The best tool is useless if nobody finds it at the moment of worry. Search matters, but the strongest channels are places people already trust.</p></div>
+    <div class="disc">
+      <div class="box"><h3>Search, in the user's language</h3><ul>
+        <li><b>One page per question, language and region:</b> “lump in breast what to do Helsinki” written in Somali, Arabic, Russian, with real native wording, not translated keywords.</li>
+        <li><b>Answer the exact questions</b> people type: how to see a doctor, is an interpreter free, what does a referral mean.</li>
+        <li><b>Technical basics:</b> hreflang per language, structured data (MedicalWebPage, FAQPage, HowTo), fast pages that work on old phones.</li>
+        <li><b>Free search ads:</b> if Silta is run by a non-profit, Google's Ad Grants programme gives free search advertising.</li>
+      </ul></div>
+      <div class="box"><h3>AI assistants and voice search</h3><ul>
+        <li><b>Be the source AI cites:</b> clear, structured, openly licensed pages with sources, so ChatGPT, Gemini and others point people to Silta.</li>
+        <li><b>A machine-readable summary</b> (llms.txt) and a public content API.</li>
+        <li><b>Voice-search phrasing:</b> people with low literacy ask by voice, in full sentences.</li>
+      </ul></div>
+      <div class="box"><h3>Official touchpoints</h3><ul>
+        <li><b>A QR code in screening invitation letters</b> and reminders, leading to Silta in the person's language.</li>
+        <li><b>Links from county websites</b> (Länsi-Uusimaa already translates its site into 11 languages), Infopankki, Omaolo and the 116117 waiting message.</li>
+        <li><b>Posters in waiting rooms,</b> maternity and child clinics, pharmacies, reception centres.</li>
+        <li><b>Welcome packs:</b> Kela, Migri, integration training and Finnish language courses.</li>
+      </ul></div>
+      <div class="box"><h3>Communities and word of mouth</h3><ul>
+        <li><b>Community organisations,</b> mosques, churches and cultural associations; trained health ambassadors.</li>
+        <li><b>Messaging groups</b> people already use (WhatsApp, Telegram, Viber): a shareable card per topic.</li>
+        <li><b>Media in their languages:</b> Yle's news in Arabic, Somali, Russian and Ukrainian, community radio, short videos.</li>
+        <li><b>“Help someone else” mode,</b> so the family member who usually translates brings Silta along.</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="gaps-h">
+    <div class="head"><span class="eyebrow">What is missing</span><h2 id="gaps-h">Gaps in the concept</h2>
+      <p class="lede">Sorted by when they matter. Red: decide or fix before the demo on Sunday. Gold: needed before a real pilot. Grey: later. Ticks are saved in your own browser only.</p></div>
+    <div class="filters" role="group" aria-label="Filter gaps">
+      <button class="chip" type="button" data-f="all" aria-pressed="true">All</button>
+      <button class="chip" type="button" data-f="demo" aria-pressed="false">Before demo</button>
+      <button class="chip" type="button" data-f="pilot" aria-pressed="false">Before pilot</button>
+      <button class="chip" type="button" data-f="later" aria-pressed="false">Later</button>
+    </div>
+    <div class="gaps" id="gaps"></div>
+  </section>
+
+  <section aria-labelledby="res-h">
+    <div class="head"><span class="eyebrow">Research backlog</span><h2 id="res-h">What we need to find out</h2></div>
+    <div class="research">
+      <div class="box"><h3>Service paths</h3><ul>
+        <li>For Helsinki and Länsi-Uusimaa first: health centre booking, phone numbers, opening hours, Maisa, Omaolo, 116117, emergency clinics. Source: the national service registry (PTV, open API) and county sites.</li>
+        <li>Separate paths by situation: resident with a home municipality, occupational health, students, EU citizens, Ukrainians under temporary protection and asylum seekers (reception centre health care), undocumented people (e.g. Global Clinic).</li>
+        <li>Screening paths: invitation, booking, self-sampling pilots (5 counties in 2026), follow-up after a positive result.</li>
+      </ul></div>
+      <div class="box"><h3>Waiting times</h3><ul>
+        <li>Primary care: share of non-urgent visits waiting over 7 days by county (THL Sotkanet 6411, 2025: 32.7–85.4%).</li>
+        <li>Legal limits: primary care (relaxed in 2025), specialist assessment within 3 weeks, treatment within 6 months; ministry recommendation 6 weeks from referral to treatment for cancer.</li>
+        <li>Screening follow-up delays by county (Cancer Registry, colonoscopy and colposcopy delay charts).</li>
+      </ul></div>
+      <div class="box"><h3>Bottlenecks</h3><ul>
+        <li>Getting a primary-care appointment; nurse first contact; repeat visits before diagnosis (a third needed 3 or more).</li>
+        <li>Interpreter availability and booking lead times; use of family members.</li>
+        <li>Results and letters in Finnish only; OmaKanta in Finnish, Swedish and English.</li>
+        <li>Cost barriers: client fees and no-show fees.</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Living concept for team 3rdGen. Built from the team's goals (Fri 13 Nov, late evening) and the research in the team knowledgebase (brain/ideas/silta.md and brain/sources).</p>
+    <p>ElevenLabs coverage: elevenlabs.io/docs/capabilities/speech-to-text and elevenlabs.io/docs/help-center/other/what-languages-do-you-support.</p>
+  </footer>
+</div>
+
+<script>
+const GAPS = [
+  { p: "demo", t: "The county view and a Goal 3 indicator", d: "All six goals face the patient or clinician. AstraZeneca's brief and judges score what a wellbeing services county can act on, and require a Goal 3 indicator.", f: "Add a seventh, county-facing screen: where language minorities fall out (screening gap, top languages), recommended actions, and cancer mortality by county as the Goal 3 indicator." },
+  { p: "demo", t: "Wording: a checklist, not screening", d: "“Screen for cancer symptoms” sounds like diagnosis and pulls the app towards medical-device rules.", f: "Call it a symptom checklist or visit preparation. Never show a risk score or tell a person how urgent their own symptoms are; always show emergency signs." },
+  { p: "demo", t: "Who you are decides where you go", d: "Eligibility and the right door depend on residence status: home municipality, occupational health, students, EU citizens, temporary protection, asylum seekers, undocumented people.", f: "Ask 2–3 simple questions at the start (region, work, status) and branch the navigation. Demo at least three paths." },
+  { p: "demo", t: "How the visit card reaches the doctor", d: "Doctors work in their own patient record system; nothing should need a login or an install on their side.", f: "QR code or short link opens a read-only, one-screen Finnish summary; also printable. Validate the layout with a GP or the oncology mentor." },
+  { p: "demo", t: "Demo scope", d: "Six goals, many languages and 22 counties will not fit in 36 hours.", f: "Pick one region (Helsinki), three symptom areas (breast lump, persistent cough, blood in stool), one screening path (cervical self-sampling), and 3–4 languages: Russian or Ukrainian with full voice, plus Somali (and Kurdish if time) on the flash-card flow to show the edge." },
+  { p: "demo", t: "Somali and Kurdish card content", d: "The flash-card edge only works if the cards are right: 30–50 short phrases, pictures and a body map, checked and voiced by native speakers.", f: "Write the phrase set in Finnish and English tonight; find Somali and Kurdish speakers at the venue on Saturday to check and record them; store them as a fixed, versioned set." },
+  { p: "demo", t: "Test with real users at the venue", d: "Nothing convinces judges like a quote from a real Somali or Arabic speaker who tried it.", f: "Find 2–3 native speakers at Junction on Saturday; record one sentence of feedback for the video." },
+  { p: "pilot", t: "Clinical content and translation quality", d: "Symptom wording, flash cards and summaries need medical review; machine translation is weakest exactly in Somali and Kurdish.", f: "A vetted phrase library per language, reviewed by clinicians and native-speaking health professionals, with version control and named owners." },
+  { p: "pilot", t: "The interpreter stays central", d: "Professional interpreters cut clinically important errors roughly in half compared with ad-hoc help. Silta must not become a reason to skip one.", f: "Every path shows the right to a free interpreter, helps book one, and positions the flash cards as a supplement." },
+  { p: "pilot", t: "Costs and fees", d: "Client fees, no-show fees and what is free (screening, interpreters) are real barriers and common worries.", f: "A short, per-county cost section in every path." },
+  { p: "pilot", t: "Sensitive preferences and safety", d: "Gender of clinician and interpreter, chaperones, trauma, and phones that others check.", f: "Preferences on the visit card; a quick-exit button; no visible history; links to crisis help." },
+  { p: "pilot", t: "Accessibility", d: "Right-to-left scripts (Arabic, Persian, Sorani Kurdish), low literacy, old phones and weak connections.", f: "WCAG 2.2 AA, icons and audio everywhere, a light installable web app that works offline for the flash cards." },
+  { p: "pilot", t: "Privacy and data controller", d: "The individual code helps, but a pilot still needs a controller, a data protection impact assessment, EU hosting and processor agreements (ElevenLabs, LLM).", f: "Run the pilot under the county as controller; publish a plain-language privacy page in every language." },
+  { p: "pilot", t: "After the visit: results and letters", d: "Results arrive in OmaKanta and letters in Finnish; people miss appointments because they cannot read them.", f: "Explain what a typical letter or result type means, and when to call if nothing has arrived; avoid interpreting individual results." },
+  { p: "later", t: "Helper mode", d: "Children and relatives often translate; community workers help many people.", f: "A mode for helping someone else, with consent and without mixing their data." },
+  { p: "later", t: "Measuring impact", d: "Without a baseline and anonymous metrics the pilot cannot show it works.", f: "Baseline: screening participation by language and county (we have it). Track anonymous funnel steps and, with the county, screening uptake and interpreter bookings." },
+  { p: "later", t: "Who pays and who owns it", d: "A tool like this needs a home after Junction.", f: "Counties as owners; roadmap action 1.3.1 funds multilingual screening communication (€400k, 2026–2028); NGOs as partners; AstraZeneca's follow-up project with a county." }
+];
+const state = { f: "all" };
+const store = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
+const done = store.get("silta-gaps-done", {});
+function render() {
+  const box = document.getElementById("gaps"); box.innerHTML = "";
+  GAPS.forEach((g, i) => {
+    if (state.f !== "all" && g.p !== state.f) return;
+    const card = document.createElement("article");
+    card.className = "gap " + (g.p === "demo" ? "" : g.p) + (done[i] ? " is-done" : "");
+    const top = document.createElement("div"); top.className = "gap-top";
+    const h = document.createElement("h3"); h.textContent = g.t;
+    const pr = document.createElement("span"); pr.className = "prio"; pr.textContent = g.p === "demo" ? "Before demo" : g.p === "pilot" ? "Before pilot" : "Later";
+    top.append(h, pr);
+    const d = document.createElement("p"); d.textContent = g.d;
+    const fx = document.createElement("p"); fx.className = "fix"; fx.innerHTML = "<b>Proposal:</b> "; fx.append(document.createTextNode(g.f));
+    const lab = document.createElement("label"); lab.className = "done"; lab.setAttribute("for", "gap-" + i);
+    const cb = document.createElement("input"); cb.type = "checkbox"; cb.id = "gap-" + i; cb.checked = !!done[i];
+    cb.addEventListener("change", () => { done[i] = cb.checked; store.set("silta-gaps-done", done); card.classList.toggle("is-done", cb.checked); });
+    lab.append(cb, document.createTextNode("Handled"));
+    card.append(top, d, fx, lab);
+    box.append(card);
+  });
+}
+document.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () => {
+  state.f = c.dataset.f;
+  document.querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", String(x === c)));
+  render();
+}));
+render();
+</script>
+
+</body></html>

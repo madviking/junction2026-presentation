@@ -1,0 +1,41 @@
+/* Silta deck theme for reveal.js (light; the deck is projected and exported to PDF). */
+:root {
+  --bg: #f6f7f5;
+  --ink: #142028;
+  --muted: #56636b;
+  --lake: #1d5f8a;
+  --lake-soft: #dcebf5;
+  --coral: #c2512f;
+  --font-display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Atkinson Hyperlegible", Verdana, system-ui, sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+html, body { background: var(--bg); color: var(--ink); }
+.reveal-viewport { background: var(--bg); }
+.reveal { font-family: var(--font-body); font-size: 34px; color: var(--ink); }
+.reveal .slides { text-align: left; }
+.reveal .slides section { padding: 0 24px; }
+.reveal h1, .reveal h2, .reveal h3 {
+  font-family: var(--font-display); font-weight: 800; letter-spacing: -0.015em;
+  line-height: 1.05; margin: 0 0 0.6em; text-wrap: balance;
+}
+.reveal h1 { font-size: 4.2em; color: var(--lake); }
+.reveal h2 { font-size: 1.7em; }
+.reveal p, .reveal li { line-height: 1.4; }
+.reveal ul, .reveal ol { margin-left: 1.1em; display: grid; gap: 0.45em; }
+.reveal strong { color: var(--coral); }
+.reveal a { color: var(--lake); }
+.reveal code { font-family: var(--font-data); }
+.reveal section.title p:last-of-type { font-family: var(--font-data); font-size: 0.6em; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
+.reveal section.statement { text-align: center; }
+.reveal section.statement h2 { font-size: 2.2em; color: var(--lake); }
+.reveal section.statement p:last-child { color: var(--muted); font-size: 0.8em; }
+.reveal .slide-number { background: transparent; color: var(--muted); font-family: var(--font-data); font-size: 14px; }
+.reveal .controls { color: var(--lake); }
+.reveal .progress { color: var(--lake); }
+.deck-home {
+  position: fixed; top: 14px; left: 18px; z-index: 30;
+  font: 600 14px var(--font-data); color: var(--muted); text-decoration: none;
+}
+.deck-home:hover, .deck-home:focus-visible { color: var(--lake); }
+@media print { .deck-home { display: none; } }

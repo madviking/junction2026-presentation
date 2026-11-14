@@ -1,0 +1,32 @@
+# Team artefacts that live elsewhere (claude.ai Artifacts, Google Docs, Figma, ...).
+# Prefer putting the file itself in content/materials/; list a link here only when it cannot live in git.
+- title: Silta concept (claude.ai)
+  url: https://claude.ai/artifact/JuFEEzGPvJLZzTcuM4byEc
+  description: Journey, privacy model, voice coverage and flash-card edge, discoverability, open gaps.
+  tags: [concept]
+  updated: 2026-11-13
+- title: Cancer warning signs (claude.ai)
+  url: https://claude.ai/artifact/XQzWzBgzdt1wuf9PApZ4UL
+  description: Plain-language signs of 20 cancers, when to act, symptom filter. Silta content draft.
+  tags: [content]
+  updated: 2026-11-13
+- title: AstraZeneca deep analysis (claude.ai)
+  url: https://claude.ai/artifact/S7b4WYSJiDuShM8Y8dcyiP
+  description: Goal 3, pathway gaps, 2024 county data with funnel and simulator, recommended build.
+  tags: [research, data]
+  updated: 2026-11-13
+- title: Decision board (claude.ai)
+  url: https://claude.ai/artifact/HUJnVebFNGy5tM4E7279mY
+  description: Scoreboard with adjustable weights, Tier A builds, open questions. Private until shared.
+  tags: [decisions]
+  updated: 2026-11-13
+- title: Team brain (GitHub)
+  url: https://github.com/madviking/junction2026
+  description: Knowledge base — event facts, partners, research, ideas, decisions, notes.
+  tags: [knowledge]
+  updated: 2026-11-14
+- title: Silta acquisition paths (claude.ai)
+  url: https://claude.ai/artifact/N9tJfjTggU2LawReju424F
+  description: How people find Silta. Three ways in, 15 channels with who has to say yes, evidence and strategy per channel. Same page as acquisition-paths.html. Shared with anyone who has the link.
+  tags: [acquisition, strategy]
+  updated: 2026-11-14

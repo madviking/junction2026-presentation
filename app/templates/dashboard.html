@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Data — {{ site.name }}{% endblock %}
+{% block body %}
+<main class="page-body">
+  <div class="container-xl">
+    <div class="silta-page-head">
+      <p class="silta-eyebrow">Data</p>
+      <h1 class="page-title">Who screening reaches in Finland</h1>
+      <p class="text-secondary silta-lede">Public statistics behind Silta. Hover a mark for the exact figure; open “Data table” under a chart for the numbers.</p>
+    </div>
+
+    <section class="silta-facts mb-4" aria-label="Key facts">
+      {% for fact in site.facts %}
+      <div class="card silta-fact">
+        <div class="card-body">
+          <div class="silta-fact-value">{{ fact.value }}</div>
+          <p class="silta-fact-label">{{ fact.label }}</p>
+          <p class="silta-src">{{ fact.source }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </section>
+
+    <div class="row row-cards">
+      {% for item in charts %}
+      {% set c = item.chart %}
+      <div class="{{ 'col-12' if c.wide else 'col-lg-6' }}">
+        <div class="card h-100" id="{{ c.id }}">
+          <div class="card-header flex-column align-items-start">
+            <h2 class="card-title">{{ c.title }}</h2>
+            {% if c.subtitle %}<p class="card-subtitle mt-1 mb-0">{{ c.subtitle }}</p>{% endif %}
+          </div>
+          <div class="card-body">
+            <div class="silta-chart" data-chart="{{ c.id }}" style="min-height: {{ c.height }}px" role="img" aria-label="{{ c.title }}"></div>
+            <script type="application/json" id="fig-{{ c.id }}">{"light": {{ item.figures.light | safe }}, "dark": {{ item.figures.dark | safe }}}</script>
+            <details class="silta-table mt-3">
+              <summary>Data table</summary>
+              <div class="table-responsive">
+                <table class="table table-sm table-vcenter mt-2">
+                  <thead><tr>{% for col in item.table.columns %}<th>{{ col }}</th>{% endfor %}</tr></thead>
+                  <tbody>{% for row in item.table.rows %}<tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>{% endfor %}</tbody>
+                </table>
+              </div>
+            </details>
+          </div>
+          {% if c.source %}<div class="card-footer silta-src">Source: {{ c.source }}</div>{% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</main>
+{% endblock %}
+{% block scripts %}
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+<script>
+  (function () {
+    var config = {displaylogo: false, responsive: true, modeBarButtonsToRemove: ["lasso2d", "select2d"]};
+    function theme() { return document.documentElement.getAttribute("data-bs-theme") === "dark" ? "dark" : "light"; }
+    function draw() {
+      document.querySelectorAll("[data-chart]").forEach(function (el) {
+        var figs = JSON.parse(document.getElementById("fig-" + el.dataset.chart).textContent);
+        var fig = figs[theme()];
+        Plotly.react(el, fig.data, fig.layout, config);
+      });
+    }
+    draw();
+    document.addEventListener("silta:theme", draw);
+  })();
+</script>
+{% endblock %}

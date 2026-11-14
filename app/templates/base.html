@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ site.name }} — {{ site.punchline }}{% endblock %}</title>
+  <meta name="description" content="{{ site.punchline }}">
+  <script>
+    // Theme before paint: saved choice, else the OS setting.
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem("silta-theme"); } catch (e) {}
+      var dark = saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.setAttribute("data-bs-theme", dark ? "dark" : "light");
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0/dist/css/tabler.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+  <link rel="stylesheet" href="/static/silta.css">
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <div class="page">
+    <header class="navbar navbar-expand-md d-print-none silta-nav">
+      <div class="container-xl">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav-menu" aria-controls="nav-menu" aria-expanded="false" aria-label="Open menu">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand silta-brand" href="/">{{ site.name }}</a>
+        <div class="navbar-nav flex-row order-md-last">
+          <button class="nav-link px-2" type="button" id="theme-toggle" aria-label="Switch light or dark theme">
+            <i class="ti ti-moon theme-dark-hide"></i><i class="ti ti-sun theme-light-hide"></i>
+          </button>
+        </div>
+        <div class="collapse navbar-collapse" id="nav-menu">
+          <ul class="navbar-nav">
+            {% for key, href, label, icon in nav[1:] %}
+            <li class="nav-item{% if active == key %} active{% endif %}">
+              <a class="nav-link" href="{{ href }}"{% if active == key %} aria-current="page"{% endif %}>
+                <i class="ti ti-{{ icon }} me-1"></i>{{ label }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </header>
+    <div class="page-wrapper">
+      {% block body %}{% endblock %}
+      <footer class="footer footer-transparent d-print-none">
+        <div class="container-xl silta-footer">
+          <span>{{ site.name }} · {{ site.event }}</span>
+          <span>
+            {% for m in site.team %}{{ m.name }}{% if not loop.last %} · {% endif %}{% endfor %}
+          </span>
+        </div>
+      </footer>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0/dist/js/tabler.min.js"></script>
+  <script>
+    document.getElementById("theme-toggle").addEventListener("click", function () {
+      var next = document.documentElement.getAttribute("data-bs-theme") === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-bs-theme", next);
+      try { localStorage.setItem("silta-theme", next); } catch (e) {}
+      document.dispatchEvent(new CustomEvent("silta:theme", { detail: next }));
+    });
+  </script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

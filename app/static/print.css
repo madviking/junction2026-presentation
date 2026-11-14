@@ -1,0 +1,58 @@
+/* A4 printouts. Screen view shows the sheet on a grey desk; print drops the toolbar. */
+:root {
+  --ink: #142028;
+  --muted: #56636b;
+  --line: #d6ddd8;
+  --lake: #1d5f8a;
+  --lake-soft: #dcebf5;
+  --coral: #c2512f;
+  --font-display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Atkinson Hyperlegible", Verdana, system-ui, sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; }
+html { background: #e7ebe8; color-scheme: light; }
+body { margin: 0; font-family: var(--font-body); color: var(--ink); font-size: 11.5pt; line-height: 1.45; }
+.toolbar {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  max-width: 210mm; margin: 16px auto; padding: 0 16px; font: 600 14px var(--font-data);
+}
+.toolbar a { color: var(--lake); }
+.toolbar button {
+  font: inherit; color: #fff; background: var(--lake); border: 0; border-radius: 6px; padding: 8px 14px; cursor: pointer;
+}
+.sheet {
+  width: 210mm; min-height: 297mm; margin: 0 auto 32px; background: #fff; padding: 18mm 18mm 16mm;
+  box-shadow: 0 2px 16px rgba(20, 32, 40, .12); display: grid; grid-template-columns: 1fr auto; gap: 10mm; align-content: start;
+}
+.sheet-body > *:first-child { margin-top: 0; }
+h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.015em; line-height: 1.05; margin: 0 0 .35em; }
+h1 { font-size: 48pt; font-weight: 800; color: var(--lake); }
+h2 { font-size: 15pt; font-weight: 800; margin-top: 1.1em; padding-top: .5em; border-top: 1px solid var(--line); }
+p { margin: 0 0 .6em; }
+ul, ol { margin: 0 0 .6em; padding-left: 1.2em; }
+li { margin-bottom: .25em; }
+strong { color: var(--ink); }
+.sheet-qr { width: 42mm; text-align: center; }
+.sheet-qr svg { width: 42mm; height: auto; display: block; }
+.sheet-qr p { font: 500 7.5pt var(--font-data); color: var(--muted); word-break: break-all; margin-top: 2mm; }
+
+/* layout: sign — one big QR, centred */
+.layout-sign .sheet { grid-template-columns: 1fr; justify-items: center; text-align: center; align-content: center; }
+.layout-sign h1 { font-size: 72pt; }
+.layout-sign .sheet-body p { font-size: 20pt; max-width: 150mm; margin-inline: auto; }
+.layout-sign .sheet-qr { width: 120mm; }
+.layout-sign .sheet-qr svg { width: 120mm; }
+.layout-sign .sheet-qr p { font-size: 12pt; }
+
+@media screen and (max-width: 840px) {
+  .sheet { width: auto; min-height: 0; margin: 0 16px 24px; padding: 24px; grid-template-columns: 1fr; }
+  .sheet-qr, .layout-sign .sheet-qr, .layout-sign .sheet-qr svg { width: min(100%, 240px); }
+  h1, .layout-sign h1 { font-size: 40pt; }
+}
+@media print {
+  html { background: #fff; }
+  .toolbar { display: none; }
+  .sheet { margin: 0; box-shadow: none; }
+}

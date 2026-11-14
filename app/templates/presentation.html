@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ meta.title or site.name }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="/static/deck.css">
+</head>
+<body>
+  <a class="deck-home" href="/" aria-label="Back to the site">{{ site.name }}</a>
+  <div class="reveal">
+    <div class="slides">
+      {% for slide in slides %}
+      <section{% if slide.classes %} class="{{ slide.classes }}"{% endif %}>
+        {{ slide.html | safe }}
+        {% if slide.notes %}<aside class="notes">{{ slide.notes | safe }}</aside>{% endif %}
+      </section>
+      {% endfor %}
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+  <script>
+    Reveal.initialize({ hash: true, slideNumber: "c/t", width: 1280, height: 720, margin: 0.06, plugins: [RevealNotes] });
+  </script>
+</body>
+</html>

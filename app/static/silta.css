@@ -1,0 +1,128 @@
+/* Silta brand on top of Tabler. Tokens from the concept page (concept/silta-v2.html):
+   lake = resident, moss = clinician, gold = county, coral = emphasis. */
+:root,
+[data-bs-theme="light"] {
+  --silta-bg: #f6f7f5;
+  --silta-surface: #ffffff;
+  --silta-ink: #142028;
+  --silta-muted: #56636b;
+  --silta-line: #d6ddd8;
+  --silta-lake: #1d5f8a;
+  --silta-lake-soft: #dcebf5;
+  --silta-coral: #c2512f;
+  --silta-font-display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --silta-font-body: "Atkinson Hyperlegible", Verdana, system-ui, sans-serif;
+  --silta-font-data: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+
+  --tblr-font-sans-serif: var(--silta-font-body);
+  --tblr-font-monospace: var(--silta-font-data);
+  --tblr-primary: #1d5f8a;
+  --tblr-primary-rgb: 29, 95, 138;
+  --tblr-primary-fg: #ffffff;
+  --tblr-body-bg: var(--silta-bg);
+  --tblr-bg-surface: var(--silta-surface);
+  --tblr-body-color: var(--silta-ink);
+  --tblr-secondary: var(--silta-muted);
+  --tblr-border-color: var(--silta-line);
+  --tblr-link-color: var(--silta-lake);
+  --tblr-link-color-rgb: 29, 95, 138;
+}
+[data-bs-theme="dark"] {
+  --silta-bg: #0f1619;
+  --silta-surface: #162026;
+  --silta-ink: #e5ecef;
+  --silta-muted: #98a7ae;
+  --silta-line: #27363d;
+  --silta-lake: #7cbbe6;
+  --silta-lake-soft: #18323f;
+  --silta-coral: #f08f6c;
+
+  --tblr-primary: #7cbbe6;
+  --tblr-primary-rgb: 124, 187, 230;
+  --tblr-primary-fg: #0f1619;
+  --tblr-body-bg: var(--silta-bg);
+  --tblr-bg-surface: var(--silta-surface);
+  --tblr-bg-surface-secondary: #1c2930;
+  --tblr-body-color: var(--silta-ink);
+  --tblr-secondary: var(--silta-muted);
+  --tblr-border-color: var(--silta-line);
+  --tblr-link-color: var(--silta-lake);
+  --tblr-link-color-rgb: 124, 187, 230;
+  color-scheme: dark;
+}
+body { background: var(--silta-bg); color: var(--silta-ink); font-family: var(--silta-font-body); font-size: 16px; }
+.btn-primary { --tblr-btn-bg: var(--tblr-primary); --tblr-btn-border-color: var(--tblr-primary); --tblr-btn-color: var(--tblr-primary-fg); --tblr-btn-hover-color: var(--tblr-primary-fg); }
+.page-title, .card-title, h1, h2, h3 { font-family: var(--silta-font-display); letter-spacing: -0.015em; text-wrap: balance; }
+.page-title { font-size: clamp(28px, 4vw, 40px); font-weight: 800; }
+h2.card-title { font-size: 18px; font-weight: 600; }
+a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid var(--silta-lake); outline-offset: 2px; }
+
+/* nav */
+.silta-nav { background: var(--silta-surface); border-bottom: 1px solid var(--silta-line); }
+.silta-brand { font-family: var(--silta-font-display); font-weight: 800; font-size: 24px; color: var(--silta-lake) !important; }
+.silta-nav .nav-item.active .nav-link { color: var(--silta-lake); }
+#theme-toggle { background: none; border: 0; color: var(--silta-muted); font-size: 20px; }
+[data-bs-theme="dark"] .theme-dark-hide, [data-bs-theme="light"] .theme-light-hide { display: none; }
+
+/* shared bits */
+.silta-eyebrow { font: 600 12px var(--silta-font-data); letter-spacing: .08em; text-transform: uppercase; color: var(--silta-muted); margin-bottom: 6px; }
+.silta-eyebrow a { color: inherit; }
+.silta-src { font: 500 12px var(--silta-font-data); color: var(--silta-muted); }
+.silta-lede { max-width: 66ch; font-size: 17px; }
+.silta-narrow { max-width: 880px; }
+.silta-link-icon { font-size: 28px; color: var(--silta-lake); }
+.silta-url code { word-break: break-all; }
+.silta-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; color: var(--silta-muted); font-size: 14px; }
+
+/* landing hero */
+.silta-hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 48px; align-items: center; padding: 40px 0 32px; }
+.silta-title { font-size: clamp(64px, 12vw, 136px); line-height: .9; font-weight: 800; color: var(--silta-lake); margin: 0; }
+.silta-meaning { font: 600 13px var(--silta-font-data); color: var(--silta-muted); letter-spacing: .05em; margin: 10px 0 18px; }
+.silta-claim { font-family: var(--silta-font-display); font-weight: 600; font-size: clamp(22px, 3vw, 32px); line-height: 1.2; max-width: 24ch; margin-bottom: 28px; text-wrap: balance; }
+.silta-cta { display: flex; flex-wrap: wrap; gap: 10px; }
+.silta-phone { margin: 0; width: 260px; border-radius: 32px; padding: 10px; background: var(--silta-ink); box-shadow: 0 20px 50px rgba(20, 32, 40, .25); }
+.silta-phone img { display: block; width: 100%; border-radius: 24px; }
+[data-bs-theme="dark"] .silta-phone { background: #2a3a42; }
+
+/* facts */
+.silta-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+.silta-fact .card-body { display: grid; gap: 6px; align-content: start; }
+.silta-fact-value { font-family: var(--silta-font-display); font-weight: 800; font-size: 38px; line-height: 1; color: var(--silta-ink); font-variant-numeric: tabular-nums; }
+.silta-fact-label { margin: 0; color: var(--silta-ink); }
+.silta-fact .silta-src { margin: 0; }
+.silta-more { margin: 12px 0 0; text-align: right; font-weight: 700; }
+
+/* long-form text */
+.silta-prose { max-width: 70ch; padding: 24px 0; }
+.silta-prose h2 { font-size: clamp(24px, 3vw, 30px); font-weight: 800; margin: 36px 0 12px; }
+.silta-prose p, .silta-prose li { font-size: 17px; line-height: 1.6; }
+.silta-prose ol, .silta-prose ul { padding-left: 22px; display: grid; gap: 6px; }
+.silta-prose strong { color: var(--silta-ink); }
+.silta-section { padding: 24px 0; }
+.silta-section > h2 { font-size: clamp(24px, 3vw, 30px); font-weight: 800; margin-bottom: 16px; }
+.silta-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+.silta-meta h2 { font-size: 20px; font-weight: 800; }
+.silta-meta ul { padding-left: 18px; }
+.silta-video { border-radius: 12px; overflow: hidden; background: #000; }
+
+/* dashboard */
+.silta-chart { width: 100%; }
+.silta-table summary { cursor: pointer; color: var(--silta-muted); font-size: 14px; }
+.card-subtitle { color: var(--silta-muted); font-size: 14px; max-width: 80ch; }
+
+/* team materials */
+.silta-filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.silta-filters .btn.active { background: var(--silta-lake); color: var(--tblr-primary-fg); border-color: var(--silta-lake); }
+.silta-kind { background: var(--silta-lake-soft); color: var(--silta-lake); }
+.silta-material-title { font-weight: 700; color: var(--silta-ink); }
+
+@media (max-width: 767.98px) {
+  .silta-hero { grid-template-columns: 1fr; gap: 28px; padding-top: 24px; }
+  .silta-phone { width: 200px; justify-self: center; }
+  .container-xl { padding-left: 16px; padding-right: 16px; }
+}
+
+/* page headings (own block instead of Tabler's flex .page-header) */
+.silta-page-head { display: grid; gap: 6px; margin: 8px 0 24px; }
+.silta-page-head .page-title { margin: 0; line-height: 1.1; }
+.silta-page-head .silta-eyebrow, .silta-page-head p { margin: 0; }

@@ -1,0 +1,10 @@
+{% set v = site.video %}
+{% if v.kind == "iframe" %}
+<div class="ratio ratio-16x9 silta-video">
+  <iframe src="{{ v.src }}" title="{{ site.name }} — {{ v.caption }}" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe>
+</div>
+{% elif v.kind == "file" %}
+<video class="silta-video w-100" src="{{ v.src }}" controls preload="metadata"></video>
+{% elif v.kind == "link" %}
+<p><a class="btn btn-primary" href="{{ v.src }}"><i class="ti ti-player-play me-2"></i>Open the video</a></p>
+{% endif %}

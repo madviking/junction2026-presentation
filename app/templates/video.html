@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Video — {{ site.name }}{% endblock %}
+{% block body %}
+<main class="page-body">
+  <div class="container-xl silta-narrow">
+    <div class="silta-page-head">
+      <p class="silta-eyebrow">Video</p>
+      <h1 class="page-title">{{ site.video.caption }}</h1>
+    </div>
+    {% if site.video.kind == "none" %}
+    <div class="empty card">
+      <div class="empty-icon"><i class="ti ti-movie"></i></div>
+      <p class="empty-title">The video is not up yet</p>
+      <p class="empty-subtitle text-secondary">
+        Upload it to YouTube or Vimeo (public, under 2:00, captions on) and put the link in
+        <code>content/site.yaml</code> under <code>video.url</code>.
+      </p>
+    </div>
+    {% else %}
+    {% include "_video.html" %}
+    {% endif %}
+  </div>
+</main>
+{% endblock %}

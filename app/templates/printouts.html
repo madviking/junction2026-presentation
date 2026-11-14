@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Printouts — {{ site.name }}{% endblock %}
+{% block body %}
+<main class="page-body">
+  <div class="container-xl">
+    <div class="silta-page-head">
+      <p class="silta-eyebrow">Printouts</p>
+      <h1 class="page-title">Print-ready pages</h1>
+      <p class="text-secondary silta-lede">A4 pages. Open one and use Print (or Save as PDF). The deck exports from <a href="/presentation?print-pdf">/presentation?print-pdf</a>.</p>
+    </div>
+    <div class="row row-cards">
+      {% for item in items %}
+      <div class="col-md-6 col-lg-4">
+        <a class="card card-link card-link-pop h-100" href="/printouts/{{ item.path }}">
+          <div class="card-body">
+            <i class="ti ti-{{ item.icon }} silta-link-icon"></i>
+            <h2 class="card-title mt-2 mb-1">{{ item.title }}</h2>
+            <p class="text-secondary mb-0">{{ item.description }}</p>
+          </div>
+        </a>
+      </div>
+      {% else %}
+      <p class="text-secondary">No printouts yet. Add a Markdown file to <code>content/printouts/</code>.</p>
+      {% endfor %}
+    </div>
+  </div>
+</main>
+{% endblock %}
