@@ -6,14 +6,32 @@ logo: /media/logos/google-deepmind.png
 summary: Gemini Decision 1 matches what a resident types or says to one card from a fixed set, with probabilities, so Silta asks instead of guessing.
 order: 30
 criteria_source: brain/challenges/tech/google-deepmind-gemini-api.md
+# Glance: rendered as visuals at the top of the page (see AGENTS.md, Tech-partner pages).
+fit:
+  steps:
+    describe: Your own words → one symptom card, or the cards
+    route: “I study at…” → the right route card
+    after: “They gave me a time…” → the outcome card
+numbers:
+- value: '3'
+  label: journey steps served by one Gemini Decision 1 call
+- value: '0'
+  label: urgency or emergency decisions left to the model
+- value: 1 tap
+  label: by the person before any match changes the journey
+live:
+- Card matching for symptoms, routes and outcomes (reached through OpenRouter today)
+- Read-back when confident, the cards when unsure
+- Identifiers removed before text leaves the backend
+- Logged evaluation on synthetic English and Finnish input
+planned:
+- Switch card matching to the direct Gemini API adapter
+- Answers from public Finnish health sources, with links
+- Evaluation in real resident wording, incl. Somali and Arabic
+screenshot: /media/screens/04-symptom-picker.png
+screenshot_alt: 'Silta''s ''What worries you?'' screen: a ''Describe in your own words'' box with a Check button above the symptom cards.'
+screenshot_caption: “Describe in your own words” goes to Gemini Decision 1. Nothing is chosen until the person taps Yes.
 ---
-
-## What the challenge asks
-
-- A meaningful, innovative and technically impressive use of the Gemini API, going beyond "adding an LLM to an app".
-- The submission should explain the problem, how Gemini is integrated, what makes the use innovative, and why Gemini is important to the solution.
-- Prizes: €4,000 plus $1,000 Google Cloud credits per team member, €2,000 and €1,000 (`brain/challenges/tech/google-deepmind-gemini-api.md`).
-
 ## How Silta uses Gemini
 
 **The problem.** A person who has found a lump does not think in our card names. They write "I found a hard lump in my left breast last week", "Löysin rinnasta kovan kyhmyn" or "I called three times and nobody picked up". Silta needs to turn that into one of a fixed set of cards, without inventing anything and without making a medical judgement.
@@ -61,6 +79,12 @@ In progress or planned:
 - Building the knowledge base from public Finnish health sources (wellbeing services counties, Terveyskylä, THL, Cancer Society of Finland) into checked plain-language pages, with Gemini matching a question to the official source and showing it with a link.
 - Help with translation drafts for native-speaker review.
 - An evaluation set in real resident wording, including Somali and Arabic input.
+
+## What the challenge asks
+
+- A meaningful, innovative and technically impressive use of the Gemini API, going beyond "adding an LLM to an app".
+- The submission should explain the problem, how Gemini is integrated, what makes the use innovative, and why Gemini is important to the solution.
+- Prizes: €4,000 plus $1,000 Google Cloud credits per team member, €2,000 and €1,000 (`brain/challenges/tech/google-deepmind-gemini-api.md`).
 
 ## Why it matters for the people we serve
 

@@ -1,0 +1,42 @@
+{# Where a tech partner fits in Silta's journey. `journey` = site.journey, `fit` = page frontmatter `fit`. #}
+
+{% macro strip(journey, fit, partner) %}
+{% set used = (fit or {}).get('steps') or {} %}
+<div class="silta-journey">
+  {% for side, title in [('resident', 'Resident journey'), ('staff', 'Staff side')] %}
+  {% set steps = journey | selectattr('side', 'equalto', side) | list %}
+  {% if steps %}
+  <div class="silta-journey-group silta-journey-{{ side }}">
+    <p class="silta-eyebrow">{{ title }}</p>
+    <ol>
+      {% for s in steps %}
+      <li class="silta-step" data-step="{{ s.id }}" data-used="{{ 'true' if s.id in used else 'false' }}">
+        <span class="silta-step-icon" aria-hidden="true"><i class="ti ti-{{ s.icon }}"></i></span>
+        <span class="silta-step-label">{{ s.label }}</span>
+        {% if s.id in used %}<span class="silta-step-does">{{ used[s.id] }}</span>
+        {% else %}<span class="visually-hidden">{{ partner }} is not used in this step.</span>{% endif %}
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+  {% endif %}
+  {% endfor %}
+  {% if fit and fit.foundation %}
+  <p class="silta-foundation"><i class="ti ti-stack-2" aria-hidden="true"></i><span><strong>Under every step:</strong> {{ fit.foundation }}</span></p>
+  {% endif %}
+</div>
+{% endmacro %}
+
+{% macro mini(journey, fit, partner) %}
+{% set used = (fit or {}).get('steps') or {} %}
+<div class="silta-mini" aria-label="Journey steps where {{ partner }} is used">
+  <ol>
+    {% for s in journey %}
+    <li class="silta-mini-step{% if loop.index0 and s.side != journey[loop.index0 - 1].side %} silta-mini-gap{% endif %}" data-step="{{ s.id }}" data-used="{{ 'true' if s.id in used else 'false' }}" title="{{ s.label }}{% if s.id in used %}: {{ used[s.id] }}{% endif %}">
+      <i class="ti ti-{{ s.icon }}" aria-hidden="true"></i><span class="visually-hidden">{{ s.label }}{% if s.id in used %}: {{ used[s.id] }}{% else %}: not used{% endif %}</span>
+    </li>
+    {% endfor %}
+  </ol>
+  {% if fit and fit.foundation %}<span class="silta-mini-foundation" title="{{ fit.foundation }}"><span class="visually-hidden">Under every step: {{ fit.foundation }}</span></span>{% endif %}
+</div>
+{% endmacro %}

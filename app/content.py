@@ -283,8 +283,23 @@ def tech_challenges() -> list[dict]:
         if path.name == "README.md" or not SLUG.match(path.stem):
             continue
         meta, body = split_frontmatter(_read(path))
-        pages.append({"slug": path.stem, "meta": meta, "html": render_markdown(body)})
+        html = render_markdown(body)
+        pages.append({"slug": path.stem, "meta": meta, "html": html, "sections": split_sections(html)})
     return sorted(pages, key=lambda p: (int(p["meta"].get("order", 100)), p["slug"]))
+
+
+H2 = re.compile(r"<h2[^>]*>(.*?)</h2>", re.DOTALL)
+
+
+def split_sections(html: str) -> list[dict]:
+    """Split rendered Markdown at each <h2> into {title, html} drill-down sections.
+
+    Text before the first heading becomes an untitled section (title "")."""
+    parts = H2.split(html)
+    sections = [{"title": "", "html": parts[0]}] if parts[0].strip() else []
+    for title, body in zip(parts[1::2], parts[2::2]):
+        sections.append({"title": title.strip(), "html": body})
+    return sections
 
 
 def tech_challenge(slug: str) -> dict | None:

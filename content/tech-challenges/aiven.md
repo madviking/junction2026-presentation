@@ -6,15 +6,34 @@ logo: /media/logos/aiven.png
 summary: Aiven for PostgreSQL in Finland is Silta's single store for content, audio, anonymous visits and county figures.
 order: 10
 criteria_source: brain/challenges/tech/aiven-best-use.md
+# Glance: rendered as visuals at the top of the page (see AGENTS.md, Tech-partner pages).
+fit:
+  foundation: One Aiven for PostgreSQL database in Finland holds everything Silta must remember.
+  steps:
+    language: Every text in every language, versioned
+    describe: Each tap stored as card ids, never free text
+    route: Read-aloud audio stored next to its text
+    after: Outcomes saved on the anonymous visit
+    county: Public figures beside anonymous counts by language
+    admin: Draft, publish, roll back; audit and cost rows
+numbers:
+- value: '1'
+  label: database for content, audio, visits and county figures
+- value: FI
+  label: data stored in Finland (Google Cloud europe-north1)
+- value: '0'
+  label: names, ID numbers, phone numbers or emails stored
+live:
+- Aiven for PostgreSQL in Finland, with pgvector
+- Silta migrations applied; CI migrates on every push
+- Health check over TLS from the self-hosted image
+- All tables working end to end in the local app and tests
+planned:
+- API on Aiven Runtime next to the database
+- pgvector retrieval over public Finnish health sources
+- Job that deletes expired visits
+- Small-number suppression in the county view
 ---
-
-## What the challenge asks
-
-- Use at least one Aiven service as a meaningful part of the project and show what it enables.
-- One well-executed service can be as strong as several combined.
-- Judging: meaningful use of Aiven 40%, technical implementation 30%, impact on the overall solution 20%, creativity 10%.
-- Prizes: €1,000, €750 and €500 (`brain/challenges/tech/aiven-best-use.md`).
-
 ## How Silta uses Aiven
 
 Silta has one database, `silta`, and in the cloud it is **Aiven for PostgreSQL** with the **pgvector** extension. We chose one well-used service over several thin ones. Everything the product must remember lives there:
@@ -54,6 +73,13 @@ In progress or planned:
 - Using pgvector for retrieval over public Finnish health sources. The extension is installed, but no embeddings table exists yet (`backend/db/migrations/2_init_silta.up.sql`).
 - Deleting expired visits. Visits stop being readable after their expiry date and a resident can delete their own visit, but no job removes expired rows yet.
 - Small-number suppression in the county view (`brain/notes/2026-11-14-0735-silta-app-walkthrough.md`, "Known gaps").
+
+## What the challenge asks
+
+- Use at least one Aiven service as a meaningful part of the project and show what it enables.
+- One well-executed service can be as strong as several combined.
+- Judging: meaningful use of Aiven 40%, technical implementation 30%, impact on the overall solution 20%, creativity 10%.
+- Prizes: €1,000, €750 and €500 (`brain/challenges/tech/aiven-best-use.md`).
 
 ## Why it matters for the people we serve
 

@@ -144,5 +144,41 @@ def test_tech_challenge_pages(client, tmp_path, monkeypatch):
     assert "Best use of Testpartner" in client.get("/tech").text
     page = client.get("/tech/zz-test-partner")
     assert page.status_code == 200 and "How Silta uses Testpartner" in page.text
+    assert '<details class="silta-drill"' in page.text  # each ## section is a drill-down panel
     assert client.get("/tech/does-not-exist").status_code == 404
     assert client.get("/tech/..%2Fsite").status_code == 404
+
+
+def test_tech_page_glance_shows_journey_fit(client, tmp_path, monkeypatch):
+    import shutil
+
+    from app import settings
+
+    shutil.copytree(settings.content_dir(), tmp_path / "content")
+    (tmp_path / "content" / "tech-challenges" / "zz-glance.md").write_text(
+        "---\ntitle: Best use of Glance\npartner: Glance\nsummary: We glance.\norder: 999\n"
+        "fit:\n  steps:\n    describe: Turns words into a card\n  foundation: Holds every step\n"
+        "numbers:\n  - value: '3'\n    label: steps touched\nlive: [Card matching]\nplanned: [Somali input]\n---\n\n"
+        "## Details\n\nBody.\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("CONTENT_DIR", str(tmp_path / "content"))
+    text = client.get("/tech/zz-glance").text
+    assert "Turns words into a card" in text and "Holds every step" in text
+    assert 'data-step="describe" data-used="true"' in text
+    assert 'data-step="county" data-used="false"' in text
+    assert "steps touched" in text and "Card matching" in text and "Somali input" in text
+    assert 'data-step="describe" data-used="true"' in client.get("/tech").text  # mini strip on the index card
+
+
+def test_every_tech_page_has_a_glance():
+    from app import content
+
+    steps = {s["id"] for s in content.site()["journey"]}
+    for page in content.tech_challenges():
+        meta = page["meta"]
+        used = set((meta.get("fit") or {}).get("steps") or {})
+        assert used or (meta.get("fit") or {}).get("foundation"), page["slug"]
+        assert used <= steps, (page["slug"], used - steps)
+        assert 1 <= len(meta.get("numbers") or []) <= 3, page["slug"]
+        assert meta.get("live"), page["slug"]

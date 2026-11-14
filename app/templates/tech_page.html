@@ -1,31 +1,80 @@
 {% extends "base.html" %}
+{% from "_journey.html" import strip %}
 {% block title %}{{ page.meta.title }} — {{ site.name }}{% endblock %}
 {% block body %}
+{% set m = page.meta %}
 <main class="page-body">
   <div class="container-xl">
-    <p class="silta-eyebrow"><a href="/tech"><i class="ti ti-arrow-left"></i> Tech partners</a></p>
-    <div class="silta-tech-layout">
-      <article>
-        <div class="silta-page-head">
-          <div class="silta-partner-head">
-            {% if page.meta.logo %}<img class="silta-partner-logo" src="{{ page.meta.logo }}" alt="{{ page.meta.logo_alt or (page.meta.partner ~ ' logo') }}">{% endif %}
-            <p class="silta-eyebrow m-0">{{ page.meta.organiser or page.meta.partner }}</p>
-          </div>
-          <h1 class="page-title">{{ page.meta.title }}</h1>
-          {% if page.meta.summary %}<p class="text-secondary silta-lede">{{ page.meta.summary }}</p>{% endif %}
-        </div>
-        <div class="silta-prose pt-0">{{ page.html | safe }}</div>
-      </article>
-      <nav class="silta-tech-nav" aria-label="Other tech challenges">
-        <p class="silta-eyebrow">All tech challenges</p>
-        <ul>
-          {% for p in pages %}
-          <li><a href="/tech/{{ p.slug }}"{% if p.slug == page.slug %} aria-current="page"{% endif %}>{{ p.meta.partner or p.meta.title }}</a></li>
-          {% endfor %}
-        </ul>
-        {% if site.links.source %}<p><a href="{{ site.links.source.url }}"><i class="ti ti-brand-github me-1"></i>Source code</a></p>{% endif %}
-      </nav>
+    <nav class="silta-tech-tabs" aria-label="Tech challenges">
+      <a href="/tech"><i class="ti ti-arrow-left"></i> All partners</a>
+      {% for p in pages %}
+      <a href="/tech/{{ p.slug }}"{% if p.slug == page.slug %} aria-current="page"{% endif %}>{{ p.meta.partner or p.meta.title }}</a>
+      {% endfor %}
+    </nav>
+
+    <div class="silta-page-head">
+      <div class="silta-partner-head">
+        {% if m.logo %}<img class="silta-partner-logo" src="{{ m.logo }}" alt="{{ m.logo_alt or (m.partner ~ ' logo') }}">{% endif %}
+        <p class="silta-eyebrow m-0">{{ m.organiser or m.partner }} · {{ m.title }}</p>
+      </div>
+      <h1 class="page-title silta-glance-claim">{{ m.summary or m.title }}</h1>
     </div>
+
+    <div class="silta-glance{% if m.screenshot %} has-shot{% endif %}">
+      <div class="silta-glance-main">
+        <section aria-labelledby="fit-title">
+          <h2 id="fit-title" class="silta-glance-title">Where {{ m.partner }} fits in Silta</h2>
+          {{ strip(site.journey or [], m.fit, m.partner) }}
+        </section>
+
+        {% if m.numbers %}
+        <dl class="silta-glance-numbers">
+          {% for n in m.numbers %}
+          <div><dt>{{ n.label }}</dt><dd>{{ n.value }}</dd></div>
+          {% endfor %}
+        </dl>
+        {% endif %}
+
+        {% if m.live or m.planned %}
+        <div class="silta-glance-status">
+          {% if m.live %}
+          <div>
+            <h2 class="silta-glance-title"><i class="ti ti-circle-check" aria-hidden="true"></i> Working today</h2>
+            <ul>{% for item in m.live %}<li>{{ item }}</li>{% endfor %}</ul>
+          </div>
+          {% endif %}
+          {% if m.planned %}
+          <div class="is-planned">
+            <h2 class="silta-glance-title"><i class="ti ti-clock" aria-hidden="true"></i> Next</h2>
+            <ul>{% for item in m.planned %}<li>{{ item }}</li>{% endfor %}</ul>
+          </div>
+          {% endif %}
+        </div>
+        {% endif %}
+      </div>
+
+      {% if m.screenshot %}
+      <figure class="silta-glance-shot">
+        <div class="silta-phone"><img src="{{ m.screenshot }}" alt="{{ m.screenshot_alt or '' }}"></div>
+        {% if m.screenshot_caption %}<figcaption>{{ m.screenshot_caption }}</figcaption>{% endif %}
+      </figure>
+      {% endif %}
+    </div>
+
+    <section class="silta-details" aria-labelledby="details-title">
+      <h2 id="details-title" class="silta-glance-title">The details</h2>
+      {% for s in page.sections %}
+      {% if s.title %}
+      <details class="silta-drill">
+        <summary>{{ s.title | safe }}</summary>
+        <div class="silta-prose">{{ s.html | safe }}</div>
+      </details>
+      {% else %}
+      <div class="silta-prose">{{ s.html | safe }}</div>
+      {% endif %}
+      {% endfor %}
+      {% if site.links.source %}<p class="mt-3"><a href="{{ site.links.source.url }}"><i class="ti ti-brand-github me-1"></i>Source code</a></p>{% endif %}
+    </section>
   </div>
 </main>
 {% endblock %}

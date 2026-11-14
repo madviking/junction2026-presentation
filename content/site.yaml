@@ -61,6 +61,38 @@ challenges:
   - MLH — Best use of ElevenLabs
   - Google DeepMind — Best use of the Gemini API
 
+# Silta's journey, used by the tech-partner pages to show where each partner fits.
+# A page's `fit.steps` keys must be ids from this list.
+journey:
+  - id: language
+    label: Pick a language
+    icon: language
+    side: resident
+  - id: describe
+    label: Describe what you noticed
+    icon: message-dots
+    side: resident
+  - id: route
+    label: Find the right door
+    icon: door
+    side: resident
+  - id: visit
+    label: At the visit
+    icon: stethoscope
+    side: resident
+  - id: after
+    label: After the visit
+    icon: calendar-check
+    side: resident
+  - id: county
+    label: County view
+    icon: map-2
+    side: staff
+  - id: admin
+    label: Admin and content
+    icon: settings
+    side: staff
+
 technologies: [Encore.ts, React, Mantine, PostgreSQL + pgvector on Aiven, Google Gemini API, ElevenLabs]
 
 team:
