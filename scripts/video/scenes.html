@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Silta video scenes</title>
+<!-- Motion graphics for the pitch video. Deterministic: window.render(t) draws scene ?scene=<id> at t seconds.
+     Rendered to MP4 by scripts/video/render.mjs. Open in a browser with ?scene=<id>&play to preview. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root {
+  --bg: #f6f7f5; --surface: #ffffff; --ink: #142028; --muted: #56636b; --line: #d6ddd8;
+  --lake: #1d5f8a; --lake-soft: #dcebf5; --coral: #c2512f; --coral-soft: #f6e2da; --sage: #3f7a5c; --sage-soft: #dfeee5;
+  --f-display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "Atkinson Hyperlegible", Verdana, sans-serif;
+  --f-data: "IBM Plex Mono", Menlo, monospace;
+}
+* { box-sizing: border-box; margin: 0; }
+html, body { width: 1920px; height: 1080px; overflow: hidden; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); }
+body.transparent { background: transparent; }
+#stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
+.abs { position: absolute; }
+.title { font-family: var(--f-display); font-weight: 800; font-size: 72px; line-height: 1.05; letter-spacing: -0.01em; }
+.sub { font-size: 36px; color: var(--muted); }
+.source { position: absolute; left: 120px; bottom: 56px; font-family: var(--f-data); font-size: 22px; color: var(--muted); }
+.mono { font-family: var(--f-data); font-variant-numeric: tabular-nums; }
+
+/* question card */
+.q { display: flex; align-items: center; gap: 22px; background: var(--surface); border-left: 8px solid var(--coral); border-radius: 14px;
+     padding: 22px 34px; box-shadow: 0 10px 30px rgba(20,32,40,.10); font-family: var(--f-display); font-weight: 600; font-size: 46px; width: max-content; }
+.q .tick { width: 48px; height: 48px; border-radius: 50%; background: var(--sage); color: #fff; display: grid; place-items: center; font-size: 30px; flex: none; }
+.ans { font-size: 34px; color: var(--ink); max-width: 760px; line-height: 1.3; padding-left: 42px; }
+.chip { display: inline-block; font-family: var(--f-data); font-size: 24px; padding: 8px 18px; border-radius: 999px; background: var(--lake); color: #fff; }
+.chip.soft { background: var(--lake-soft); color: var(--lake); }
+
+/* paper */
+.paper { background: #fff; padding: 56px 60px; border-radius: 6px; box-shadow: 0 24px 60px rgba(20,32,40,.22); overflow: hidden; }
+.paper img { width: 100%; display: block; }
+
+/* phone */
+.phone { width: 458px; height: 958px; border-radius: 64px; background: #0f1619; padding: 14px; box-shadow: 0 30px 70px rgba(20,32,40,.28); }
+.phone .screen { width: 430px; height: 930px; border-radius: 50px; overflow: hidden; background: #fff; position: relative; }
+.phone .screen img { width: 430px; display: block; position: absolute; left: 0; top: 0; }
+
+/* bars */
+.bar { position: absolute; bottom: 0; width: 120px; border-radius: 8px 8px 0 0; }
+.val { position: absolute; font-family: var(--f-data); font-size: 34px; font-weight: 600; width: 160px; text-align: center; }
+.legend { display: flex; gap: 40px; font-size: 30px; }
+.legend i { display: inline-block; width: 26px; height: 26px; border-radius: 6px; vertical-align: -4px; margin-right: 12px; }
+
+/* people */
+.person { position: absolute; width: 110px; height: 230px; }
+.person .h { width: 70px; height: 70px; border-radius: 50%; margin: 0 auto; }
+.person .b { width: 110px; height: 140px; border-radius: 55px 55px 18px 18px; margin-top: 16px; }
+
+/* pathway */
+.node { position: absolute; width: 300px; height: 150px; border-radius: 20px; background: var(--surface); border: 3px solid var(--line);
+        display: grid; place-items: center; font-family: var(--f-display); font-weight: 600; font-size: 40px; }
+.link { position: absolute; height: 10px; border-radius: 5px; background: var(--line); }
+
+/* ladder */
+.rung { position: absolute; width: 900px; background: var(--surface); border: 2px solid var(--line); border-radius: 18px; padding: 24px 30px; display: grid; gap: 6px; }
+.rung .who { font-family: var(--f-display); font-weight: 600; font-size: 40px; display: flex; justify-content: space-between; align-items: center; }
+.rung .what { font-size: 30px; color: var(--muted); line-height: 1.3; }
+.st { font-family: var(--f-data); font-size: 22px; padding: 4px 12px; border-radius: 6px; }
+.st.live { background: var(--sage-soft); color: var(--sage); } .st.built { background: var(--lake-soft); color: var(--lake); }
+
+/* paths */
+.col { position: absolute; top: 250px; width: 760px; }
+.col h2 { font-family: var(--f-display); font-weight: 800; font-size: 52px; margin-bottom: 40px; }
+.stepbox { display: flex; align-items: center; gap: 22px; font-size: 38px; height: 92px; }
+.dot { width: 34px; height: 34px; border-radius: 50%; border: 4px solid var(--line); background: var(--bg); flex: none; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script>
+const SCR = '../../content/materials/video-assets/screens/';
+const clamp = (x) => Math.max(0, Math.min(1, x));
+const ease = (x) => 1 - Math.pow(1 - clamp(x), 3);
+const inOut = (x) => { x = clamp(x); return x < .5 ? 4*x*x*x : 1 - Math.pow(-2*x + 2, 3) / 2; };
+const p = (t, a, d) => ease((t - a) / d);
+const lerp = (a, b, k) => a + (b - a) * k;
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => [...document.querySelectorAll(s)];
+function show(el, k, dy = 30, dx = 0) { el.style.opacity = k; el.style.transform = `translate(${(1-k)*dx}px, ${(1-k)*dy}px)`; }
+const TICK = '<span class="tick">✓</span>';
+
+const QUESTIONS = ['Do I have to undress?', 'What will they do to me?', 'What if it is a man?', 'Who do I call, in Finnish?', 'Do I even have to go?'];
+
+const S = {};
+
+S['01-questions'] = { dur: 11, html: `
+  <div class="abs paper" id="paper" style="left:140px; top:70px; width:820px; height:1000px; rotate:-3deg"><img src="${SCR}letter-fi-no-qr.png"></div>
+  <div class="abs" id="dim" style="inset:0; background:var(--bg)"></div>
+  <div class="abs" style="left:1010px; top:150px; display:grid; gap:26px">${QUESTIONS.map((q,i)=>`<div class="q" id="q${i}">${q}</div>`).join('')}</div>
+  <div class="abs" id="cap" style="left:1010px; top:860px"><div class="title" style="font-size:56px">Hodan, 54 · Helsinki</div><div class="sub" style="margin-top:10px">Her cervical screening letters are in Finnish.</div></div>`,
+  render(t) {
+    const land = p(t, 0, 1.1); $('#paper').style.transform = `translateY(${lerp(-1150, 0, land)}px)`;
+    $('#dim').style.opacity = 0.35 * p(t, 1.4, 1);
+    QUESTIONS.forEach((_, i) => show($('#q'+i), p(t, 1.7 + i*1.35, .55), 24, 40));
+    show($('#cap'), p(t, 8.9, .7));
+  } };
+
+S['02-one-in-nine'] = { dur: 5.5, html: `
+  <div class="abs title" id="h" style="left:120px; top:120px; width:1500px">1 in 9 people in Finland has another native language</div>
+  ${Array.from({length:9},(_,i)=>`<div class="person" id="p${i}" style="left:${330+i*150}px; top:470px"><div class="h"></div><div class="b"></div></div>`).join('')}
+  <div class="abs sub mono" id="n" style="left:120px; top:800px; font-size:40px; color:var(--ink)">646,392 people · 11.4% of the population · 2025</div>
+  <div class="source">Statistics Finland, table 11rm</div>`,
+  render(t) {
+    show($('#h'), p(t, .2, .6));
+    for (let i = 0; i < 9; i++) {
+      const el = $('#p'+i); show(el, p(t, .5 + i*.08, .5), 20);
+      const c = i === 8 && t > 1.6 ? 'var(--coral)' : 'var(--lake-soft)';
+      el.querySelector('.h').style.background = c; el.querySelector('.b').style.background = c;
+      if (i === 8) el.style.transform += ` scale(${1 + .12*Math.sin(Math.PI*clamp((t-1.6)/.5))})`;
+    }
+    show($('#n'), p(t, 2.2, .6));
+  } };
+
+const BARS = [['Breast', 83.2, 60.8], ['Cervical', 76.2, 56.3], ['Colorectal', 74.5, 53.4]];
+S['03-bars'] = { dur: 8.5, html: `
+  <div class="abs title" style="left:120px; top:90px">Same letter. About 20 points fewer come.</div>
+  <div class="abs legend" style="left:120px; top:210px"><span><i style="background:var(--lake)"></i>Finnish, Swedish or Sámi</span><span><i style="background:var(--coral)"></i>Another native language</span></div>
+  <div class="abs" id="chart" style="left:220px; top:330px; width:1500px; height:560px; border-bottom:3px solid var(--ink)">
+    ${BARS.map(([n,a,b],i)=>`
+      <div class="bar" id="ba${i}" style="left:${120+i*480}px; background:var(--lake)"></div>
+      <div class="bar" id="bb${i}" style="left:${250+i*480}px; background:var(--coral)"></div>
+      <div class="val" id="va${i}" style="left:${100+i*480}px">${a.toFixed(1)}%</div>
+      <div class="val" id="vb${i}" style="left:${230+i*480}px">${b.toFixed(1)}%</div>
+      <div class="abs" style="left:${120+i*480}px; top:580px; width:250px; text-align:center; font-family:var(--f-display); font-weight:600; font-size:38px">${n}</div>
+      <div class="abs mono" id="g${i}" style="left:${380+i*480}px; width:200px; font-size:34px; font-weight:600; color:var(--coral)">−${(a-b).toFixed(1)} pts</div>`).join('')}
+  </div>
+  <div class="source">Finnish Cancer Registry · screening attendance by native language, 2024</div>`,
+  render(t) {
+    const H = 560 / 100;
+    BARS.forEach(([n,a,b], i) => {
+      const k = inOut((t - .6 - i*.35) / 1.4);
+      $('#ba'+i).style.height = a*H*k + 'px'; $('#bb'+i).style.height = b*H*k + 'px';
+      const v = p(t, 2.0 + i*.35, .4);
+      $('#va'+i).style.top = (560 - a*H - 52) + 'px'; $('#va'+i).style.opacity = v;
+      $('#vb'+i).style.top = (560 - b*H - 52) + 'px'; $('#vb'+i).style.opacity = v;
+      const g = $('#g'+i); g.style.top = (560 - (a+b)/2*H - 20) + 'px'; show(g, p(t, 3.4 + i*.4, .5), 0, -20);
+    });
+  } };
+
+S['04-cervical-gap'] = { dur: 5.5, html: `
+  <div class="abs title" style="left:120px; top:120px">And the cervical gap is growing</div>
+  <div class="abs" style="left:120px; top:330px; display:flex; align-items:baseline; gap:40px">
+    <div class="mono" id="num" style="font-size:260px; font-weight:600; color:var(--coral); line-height:1">15.6</div>
+    <div class="sub" style="font-size:48px">points</div></div>
+  <div class="abs mono" id="yr" style="left:130px; top:640px; font-size:56px; color:var(--muted)">2020</div>
+  <div class="abs sub" id="from" style="left:120px; top:760px; font-size:38px">from 15.6 points in 2020 to 19.9 points in 2024</div>
+  <div class="source">Finnish Cancer Registry · cervical screening, gap by native language</div>`,
+  render(t) {
+    const k = inOut((t - 1.0) / 2.2);
+    $('#num').textContent = lerp(15.6, 19.9, k).toFixed(1);
+    $('#yr').textContent = String(Math.round(lerp(2020, 2024, k)));
+    show($('#from'), p(t, 3.4, .6));
+  } };
+
+S['05-somali'] = { dur: 6, html: `
+  <div class="abs title" style="left:120px; top:120px">Cervical screening, Somali-origin women</div>
+  <div class="abs" style="left:120px; top:360px; width:1600px; display:grid; gap:70px">
+    <div><div style="font-size:38px; margin-bottom:16px">Finnish women</div><div style="display:flex; align-items:center; gap:24px"><div id="b1" style="height:90px; background:var(--lake); border-radius:0 10px 10px 0"></div><span class="mono" id="v1" style="font-size:56px; font-weight:600">67%</span></div></div>
+    <div><div style="font-size:38px; margin-bottom:16px">Somali-origin women</div><div style="display:flex; align-items:center; gap:24px"><div id="b2" style="height:90px; background:var(--coral); border-radius:0 10px 10px 0"></div><span class="mono" id="v2" style="font-size:56px; font-weight:600; color:var(--coral)">19%</span></div></div>
+  </div>
+  <div class="source">Finnish population survey of migrant women (PMC5346186, PMC7663516)</div>`,
+  render(t) {
+    const W = 1300 / 100;
+    $('#b1').style.width = 67*W*inOut((t-.5)/1.3) + 'px'; $('#b2').style.width = 19*W*inOut((t-.9)/1.3) + 'px';
+    $('#v1').style.opacity = p(t, 1.8, .4); $('#v2').style.opacity = p(t, 2.2, .4);
+  } };
+
+const NODES = ['Invitation', 'Attends', 'Result', 'Follow-up'];
+S['06-pathway'] = { dur: 9, html: `
+  <div class="abs title" style="left:120px; top:110px">The gap opens at the door</div>
+  ${NODES.map((n,i)=>`<div class="node" id="n${i}" style="left:${150+i*430}px; top:400px">${n}</div>`).join('')}
+  ${[0,1,2].map(i=>`<div class="link" id="l${i}" style="left:${450+i*430}px; top:470px; width:130px"></div>`).join('')}
+  <div class="abs mono" id="lost" style="left:400px; top:590px; width:330px; text-align:center; font-size:34px; font-weight:600; color:var(--coral)">≈ 20 points<br>fewer come</div>
+  <div class="abs" id="eq" style="left:1440px; top:590px; width:360px; text-align:center"><div class="mono" style="font-size:34px; font-weight:600; color:var(--lake)">87.1% vs 84.8%</div><div style="font-size:30px; color:var(--muted); margin-top:6px">no gap once inside</div></div>
+  <div class="abs sub" id="nor" style="left:120px; top:820px; font-size:36px">Translating the letter alone did not help: 46.5% vs 47.4% (Norway, randomised trial).</div>
+  <div class="source">Finnish Cancer Registry 2024 (colposcopy after referral) · Norway RCT, n = 11,347</div>`,
+  render(t) {
+    NODES.forEach((_, i) => show($('#n'+i), p(t, .3 + i*.25, .5), 20));
+    [0,1,2].forEach(i => { const l = $('#l'+i); l.style.opacity = p(t, .9 + i*.25, .4); });
+    const hot = p(t, 2.2, .6);
+    $('#l0').style.background = hot > 0 ? `color-mix(in srgb, var(--coral) ${hot*100}%, var(--line))` : 'var(--line)';
+    $('#n0').style.borderColor = `color-mix(in srgb, var(--coral) ${hot*100}%, var(--line))`;
+    $('#n1').style.borderColor = `color-mix(in srgb, var(--coral) ${hot*100}%, var(--line))`;
+    show($('#lost'), p(t, 2.6, .5), -10);
+    const eq = p(t, 4.2, .5); show($('#eq'), eq, -10); $('#n3').style.borderColor = `color-mix(in srgb, var(--lake) ${eq*100}%, var(--line))`;
+    show($('#nor'), p(t, 5.8, .6));
+  } };
+
+const LEFT = ['Procurement', 'Integration with record systems', 'Data agreements', 'Value for residents'];
+const RIGHT = ['The letter in her hand', 'Silta, in her language', 'Value today'];
+S['07-two-paths'] = { dur: 13, html: `
+  <div class="abs title" style="left:120px; top:90px">Why we start with the resident</div>
+  <div class="col" id="cl" style="left:120px"><h2 style="color:var(--muted)">Start with the county</h2>
+    <div style="position:relative">${LEFT.map((s,i)=>`<div class="stepbox" id="ls${i}"><span class="dot"></span><span>${s}</span></div>`).join('')}
+    <div class="abs" id="lp" style="left:15px; top:46px; width:4px; background:var(--muted)"></div></div>
+    <div id="lnote" style="font-size:30px; color:var(--coral); margin-top:30px; max-width:700px">Registers only see people who already came in.</div></div>
+  <div class="col" id="cr" style="left:1040px"><h2 style="color:var(--lake)">Start with the resident</h2>
+    <div style="position:relative">${RIGHT.map((s,i)=>`<div class="stepbox" id="rs${i}"><span class="dot"></span><span>${s}</span></div>`).join('')}
+    <div class="abs" id="rp" style="left:15px; top:46px; width:4px; background:var(--lake)"></div></div>
+    <div id="rnote" style="font-size:30px; color:var(--lake); margin-top:30px; max-width:700px">Reaches her where the 20 points disappear.</div></div>
+  <div class="abs" id="cap" style="left:120px; top:930px; font-family:var(--f-display); font-weight:600; font-size:48px">Silta works today, with no contract.</div>`,
+  render(t) {
+    show($('#cl'), p(t, .2, .6)); show($('#cr'), p(t, .6, .6));
+    const lk = clamp((t - 1.2) / 7.0);
+    $('#lp').style.height = lk * (LEFT.length - 1) * 92 + 'px';
+    LEFT.forEach((_, i) => { const on = lk * (LEFT.length - 1) >= i - .01 && t > 1.2;
+      const d = $('#ls'+i+' .dot'); d.style.borderColor = on ? 'var(--muted)' : 'var(--line)'; d.style.background = on ? 'var(--muted)' : 'var(--bg)';
+      $('#ls'+i).style.color = on ? 'var(--ink)' : 'var(--muted)'; });
+    const rk = clamp((t - 2.2) / 1.6);
+    $('#rp').style.height = rk * (RIGHT.length - 1) * 92 + 'px';
+    RIGHT.forEach((_, i) => { const on = rk * (RIGHT.length - 1) >= i - .01 && t > 2.2;
+      const d = $('#rs'+i+' .dot'); d.style.borderColor = on ? 'var(--lake)' : 'var(--line)'; d.style.background = on ? 'var(--lake)' : 'var(--bg)'; });
+    $('#lnote').style.opacity = p(t, 5.5, .6); $('#rnote').style.opacity = p(t, 4.2, .6);
+    const dim = p(t, 9.2, .8); $('#cl').style.opacity = lerp(1, .32, dim) * p(t, .2, .6);
+    $('#cr').style.transform = `scale(${1 + .04*dim})`; $('#cr').style.transformOrigin = 'left top';
+    show($('#cap'), p(t, 9.8, .6));
+  } };
+
+function phoneScene(id, img, dur, side, opts = {}) {
+  S[id] = { dur, html: `
+    ${opts.pre || ''}
+    <div class="abs phone" id="ph" style="left:240px; top:61px"><div class="screen"><img id="shot" src="${SCR}${img}"></div></div>
+    <div class="abs" style="left:860px; top:${opts.top ?? 150}px; width:960px; display:grid; gap:20px">${side}</div>
+    ${opts.post || ''}`,
+    render(t) {
+      const ph = $('#ph'); const k = p(t, opts.enter ?? 0, .7); ph.style.opacity = k; ph.style.transform = `translateY(${(1-k)*60}px)`;
+      const im = $('#shot'); const max = Math.max(0, im.getBoundingClientRect().height - 930);
+      const [a, b] = opts.pan ?? [1.2, dur - 1]; const stops = opts.stops;
+      let y;
+      if (stops) { // [[time, fraction], ...]
+        y = stops[0][1]; for (let i = 1; i < stops.length; i++) { const [t0, f0] = stops[i-1], [t1, f1] = stops[i]; if (t >= t0) y = lerp(f0, f1, inOut((t - t0) / (t1 - t0))); }
+      } else y = inOut((t - a) / (b - a)) * (opts.to ?? 1);
+      im.style.transform = `translateY(${-y * max}px)`;
+      opts.render?.(t);
+    } };
+}
+
+phoneScene('08-phone-letter', 'so-03-letter-result-full.png', 8.5, `
+  <div class="title" id="t1" style="font-size:64px">She photographs the letter.<br>Silta explains it in Somali.</div>
+  <div class="sub" id="t2">The time, the place and what to do, copied as printed.</div>
+  <div id="t3"><span class="chip">Gemini reads the photo</span></div>`,
+  { enter: 1.9, pan: [3.2, 7.6], to: .55,
+    pre: `<div class="abs paper" id="lt" style="left:240px; top:120px; width:560px; height:820px; padding:36px 40px"><img src="${SCR}letter-fi-no-qr.png"></div>
+          <div class="abs" id="vf" style="left:220px; top:100px; width:600px; height:860px; border:6px solid #fff; border-radius:24px; box-shadow:0 0 0 2000px rgba(15,22,25,.25)"></div>
+          <div class="abs" id="flash" style="inset:0; background:#fff"></div>`,
+    render(t) {
+      const out = p(t, 1.7, .4); $('#lt').style.opacity = 1 - out; $('#vf').style.opacity = (1 - out) * p(t, .2, .4);
+      $('#flash').style.opacity = t > 1.35 && t < 1.95 ? 1 - clamp((t - 1.35) / .6) : 0;
+      show($('#t1'), p(t, 2.3, .6)); show($('#t2'), p(t, 2.8, .6)); show($('#t3'), p(t, 3.4, .6));
+    } });
+
+function qa(i, q, a) { return `<div id="qq${i}"><div class="q" style="font-size:42px"><span class="tick" id="tk${i}">✓</span>${q}</div><div class="ans" id="aa${i}" style="margin-top:14px">${a}</div></div>`; }
+function qaRender(t, i, tq, ta) { show($('#qq'+i), p(t, tq, .5), 20, 30); const k = p(t, ta, .4); $('#tk'+i).style.opacity = k; $('#tk'+i).style.transform = `scale(${lerp(.4,1,k)})`; show($('#aa'+i), k, 10); }
+
+phoneScene('09-phone-visit', 'so-06-visit-full.png', 10, `
+  <div class="sub" id="hd" style="font-family:var(--f-data); font-size:26px; letter-spacing:.06em">WHAT HAPPENS AT THE VISIT · IN SOMALI</div>
+  ${qa(0, 'Do I have to undress?', 'From the waist down. She can keep a long top or skirt on.')}
+  ${qa(1, 'What will they do to me?', 'A nurse, a private room, about 10 minutes, step by step. She can ask for a pause.')}`,
+  { stops: [[0, 0], [1.5, 0], [4.0, .32], [6.5, .45], [9, .55]],
+    render(t) { show($('#hd'), p(t, .5, .5)); qaRender(t, 0, 1.0, 3.6); qaRender(t, 1, 4.6, 6.6); } });
+
+phoneScene('10-phone-rights', 'so-07-rights-full.png', 11, `
+  <div class="sub" id="hd" style="font-family:var(--f-data); font-size:26px; letter-spacing:.06em">YOUR RIGHTS · IN SOMALI</div>
+  ${qa(0, 'What if it is a man?', 'She can ask for a woman to take the sample. Most sample takers are women.')}
+  ${qa(1, 'Who do I call, in Finnish?', 'Finnish sentences to show at the desk, with their meaning, read aloud.')}
+  ${qa(2, 'Do I even have to go?', 'Free, and her own choice. She can change the time.')}
+  <div id="el"><span class="chip">ElevenLabs reads it aloud</span></div>`,
+  { top: 90, stops: [[0, 0], [1.2, 0], [3.4, .22], [6.0, .22], [7.6, .62], [11, .66]],
+    render(t) { show($('#hd'), p(t, .4, .5)); qaRender(t, 0, .9, 2.9); qaRender(t, 1, 4.6, 7.4); qaRender(t, 2, 8.4, 9.4); show($('#el'), p(t, 7.9, .5)); } });
+
+const RUNGS = [
+  ['Hodan, on her own', 'Her letter explained, the visit and her rights, in Somali.', 'live', 'LIVE'],
+  ['The county', 'Prints a Silta QR code on the letters it already sends.', 'built', 'BUILT'],
+  ['The nurse', 'Opens her visit code: a Finnish summary with her wishes, before she sits down.', 'built', 'BUILT'],
+  ['In the room', 'A home self-sampling kit offered: 56% took one, against ~13% by post.', 'built', 'BUILT'],
+];
+S['11-ladder'] = { dur: 14, html: `
+  <div class="abs title" style="left:120px; top:80px">Every adopter adds impact</div>
+  ${RUNGS.map(([w,x,c,l],i)=>`<div class="rung" id="r${i}" style="left:${120+i*230}px; top:${830-i*190}px"><div class="who">${w}<span class="st ${c}">${l}</span></div><div class="what">${x}</div></div>`).join('')}
+  <div class="abs" id="qr" style="left:1350px; top:120px; width:420px; height:250px; overflow:hidden; border-radius:12px; box-shadow:0 18px 40px rgba(20,32,40,.18); background:#fff">
+    <img src="${SCR}letter-fi-with-qr.png" style="width:420px; position:absolute; bottom:0"></div>
+  <div class="source">Kit uptake: London, kit offered at a GP visit vs by post · Status: Silta master narrative, adoption ladder</div>`,
+  render(t) {
+    RUNGS.forEach((_, i) => show($('#r'+i), p(t, .6 + i*3.1, .6), 30, -30));
+    show($('#qr'), p(t, 3.9, .6)); $('#qr').style.opacity *= 1 - p(t, 6.4, .5);
+  } };
+
+S['12-end'] = { dur: 8, html: `
+  <div class="abs" id="w" style="left:120px; top:200px; font-family:var(--f-display); font-weight:800; font-size:180px; color:var(--lake); letter-spacing:-.02em">Silta</div>
+  <div class="abs title" id="line" style="left:120px; top:440px; width:1500px; font-size:68px">Equal cancer care starts before the first appointment.</div>
+  <div class="abs" id="chips" style="left:120px; top:650px; display:flex; gap:16px; flex-wrap:wrap; width:1700px">
+    <span class="chip soft">Not a medical device</span><span class="chip soft">No names stored</span><span class="chip soft">Live on Aiven, in the EU</span></div>
+  <div class="abs" id="foot" style="left:120px; top:800px; display:grid; gap:12px; font-size:28px; color:var(--muted)">
+    <div>Built with Gemini · ElevenLabs · Aiven &nbsp;·&nbsp; Timo · Mea · Milla &nbsp;·&nbsp; Junction 2026</div>
+    <div class="mono" style="font-size:24px">Hodan is a composite. Sources: mostly-awaited-flounder.eur-1.aiven.app</div></div>`,
+  render(t) { show($('#w'), p(t, .2, .7)); show($('#line'), p(t, .9, .7)); show($('#chips'), p(t, 1.8, .6)); show($('#foot'), p(t, 2.6, .6)); } };
+
+// ---------- transparent overlays (PNG, cropped to the element) ----------
+const OVERLAYS = {};
+QUESTIONS.forEach((q, i) => { OVERLAYS[`q${i+1}`] = `<div class="q">${q}</div>`; OVERLAYS[`q${i+1}-answered`] = `<div class="q">${TICK}${q}</div>`; });
+OVERLAYS['name-hodan'] = `<div style="background:var(--surface); padding:24px 36px; border-radius:14px; box-shadow:0 10px 30px rgba(20,32,40,.12)"><div class="title" style="font-size:52px">Hodan, 54 · Helsinki</div><div class="sub" style="font-size:32px; margin-top:6px">Her cervical screening letters are in Finnish.</div></div>`;
+OVERLAYS['chip-gemini'] = `<span class="chip">Gemini reads the photo</span>`;
+OVERLAYS['chip-elevenlabs'] = `<span class="chip">ElevenLabs reads it aloud</span>`;
+OVERLAYS['chip-aiven'] = `<span class="chip">Live on Aiven, in the EU</span>`;
+OVERLAYS['caption-composite'] = `<span class="chip soft">Hodan is a composite persona</span>`;
+for (const [k, s] of Object.entries({
+  'source-registry': 'Finnish Cancer Registry · screening attendance by native language, 2024',
+  'source-somali': 'Finnish population survey of migrant women (PMC5346186, PMC7663516)',
+  'source-london': 'Kit offered at a GP visit vs by post · London study',
+  'source-norway': 'Translated invitations: 46.5% vs 47.4% · Norway RCT, n = 11,347',
+})) OVERLAYS[k] = `<div class="mono" style="background:rgba(246,247,245,.92); padding:10px 18px; border-radius:8px; font-size:24px; color:var(--muted)">${s}</div>`;
+
+// ---------- boot ----------
+const qs = new URLSearchParams(location.search);
+const stage = $('#stage');
+window.SCENES = Object.fromEntries(Object.entries(S).map(([k, v]) => [k, v.dur]));
+window.OVERLAYS = Object.keys(OVERLAYS);
+if (qs.get('overlay')) {
+  document.body.classList.add('transparent');
+  stage.innerHTML = `<div id="ov" style="position:absolute; left:40px; top:40px; display:inline-block">${OVERLAYS[qs.get('overlay')]}</div>`;
+} else {
+  const sc = S[qs.get('scene') || '01-questions'];
+  stage.innerHTML = sc.html;
+  window.render = (t) => sc.render(t);
+  window.render(0);
+  if (qs.has('play')) { const t0 = performance.now(); const loop = () => { window.render(((performance.now() - t0) / 1000) % sc.dur); requestAnimationFrame(loop); }; loop(); }
+}
+window.ready = Promise.all([document.fonts.ready, ...[...document.images].map((im) => im.complete ? 1 : new Promise((r) => { im.onload = im.onerror = r; }))]);
+</script>
+</body>
+</html>

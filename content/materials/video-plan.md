@@ -1,5 +1,5 @@
 ---
-title: Pitch video — the plan ("Three doors")
+title: Pitch video — earlier draft ("Three doors"), superseded by video-strategy.html
 description: The chosen 2-minute storyline. Three short scenarios (pharmacy, screening letter, daughter and mother) open the video, lead into the data and reasoning, then Silta resolves each one. Timing, script, shot list, preparation.
 tags: [video, pitch, script, storyboard]
 author: Milla Railo
