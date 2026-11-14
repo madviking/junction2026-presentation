@@ -16,8 +16,8 @@ event: Junction 2026 · AstraZeneca — Equal Care Across Finland
 # (needs the app running; see the script header).
 hero_screens:
   - src: /media/screens/slider-01-language.png
-    alt: "Silta's first screen: 'Choose your language' with a red 112 call button and a grid of 14 languages."
-    caption: Pick your language. The 112 button stays on every screen.
+    alt: "Silta's first screen: 'Choose your language' with a red Urgent help button and a grid of 14 languages."
+    caption: Pick your language. The Urgent help button, which leads to 112, stays on every screen.
   - src: /media/screens/slider-02-body-map.png
     alt: "'What worries you?' with a body figure, body-part buttons and picture cards with speaker buttons."
     caption: Hard to read? Tap where it is on the body. Every card has a picture and a speaker button.
@@ -84,7 +84,7 @@ rollout:
       items:
         - "Not a medical device by design: no diagnosis and no urgency rating (EU MDR Rule 11)."
         - "No personal data: no names, ID numbers, phone numbers or emails (GDPR Art. 9)."
-        - Official guidance with a link to its source. 112 and 116117 on every screen.
+        - Official guidance with a link to its source. An Urgent help button on every screen leads to 112.
         - Prepares the visit. It does not replace a professional interpreter.
     - when: Next
       title: With a county

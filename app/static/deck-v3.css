@@ -50,6 +50,8 @@ html, body { background: var(--paper); color: var(--ink); }
 .reveal .controls { color: var(--lake); }
 .reveal .progress { color: var(--lake); }
 .reveal .slide-number { background: transparent; color: var(--muted); font: 500 var(--t-source) var(--f-mono); }
+/* Page count sits left of the arrows (reveal puts both in the corner, where they touch). */
+.reveal > .slide-number { right: 120px; bottom: 30px; }
 
 /* ---- the frame ------------------------------------------------------------------------ */
 .frame {
@@ -123,10 +125,13 @@ html, body { background: var(--paper); color: var(--ink); }
 
 /* ---- visuals: phone, browser, paper -------------------------------------------------- */
 .phone, .browser, .paper { position: relative; display: flex; flex-direction: column; gap: var(--s1); align-items: center; }
-.phone .bezel { display: block; padding: 12px; background: var(--ink); border-radius: 34px; box-shadow: var(--shadow); }
+/* Phone: a dark bezel, then a light screen margin so the app's edges and corner buttons are not
+   clipped by the rounded screen. Image boxes keep the capture's ratio (375 × 812) and crop only
+   at the bottom. */
+.phone .bezel { display: block; padding: 14px; background: var(--ink); border-radius: 38px; box-shadow: var(--shadow); }
 .phone .bezel img {
-  display: block; width: 216px; height: 468px; object-fit: cover; object-position: top;
-  border-radius: 22px; background: var(--white);
+  display: block; box-sizing: content-box; width: 204px; height: 442px; padding: 10px 8px;
+  object-fit: cover; object-position: top; border-radius: 24px; background: #fbfbfc;
 }
 .browser { background: var(--white); border-radius: 12px; box-shadow: var(--shadow); border: 1px solid var(--line); overflow: hidden; gap: 0; }
 .browser-bar { align-self: stretch; display: flex; gap: 6px; padding: 10px 12px; background: #eef1ef; border-bottom: 1px solid var(--line); }
@@ -137,8 +142,8 @@ figcaption { font: 500 var(--t-label)/1.3 var(--f-mono); letter-spacing: 0.04em;
 .browser figcaption { padding: 8px; }
 
 .screens { display: flex; align-items: flex-start; justify-content: center; gap: var(--s3); }
-.screens.n3 .phone .bezel { padding: 10px; border-radius: 30px; }
-.screens.n3 .phone .bezel img { width: 186px; height: 403px; border-radius: 20px; }
+.screens.n3 .phone .bezel, .morph-to .phone .bezel { padding: 12px; border-radius: 34px; }
+.screens.n3 .phone .bezel img, .morph-to .phone .bezel img { width: 172px; height: 372px; padding: 8px 7px; border-radius: 22px; }
 .screens.n3 { gap: var(--s2); }
 
 /* ---- layout: opener / close (the letter and the drawer) ------------------------------ */
@@ -194,12 +199,13 @@ i.dom { background: var(--lake); } i.oth { background: var(--coral); }
 
 /* ---- layout: morph (the letter becomes a lesson) ------------------------------------- */
 .morph { position: relative; width: 100%; height: 100%; }
-.morph > .paper { position: absolute; left: 50%; top: 4px; transform: translateX(-50%) rotate(-2deg); transition: transform 0.9s cubic-bezier(.5,.05,.3,1); z-index: 2; }
+.morph > .paper { position: absolute; left: 50%; top: 4px; transform: translateX(-50%) rotate(-2deg); transition: transform 0.9s cubic-bezier(.5,.05,.3,1), opacity 0.3s ease; z-index: 2; }
 .morph > .paper img:first-child { width: 360px; height: 488px; }
-.morph-to { position: absolute; inset: 0; display: flex; justify-content: flex-end; align-items: flex-start; gap: var(--s2); opacity: 0; transform: scale(0.6) translateX(-120px); transform-origin: 30% 80%; transition: opacity 0.6s ease 0.25s, transform 0.9s cubic-bezier(.5,.05,.3,1) 0.15s; }
-.morph-to .phone .bezel img { width: 196px; height: 425px; }
+/* The phones after the morph match the next slide's three phones (size, centred), so the screens
+   stay at one height from slide to slide. The letter shrinks toward the phones and fades out. */
+.morph-to { position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; gap: var(--s2); opacity: 0; transform: scale(0.6) translateX(-120px); transform-origin: 30% 80%; transition: opacity 0.6s ease 0.25s, transform 0.9s cubic-bezier(.5,.05,.3,1) 0.15s; }
 .morph-trigger { position: absolute; width: 1px; height: 1px; overflow: hidden; }
-.morph:has(.morph-trigger.visible) > .paper { transform: translateX(-128%) translateY(70px) scale(0.62) rotate(-5deg); }
+.morph:has(.morph-trigger.visible) > .paper { transform: translateX(-90%) translateY(70px) scale(0.4) rotate(-5deg); opacity: 0; transition: transform 0.9s cubic-bezier(.5,.05,.3,1), opacity 0.5s ease 0.35s; }
 .morph:has(.morph-trigger.visible) .morph-to { opacity: 1; transform: none; }
 
 /* ---- layout: cards / facts ----------------------------------------------------------- */

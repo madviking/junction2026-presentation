@@ -160,7 +160,7 @@ slides:
             text: "a year: breast-screening slots booked for people who do not come (upper bound; units overbook)."
             source: "Our calculation from Cancer Registry data and Ministry unit costs"
     source: "Screens from the running app"
-    notes: "Press → once: the letter shrinks and the guide appears out of its QR code."
+    notes: "Press → once: the letter shrinks away and the guide appears in its place."
 
   - layout: screens
     id: noticed
@@ -177,7 +177,7 @@ slides:
         label: For Olga
         title: Works for people who don't read well
         items:
-          - text: "Every card has a picture and a speaker button. In her own words, Gemini finds the matching card and asks before using it. Somali answers by cards with human-recorded audio; Arabic and Persian run right to left. 112 is on every screen."
+          - text: "Every card has a picture and a speaker button. In her own words, Gemini finds the matching card and asks before using it. Somali answers by cards with human-recorded audio; Arabic and Persian run right to left. An Urgent help button on every screen leads to 112."
             source: "Silta app"
           - text: "She can ask for a female professional; Silta words it as a request, not a guarantee."
             source: "Silta app"
@@ -212,7 +212,7 @@ slides:
     screens:
       - {src: /media/screens/v3/path-route.png, alt: "'Where do you get health care?' with route cards such as 'I live in Finland and have a home municipality'."}
       - {src: /media/screens/slider-05-door.png, alt: "'Contact the county health station and ask for an assessment today', then the Finnish call script."}
-      - {src: /media/screens/v3/path-script.png, alt: "'Say this in Finnish': the Finnish sentences with their meaning and a play button for each."}
+      - {src: /media/screens/v3/path-script.png, alt: "'Your card in Finnish': the Finnish sentences with their meaning and a play button for each."}
     drills:
       - kind: person
         label: For them
@@ -326,7 +326,7 @@ slides:
     title: Safe to use <em>today.</em>
     line: "Built to stay on the right side of medical-device, privacy and AI rules, so people can use it before any county joins."
     cards:
-      - {tag: EU MDR Rule 11, title: Not a medical device, text: "No diagnosis, no urgency rating. 112 on every screen."}
+      - {tag: EU MDR Rule 11, title: Not a medical device, text: "No diagnosis, no urgency rating. An Urgent help button on every screen leads to 112."}
       - {tag: GDPR Art. 9, title: No personal data, text: "No names, IDs, phones or emails. A code that expires."}
       - {tag: EU AI Act, title: AI that asks first, text: "Gemini suggests; the person confirms with one tap."}
       - {tag: Patient Act §5, title: Interpreter first, text: "The summary asks for a free professional interpreter."}
