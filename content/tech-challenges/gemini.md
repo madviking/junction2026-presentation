@@ -25,6 +25,7 @@ live:
 - Identifiers removed before text leaves the backend
 - Answer cards for 14 Finnish health care words (Kela card, lähete, OmaKanta …)
 - Logged evaluation on synthetic English and Finnish input
+- Photo of a letter → what it is, the facts as printed and what to do, in the person's language (Gemini 3.1 Flash-Lite, image + JSON schema; reached through OpenRouter today)
 planned:
 - Phone line: Gemini 2.5 Flash drives the ElevenLabs phone agent (simulated call passes)
 - Switch card matching to the direct Gemini API adapter
@@ -83,6 +84,7 @@ Live (local app, tests and one logged evaluation):
 - Card matching with Gemini Decision 1 in the running app, for symptoms, routes and outcomes, with the read-back and the fallback to cards (`brain/notes/2026-11-14-0735-silta-app-walkthrough.md`).
 - A live evaluation on a labelled set of 48 synthetic English and Finnish inputs: every confident answer was correct, all 5 questions about health care words got the right answer card, and every vague or off-topic input fell back to the cards, for $0.005 (`docs/proof/2026-11-14/classifier-eval.md`). The set was written by the builder, so it shows the wiring and the guard rails, not an independent accuracy figure.
 - The direct Gemini API adapter for both Decisions and `generateContent`, each proven with a live smoke call (`backend/llm/README.md`).
+- "I got a letter": the person photographs a letter they cannot read; Gemini 3.1 Flash-Lite reads the photo and answers as one JSON object that follows our schema: a letter type from a closed set, the date, place and phone number copied as printed, and a short explanation with steps in the person's language (`backend/letters/`, `backend/llm/service.ts` `extract`). Checked in the running local app on 14 Nov with the app's own Finnish example invitation, in Somali and Arabic (`docs/proof/2026-11-14/letter-result-so.png`, `letter-result-ar.png`). This is generated text, so the screen labels it machine-made and tells the person to check date, time and place against the paper. The photo is sent once and never stored or logged; the model makes no urgency decision. Tried on one example letter only, not evaluated on real letters.
 
 In progress or planned:
 - In the current build the `cards.match` feature reaches Gemini Decision 1 through OpenRouter. Switching it to the direct Gemini API adapter is a one-line change of `provider` in `backend/llm/integrations.ts`; it has not been made yet.

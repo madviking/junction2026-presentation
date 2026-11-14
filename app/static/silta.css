@@ -75,10 +75,18 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .silta-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; color: var(--silta-muted); font-size: 14px; }
 
 /* landing hero */
-.silta-hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 48px; align-items: center; padding: 40px 0 32px; }
+.silta-hero { display: grid; grid-template-columns: minmax(0, 520px) minmax(0, 1fr) auto; gap: 40px; align-items: center; padding: 40px 0 32px; }
 .silta-title { font-size: clamp(64px, 12vw, 136px); line-height: .9; font-weight: 800; color: var(--silta-lake); margin: 0; }
 .silta-meaning { font: 600 13px var(--silta-font-data); color: var(--silta-muted); letter-spacing: .05em; margin: 10px 0 18px; }
-.silta-claim { font-family: var(--silta-font-display); font-weight: 600; font-size: clamp(22px, 3vw, 32px); line-height: 1.2; max-width: 24ch; margin-bottom: 28px; text-wrap: balance; }
+.silta-claim { font-family: var(--silta-font-display); font-weight: 600; font-size: clamp(22px, 3vw, 32px); line-height: 1.2; max-width: 24ch; margin-bottom: 14px; text-wrap: balance; }
+.silta-hero-lede { max-width: 46ch; font-size: 18px; line-height: 1.45; color: var(--silta-muted); margin-bottom: 28px; }
+/* landing highlights: three short points between the hero text and the phone */
+.silta-highlights { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; width: 250px; justify-self: center; }
+.silta-highlights li { display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: center; padding: 18px 0; border-top: 1px solid var(--silta-line); }
+.silta-highlights li:last-child { border-bottom: 1px solid var(--silta-line); }
+.silta-highlights i { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font-size: 24px; background: var(--silta-lake-soft); color: var(--silta-lake); }
+.silta-highlights strong { display: block; font-family: var(--silta-font-display); font-weight: 800; font-size: 19px; line-height: 1.15; color: var(--silta-ink); }
+.silta-highlights span { display: block; margin-top: 3px; font-size: 14px; line-height: 1.3; color: var(--silta-muted); }
 .silta-cta { display: flex; flex-wrap: wrap; gap: 10px; }
 .silta-phone { margin: 0; width: 260px; border-radius: 32px; padding: 10px; background: var(--silta-ink); box-shadow: 0 20px 50px rgba(20, 32, 40, .25); }
 .silta-phone img { display: block; width: 100%; border-radius: 24px; }
@@ -106,7 +114,21 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .silta-fact-value { font-family: var(--silta-font-display); font-weight: 800; font-size: 38px; line-height: 1; color: var(--silta-ink); font-variant-numeric: tabular-nums; }
 .silta-fact-label { margin: 0; color: var(--silta-ink); }
 .silta-fact .silta-src { margin: 0; }
+.silta-fact-value { text-wrap: balance; }
 .silta-more { margin: 12px 0 0; text-align: right; font-weight: 700; }
+
+/* landing: Goal 3 link and rollout stages */
+.silta-goal { margin-top: 24px; }
+.silta-goal-points { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px 28px; margin-top: 20px; }
+.silta-goal-point { border-top: 3px solid var(--silta-lake); padding-top: 12px; }
+.silta-goal-point h3, .silta-stage h3 { font-size: 19px; font-weight: 800; margin: 0 0 6px; }
+.silta-goal-point p { margin: 0; }
+.silta-goal-also { margin: 20px 0 0; color: var(--silta-muted); }
+.silta-goal-also a { font-weight: 700; white-space: nowrap; }
+.silta-stages { list-style: none; padding: 0; margin: 20px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.silta-stage ul { margin: 10px 0 0; padding-left: 18px; display: grid; gap: 6px; }
+.silta-stage-now { border-color: var(--silta-lake); box-shadow: inset 0 4px 0 var(--silta-lake); }
+.silta-stage-now .silta-eyebrow { color: var(--silta-lake); }
 
 /* long-form text */
 .silta-prose { max-width: 70ch; padding: 24px 0; }
@@ -165,8 +187,16 @@ body:has(.silta-report) { background: var(--silta-surface); }
 .silta-kind { background: var(--silta-lake-soft); color: var(--silta-lake); }
 .silta-material-title { font-weight: 700; color: var(--silta-ink); }
 
+@media (min-width: 1400px) { .silta-hero { grid-template-columns: minmax(0, 620px) minmax(0, 1fr) auto; } }
+@media (min-width: 768px) and (max-width: 1199.98px) {
+  .silta-hero { grid-template-columns: minmax(0, 1fr) auto; }
+  .silta-highlights { grid-column: 1; grid-row: 2; width: auto; max-width: 420px; justify-self: stretch; }
+  .silta-hero > .silta-slider, .silta-hero > .silta-phone { grid-column: 2; grid-row: 1 / span 2; }
+}
 @media (max-width: 767.98px) {
   .silta-hero { grid-template-columns: 1fr; gap: 28px; padding-top: 24px; }
+  .silta-highlights { width: auto; justify-self: stretch; }
+  .silta-highlights li { padding: 12px 0; }
   .silta-phone { width: 200px; justify-self: center; }
   .silta-slider { width: 220px; justify-self: center; }
   .container-xl { padding-left: 16px; padding-right: 16px; }

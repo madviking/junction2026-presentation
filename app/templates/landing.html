@@ -9,6 +9,7 @@
         <h1 class="silta-title">{{ site.name }}</h1>
         <p class="silta-meaning">{{ site.meaning }}</p>
         <p class="silta-claim">{{ site.punchline }}</p>
+        {% if site.lede %}<p class="silta-hero-lede">{{ site.lede }}</p>{% endif %}
         <div class="silta-cta">
           {% if site.links.consumer %}
           <a class="btn btn-primary btn-lg" href="{{ site.links.consumer.url }}"><i class="ti ti-device-mobile me-2"></i>Try Silta</a>
@@ -17,6 +18,19 @@
           <a class="btn btn-lg" href="/presentation"><i class="ti ti-presentation me-2"></i>See the deck</a>
         </div>
       </div>
+      {% if site.highlights %}
+      <ul class="silta-highlights" aria-label="Silta in short">
+        {% for h in site.highlights %}
+        <li>
+          <i class="ti ti-{{ h.icon }}" aria-hidden="true"></i>
+          <div>
+            <strong>{{ h.title }}</strong>
+            {% if h.text %}<span>{{ h.text }}</span>{% endif %}
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
       {% if site.hero_screens %}
       {{ phone_slider(site.hero_screens, "Silta on a phone, step by step") }}
       {% elif site.hero_image %}
@@ -26,18 +40,40 @@
       {% endif %}
     </section>
 
-    <section class="silta-facts" aria-label="Key facts">
-      {% for fact in site.facts %}
-      <div class="card silta-fact">
-        <div class="card-body">
-          <div class="silta-fact-value">{{ fact.value }}</div>
-          <p class="silta-fact-label">{{ fact.label }}</p>
-          <p class="silta-src">{{ fact.source }}</p>
+    {% if site.goal3 %}
+    <section class="silta-section silta-goal" aria-labelledby="goal3-title">
+      <p class="silta-eyebrow">National Cancer Strategy 2026–2035</p>
+      <h2 id="goal3-title">{{ site.goal3.title }}</h2>
+      <p class="silta-lede">{{ site.goal3.lede }}</p>
+      <div class="silta-goal-points">
+        {% for point in site.goal3.points %}
+        <div class="silta-goal-point">
+          <h3>{{ point.indicator }}</h3>
+          <p>{{ point.text }}</p>
         </div>
+        {% endfor %}
       </div>
-      {% endfor %}
+      <p class="silta-goal-also">{{ site.goal3.also }} <a href="/pathway">See the evidence, step by step <i class="ti ti-arrow-right"></i></a></p>
     </section>
-    <p class="silta-more"><a href="/pathway">See the pathway <i class="ti ti-arrow-right"></i></a></p>
+    {% endif %}
+
+    {% if site.rollout %}
+    <section class="silta-section" aria-labelledby="rollout-title">
+      <h2 id="rollout-title">{{ site.rollout.title }}</h2>
+      <p class="silta-lede">{{ site.rollout.lede }}</p>
+      <ol class="silta-stages">
+        {% for stage in site.rollout.stages %}
+        <li class="card silta-stage{% if loop.first %} silta-stage-now{% endif %}">
+          <div class="card-body">
+            <p class="silta-eyebrow">{{ stage.when }} · {{ stage.status }}</p>
+            <h3>{{ stage.title }}</h3>
+            <ul>{% for item in stage["items"] %}<li>{{ item }}</li>{% endfor %}</ul>
+          </div>
+        </li>
+        {% endfor %}
+      </ol>
+    </section>
+    {% endif %}
 
     <section class="silta-prose">
       {{ landing.html | safe }}

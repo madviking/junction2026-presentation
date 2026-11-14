@@ -40,3 +40,8 @@
   description: Next version of /pathway. Three routes into cancer care (screening, symptom, doctor's suggestion) merging at the diagnostic exam; programmes combined; only significant gaps shown. Same page as routes-into-care.html.
   tags: [pathway, mockup, data]
   updated: 2026-11-14
+- title: Silta ways in, presentation screen (claude.ai)
+  url: https://claude.ai/artifact/N4W1ydNFiU9T6PaGavCz2k
+  description: One screen for the acquisition and findability part of the pitch. 15 channels flow through three ways in to Silta; click a channel, a way in or a phase for evidence, plan and measurement. Same page as ways-in.html. Private until shared.
+  tags: [acquisition, presentation]
+  updated: 2026-11-14
