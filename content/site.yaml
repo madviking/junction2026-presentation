@@ -76,31 +76,36 @@ goal3:
 rollout:
   eyebrow: Regulation and rollout
   title: Safe to use today, without waiting for the health system
-  lede: Silta is built to stay on the information side of medical-device and privacy rules, so residents can use it before any county or doctor takes part.
+  lede: Silta stays on the information side of medical-device and privacy rules, so residents can use it before any county or doctor takes part.
+  # Two columns: what Silta does and what it deliberately does not do. `note` = the rule it keeps clear of.
+  does:
+    - text: Explains the letter or symptom in your own language
+    - text: Points to the right service, with the words to say in Finnish
+    - text: Official guidance, linked to its source
+    - text: 112 and 116117 on every screen
+  does_not:
+    - text: Diagnose or rate urgency
+      note: EU MDR Rule 11
+    - text: Ask for names, ID numbers, phone numbers or emails
+      note: GDPR Art. 9
+    - text: Replace a professional interpreter
+  # Small three-step timeline under the columns. state: live | pilot | planned.
   stages:
     - when: Today
-      title: Works on its own
       status: Live
-      items:
-        - "Not a medical device by design: no diagnosis and no urgency rating (EU MDR Rule 11)."
-        - "No personal data: no names, ID numbers, phone numbers or emails (GDPR Art. 9)."
-        - Official guidance with a link to its source. 112 and 116117 on every screen.
-        - Prepares the visit. It does not replace a professional interpreter.
+      state: live
+      title: Works on its own
+      text: 14 languages, read aloud. Body map and picture cards, the right service and the words to say in Finnish, a visit card, a screening-letter guide and a phone line.
     - when: Next
-      title: With a county
       status: Built, needs a pilot
-      items:
-        - A Silta QR code on every screening letter.
-        - The clinic opens the visit code and reads a one-screen Finnish summary.
-        - The county view shows where people stop, by stage and language.
+      state: pilot
+      title: With a county
+      text: QR code on screening letters, Finnish summary for the clinic, county view.
     - when: Later
-      title: Inside the care pathway
       status: Planned
-      items:
-        - An overdue-screening prompt from the patient record system.
-        - National guidance from Terveyskylä by article ID.
-        - The county as data controller, with its own impact assessment.
-        - Native-speaker and clinical review of every language.
+      state: planned
+      title: Inside the care pathway
+      text: Patient-record prompts, Terveyskylä guidance, county as data controller, clinical and native-speaker review.
 
 # Landing page: where Silta sits on the routes into cancer care. A simplified version of the
 # pathway slide (content/data/pathway.json: nodes and the Silta bands); drawn by
