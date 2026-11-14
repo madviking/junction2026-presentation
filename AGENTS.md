@@ -37,7 +37,7 @@ one-pagers, charts, mock-ups, exports, PDFs.
 | `content/materials/` | Team-internal artefacts + `_links.yaml` for external ones | `/team` (password) |
 | `content/media/` | Public images and video used by pages and slides | `/media/...` |
 | `content/data/*.csv` | Dashboard data, each traced to a brain source (`content/data/README.md`) | — |
-| `content/data/pathway.json` | The pathway page: steps, evidence levels, findings, actions, page text; `charts` per step | `/pathway` |
+| `content/data/pathway.json` | The pathway page: three routes into care (map nodes), Silta bands, and per step the evidence level, text, popup tables, notes and `charts` (rows of chart ids), plus limitations and sources | `/pathway` |
 | `app/charts/*.py` | One module per chart, auto-discovered; shown on a pathway step via `charts` | `/pathway`, `/pathway/archive` |
 | `content/dashboard_archive.yaml` | The earlier report-style data page, kept for reference | `/pathway/archive` (`/dashboard` redirects to `/pathway`) |
 | `app/main.py` | Routes. `app/content.py` loads content, `app/auth.py` guards `/team` | — |
@@ -107,7 +107,7 @@ mostly visually, how their technology fits into Silta**, and can then drill down
    `(figure, table)`. Start from `new_figure(p)` and use only palette keys (`p["lake"]`,
    `p["coral"]`, `p["reference"]`, ...), never raw colors, so light and dark both work.
 3. One axis per chart, a legend for two or more series, a data table, a hover template.
-4. To show it on the pathway page, add its module name to a step's `charts` list in `content/data/pathway.json`.
+4. To show it on the pathway page, add its module name to a step's `charts` rows in `content/data/pathway.json` (charts in one row sit side by side in that step's data popup).
 5. `make test`, then look at `/pathway` in both themes.
 
 ## Run

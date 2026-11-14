@@ -24,7 +24,7 @@ def basic(password: str) -> dict:
     [
         ("/healthz", "ok"),
         ("/", "Silta"),
-        ("/pathway", "The gap opens at the door"),
+        ("/pathway", "Where people fall out of cancer care"),
         ("/pathway/archive", "Where in the screening pathway the gap appears"),
         ("/presentation", 'class="reveal"'),
         ("/video", "The video is not up yet"),
@@ -150,15 +150,13 @@ def test_pathway_embeds_data_and_step_charts(client):
     html = client.get("/pathway").text
     assert 'id="pathway-data"' in html
     assert "/static/pathway.js" in html
-    data = content.pathway()
+    assert "Limitations" in html
     available = charts.by_id()
-    steps = [step for prog in data["programmes"].values() for step in prog["steps"].values()]
-    steps += list(data["symptom"].values())
-    assert any(step.get("charts") for step in data["symptom"].values())
-    for step in steps:
-        for chart in step.get("charts", []):
-            assert chart in available, chart
-            assert f'id="pw-fig-{chart}"' in html
+    wanted = [c for step in content.pathway()["steps"].values() for row in step.get("charts", []) for c in row]
+    assert wanted
+    for chart in wanted:
+        assert chart in available, chart
+        assert f'id="pw-fig-{chart}"' in html
 
 
 def test_archive_shows_every_figure_table_and_implications(client):
@@ -172,15 +170,17 @@ def test_archive_shows_every_figure_table_and_implications(client):
 
 def test_pathway_data_is_complete():
     data = content.pathway()
-    step_ids = [s["id"] for s in data["steps"]]
-    for name, prog in data["programmes"].items():
-        assert set(prog["steps"]) == set(step_ids), name
-        for sid, step in prog["steps"].items():
-            assert step["level"] in data["levels"], (name, sid)
-            assert step.get("src") and step.get("finding") and step.get("county"), (name, sid)
-            if step["level"] == "lang":
-                assert step.get("a") and step.get("b"), (name, sid)
-    assert set(data["symptom"]) == {s["id"] for s in data["symptom_steps"]}
+    steps = data["steps"]
+    assert {n["id"] for n in data["nodes"]} == set(steps)
+    for sid, step in steps.items():
+        assert step["level"] in data["levels"], sid
+        assert step.get("title") and step.get("text") and step.get("src") and step.get("silta"), sid
+        for table in step.get("tables", []):
+            assert all(len(row) == len(table["head"]) for row in table["rows"]), sid
+    for band in data["bands"]:
+        assert set(band["steps"]) <= set(steps), band["id"]
+        assert band.get("text"), band["id"]
+    assert data["page"]["limitations"] and data["page"]["sources"]
 
 
 def test_tech_challenge_pages(client, tmp_path, monkeypatch):

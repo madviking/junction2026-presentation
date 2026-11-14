@@ -18,6 +18,18 @@ app.mount("/static", StaticFiles(directory=settings.APP_DIR / "static"), name="s
 app.mount("/media", StaticFiles(directory=settings.content_dir() / "media", check_dir=False), name="media")
 templates = Jinja2Templates(directory=settings.APP_DIR / "templates")
 
+
+def asset(path: str) -> str:
+    """URL for a file in app/static/ with its modification time as a version, so browsers fetch new copies after a change."""
+    try:
+        version = int((settings.APP_DIR / "static" / path).stat().st_mtime)
+    except OSError:
+        return f"/static/{path}"
+    return f"/static/{path}?v={version}"
+
+
+templates.env.globals["asset"] = asset
+
 NAV = (
     ("home", "/", "Silta", "home"),
     ("pathway", "/pathway", "Pathway", "route"),
@@ -54,9 +66,7 @@ def landing(request: Request):
 def pathway(request: Request):
     data = content.pathway()
     available = charts.by_id()
-    steps = [step for prog in data["programmes"].values() for step in prog["steps"].values()]
-    steps += list(data.get("symptom", {}).values())
-    wanted = {c for step in steps for c in step.get("charts", [])}
+    wanted = {c for step in data["steps"].values() for row in step.get("charts", []) for c in row}
     rendered = {name: available[name].render() for name in sorted(wanted) if name in available}
     return render(request, "pathway.html", "pathway", pathway=data, charts=rendered)
 
