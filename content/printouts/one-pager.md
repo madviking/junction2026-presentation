@@ -21,7 +21,7 @@ Junction 2026 · AstraZeneca — Equal Care Across Finland
 
 1. **Find** information in your own language.
 2. **Prepare:** describe what you noticed by voice, tap or text. A checklist, not a diagnosis.
-3. **Navigate:** the right door in your county, a Finnish call script, your right to an interpreter.
+3. **Navigate:** the right service in your county, a Finnish call script, your right to an interpreter.
 4. **At the visit:** a visit card and flash cards.
 5. **For the clinician:** a one-screen Finnish summary and a self-sampling prompt when screening is overdue.
 

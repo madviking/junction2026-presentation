@@ -11,7 +11,7 @@
 # sources/2026-11-14-cancerregistry-screening-by-language.md.
 
 title: Silta — Junction 2026
-path: [Letter, Symptom, Found, Door, Visit]
+path: [Letter, Symptom, Found, Service, Visit]
 
 # Shared by the "gap" slide and any drill-in with chart: screening.
 screening_bars:
@@ -127,7 +127,7 @@ slides:
     id: pathway
     src: /presentation/pathway
     title: "The routes into cancer care, the gap at each step and where Silta helps. Click a step for its evidence."
-    notes: "The journey with its data. The gap opens at the first step; after the door, breast and cervical follow-up is equal (colposcopy 87.1% vs 84.8%). Two routes matter for Silta: the screening letter (Hodan) and noticing a symptom (Olga)."
+    notes: "The journey with its data. The gap opens at the first step; once people are in care, breast and cervical follow-up is equal (colposcopy 87.1% vs 84.8%). Two routes matter for Silta: the screening letter (Hodan) and noticing a symptom (Olga)."
 
   - layout: intro
     id: silta
@@ -211,10 +211,10 @@ slides:
 
   - layout: screens
     id: door
-    kicker: Both ways · the right door
+    kicker: Both ways · the right service
     path: 4
-    title: The right door, <em>and the words to say.</em>
-    line: "Hodan needs to rebook her screening; Olga needs an assessment. Silta shows each the right door and the Finnish sentences to say."
+    title: The right service, <em>and the words to say.</em>
+    line: "Hodan needs to rebook her screening; Olga needs an assessment. Silta shows each the right service and the Finnish sentences to say."
     screens:
       - {src: /media/screens/v3/path-route.png, alt: "'Where do you get health care?' with route cards such as 'I live in Finland and have a home municipality'."}
       - {src: /media/screens/slider-05-door.png, alt: "'Contact the county health station and ask for an assessment today', then the Finnish call script."}
@@ -224,19 +224,19 @@ slides:
         label: For them
         title: They know who to call and what to say
         items:
-          - text: "The door that matches their right to care, the Finnish sentences with audio, the right to a free interpreter, and the legal time limits. If nobody answers, Silta gives the next step."
+          - text: "The service that matches their right to care, the Finnish sentences with audio, the right to a free interpreter, and the legal time limits. If nobody answers, Silta gives the next step."
             source: "Silta app"
       - kind: county
         label: Where the data comes from
         title: The real service path, with a source for every fact
         items:
           - value: "5 counties"
-            text: "Helsinki, Länsi-Uusimaa, Kymenlaakso, Etelä-Pohjanmaa and Pohjois-Pohjanmaa: the door for each route to care, how each stage works and the screening programmes."
+            text: "Helsinki, Länsi-Uusimaa, Kymenlaakso, Etelä-Pohjanmaa and Pohjois-Pohjanmaa: the right service for each route to care, how each stage works and the screening programmes."
             source: "Silta service-path data"
           - value: "180+"
             text: "source links: the counties' own web pages, Sotkanet, THL and the Cancer Registry. A fact is published only with its source and the date someone checked it."
             source: "Silta service-path data"
-          - text: "Time limits are national, so the county changes the door but never the clock."
+          - text: "Time limits are national, so the county changes the service but never the clock."
             source: "Health Care Act; Patient Act"
     source: "Screens shown in English for the audience"
     notes: "Finding your way is the hardest barrier. The answer is structured, sourced data per county, kept current in the admin."
@@ -414,7 +414,7 @@ slides:
   - layout: close
     id: close
     kicker: Helsinki pilot
-    title: Silta works at the door, <em>from today.</em>
+    title: Silta works before the first appointment, <em>from today.</em>
     line: "Hodan's next letter carries a QR code. A pilot in Helsinki: the code on the invitations and Silta at the health stations, measured with the registry's attendance by native language."
     letter: /media/screens/v3/letter-fi.png
     letter_alt: "Hodan's screening letter coming back out of the drawer."
