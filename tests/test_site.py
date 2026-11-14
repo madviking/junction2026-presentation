@@ -41,6 +41,24 @@ def test_pages_render(client, path, expected):
     assert expected in response.text
 
 
+def test_try_page_lists_phone_line_and_screening_letter(client):
+    html = client.get("/try").text
+    assert 'href="tel:+18784255777"' in html
+    assert "+1 878 425 5777" in html
+    assert "/letter/cervical/en" in html
+    assert "/r/en/learn/cervical" in html
+
+
+def test_screening_letter_printout_links_every_language(client):
+    assert "Example cervical screening letter" in client.get("/printouts").text
+    response = client.get("/printouts/cervical-screening-letter.md")
+    assert response.status_code == 200
+    assert "<svg" in response.text  # QR code to the guide
+    for lang in ["fi", "sv", "en", "ru", "et", "uk", "ar", "so", "fa", "zh", "yue", "vi", "th"]:
+        assert f"/letter/cervical/{lang}" in response.text
+        assert f"/r/{lang}/learn/cervical" in response.text
+
+
 def test_team_requires_password_when_set(client, monkeypatch):
     monkeypatch.setenv("TEAM_PASSWORD", "s3cret-test")
     assert client.get("/team").status_code == 401

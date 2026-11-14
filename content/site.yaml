@@ -51,6 +51,25 @@ links:
     url: https://fond-useful-corgi.eur-1.aiven.app/
     description: The mobile web app. Pick a language, describe what you noticed, find the right door.
     icon: device-mobile
+  screening_guide:
+    label: Screening guide (cervical)
+    url: https://fond-useful-corgi.eur-1.aiven.app/r/en/learn/cervical
+    description: What the screening letter's QR code opens. A five-part picture guide in 13 languages — why, the visit, your rights, after, common questions. Swap "en" in the address for so, ar, ru, uk, fa, et, sv, fi, zh, yue, vi or th.
+    icon: school
+  screening_letter:
+    label: Example screening letter
+    url: https://fond-useful-corgi.eur-1.aiven.app/letter/cervical/en
+    description: A cervical screening invitation as a Helsinki resident gets it, with the Silta QR code. Every language, printable. All versions are on the printouts page.
+    icon: mail-opened
+  # The product's own demo phone line (Twilio number on the ElevenLabs agent
+  # "Silta phone line", tech/scripts/phone_agent.py) — public by design, not a personal number.
+  phone:
+    label: Silta phone line
+    url: tel:+18784255777
+    display: +1 878 425 5777
+    action: Call
+    description: Call and talk to Silta in your language. A keypad menu picks the language, or just speak; the agent finds the right door for your area. US number; calls from Finland are international.
+    icon: phone-call
   county:
     label: County view
     url: https://fond-useful-corgi.eur-1.aiven.app/county/helsinki

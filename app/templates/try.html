@@ -17,10 +17,10 @@
               <h2 class="card-title m-0">{{ link.label }}</h2>
             </div>
             <p class="text-secondary">{{ link.description }}</p>
-            <p class="silta-url"><code>{{ link.url }}</code></p>
+            <p class="silta-url"><code>{{ link.display or link.url }}</code></p>
           </div>
           <div class="card-footer">
-            <a class="btn btn-primary w-100" href="{{ link.url }}">Open <i class="ti ti-external-link ms-1"></i></a>
+            <a class="btn btn-primary w-100" href="{{ link.url }}">{{ link.action or "Open" }} <i class="ti ti-{{ 'phone' if link.url.startswith('tel:') else 'external-link' }} ms-1"></i></a>
           </div>
         </div>
       </div>
@@ -36,6 +36,12 @@
           <li>“I got an appointment” → “My visit is now” → visit card with the anonymous code.</li>
           <li>Clinician view <code>/clinic/&lt;code&gt;</code>: the Finnish one-screen summary.</li>
           <li>County view: anonymous counts by stage, outcome and language.</li>
+        </ol>
+        <h2 class="card-title mt-4">Second way in: “I got a screening letter”</h2>
+        <ol class="mb-0">
+          <li>Open the example letter (any language) and scan its QR code, or tap “I got a letter about cervical screening” on the start screen.</li>
+          <li>The guide: why it matters → what happens at the visit → your rights, with Finnish sentences to show at the desk → after the visit → common questions.</li>
+          <li>Phone instead of screen: call <a href="tel:+18784255777">+1 878 425 5777</a> and speak your language.</li>
         </ol>
       </div>
     </div>
