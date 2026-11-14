@@ -7,7 +7,7 @@
 
 Cancer screening in Finland works well for people who read Finnish or Swedish. For everyone else it works much less well: in 2024, people whose native language is not Finnish, Swedish or Sámi attended screening about 20 percentage points less often in every programme, and the gap is growing.
 
-The digital front doors (Omaolo, Maisa, Lunna, 116117) work in Finnish, Swedish and partly English, and most need Finnish bank ID. Translated letters alone do not change much: in a Norwegian trial, invitations in the language of origin gave 46.5% attendance against 47.4%. What works is acting at the visit: when an HPV self-sampling kit was offered during a GP visit for another reason, 56% took one, against about 13% response by post.
+The digital front doors (Omaolo, Maisa, Lunna, 116117) work in Finnish, Swedish and partly English, and most need Finnish bank ID. Counties are moving first contact into chat-based digital clinics, and these reach fewer of the same people: in the eight counties of a 2026 register study, people whose native language is not Finnish or Swedish were 4.8% of residents but 3% of digital-clinic users. Translated letters alone do not change much: in a Norwegian trial, invitations in the language of origin gave 46.5% attendance against 47.4%. What works is acting at the visit: when an HPV self-sampling kit was offered during a GP visit for another reason, 56% took one, against about 13% response by post.
 
 ## What Silta does
 

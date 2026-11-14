@@ -1,0 +1,412 @@
+<title>Silta Pathway Timeline</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Discovery-view mockup: screening and symptom pathway by native language, with evidence level per step and proposed fixes.">
+<meta name="tags" content="dashboard, pathway, mockup, insight, data-quality">
+<meta name="author" content="Mea + Claude">
+<meta name="updated" content="2026-11-14">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: one reading column. Top: key message + programme switch. Middle: pathway timeline
+   (steps = columns, language groups = lanes, evidence level encoded in the node shape).
+   Bottom: the selected step split into "What the data shows" (problem) and "Solving". */
+:root{
+  --bg:#f6f7f5; --surface:#ffffff; --ink:#142028; --muted:#56636b; --line:#d6ddd8; --soft:#eef1ee;
+  --lake:#1d5f8a; --lake-soft:#dcebf5; --coral:#c2512f; --coral-soft:#f8e3db; --neutral:#8a969c;
+  --f-display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --f-body:"Atkinson Hyperlegible",Verdana,system-ui,sans-serif;
+  --f-data:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1619; --surface:#162026; --ink:#e5ecef; --muted:#98a7ae; --line:#27363d; --soft:#1c2930;
+  --lake:#7cbbe6; --lake-soft:#18323f; --coral:#f08f6c; --coral-soft:#3a2219; --neutral:#7d8b92; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1619; --surface:#162026; --ink:#e5ecef; --muted:#98a7ae; --line:#27363d; --soft:#1c2930;
+  --lake:#7cbbe6; --lake-soft:#18323f; --coral:#f08f6c; --coral-soft:#3a2219; --neutral:#7d8b92; color-scheme:dark}
+
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--f-display);letter-spacing:-.015em;text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(28px,4.4vw,42px);font-weight:800}
+h2{font-size:21px;font-weight:600}
+h3{font-size:13px;font-family:var(--f-data);font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+p{margin:0;max-width:68ch}
+.eyebrow{font-family:var(--f-data);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.lede{font-size:18px;color:var(--muted)}
+.lede b{color:var(--ink)}
+.num{font-variant-numeric:tabular-nums}
+header{display:flex;flex-direction:column;gap:12px}
+
+/* controls */
+.bar{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--surface)}
+.seg button{font:inherit;font-weight:700;font-size:14px;border:0;background:none;color:var(--muted);padding:6px 14px;border-radius:999px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--muted);align-items:center}
+.legend span{display:inline-flex;gap:6px;align-items:center}
+.k{width:14px;height:14px;border-radius:50%;display:inline-block;flex:none}
+.k.lang{background:var(--ink)}
+.k.ind{border:2px solid var(--neutral);background:linear-gradient(90deg,var(--neutral) 50%,transparent 50%)}
+.k.none{border:2px dashed var(--neutral)}
+.k.a{background:var(--lake)} .k.b{background:var(--coral)}
+button:focus-visible{outline:2px solid var(--lake);outline-offset:2px}
+
+/* timeline */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.tl-card{padding:18px 18px 14px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.tl-scroll{overflow-x:auto;margin:0 -4px;padding:0 4px 4px}
+.tl{display:grid;grid-template-columns:150px repeat(6,minmax(108px,1fr));min-width:820px}
+.tl.sym{grid-template-columns:150px repeat(4,minmax(108px,1fr)) minmax(216px,2fr)}
+.lanes{display:grid;grid-template-rows:112px 52px 40px 52px;font-size:13px}
+.lanes div{display:flex;align-items:center;gap:8px;font-weight:700;padding-right:8px;line-height:1.25}
+.lanes .hd{color:var(--muted);font-weight:400;font-family:var(--f-data);font-size:11px;letter-spacing:.05em;text-transform:uppercase;align-items:flex-start;padding-top:10px}
+.col{all:unset;box-sizing:border-box;display:grid;grid-template-rows:112px 52px 40px 52px;cursor:pointer;border-radius:10px;position:relative}
+.col:hover{background:var(--soft)}
+.col[aria-pressed="true"]{background:var(--soft);box-shadow:inset 0 0 0 2px var(--ink)}
+.col:focus-visible{outline:2px solid var(--lake);outline-offset:2px}
+.hd{display:flex;flex-direction:column;justify-content:flex-start;gap:3px;padding:8px 8px 0;text-align:center;align-items:center}
+.hd .sn{font-family:var(--f-data);font-size:11px;color:var(--muted)}
+.hd .sl{font-weight:700;font-size:13.5px;line-height:1.2}
+.tgt{font-family:var(--f-data);font-size:10.5px;font-weight:600;color:var(--ink);border:1px solid var(--ink);border-radius:4px;padding:0 5px;white-space:nowrap}
+.lane{position:relative;display:flex;align-items:center;justify-content:center}
+.lane::before{content:"";position:absolute;left:0;right:0;top:50%;border-top:3px solid var(--c);transform:translateY(-50%)}
+.lane.dash::before{border-top:2px dashed var(--neutral)}
+.col.first .lane::before{left:50%}
+.col.last .lane::before{right:50%}
+.lane.a{--c:var(--lake)} .lane.b{--c:var(--coral)}
+.dot{position:relative;z-index:1;min-width:58px;height:30px;padding:0 8px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-family:var(--f-data);font-weight:600;font-size:13.5px;background:var(--c);color:var(--surface)}
+.gap{display:flex;align-items:center;justify-content:center;position:relative}
+.pill{font-family:var(--f-data);font-size:12px;font-weight:600;padding:2px 8px;border-radius:10px;text-align:center;line-height:1.25}
+.pill.sig{background:var(--coral-soft);color:var(--coral)}
+.pill.ns{background:var(--soft);color:var(--muted);border:1px solid var(--line)}
+.solo{position:absolute;left:6px;right:6px;top:112px;height:144px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;z-index:1;pointer-events:none}
+.mk{flex:none;width:22px;height:22px;border-radius:50%;background:var(--surface);box-sizing:border-box}
+.mk.ind{border:2px solid var(--neutral);background:linear-gradient(90deg,var(--neutral) 50%,var(--surface) 50%)}
+.mk.none{border:2px dashed var(--neutral)}
+.solo small{font-size:11.5px;line-height:1.3;color:var(--muted);text-align:center;background:var(--surface);padding:2px 4px;border-radius:4px;max-width:120px}
+.col[aria-pressed="true"] .solo small,.col:hover .solo small{background:var(--soft)}
+.unit{font-size:12.5px;color:var(--muted)}
+
+/* symptom rail */
+.sym-wrap{min-width:0;border-top:1px dashed var(--line);padding-top:12px;display:flex;flex-direction:column;gap:8px}
+.tl.sym .lanes,.tl.sym .col{grid-template-rows:64px 40px 44px}
+.tl.sym .lane::before{border-top:2px dashed var(--neutral)}
+.tl.sym .lane .mk{position:relative;z-index:1}
+.cap{font-size:11.5px;line-height:1.3;color:var(--muted);text-align:center;padding:4px 6px 0}
+.join{display:flex;align-items:flex-end;padding:0 0 18px 10px;font-size:13px;color:var(--muted);grid-row:span 1}
+.join-box{display:grid;grid-template-rows:64px 40px 44px}
+.join-box .lane::before{right:auto;width:28px}
+.join-box .lane{justify-content:flex-start;padding-left:34px;font-size:13px;color:var(--muted)}
+
+/* detail panels */
+.detail{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:820px){.detail{grid-template-columns:1fr}}
+.panel{padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.panel.solve{background:var(--soft);border-color:transparent}
+.ph{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;justify-content:space-between}
+.chip{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-data);font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted);background:var(--surface)}
+.finding{font-size:17px}
+.finding b{font-weight:700}
+.big{display:flex;gap:16px;flex-wrap:wrap}
+.big div{display:flex;flex-direction:column;gap:2px}
+.big b{font-family:var(--f-display);font-size:34px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.big span{font-size:12.5px;color:var(--muted);max-width:18ch}
+.big .a b{color:var(--lake)} .big .b b{color:var(--coral)}
+.why{font-size:14.5px;color:var(--muted);border-left:3px solid var(--line);padding-left:12px}
+ul.acts{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:15px}
+.blk{display:flex;flex-direction:column;gap:6px}
+.blk p{font-size:15px}
+.cost{font-size:14px;color:var(--muted);border:1px dashed var(--neutral);border-radius:8px;padding:8px 12px}
+.src{font-family:var(--f-data);font-size:11px;color:var(--muted);max-width:none;line-height:1.5}
+
+/* who chart */
+.who{display:flex;flex-direction:column;gap:6px}
+.wrow{display:grid;grid-template-columns:120px 1fr 44px;gap:8px;align-items:center;font-size:13px}
+.wtrack{height:14px;background:var(--soft);border-radius:3px;position:relative}
+.wfill{position:absolute;left:0;top:0;bottom:0;border-radius:3px}
+.wrow .v{font-family:var(--f-data);font-size:12px;text-align:right}
+.wnote{font-size:13.5px;color:var(--muted)}
+
+.side{font-size:14px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+.side a{color:var(--lake)}
+footer{display:flex;flex-direction:column;gap:8px}
+footer ul{margin:0;padding-left:18px;font-size:13.5px;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Silta · discovery view · mockup for the dashboard · data 2020–2024</div>
+    <h1>The gap opens at the door</h1>
+    <p class="lede">People whose native language is not Finnish, Swedish or Sámi get the same screening letter but attend <b>about 20 points less often</b>. After they attend, most of the gap closes. Most later steps are not reported by language at all. Select a step to see the evidence and what we propose.</p>
+  </header>
+
+  <section class="card tl-card" aria-label="Screening pathway">
+    <div class="bar">
+      <div class="seg" role="group" aria-label="Screening programme">
+        <button id="p-colorectal" data-p="colorectal" aria-pressed="true">Colorectal</button>
+        <button id="p-breast" data-p="breast" aria-pressed="false">Breast</button>
+        <button id="p-cervical" data-p="cervical" aria-pressed="false">Cervical</button>
+      </div>
+      <div class="legend">
+        <span><i class="k lang"></i>Measured by native language</span>
+        <span><i class="k ind"></i>Indirect: by county, origin or all invitees</span>
+        <span><i class="k none"></i>Not measured</span>
+      </div>
+    </div>
+    <div class="tl-scroll"><div class="tl" id="tl"></div></div>
+    <p class="unit">Each value is the share of people who reached that step and took it (2024 unless noted). Pills show the gap in percentage points, in coral when the 95% confidence interval excludes zero. Boxed labels are national strategy targets.</p>
+
+    <div class="sym-wrap">
+      <div class="eyebrow">Symptom route (“I noticed something”), including lung cancer · no screening programme</div>
+      <div class="tl-scroll"><div class="tl sym" id="sym"></div></div>
+    </div>
+  </section>
+
+  <section class="detail" aria-live="polite">
+    <article class="card panel" id="problem"></article>
+    <article class="card panel solve" id="solve"></article>
+  </section>
+
+  <p class="side"><b>Coming later, step 0: before the letter.</b> How people find Silta before any invitation or symptom, through community groups, migration and health services, and answers from AI assistants. It will sit in front of both routes. Channels and evidence are on <a href="https://claude.ai/artifact/N9tJfjTggU2LawReju424F" target="_blank" rel="noopener">Silta acquisition paths</a>.</p>
+
+  <footer>
+    <h3>How to read this</h3>
+    <ul>
+      <li>“Other native language” includes people whose native language is unknown. The registry does not split attendance by individual language.</li>
+      <li>Language, education and region of birth overlap. Across ~290 municipalities, language still predicts lower breast and colorectal attendance after controlling for education, age, urbanisation and unemployment; for cervical screening, unemployment explains the area differences. This is an area-level model and does not prove cause.</li>
+      <li>County waiting times were read from Cancer Registry charts (±0.1 month).</li>
+      <li>Sources: Finnish Cancer Registry mass-screening statistics, published 20 May 2026 (native language, region of birth, education, previous result, delays); National Cancer Strategy 2026–2035; THL Maamu 2010–12 and FinMonik 2018–19 surveys; Norway RCT; YouScreen (London); Community Guide. Full list in the team brain repo.</li>
+    </ul>
+  </footer>
+</div>
+
+<script>
+(function(){
+const STEPS=[
+  {id:'invited',n:1,label:'Invitation letter'},
+  {id:'attended',n:2,label:'Attends screening',tgt:['Goal 2: 80%','1.3: equal']},
+  {id:'followup',n:3,label:'Follow-up after abnormal result'},
+  {id:'wait',n:4,label:'Wait for diagnostic exam'},
+  {id:'treat',n:5,label:'Treatment starts',tgt:['Goal 3: on time']},
+  {id:'next',n:6,label:'Next screening round'}
+];
+const SYM=[
+  {id:'s1',n:'A',label:'Notices a symptom'},
+  {id:'s2',n:'B',label:'Contacts care'},
+  {id:'s3',n:'C',label:'Health-centre visit'},
+  {id:'s4',n:'D',label:'Referral'}
+];
+const LEVEL={lang:'Measured by native language',ind:'Indirect evidence',none:'Not measured'};
+const fmt=n=>n.toLocaleString('en');
+const neg=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
+
+const P={
+ colorectal:{name:'Colorectal',inv:[401645,19720],att:[74.5,53.4,-21.1,'20.5–21.9'],
+   region:[74.5,56.6,55.4,55.4,40.5],
+   whoNote:'Other-language men attend at 47.2%, the lowest group in any programme.',
+   why:'Missing the first round tends to repeat: only about 18% of people who skip a colorectal round attend the next one.'},
+ breast:{name:'Breast',inv:[320048,24803],att:[83.2,60.8,-22.4,'21.7–23.0'],
+   region:[83.1,66.1,62.7,61.0,45.1],
+   whoNote:'Women with only primary education attend at 63.5%, a gap of similar size. Language and education overlap.',
+   why:'Other-language invitees grew by 26% from 2020 to 2024, and the breast gap widened by 2.5 points (95% CI 1.6–3.4).'},
+ cervical:{name:'Cervical',inv:[257719,34391],att:[76.2,56.3,-19.9,'19.3–20.4'],
+   region:[76.0,62.8,57.9,53.5,49.0],
+   whoNote:'Women with only primary education attend at 50.8%. An older study found 19% attendance among Somali-origin women.',
+   why:'Non-attenders get about 1.8 times the cervical cancer rate of attenders (2020–24, all languages). The gap widened by 4.2 points since 2020 (95% CI 3.4–5.0).'}
+};
+const REGIONS=['Finland','Europe excl. Finland','Americas','Asia','Africa'];
+
+function stepData(p,id){
+  const d=P[p];
+  const S={
+   invited:{level:'lang',a:'100%',b:'100%',gapPill:null,
+     title:'Everyone in the age group gets the same letter',
+     big:[[fmt(d.inv[0]),'Finnish, Swedish or Sámi speakers invited','a'],[fmt(d.inv[1]),'other-language speakers invited','b']],
+     finding:'The invitation is equal by design. Translating it is not enough: in a Norwegian randomised trial, letters in the person\'s own language gave <b>46.5% attendance vs 47.4%</b> for standard letters.',
+     silta:'The letter route starts here: the person scans the QR code on the letter and Silta explains, in their language, what the letter is and what to do next.',
+     county:['Print a Silta QR block on the invitation letter in every programme.'],
+     measure:'Invitations by native language (Cancer Registry).',
+     src:'Cancer Registry, native-language tables 2024; Norway RCT (language-of-origin invitations).'},
+   attended:{level:'lang',a:d.att[0].toFixed(1)+'%',b:d.att[1].toFixed(1)+'%',gapPill:[d.att[2],true],
+     title:'The largest drop in the pathway is the first step',
+     big:[[Math.round(d.att[0]*10),'of 1,000 Finnish, Swedish or Sámi invitees attend','a'],[Math.round(d.att[1]*10),'of 1,000 other-language invitees attend','b']],
+     finding:`A gap of <b>${neg(d.att[2])} percentage points</b> (95% CI ${d.att[3]}). The national target is 80% in every programme and equal attendance regardless of native language.`,
+     why:d.why, who:true,
+     silta:'Letter route in the person\'s language: what the test involves, how to book or rebook, and flash cards to show at the appointment.'+(p==='cervical'?' When screening is overdue, the doctor summary prompts an in-visit HPV self-sampling offer.':''),
+     county:(p==='cervical'
+       ?['Offer HPV self-sampling during any primary-care visit when screening is overdue. London (YouScreen): 56% took a kit at a visit vs ~13% by post. Finnish mailed-kit trials added only ~3 points.','Add a follow-up step for HPV-positive self-samplers: 36% were lost to follow-up in Finnish trials.']
+       :['Contact other-language invitees before their first appointment, and right after a first missed round.','Language-concordant navigation by community health workers for non-attenders. International evidence: +11.5 points for breast screening (Community Guide).']),
+     measure:'Cancer Registry attendance by native language (sub-goal 1.3) and county attendance in Sotkanet (Goal 2).',
+     src:'Cancer Registry native language, region of birth and education tables 2024; two-proportion tests; National Cancer Strategy 2026–2035.'},
+  };
+  if(p==='colorectal'){
+    S.followup={level:'lang',a:'77.1%',b:'68.3%',gapPill:[-8.8,true],note:'2022–24',
+      title:'Colorectal is the one follow-up step with a gap',
+      big:[['68.3%','of other-language patients attend colonoscopy after a positive stool test','b'],['−8.8','points vs Finnish, Swedish or Sámi speakers (95% CI 6.3–11.3)','']],
+      finding:'Pooled over 2022–24 because yearly groups are small (~370–500 positives a year). 2024 alone is borderline (−4.0, CI −8.1 to +0.2).',
+      why:'In the 2022 round, 87 colorectal cancers were found in people who tested positive but never had the colonoscopy.',
+      silta:'Post-positive step: what a colonoscopy is, how to prepare, and when to call if no appointment has arrived.',
+      county:['Send the positive-result follow-up in the patient\'s language, with a named contact.'],
+      measure:'Colonoscopy after a positive test, by native language (Cancer Registry).',
+      src:'Cancer Registry native-language tables 2022–2024; colorectal interval cancers, 2022 round. Domestic rate = other-language rate plus the pooled gap.'};
+    S.wait={level:'ind',solo:'Helsinki 3.4 mo · Finland ~1.9',
+      title:'Diagnostic waits are long where minorities live, but are reported by county only',
+      big:[['3.4','months, Helsinki, positive test to colonoscopy (median)',''],['~1.9','months, national median','']],
+      finding:'Vantaa–Kerava waits 3.6 months; the best counties 0.8–1.0. The data does not show whether waits differ by language.',
+      silta:'Silta cannot shorten the queue. It tells people what to expect and when to call if nothing arrives.',
+      county:['Set a colonoscopy capacity target for the capital-region counties.','Add native language to the waiting-time indicator.'],
+      measure:'Time from positive test to colonoscopy, by county (Cancer Registry).',
+      src:'Cancer Registry, “Delays in access to colonoscopy”, 2024 tab, values read from charts (±0.1 month).'};
+    S.next={level:'ind',solo:'Missed last round: 18% return',
+      title:'Once someone misses a round, they rarely come back',
+      big:[['~18%','of previous non-attenders attend the next round',''],['91–93%','of previous attenders do','']],
+      finding:'Men 17.5%, women 19.0% (2024). Reported for all invitees, not by language, so the first invitation is the moment that matters.',
+      silta:'Missed-appointment help: how to rebook, in the person\'s language.',
+      county:['Contact people right after a first missed round, before non-attendance becomes a habit.'],
+      measure:'Attendance by previous result (Cancer Registry).',
+      src:'Cancer Registry, colorectal screening “by previous result”, 2024.'};
+  } else if(p==='cervical'){
+    S.followup={level:'lang',a:'84.8%',b:'87.1%',gapPill:[2.3,false],
+      title:'No gap after an abnormal result',
+      big:[['87.1%','of other-language patients attend colposcopy','b'],['84.8%','of Finnish, Swedish or Sámi speakers do','a']],
+      finding:'A difference of +2.3 points (95% CI −0.6 to +5.2), so no significant gap. Once people are in the system, they follow through.',
+      silta:'Nothing extra needed here. The effort goes to the first step.',
+      county:['No language-specific action needed at this step.'],
+      measure:'Colposcopy attendance by native language (Cancer Registry).',
+      src:'Cancer Registry native-language tables 2024.'};
+    S.wait={level:'none',solo:'Not in the data we have',
+      title:'Waiting time to diagnosis is not in the data we captured',
+      finding:'We found no county or language breakdown of time from abnormal cervical result to colposcopy.',
+      silta:'After-result step: what a colposcopy is and when to call if no appointment arrives.',
+      county:['Report time to colposcopy by county and native language.'],
+      measure:'Not available yet.',
+      src:'Cancer Registry mass-screening statistics, checked 14 Nov 2026.'};
+    S.next={level:'none',solo:'Not reported by language',
+      title:'Return after a missed round is not reported',
+      finding:'The registry publishes “by previous result” only for colorectal screening.',
+      silta:'Missed-appointment help: how to rebook.',
+      county:['Contact people right after a first missed round.'],
+      measure:'Not available yet.',
+      src:'Cancer Registry mass-screening statistics.'};
+  } else {
+    S.followup={level:'none',solo:'Reported as referral rate only',
+      title:'Follow-up attendance is not reported',
+      finding:'The registry reports a referral rate here, not attendance, so it cannot show drop-out. The referral rate is 4.4 points lower for other-language women (weak, 95% CI 0.3–8.5), which could also mean fewer false positives.',
+      silta:'After-result step: what the further examination involves.',
+      county:['Ask the Cancer Registry to report attendance at further examinations by native language.'],
+      measure:'Not available yet.',
+      src:'Cancer Registry native-language tables 2024.'};
+    S.wait={level:'ind',solo:'Helsinki ~1.2 mo · about 2× national',
+      title:'Diagnostic waits are longer in Helsinki, reported by county only',
+      big:[['~1.2','months, Helsinki, positive mammogram to diagnostic exam',''],['~2×','the national median','']],
+      finding:'The data does not show whether waits differ by language.',
+      silta:'Tells people what to expect and when to call if nothing arrives.',
+      county:['Add native language to the waiting-time indicator.'],
+      measure:'Time to diagnostic examination, by county (Cancer Registry).',
+      src:'Cancer Registry, “Delays in access to diagnostic examinations”, 2024 tab, read from charts.'};
+    S.next={level:'none',solo:'Not reported by language',
+      title:'Return after a missed round is not reported',
+      finding:'The registry publishes “by previous result” only for colorectal screening.',
+      silta:'Missed-appointment help: how to rebook.',
+      county:['Contact people right after a first missed round.'],
+      measure:'Not available yet.',
+      src:'Cancer Registry mass-screening statistics.'};
+  }
+  S.treat={level:'none',solo:'Not reported by language',
+    title:'Goal 3 is measured, but not by language',
+    finding:'The strategy\'s Goal 3 asks that treatment starts within target times. Time to treatment is not reported by native language, and time from symptom to diagnosis is not collected systematically (strategy, sub-goal 2.5).',
+    silta:'After-visit step: what happens next, typical waits, and when to call.',
+    county:['Add native language to the Goal 3 timing indicators, so this gap becomes visible.'],
+    measure:'Goal 3 timing indicators (exist, without language).',
+    src:'National Cancer Strategy 2026–2035, Goal 3 and sub-goal 2.5.'};
+  return S[id];
+}
+const SYMD={
+ s1:{level:'none',solo:'No data for anyone',title:'When people notice a symptom is not recorded',
+   finding:'No Finnish data records when people notice symptoms, for any group. Lung cancer has no screening programme, so this is its only route.',
+   silta:'“I noticed something”: official guidance from public Finnish health sites, in the person\'s language, with a link to the source. It does not diagnose or rate urgency.',
+   county:['Record the date of symptom onset at the first contact.'],measure:'Not available yet.',src:'National Cancer Strategy 2026–2035, sub-goal 2.5.'},
+ s2:{level:'ind',solo:'Surveys by origin, any care',title:'Reaching care is harder for some origin groups',
+   big:[['5.5%','unmet need for a doctor\'s care, Somali origin',''],['1.5%','general population','']],
+   finding:'Russian origin 15.2%, Kurdish 28.8% (THL Maamu 2010–12). People born in Africa and the Middle East have about a third of the odds of being satisfied with access to care (FinMonik 2018–19). Ages 18–64, by origin not language, not cancer-specific.',
+   silta:'Who to contact in the person\'s region, a Finnish call script to read aloud, and the right to a free interpreter.',
+   county:['Record native language and interpreter need at first contact.'],measure:'Survey only (FinMonik, MoniSuomi).',
+   src:'IJERPH 2021 18(5):2229 (Maamu); Kuusio et al., BMC Health Serv Res 2022 (FinMonik).'},
+ s3:{level:'none',solo:'Not measured',title:'What happens at the first visit is not measured',
+   finding:'There is no data on how long the first visit takes or what is understood, by language.',
+   silta:'Flash cards to show symptoms, and a prepared Finnish summary for the doctor.',
+   county:['Offer the Silta summary as an input to the visit.'],measure:'Not available yet.',src:'National Cancer Strategy, sub-goal 2.5.'},
+ s4:{level:'none',solo:'Not measured',title:'Time to referral is not measured',
+   finding:'Time from first visit to referral is not collected by language or for anyone systematically.',
+   silta:'After-visit step: what happens next and when to call.',
+   county:['Add native language to referral and diagnosis timing.'],measure:'Not available yet.',src:'National Cancer Strategy, sub-goal 2.5.'}
+};
+
+let prog='colorectal', sel='attended';
+const tl=document.getElementById('tl'), sym=document.getElementById('sym');
+
+function lanesCol(){
+  return `<div class="lanes"><div class="hd">Step</div><div><i class="k a"></i>Finnish, Swedish or Sámi</div><div></div><div><i class="k b"></i>Other native language</div></div>`;
+}
+function renderTL(){
+  let h=lanesCol();
+  STEPS.forEach((s,i)=>{
+    const d=stepData(prog,s.id);
+    const cls=['col',i===0?'first':'',i===STEPS.length-1?'last':''].join(' ');
+    const tg=(s.tgt||[]).map(t=>`<span class="tgt">${t}</span>`).join('');
+    const hd=`<div class="hd"><span class="sn">${s.n}</span><span class="sl">${s.label}</span>${tg}</div>`;
+    let body;
+    if(d.level==='lang'){
+      const pill=d.gapPill?`<span class="pill ${d.gapPill[1]?'sig':'ns'}">${neg(d.gapPill[0])} pp${d.note?'<br>'+d.note:''}</span>`:'';
+      body=`<div class="lane a"><span class="dot">${d.a}</span></div><div class="gap">${pill}</div><div class="lane b"><span class="dot">${d.b}</span></div>`;
+    } else {
+      body=`<div class="lane a dash"></div><div class="gap"></div><div class="lane b dash"></div><div class="solo"><span class="mk ${d.level}"></span><small>${d.solo}</small></div>`;
+    }
+    h+=`<button class="${cls}" id="st-${s.id}" data-s="${s.id}" aria-pressed="${sel===s.id}" aria-label="${s.label}: ${LEVEL[d.level]}">${hd}${body}</button>`;
+  });
+  tl.innerHTML=h;
+  let g=`<div class="lanes" style="grid-template-rows:64px 40px 44px"><div class="hd">Step</div><div>Anyone</div></div>`;
+  SYM.forEach((s,i)=>{
+    const d=SYMD[s.id];
+    g+=`<button class="col${i===0?' first':''}" id="st-${s.id}" data-s="${s.id}" aria-pressed="${sel===s.id}" aria-label="${s.label}: ${LEVEL[d.level]}"><div class="hd"><span class="sn">${s.n}</span><span class="sl">${s.label}</span></div><div class="lane dash"><span class="mk ${d.level}"></span></div><div class="cap">${d.solo}</div></button>`;
+  });
+  g+=`<div class="join-box"><div></div><div class="lane dash">→ joins at step 4, diagnostic exam</div></div>`;
+  sym.innerHTML=g;
+  document.querySelectorAll('.col').forEach(b=>b.addEventListener('click',()=>{sel=b.dataset.s;render();}));
+}
+function list(a){return `<ul class="acts">${a.map(x=>`<li>${x}</li>`).join('')}</ul>`;}
+function renderDetail(){
+  const isSym=sel.startsWith('s');
+  const meta=isSym?SYM.find(s=>s.id===sel):STEPS.find(s=>s.id===sel);
+  const d=isSym?SYMD[sel]:stepData(prog,sel);
+  const k=d.level==='lang'?'lang':d.level==='ind'?'ind':'none';
+  const scope=isSym?'Symptom route':P[prog].name+' screening';
+  let who='';
+  if(d.who){
+    const r=P[prog].region;
+    who=`<div class="who"><h3>Who is most affected · attendance by region of birth</h3>${REGIONS.map((n,i)=>`<div class="wrow"><span>${n}</span><span class="wtrack"><span class="wfill" style="width:${r[i]}%;background:${i===0?'var(--lake)':'var(--coral)'};opacity:${i===0?1:0.55+0.45*(i===4)}"></span></span><span class="v">${r[i].toFixed(1)}%</span></div>`).join('')}<p class="wnote">${P[prog].whoNote}</p></div>`;
+  }
+  const big=d.big?`<div class="big">${d.big.map(([v,l,c])=>`<div class="${c}"><b>${v}</b><span>${l}</span></div>`).join('')}</div>`:'';
+  document.getElementById('problem').innerHTML=`
+    <div class="ph"><span class="eyebrow">${scope} · step ${meta.n}: ${meta.label}</span><span class="chip"><i class="k ${k}"></i>${LEVEL[d.level]}</span></div>
+    <h2>${d.title}</h2>${big}
+    <p class="finding">${d.finding}</p>
+    ${d.why?`<p class="why">${d.why}</p>`:''}
+    ${who}
+    <p class="src">Source: ${d.src}</p>`;
+  document.getElementById('solve').innerHTML=`
+    <div class="ph"><span class="eyebrow">Solving</span></div>
+    <div class="blk"><h3>What Silta does</h3><p>${d.silta}</p></div>
+    <div class="blk"><h3>What the county can do</h3>${list(d.county)}</div>
+    <div class="blk"><h3>How the county measures it</h3><p>${d.measure}</p></div>
+    <p class="cost">Cost estimate: to be added, using THL national unit costs 2023–24.</p>`;
+}
+function render(){
+  document.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.p===prog));
+  renderTL();renderDetail();
+}
+document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>{prog=b.dataset.p;render();}));
+render();
+})();
+</script>

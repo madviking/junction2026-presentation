@@ -30,3 +30,8 @@
   description: How people find Silta. Three ways in, 15 channels with who has to say yes, evidence and strategy per channel. Same page as acquisition-paths.html. Shared with anyone who has the link.
   tags: [acquisition, strategy]
   updated: 2026-11-14
+- title: Pathway timeline mockup (claude.ai)
+  url: https://claude.ai/artifact/NfPLegAC3ENt1iewKgvazM
+  description: Discovery view. Screening and symptom pathway by native language, evidence level per step, and proposed fixes per step. Same page as pathway-timeline.html.
+  tags: [dashboard, mockup, data]
+  updated: 2026-11-14

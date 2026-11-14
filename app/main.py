@@ -1,10 +1,10 @@
-"""Silta project site: landing page, dashboard, deck, video, printouts, app links, team materials."""
+"""Silta project site: landing page, pathway data page, deck, video, printouts, app links, team materials."""
 
 from __future__ import annotations
 
 import segno
 from fastapi import Depends, FastAPI, HTTPException, Request
-from fastapi.responses import FileResponse, HTMLResponse, PlainTextResponse
+from fastapi.responses import FileResponse, HTMLResponse, PlainTextResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from markupsafe import Markup
@@ -20,7 +20,7 @@ templates = Jinja2Templates(directory=settings.APP_DIR / "templates")
 
 NAV = (
     ("home", "/", "Silta", "home"),
-    ("dashboard", "/dashboard", "Data", "chart-bar"),
+    ("pathway", "/pathway", "Pathway", "route"),
     ("presentation", "/presentation", "Presentation", "presentation"),
     ("video", "/video", "Video", "movie"),
     ("printouts", "/printouts", "Printouts", "printer"),
@@ -50,13 +50,30 @@ def landing(request: Request):
     return render(request, "landing.html", "home", landing=content.landing())
 
 
-@app.get("/dashboard", response_class=HTMLResponse)
-def dashboard(request: Request):
+@app.get("/pathway", response_class=HTMLResponse)
+def pathway(request: Request):
+    data = content.pathway()
+    available = charts.by_id()
+    steps = [step for prog in data["programmes"].values() for step in prog["steps"].values()]
+    steps += list(data.get("symptom", {}).values())
+    wanted = {c for step in steps for c in step.get("charts", [])}
+    rendered = {name: available[name].render() for name in sorted(wanted) if name in available}
+    return render(request, "pathway.html", "pathway", pathway=data, charts=rendered)
+
+
+@app.get("/pathway/archive", response_class=HTMLResponse)
+def pathway_archive(request: Request):
+    """The earlier report-style data page (content/dashboard_archive.yaml), kept for reference."""
     story = content.dashboard()
     available = charts.by_id()
     wanted = [s["figure"]["chart"] for s in story.get("sections", []) if s.get("figure")]
     rendered = {name: available[name].render() for name in wanted if name in available}
-    return render(request, "dashboard.html", "dashboard", story=story, charts=rendered)
+    return render(request, "dashboard.html", "pathway", story=story, charts=rendered)
+
+
+@app.get("/dashboard")
+def dashboard_redirect():
+    return RedirectResponse("/pathway", status_code=307)
 
 
 @app.get("/presentation", response_class=HTMLResponse)

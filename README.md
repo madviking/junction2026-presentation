@@ -1,12 +1,12 @@
 # junction2026-presentation
 
 The project site for **Silta** (Junction 2026, AstraZeneca — Equal Care Across Finland):
-landing page, data dashboard, deck, video, printouts, app links and the team's shared materials.
+landing page, pathway data page, deck, video, printouts, app links and the team's shared materials.
 
 | Page | URL |
 | --- | --- |
 | Landing page | `/` |
-| Data dashboard | `/dashboard` |
+| Pathway (data) | `/pathway` (archive: `/pathway/archive`) |
 | Presentation (PDF export: `?print-pdf`) | `/presentation` |
 | Video | `/video` |
 | Printouts | `/printouts` |

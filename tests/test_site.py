@@ -24,7 +24,8 @@ def basic(password: str) -> dict:
     [
         ("/healthz", "ok"),
         ("/", "Silta"),
-        ("/dashboard", "Where in the screening pathway the gap appears"),
+        ("/pathway", "The gap opens at the door"),
+        ("/pathway/archive", "Where in the screening pathway the gap appears"),
         ("/presentation", 'class="reveal"'),
         ("/video", "The video is not up yet"),
         ("/try", "Demo path"),
@@ -121,13 +122,47 @@ def test_dashboard_story_is_complete():
             assert section.get("source"), f"{section['id']} has no source"
 
 
-def test_dashboard_shows_every_figure_table_and_implications(client):
-    html = client.get("/dashboard").text
+def test_dashboard_redirects_to_pathway(client):
+    response = client.get("/dashboard", follow_redirects=False)
+    assert response.status_code == 307
+    assert response.headers["location"] == "/pathway"
+
+
+def test_pathway_embeds_data_and_step_charts(client):
+    html = client.get("/pathway").text
+    assert 'id="pathway-data"' in html
+    assert "/static/pathway.js" in html
+    data = content.pathway()
+    available = charts.by_id()
+    steps = [step for prog in data["programmes"].values() for step in prog["steps"].values()]
+    steps += list(data["symptom"].values())
+    assert any(step.get("charts") for step in data["symptom"].values())
+    for step in steps:
+        for chart in step.get("charts", []):
+            assert chart in available, chart
+            assert f'id="pw-fig-{chart}"' in html
+
+
+def test_archive_shows_every_figure_table_and_implications(client):
+    html = client.get("/pathway/archive").text
     for section in content.dashboard()["sections"]:
         if section.get("figure"):
             assert f'data-chart="{section["figure"]["chart"]}"' in html
     assert "Implications for Silta" in html
     assert "Table 1. Attendance at each step" in html
+
+
+def test_pathway_data_is_complete():
+    data = content.pathway()
+    step_ids = [s["id"] for s in data["steps"]]
+    for name, prog in data["programmes"].items():
+        assert set(prog["steps"]) == set(step_ids), name
+        for sid, step in prog["steps"].items():
+            assert step["level"] in data["levels"], (name, sid)
+            assert step.get("src") and step.get("finding") and step.get("county"), (name, sid)
+            if step["level"] == "lang":
+                assert step.get("a") and step.get("b"), (name, sid)
+    assert set(data["symptom"]) == {s["id"] for s in data["symptom_steps"]}
 
 
 def test_tech_challenge_pages(client, tmp_path, monkeypatch):

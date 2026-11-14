@@ -1,0 +1,632 @@
+{
+ "_about": "The /pathway page. Step values, evidence levels, findings and proposed actions. Numbers from brain notes/2026-11-14-0145-silta-deep-data-analysis.md, sources/2026-11-14-cancerregistry-screening-by-language.md, sources/2026-11-14-europepmc-unmet-need-and-access-by-origin.md, sources/2026-11-14-espoo-equity-talk-kuitunen.md. Levels: lang = measured by native language, ind = indirect (county, origin or all invitees), none = not measured. `charts` on a step lists chart modules from app/charts/ shown in that step's detail panel.",
+ "page": {
+  "title": "The gap opens at the door",
+  "lede": "People whose native language is not Finnish, Swedish or Sámi get the same screening letter but attend <b>about 20 points less often</b>. After they attend, most of the gap closes. Most later steps are not reported by language at all. Select a step to see the evidence and what we propose.",
+  "notes": [
+   "“Other native language” includes people whose native language is unknown. The registry does not split attendance by individual language.",
+   "Language, education and region of birth overlap. Across ~290 municipalities, language still predicts lower breast and colorectal attendance after controlling for education, age, urbanisation and unemployment; for cervical screening, unemployment explains the area differences. This is an area-level model and does not prove cause.",
+   "County waiting times were read from Cancer Registry charts (±0.1 month).",
+   "Sources: Finnish Cancer Registry mass-screening statistics, published 20 May 2026 (native language, region of birth, education, previous result, delays); National Cancer Strategy 2026–2035; THL Maamu 2010–12 and FinMonik 2018–19 surveys; Norway RCT; YouScreen (London); Community Guide. Captured sources and analysis: team knowledge base (madviking/junction2026, sources/ and notes/)."
+  ],
+  "step0": "<b>Coming later, step 0: before the letter.</b> How people find Silta before any invitation or symptom, through community groups, migration and health services, and answers from AI assistants. It will sit in front of both routes."
+ },
+ "steps": [
+  {
+   "id": "invited",
+   "n": 1,
+   "label": "Invitation letter"
+  },
+  {
+   "id": "attended",
+   "n": 2,
+   "label": "Attends screening",
+   "tgt": [
+    "Goal 2: 80%",
+    "1.3: equal"
+   ]
+  },
+  {
+   "id": "followup",
+   "n": 3,
+   "label": "Follow-up after abnormal result"
+  },
+  {
+   "id": "wait",
+   "n": 4,
+   "label": "Wait for diagnostic exam"
+  },
+  {
+   "id": "treat",
+   "n": 5,
+   "label": "Treatment starts",
+   "tgt": [
+    "Goal 3: on time"
+   ]
+  },
+  {
+   "id": "next",
+   "n": 6,
+   "label": "Next screening round"
+  }
+ ],
+ "symptom_steps": [
+  {
+   "id": "s1",
+   "n": "A",
+   "label": "Notices a symptom"
+  },
+  {
+   "id": "s2",
+   "n": "B",
+   "label": "Contacts care"
+  },
+  {
+   "id": "s3",
+   "n": "C",
+   "label": "Health-centre visit"
+  },
+  {
+   "id": "s4",
+   "n": "D",
+   "label": "Referral"
+  }
+ ],
+ "levels": {
+  "lang": "Measured by native language",
+  "ind": "Indirect evidence",
+  "none": "Not measured"
+ },
+ "regions": [
+  "Finland",
+  "Europe excl. Finland",
+  "Americas",
+  "Asia",
+  "Africa"
+ ],
+ "programmes": {
+  "colorectal": {
+   "name": "Colorectal",
+   "steps": {
+    "invited": {
+     "level": "lang",
+     "a": "100%",
+     "b": "100%",
+     "gapPill": null,
+     "title": "Everyone in the age group gets the same letter",
+     "big": [
+      [
+       "401,645",
+       "Finnish, Swedish or Sámi speakers invited",
+       "a"
+      ],
+      [
+       "19,720",
+       "other-language speakers invited",
+       "b"
+      ]
+     ],
+     "finding": "The invitation is equal by design. Translating it is not enough: in a Norwegian randomised trial, letters in the person's own language gave <b>46.5% attendance vs 47.4%</b> for standard letters.",
+     "silta": "The letter route starts here: the person scans the QR code on the letter and Silta explains, in their language, what the letter is and what to do next.",
+     "county": [
+      "Print a Silta QR block on the invitation letter in every programme."
+     ],
+     "measure": "Invitations by native language (Cancer Registry).",
+     "src": "Cancer Registry, native-language tables 2024; Norway RCT (language-of-origin invitations)."
+    },
+    "attended": {
+     "level": "lang",
+     "a": "74.5%",
+     "b": "53.4%",
+     "gapPill": [
+      -21.1,
+      true
+     ],
+     "title": "The largest drop in the pathway is the first step",
+     "big": [
+      [
+       745,
+       "of 1,000 Finnish, Swedish or Sámi invitees attend",
+       "a"
+      ],
+      [
+       534,
+       "of 1,000 other-language invitees attend",
+       "b"
+      ]
+     ],
+     "finding": "A gap of <b>−21.1 percentage points</b> (95% CI 20.5–21.9). The national target is 80% in every programme and equal attendance regardless of native language.",
+     "why": "Missing the first round tends to repeat: only about 18% of people who skip a colorectal round attend the next one.",
+     "who": true,
+     "silta": "Letter route in the person's language: what the test involves, how to book or rebook, and flash cards to show at the appointment.",
+     "county": [
+      "Contact other-language invitees before their first appointment, and right after a first missed round.",
+      "Language-concordant navigation by community health workers for non-attenders. International evidence: +11.5 points for breast screening (Community Guide)."
+     ],
+     "measure": "Cancer Registry attendance by native language (sub-goal 1.3) and county attendance in Sotkanet (Goal 2).",
+     "src": "Cancer Registry native language, region of birth and education tables 2024; two-proportion tests; National Cancer Strategy 2026–2035.",
+     "charts": [
+      "screening_by_language",
+      "gap_trend"
+     ]
+    },
+    "followup": {
+     "level": "lang",
+     "a": "77.1%",
+     "b": "68.3%",
+     "gapPill": [
+      -8.8,
+      true
+     ],
+     "note": "2022–24",
+     "title": "Colorectal is the one follow-up step with a gap",
+     "big": [
+      [
+       "68.3%",
+       "of other-language patients attend colonoscopy after a positive stool test",
+       "b"
+      ],
+      [
+       "−8.8",
+       "points vs Finnish, Swedish or Sámi speakers (95% CI 6.3–11.3)",
+       ""
+      ]
+     ],
+     "finding": "Pooled over 2022–24 because yearly groups are small (~370–500 positives a year). 2024 alone is borderline (−4.0, CI −8.1 to +0.2).",
+     "why": "In the 2022 round, 87 colorectal cancers were found in people who tested positive but never had the colonoscopy.",
+     "silta": "Post-positive step: what a colonoscopy is, how to prepare, and when to call if no appointment has arrived.",
+     "county": [
+      "Send the positive-result follow-up in the patient's language, with a named contact."
+     ],
+     "measure": "Colonoscopy after a positive test, by native language (Cancer Registry).",
+     "src": "Cancer Registry native-language tables 2022–2024; colorectal interval cancers, 2022 round. Domestic rate = other-language rate plus the pooled gap."
+    },
+    "wait": {
+     "level": "ind",
+     "solo": "Helsinki 3.4 mo · Finland ~1.9",
+     "title": "Diagnostic waits are long where minorities live, but are reported by county only",
+     "big": [
+      [
+       "3.4",
+       "months, Helsinki, positive test to colonoscopy (median)",
+       ""
+      ],
+      [
+       "~1.9",
+       "months, national median",
+       ""
+      ]
+     ],
+     "finding": "Vantaa–Kerava waits 3.6 months; the best counties 0.8–1.0. The data does not show whether waits differ by language.",
+     "silta": "Silta cannot shorten the queue. It tells people what to expect and when to call if nothing arrives.",
+     "county": [
+      "Set a colonoscopy capacity target for the capital-region counties.",
+      "Add native language to the waiting-time indicator."
+     ],
+     "measure": "Time from positive test to colonoscopy, by county (Cancer Registry).",
+     "src": "Cancer Registry, “Delays in access to colonoscopy”, 2024 tab, values read from charts (±0.1 month)."
+    },
+    "treat": {
+     "level": "none",
+     "solo": "Not reported by language",
+     "title": "Goal 3 is measured, but not by language",
+     "finding": "The strategy's Goal 3 asks that treatment starts within target times. Time to treatment is not reported by native language, and time from symptom to diagnosis is not collected systematically (strategy, sub-goal 2.5).",
+     "silta": "After-visit step: what happens next, typical waits, and when to call.",
+     "county": [
+      "Add native language to the Goal 3 timing indicators, so this gap becomes visible."
+     ],
+     "measure": "Goal 3 timing indicators (exist, without language).",
+     "src": "National Cancer Strategy 2026–2035, Goal 3 and sub-goal 2.5."
+    },
+    "next": {
+     "level": "ind",
+     "solo": "Missed last round: 18% return",
+     "title": "Once someone misses a round, they rarely come back",
+     "big": [
+      [
+       "~18%",
+       "of previous non-attenders attend the next round",
+       ""
+      ],
+      [
+       "91–93%",
+       "of previous attenders do",
+       ""
+      ]
+     ],
+     "finding": "Men 17.5%, women 19.0% (2024). Reported for all invitees, not by language, so the first invitation is the moment that matters.",
+     "silta": "Missed-appointment help: how to rebook, in the person's language.",
+     "county": [
+      "Contact people right after a first missed round, before non-attendance becomes a habit."
+     ],
+     "measure": "Attendance by previous result (Cancer Registry).",
+     "src": "Cancer Registry, colorectal screening “by previous result”, 2024."
+    }
+   },
+   "region": [
+    74.5,
+    56.6,
+    55.4,
+    55.4,
+    40.5
+   ],
+   "who_note": "Other-language men attend at 47.2%, the lowest group in any programme."
+  },
+  "breast": {
+   "name": "Breast",
+   "steps": {
+    "invited": {
+     "level": "lang",
+     "a": "100%",
+     "b": "100%",
+     "gapPill": null,
+     "title": "Everyone in the age group gets the same letter",
+     "big": [
+      [
+       "320,048",
+       "Finnish, Swedish or Sámi speakers invited",
+       "a"
+      ],
+      [
+       "24,803",
+       "other-language speakers invited",
+       "b"
+      ]
+     ],
+     "finding": "The invitation is equal by design. Translating it is not enough: in a Norwegian randomised trial, letters in the person's own language gave <b>46.5% attendance vs 47.4%</b> for standard letters.",
+     "silta": "The letter route starts here: the person scans the QR code on the letter and Silta explains, in their language, what the letter is and what to do next.",
+     "county": [
+      "Print a Silta QR block on the invitation letter in every programme."
+     ],
+     "measure": "Invitations by native language (Cancer Registry).",
+     "src": "Cancer Registry, native-language tables 2024; Norway RCT (language-of-origin invitations)."
+    },
+    "attended": {
+     "level": "lang",
+     "a": "83.2%",
+     "b": "60.8%",
+     "gapPill": [
+      -22.4,
+      true
+     ],
+     "title": "The largest drop in the pathway is the first step",
+     "big": [
+      [
+       832,
+       "of 1,000 Finnish, Swedish or Sámi invitees attend",
+       "a"
+      ],
+      [
+       608,
+       "of 1,000 other-language invitees attend",
+       "b"
+      ]
+     ],
+     "finding": "A gap of <b>−22.4 percentage points</b> (95% CI 21.7–23.0). The national target is 80% in every programme and equal attendance regardless of native language.",
+     "why": "Other-language invitees grew by 26% from 2020 to 2024, and the breast gap widened by 2.5 points (95% CI 1.6–3.4).",
+     "who": true,
+     "silta": "Letter route in the person's language: what the test involves, how to book or rebook, and flash cards to show at the appointment.",
+     "county": [
+      "Contact other-language invitees before their first appointment, and right after a first missed round.",
+      "Language-concordant navigation by community health workers for non-attenders. International evidence: +11.5 points for breast screening (Community Guide)."
+     ],
+     "measure": "Cancer Registry attendance by native language (sub-goal 1.3) and county attendance in Sotkanet (Goal 2).",
+     "src": "Cancer Registry native language, region of birth and education tables 2024; two-proportion tests; National Cancer Strategy 2026–2035.",
+     "charts": [
+      "screening_by_language",
+      "gap_trend"
+     ]
+    },
+    "followup": {
+     "level": "none",
+     "solo": "Reported as referral rate only",
+     "title": "Follow-up attendance is not reported",
+     "finding": "The registry reports a referral rate here, not attendance, so it cannot show drop-out. The referral rate is 4.4 points lower for other-language women (weak, 95% CI 0.3–8.5), which could also mean fewer false positives.",
+     "silta": "After-result step: what the further examination involves.",
+     "county": [
+      "Ask the Cancer Registry to report attendance at further examinations by native language."
+     ],
+     "measure": "Not available yet.",
+     "src": "Cancer Registry native-language tables 2024."
+    },
+    "wait": {
+     "level": "ind",
+     "solo": "Helsinki ~1.2 mo · about 2× national",
+     "title": "Diagnostic waits are longer in Helsinki, reported by county only",
+     "big": [
+      [
+       "~1.2",
+       "months, Helsinki, positive mammogram to diagnostic exam",
+       ""
+      ],
+      [
+       "~2×",
+       "the national median",
+       ""
+      ]
+     ],
+     "finding": "The data does not show whether waits differ by language.",
+     "silta": "Tells people what to expect and when to call if nothing arrives.",
+     "county": [
+      "Add native language to the waiting-time indicator."
+     ],
+     "measure": "Time to diagnostic examination, by county (Cancer Registry).",
+     "src": "Cancer Registry, “Delays in access to diagnostic examinations”, 2024 tab, read from charts."
+    },
+    "treat": {
+     "level": "none",
+     "solo": "Not reported by language",
+     "title": "Goal 3 is measured, but not by language",
+     "finding": "The strategy's Goal 3 asks that treatment starts within target times. Time to treatment is not reported by native language, and time from symptom to diagnosis is not collected systematically (strategy, sub-goal 2.5).",
+     "silta": "After-visit step: what happens next, typical waits, and when to call.",
+     "county": [
+      "Add native language to the Goal 3 timing indicators, so this gap becomes visible."
+     ],
+     "measure": "Goal 3 timing indicators (exist, without language).",
+     "src": "National Cancer Strategy 2026–2035, Goal 3 and sub-goal 2.5."
+    },
+    "next": {
+     "level": "none",
+     "solo": "Not reported by language",
+     "title": "Return after a missed round is not reported",
+     "finding": "The registry publishes “by previous result” only for colorectal screening.",
+     "silta": "Missed-appointment help: how to rebook.",
+     "county": [
+      "Contact people right after a first missed round."
+     ],
+     "measure": "Not available yet.",
+     "src": "Cancer Registry mass-screening statistics."
+    }
+   },
+   "region": [
+    83.1,
+    66.1,
+    62.7,
+    61,
+    45.1
+   ],
+   "who_note": "Women with only primary education attend at 63.5%, a gap of similar size. Language and education overlap."
+  },
+  "cervical": {
+   "name": "Cervical",
+   "steps": {
+    "invited": {
+     "level": "lang",
+     "a": "100%",
+     "b": "100%",
+     "gapPill": null,
+     "title": "Everyone in the age group gets the same letter",
+     "big": [
+      [
+       "257,719",
+       "Finnish, Swedish or Sámi speakers invited",
+       "a"
+      ],
+      [
+       "34,391",
+       "other-language speakers invited",
+       "b"
+      ]
+     ],
+     "finding": "The invitation is equal by design. Translating it is not enough: in a Norwegian randomised trial, letters in the person's own language gave <b>46.5% attendance vs 47.4%</b> for standard letters.",
+     "silta": "The letter route starts here: the person scans the QR code on the letter and Silta explains, in their language, what the letter is and what to do next.",
+     "county": [
+      "Print a Silta QR block on the invitation letter in every programme."
+     ],
+     "measure": "Invitations by native language (Cancer Registry).",
+     "src": "Cancer Registry, native-language tables 2024; Norway RCT (language-of-origin invitations)."
+    },
+    "attended": {
+     "level": "lang",
+     "a": "76.2%",
+     "b": "56.3%",
+     "gapPill": [
+      -19.9,
+      true
+     ],
+     "title": "The largest drop in the pathway is the first step",
+     "big": [
+      [
+       762,
+       "of 1,000 Finnish, Swedish or Sámi invitees attend",
+       "a"
+      ],
+      [
+       563,
+       "of 1,000 other-language invitees attend",
+       "b"
+      ]
+     ],
+     "finding": "A gap of <b>−19.9 percentage points</b> (95% CI 19.3–20.4). The national target is 80% in every programme and equal attendance regardless of native language.",
+     "why": "Non-attenders get about 1.8 times the cervical cancer rate of attenders (2020–24, all languages). The gap widened by 4.2 points since 2020 (95% CI 3.4–5.0).",
+     "who": true,
+     "silta": "Letter route in the person's language: what the test involves, how to book or rebook, and flash cards to show at the appointment. When screening is overdue, the doctor summary prompts an in-visit HPV self-sampling offer.",
+     "county": [
+      "Offer HPV self-sampling during any primary-care visit when screening is overdue. London (YouScreen): 56% took a kit at a visit vs ~13% by post. Finnish mailed-kit trials added only ~3 points.",
+      "Add a follow-up step for HPV-positive self-samplers: 36% were lost to follow-up in Finnish trials."
+     ],
+     "measure": "Cancer Registry attendance by native language (sub-goal 1.3) and county attendance in Sotkanet (Goal 2).",
+     "src": "Cancer Registry native language, region of birth and education tables 2024; two-proportion tests; National Cancer Strategy 2026–2035.",
+     "charts": [
+      "screening_by_language",
+      "gap_trend"
+     ]
+    },
+    "followup": {
+     "level": "lang",
+     "a": "84.8%",
+     "b": "87.1%",
+     "gapPill": [
+      2.3,
+      false
+     ],
+     "title": "No gap after an abnormal result",
+     "big": [
+      [
+       "87.1%",
+       "of other-language patients attend colposcopy",
+       "b"
+      ],
+      [
+       "84.8%",
+       "of Finnish, Swedish or Sámi speakers do",
+       "a"
+      ]
+     ],
+     "finding": "A difference of +2.3 points (95% CI −0.6 to +5.2), so no significant gap. Once people are in the system, they follow through.",
+     "silta": "Nothing extra needed here. The effort goes to the first step.",
+     "county": [
+      "No language-specific action needed at this step."
+     ],
+     "measure": "Colposcopy attendance by native language (Cancer Registry).",
+     "src": "Cancer Registry native-language tables 2024."
+    },
+    "wait": {
+     "level": "none",
+     "solo": "Not in the data we have",
+     "title": "Waiting time to diagnosis is not in the data we captured",
+     "finding": "We found no county or language breakdown of time from abnormal cervical result to colposcopy.",
+     "silta": "After-result step: what a colposcopy is and when to call if no appointment arrives.",
+     "county": [
+      "Report time to colposcopy by county and native language."
+     ],
+     "measure": "Not available yet.",
+     "src": "Cancer Registry mass-screening statistics, checked 14 Nov 2026."
+    },
+    "treat": {
+     "level": "none",
+     "solo": "Not reported by language",
+     "title": "Goal 3 is measured, but not by language",
+     "finding": "The strategy's Goal 3 asks that treatment starts within target times. Time to treatment is not reported by native language, and time from symptom to diagnosis is not collected systematically (strategy, sub-goal 2.5).",
+     "silta": "After-visit step: what happens next, typical waits, and when to call.",
+     "county": [
+      "Add native language to the Goal 3 timing indicators, so this gap becomes visible."
+     ],
+     "measure": "Goal 3 timing indicators (exist, without language).",
+     "src": "National Cancer Strategy 2026–2035, Goal 3 and sub-goal 2.5."
+    },
+    "next": {
+     "level": "none",
+     "solo": "Not reported by language",
+     "title": "Return after a missed round is not reported",
+     "finding": "The registry publishes “by previous result” only for colorectal screening.",
+     "silta": "Missed-appointment help: how to rebook.",
+     "county": [
+      "Contact people right after a first missed round."
+     ],
+     "measure": "Not available yet.",
+     "src": "Cancer Registry mass-screening statistics."
+    }
+   },
+   "region": [
+    76,
+    62.8,
+    57.9,
+    53.5,
+    49
+   ],
+   "who_note": "Women with only primary education attend at 50.8%. An older study found 19% attendance among Somali-origin women."
+  }
+ },
+ "symptom": {
+  "s1": {
+   "level": "ind",
+   "solo": "Day 0 in one lymphoma study",
+   "title": "Symptom onset is recorded only in research",
+   "finding": "Routine registers do not record when people notice a symptom, for any group. One Finnish lymphoma study asked patients for the date, and counted every later step in days from it. One lymphoma study (DLBCL, 160 patients, 2014–2020), grouped by where patients first sought care, not by language. Lung cancer has no screening programme, so this is its only route.",
+   "silta": "“I noticed something”: official guidance from public Finnish health sites, in the person's language, with a link to the source. It does not diagnose or rate urgency.",
+   "county": [
+    "Record the date of symptom onset at the first contact."
+   ],
+   "measure": "Not available yet.",
+   "src": "Kuitunen et al., Cancer Medicine 2026;15:e71920 (Espoo talk, 13.11.2026); National Cancer Strategy 2026–2035, sub-goal 2.5.",
+   "charts": [
+    "symptom_to_treatment"
+   ]
+  },
+  "s2": {
+   "level": "ind",
+   "solo": "Register (8 counties) and surveys, any care",
+   "title": "The first contact is moving to Finnish-language chat, and it reaches fewer of them",
+   "big": [
+    [
+     "4.8%",
+     "of residents have a native language other than Finnish or Swedish",
+     "a"
+    ],
+    [
+     "3.0%",
+     "of public digital-clinic users do",
+     "b"
+    ]
+   ],
+   "finding": "Counties now route first contact through chat-based digital clinics: a nurse chat in Finnish, usually starting with a symptom checker that writes a summary for the nurse. In the eight counties studied (2022–2025), people whose native language is not Finnish or Swedish made 0.12 digital-clinic contacts per person against 0.20 overall. They were also under-represented in traditional primary care (4.1% of its users). Surveys point the same way: unmet need for a doctor's care was 5.5% among Somali-origin, 15.2% Russian-origin and 28.8% Kurdish-origin adults against 1.5% overall (THL Maamu 2010–12), and people born in Africa and the Middle East have about a third of the odds of being satisfied with access to care (FinMonik 2018–19). In a lymphoma study, people who started in public primary care made first contact on day 72, against day 42 for private or occupational care (DLBCL, 160 patients, 2014–2020, grouped by where patients first sought care, not by language).",
+   "why": "All of this is about any care, not cancer. The register study is descriptive (no significance tests) and does not include Helsinki or Vantaa–Kerava, the most multilingual areas. Survey figures are by origin, ages 18–64. The study cites language skills and lack of strong e-identification as barriers to digital care.",
+   "silta": "No login and no bank ID. The person describes what they noticed in their own language and Silta writes the Finnish summary the clinic nurse already works from. It also gives who to contact in the region, a Finnish call script to read aloud, and the right to a free interpreter.",
+   "county": [
+    "Record native language and interpreter need at first contact.",
+    "Accept the Silta summary as an entry into the county's digital clinic."
+   ],
+   "measure": "Digital-clinic contacts per person among non-native speakers, from 0.12 towards 0.20, in the THL primary-care register linked to Statistics Finland language data (method and R code published with the study).",
+   "src": "Kujansivu et al., Scand J Prim Health Care 2026, doi:10.1080/02813432.2026.2686721; IJERPH 2021 18(5):2229 (Maamu); Kuusio et al., BMC Health Serv Res 2022 (FinMonik); Kuitunen et al., Cancer Medicine 2026;15:e71920 (Espoo talk, 13.11.2026).",
+   "charts": [
+    "digital_clinic_use",
+    "symptom_to_treatment"
+   ]
+  },
+  "s3": {
+   "level": "ind",
+   "solo": "Day 43 vs 94, by care sector",
+   "title": "The first doctor visit comes 51 days later in public primary care",
+   "finding": "In private or occupational care the doctor visit follows first contact within a day; in public primary care it takes about three more weeks. One lymphoma study (DLBCL, 160 patients, 2014–2020), grouped by where patients first sought care, not by language. In Maamu, 95% of Somali-origin women had their latest doctor visit at a municipal health centre, against about 20% of the general population.",
+   "silta": "Flash cards to show symptoms, and a prepared Finnish summary for the doctor.",
+   "county": [
+    "Offer the Silta summary as an input to the visit."
+   ],
+   "measure": "Not available yet.",
+   "src": "Kuitunen et al., Cancer Medicine 2026;15:e71920 (Espoo talk, 13.11.2026); IJERPH 2021 18(5):2229 (Maamu).",
+   "big": [
+    [
+     "94",
+     "days to physician visit, public primary care",
+     "b"
+    ],
+    [
+     "43",
+     "private or occupational care",
+     "a"
+    ]
+   ],
+   "charts": [
+    "symptom_to_treatment"
+   ]
+  },
+  "s4": {
+   "level": "ind",
+   "solo": "Day 77 vs 147, by care sector",
+   "title": "Referral comes 70 days later from public primary care",
+   "finding": "The gap keeps growing after referral: specialist visit on day 204 vs 118, treatment on day 207 vs 123, 84 days apart. One lymphoma study (DLBCL, 160 patients, 2014–2020), grouped by where patients first sought care, not by language. A symptom-to-biopsy time over 7 weeks was linked to worse progression-free survival (Tokola et al. 2025).",
+   "silta": "After-visit step: what happens next and when to call.",
+   "county": [
+    "Add native language to referral and diagnosis timing."
+   ],
+   "measure": "Days from symptom onset to referral, by first-contact provider: one study only. Not collected routinely or by language.",
+   "src": "Kuitunen et al., Cancer Medicine 2026;15:e71920 (Espoo talk, 13.11.2026); Tokola et al., Cancer Medicine 2025;14(22).",
+   "big": [
+    [
+     "147",
+     "days to referral, public primary care",
+     "b"
+    ],
+    [
+     "77",
+     "private or occupational care",
+     "a"
+    ]
+   ],
+   "charts": [
+    "symptom_to_treatment"
+   ]
+  }
+ }
+}

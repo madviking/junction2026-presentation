@@ -5,6 +5,7 @@ Content is read on every request, so editing a file under content/ shows up on r
 
 from __future__ import annotations
 
+import json
 import re
 from dataclasses import dataclass, field
 from datetime import date, datetime
@@ -311,8 +312,8 @@ def _inline_markdown(text: str) -> str:
 
 
 def dashboard() -> dict:
-    """The /dashboard report (content/dashboard.yaml), with Markdown fields rendered to HTML."""
-    data = yaml.safe_load(_read(settings.content_dir() / "dashboard.yaml")) or {}
+    """The archived data report (content/dashboard_archive.yaml), with Markdown fields rendered to HTML."""
+    data = yaml.safe_load(_read(settings.content_dir() / "dashboard_archive.yaml")) or {}
     for section in data.get("sections", []):
         if section.get("details"):
             section["details_html"] = render_markdown(section["details"])
@@ -321,6 +322,11 @@ def dashboard() -> dict:
         if section.get("aside", {}).get("body"):
             section["aside"]["body_html"] = render_markdown(section["aside"]["body"])
     return data
+
+
+def pathway() -> dict:
+    """The /pathway page: steps, evidence levels, findings, actions and page text (content/data/pathway.json)."""
+    return json.loads(_read(data_path("pathway.json")))
 
 
 def data_path(name: str) -> Path:
