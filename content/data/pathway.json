@@ -1,5 +1,5 @@
 {
- "_about": "The /pathway page. Step values, evidence levels, findings and proposed actions. Numbers from brain notes/2026-11-14-0145-silta-deep-data-analysis.md, sources/2026-11-14-cancerregistry-screening-by-language.md, sources/2026-11-14-europepmc-unmet-need-and-access-by-origin.md. Levels: lang = measured by native language, ind = indirect (county, origin or all invitees), none = not measured. `charts` on a step lists chart modules from app/charts/ shown in that step's detail panel.",
+ "_about": "The /pathway page. Step values, evidence levels, findings and proposed actions. Numbers from brain notes/2026-11-14-0145-silta-deep-data-analysis.md, sources/2026-11-14-cancerregistry-screening-by-language.md, sources/2026-11-14-europepmc-unmet-need-and-access-by-origin.md, sources/2026-11-14-espoo-equity-talk-kuitunen.md. Levels: lang = measured by native language, ind = indirect (county, origin or all invitees), none = not measured. `charts` on a step lists chart modules from app/charts/ shown in that step's detail panel.",
  "page": {
   "title": "The gap opens at the door",
   "lede": "People whose native language is not Finnish, Swedish or Sámi get the same screening letter but attend <b>about 20 points less often</b>. After they attend, most of the gap closes. Most later steps are not reported by language at all. Select a step to see the evidence and what we propose.",
@@ -530,16 +530,19 @@
  },
  "symptom": {
   "s1": {
-   "level": "none",
-   "solo": "No data for anyone",
-   "title": "When people notice a symptom is not recorded",
-   "finding": "No Finnish data records when people notice symptoms, for any group. Lung cancer has no screening programme, so this is its only route.",
+   "level": "ind",
+   "solo": "Day 0 in one lymphoma study",
+   "title": "Symptom onset is recorded only in research",
+   "finding": "Routine registers do not record when people notice a symptom, for any group. One Finnish lymphoma study asked patients for the date, and counted every later step in days from it. One lymphoma study (DLBCL, 160 patients, 2014–2020), grouped by where patients first sought care, not by language. Lung cancer has no screening programme, so this is its only route.",
    "silta": "“I noticed something”: official guidance from public Finnish health sites, in the person's language, with a link to the source. It does not diagnose or rate urgency.",
    "county": [
     "Record the date of symptom onset at the first contact."
    ],
    "measure": "Not available yet.",
-   "src": "National Cancer Strategy 2026–2035, sub-goal 2.5."
+   "src": "Kuitunen et al., Cancer Medicine 2026;15:e71920 (Espoo talk, 13.11.2026); National Cancer Strategy 2026–2035, sub-goal 2.5.",
+   "charts": [
+    "symptom_to_treatment"
+   ]
   },
   "s2": {
    "level": "ind",
@@ -557,37 +560,70 @@
      ""
     ]
    ],
-   "finding": "Russian origin 15.2%, Kurdish 28.8% (THL Maamu 2010–12). People born in Africa and the Middle East have about a third of the odds of being satisfied with access to care (FinMonik 2018–19). Ages 18–64, by origin not language, not cancer-specific.",
+   "finding": "Russian origin 15.2%, Kurdish 28.8% (THL Maamu 2010–12). People born in Africa and the Middle East have about a third of the odds of being satisfied with access to care (FinMonik 2018–19). Ages 18–64, by origin not language, not cancer-specific. In the lymphoma study, people who started in public primary care made first contact on day 72, against day 42 for private or occupational care. One lymphoma study (DLBCL, 160 patients, 2014–2020), grouped by where patients first sought care, not by language.",
    "silta": "Who to contact in the person's region, a Finnish call script to read aloud, and the right to a free interpreter.",
    "county": [
     "Record native language and interpreter need at first contact."
    ],
    "measure": "Survey only (FinMonik, MoniSuomi).",
-   "src": "IJERPH 2021 18(5):2229 (Maamu); Kuusio et al., BMC Health Serv Res 2022 (FinMonik)."
+   "src": "IJERPH 2021 18(5):2229 (Maamu); Kuusio et al., BMC Health Serv Res 2022 (FinMonik). Kuitunen et al., Cancer Medicine 2026;15:e71920 (Espoo talk, 13.11.2026).",
+   "charts": [
+    "symptom_to_treatment"
+   ]
   },
   "s3": {
-   "level": "none",
-   "solo": "Not measured",
-   "title": "What happens at the first visit is not measured",
-   "finding": "There is no data on how long the first visit takes or what is understood, by language.",
+   "level": "ind",
+   "solo": "Day 43 vs 94, by care sector",
+   "title": "The first doctor visit comes 51 days later in public primary care",
+   "finding": "In private or occupational care the doctor visit follows first contact within a day; in public primary care it takes about three more weeks. One lymphoma study (DLBCL, 160 patients, 2014–2020), grouped by where patients first sought care, not by language. In Maamu, 95% of Somali-origin women had their latest doctor visit at a municipal health centre, against about 20% of the general population.",
    "silta": "Flash cards to show symptoms, and a prepared Finnish summary for the doctor.",
    "county": [
     "Offer the Silta summary as an input to the visit."
    ],
    "measure": "Not available yet.",
-   "src": "National Cancer Strategy, sub-goal 2.5."
+   "src": "Kuitunen et al., Cancer Medicine 2026;15:e71920 (Espoo talk, 13.11.2026); IJERPH 2021 18(5):2229 (Maamu).",
+   "big": [
+    [
+     "94",
+     "days to physician visit, public primary care",
+     "b"
+    ],
+    [
+     "43",
+     "private or occupational care",
+     "a"
+    ]
+   ],
+   "charts": [
+    "symptom_to_treatment"
+   ]
   },
   "s4": {
-   "level": "none",
-   "solo": "Not measured",
-   "title": "Time to referral is not measured",
-   "finding": "Time from first visit to referral is not collected by language or for anyone systematically.",
+   "level": "ind",
+   "solo": "Day 77 vs 147, by care sector",
+   "title": "Referral comes 70 days later from public primary care",
+   "finding": "The gap keeps growing after referral: specialist visit on day 204 vs 118, treatment on day 207 vs 123, 84 days apart. One lymphoma study (DLBCL, 160 patients, 2014–2020), grouped by where patients first sought care, not by language. A symptom-to-biopsy time over 7 weeks was linked to worse progression-free survival (Tokola et al. 2025).",
    "silta": "After-visit step: what happens next and when to call.",
    "county": [
     "Add native language to referral and diagnosis timing."
    ],
-   "measure": "Not available yet.",
-   "src": "National Cancer Strategy, sub-goal 2.5."
+   "measure": "Days from symptom onset to referral, by first-contact provider: one study only. Not collected routinely or by language.",
+   "src": "Kuitunen et al., Cancer Medicine 2026;15:e71920 (Espoo talk, 13.11.2026); Tokola et al., Cancer Medicine 2025;14(22).",
+   "big": [
+    [
+     "147",
+     "days to referral, public primary care",
+     "b"
+    ],
+    [
+     "77",
+     "private or occupational care",
+     "a"
+    ]
+   ],
+   "charts": [
+    "symptom_to_treatment"
+   ]
   }
  }
 }
