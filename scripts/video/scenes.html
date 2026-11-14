@@ -3,319 +3,453 @@
 <head>
 <meta charset="utf-8">
 <title>Silta video scenes</title>
-<!-- Motion graphics for the pitch video. Deterministic: window.render(t) draws scene ?scene=<id> at t seconds.
-     Rendered to MP4 by scripts/video/render.mjs. Open in a browser with ?scene=<id>&play to preview. -->
+<!-- Motion graphics for the pitch video, built on the Silta design system (deck v3, content/materials/silta-design-system.html):
+     1920×1080 = every deck size × 1.5, title-safe 108 px sides/top and 84 px bottom, the deck frame (rail · head + stage · foot),
+     colour by meaning (coral = Hodan and the gap, lake = Silta and facts, moss = money), 300 ms fades and one designed moment per scene.
+     Deterministic: window.render(t) draws ?scene=<id> at t seconds. Rendered by scripts/video/render.mjs; preview with ?scene=<id>&play. -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <style>
 :root {
-  --bg: #f6f7f5; --surface: #ffffff; --ink: #142028; --muted: #56636b; --line: #d6ddd8;
-  --lake: #1d5f8a; --lake-soft: #dcebf5; --coral: #c2512f; --coral-soft: #f6e2da; --sage: #3f7a5c; --sage-soft: #dfeee5;
+  --paper: #f6f7f5; --white: #ffffff; --ink: #142028; --muted: #56636b; --line: #d9dfdc;
+  --lake: #1d5f8a; --lake-soft: #dcebf5; --coral: #c2512f; --coral-soft: #f7e3db; --moss: #2f6f4f; --moss-soft: #dfeee5;
+  --shadow: 0 15px 45px rgba(20, 32, 40, 0.14);
   --f-display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
   --f-body: "Atkinson Hyperlegible", Verdana, sans-serif;
-  --f-data: "IBM Plex Mono", Menlo, monospace;
+  --f-mono: "IBM Plex Mono", Menlo, monospace;
+  /* deck sizes × 1.5 */
+  --t-hero: 225px; --t-title: 78px; --t-number: 66px; --t-line: 36px; --t-body: 27px; --t-small: 22px; --t-label: 20px; --t-source: 18px;
+  --s1: 12px; --s2: 24px; --s3: 36px; --s4: 48px; --s5: 72px; --s6: 96px;
+  --radius: 21px;
 }
-* { box-sizing: border-box; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { width: 1920px; height: 1080px; overflow: hidden; }
-body { background: var(--bg); color: var(--ink); font-family: var(--f-body); }
+body { background: var(--paper); color: var(--ink); font-family: var(--f-body); }
 body.transparent { background: transparent; }
 #stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
-.abs { position: absolute; }
-.title { font-family: var(--f-display); font-weight: 800; font-size: 72px; line-height: 1.05; letter-spacing: -0.01em; }
-.sub { font-size: 36px; color: var(--muted); }
-.source { position: absolute; left: 120px; bottom: 56px; font-family: var(--f-data); font-size: 22px; color: var(--muted); }
-.mono { font-family: var(--f-data); font-variant-numeric: tabular-nums; }
 
-/* question card */
-.q { display: flex; align-items: center; gap: 22px; background: var(--surface); border-left: 8px solid var(--coral); border-radius: 14px;
-     padding: 22px 34px; box-shadow: 0 10px 30px rgba(20,32,40,.10); font-family: var(--f-display); font-weight: 600; font-size: 46px; width: max-content; }
-.q .tick { width: 48px; height: 48px; border-radius: 50%; background: var(--sage); color: #fff; display: grid; place-items: center; font-size: 30px; flex: none; }
-.ans { font-size: 34px; color: var(--ink); max-width: 760px; line-height: 1.3; padding-left: 42px; }
-.chip { display: inline-block; font-family: var(--f-data); font-size: 24px; padding: 8px 18px; border-radius: 999px; background: var(--lake); color: #fff; }
-.chip.soft { background: var(--lake-soft); color: var(--lake); }
+/* the frame: margins 84 top · 108 sides · 54 bottom (deck 56/72/36 × 1.5) */
+.frame { position: absolute; inset: 0; padding: 84px 108px 54px; display: grid; grid-template-rows: 42px minmax(0, 1fr) 60px; row-gap: var(--s3); }
+.rail { display: flex; align-items: center; justify-content: space-between; }
+.kicker { font: 600 var(--t-label)/1 var(--f-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--coral); }
+.path { list-style: none; display: flex; gap: var(--s3); font: 500 var(--t-label)/1 var(--f-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.path li { display: flex; align-items: center; gap: var(--s1); opacity: 0.55; }
+.path li i { width: 15px; height: 15px; border-radius: 50%; border: 3px solid currentColor; }
+.path li.done { opacity: 0.8; } .path li.done i { background: currentColor; }
+.path li.now { opacity: 1; color: var(--coral); } .path li.now i { background: var(--coral); border-color: var(--coral); box-shadow: 0 0 0 6px var(--coral-soft); }
+.body { display: grid; grid-template-columns: 645px minmax(0, 1fr); column-gap: var(--s5); min-height: 0; }
+.wide .body { grid-template-columns: 750px minmax(0, 1fr); }
+.head { display: flex; flex-direction: column; gap: var(--s3); align-self: start; padding-top: var(--s4); }
+.title { font: 800 var(--t-title)/1.04 var(--f-display); letter-spacing: -0.02em; text-wrap: balance; }
+.title em { font-style: normal; color: var(--coral); }
+.title.big { font-size: 108px; }
+.line { font: 400 var(--t-line)/1.4 var(--f-body); text-wrap: pretty; }
+.line b { color: var(--coral); }
+.stagebox { position: relative; min-height: 0; }
+.foot { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); border-top: 1.5px solid var(--line); padding-top: 14px; }
+.source { font: 500 var(--t-source)/1.35 var(--f-mono); color: var(--muted); text-align: right; max-width: 1000px; }
+.tag { display: inline-flex; align-items: center; gap: var(--s1); font: 700 var(--t-small)/1 var(--f-body); color: var(--k, var(--ink)); background: var(--white); border: 2px solid var(--k, var(--ink)); border-radius: 999px; padding: 10px 21px 10px 15px; }
+.tag i { width: 14px; height: 14px; border-radius: 50%; background: var(--k, var(--ink)); }
+.k-county { --k: var(--lake); } .k-person { --k: var(--coral); }
 
-/* paper */
-.paper { background: #fff; padding: 56px 60px; border-radius: 6px; box-shadow: 0 24px 60px rgba(20,32,40,.22); overflow: hidden; }
-.paper img { width: 100%; display: block; }
+/* number card: full frame on paper */
+.numcard { position: absolute; inset: 84px 108px 84px; display: grid; align-content: center; gap: var(--s3); }
+.hero { font: 800 var(--t-hero)/0.9 var(--f-display); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.numcard .line { max-width: 1100px; font-size: 44px; }
+.numcard .source { position: absolute; left: 0; bottom: 0; text-align: left; }
 
-/* phone */
-.phone { width: 458px; height: 958px; border-radius: 64px; background: #0f1619; padding: 14px; box-shadow: 0 30px 70px rgba(20,32,40,.28); }
-.phone .screen { width: 430px; height: 930px; border-radius: 50px; overflow: hidden; background: #fff; position: relative; }
-.phone .screen img { width: 430px; display: block; position: absolute; left: 0; top: 0; }
+/* objects */
+.sheetpaper { position: absolute; background: var(--white); box-shadow: var(--shadow); border: 1.5px solid var(--line); overflow: hidden; }
+.sheetpaper img { display: block; width: 100%; margin-top: -9.6%; }
+.phone { position: absolute; padding: 18px; background: var(--ink); border-radius: 51px; box-shadow: var(--shadow); }
+.phone .scr { width: 324px; height: 702px; border-radius: 33px; overflow: hidden; position: relative; background: var(--white); }
+.phone .scr img { position: absolute; left: 0; top: 0; width: 324px; display: block; }
+.browser { position: absolute; background: var(--white); border-radius: 18px; box-shadow: var(--shadow); border: 1.5px solid var(--line); overflow: hidden; }
+.browser .bar { display: flex; gap: 9px; padding: 15px 18px; background: #eef1ef; border-bottom: 1.5px solid var(--line); }
+.browser .bar i { width: 15px; height: 15px; border-radius: 50%; background: var(--line); }
+.browser img { display: block; width: 100%; }
 
-/* bars */
-.bar { position: absolute; bottom: 0; width: 120px; border-radius: 8px 8px 0 0; }
-.val { position: absolute; font-family: var(--f-data); font-size: 34px; font-weight: 600; width: 160px; text-align: center; }
-.legend { display: flex; gap: 40px; font-size: 30px; }
-.legend i { display: inline-block; width: 26px; height: 26px; border-radius: 6px; vertical-align: -4px; margin-right: 12px; }
+/* drawer (the one gradient the system allows) */
+.drawer { position: absolute; overflow: hidden; }
+.drawer .front { position: absolute; left: 0; right: 0; bottom: 0; height: 255px; z-index: 3; background: linear-gradient(#e7e1d6, #d9d1c3);
+  border-radius: 15px 15px 0 0; border-top: 4px solid #cfc6b6; box-shadow: 0 -9px 27px rgba(20, 32, 40, 0.12); }
+.drawer .front span { position: absolute; left: 50%; top: 72px; width: 180px; height: 21px; margin-left: -90px; border-radius: 11px; background: #b9ae9b; }
+.drawer .sheetpaper { z-index: 1; }
+.qrstrip { position: absolute; z-index: 2; background: var(--white); border-radius: 12px; box-shadow: var(--shadow); }
 
-/* people */
-.person { position: absolute; width: 110px; height: 230px; }
-.person .h { width: 70px; height: 70px; border-radius: 50%; margin: 0 auto; }
-.person .b { width: 110px; height: 140px; border-radius: 55px 55px 18px 18px; margin-top: 16px; }
+/* question plates: lower-third grammar (white plate, 6 px bar in the beat's colour) */
+.plate { display: flex; align-items: center; gap: 21px; background: var(--white); border-left: 9px solid var(--coral); border-radius: 6px; padding: 22px 32px 22px 28px;
+  box-shadow: 0 8px 24px rgba(20, 32, 40, 0.08); font: 700 36px/1.15 var(--f-body); width: max-content; max-width: 760px; }
+.plate .tick { width: 42px; height: 42px; border-radius: 50%; background: var(--lake); color: var(--white); display: grid; place-items: center; font: 700 26px/1 var(--f-body); flex: none; }
+.answer { font: 400 30px/1.35 var(--f-body); padding: 14px 0 0 39px; max-width: 760px; }
 
-/* pathway */
-.node { position: absolute; width: 300px; height: 150px; border-radius: 20px; background: var(--surface); border: 3px solid var(--line);
-        display: grid; place-items: center; font-family: var(--f-display); font-weight: 600; font-size: 40px; }
-.link { position: absolute; height: 10px; border-radius: 5px; background: var(--line); }
+/* gap bars (deck component × 1.5) */
+.gapbars { display: grid; gap: var(--s4); width: 100%; }
+.gapbar { display: grid; grid-template-columns: 200px 165px minmax(0, 1fr); grid-template-rows: auto auto; column-gap: var(--s2); row-gap: 10px; align-items: center; }
+.gapbar-label { grid-row: 1 / 3; font: 700 32px/1.1 var(--f-body); }
+.gapbar-rel { grid-row: 1 / 3; font: 800 var(--t-number)/1 var(--f-display); color: var(--coral); font-variant-numeric: tabular-nums; }
+.gapbar-track { height: 33px; display: flex; align-items: center; gap: var(--s1); }
+.gapbar-track i { display: block; height: 100%; border-radius: 6px; }
+.gapbar-track b { font: 600 var(--t-small)/1 var(--f-mono); font-variant-numeric: tabular-nums; }
+i.dom { background: var(--lake); } i.oth { background: var(--coral); }
+.legend { display: flex; gap: var(--s3); font: 400 var(--t-small)/1 var(--f-body); color: var(--muted); padding-left: 389px; }
+.legend i { display: inline-block; width: 18px; height: 18px; border-radius: 4px; margin-right: 9px; vertical-align: -2px; }
 
-/* ladder */
-.rung { position: absolute; width: 900px; background: var(--surface); border: 2px solid var(--line); border-radius: 18px; padding: 24px 30px; display: grid; gap: 6px; }
-.rung .who { font-family: var(--f-display); font-weight: 600; font-size: 40px; display: flex; justify-content: space-between; align-items: center; }
-.rung .what { font-size: 30px; color: var(--muted); line-height: 1.3; }
-.st { font-family: var(--f-data); font-size: 22px; padding: 4px 12px; border-radius: 6px; }
-.st.live { background: var(--sage-soft); color: var(--sage); } .st.built { background: var(--lake-soft); color: var(--lake); }
+/* stage strip (pathway) */
+.strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); width: 100%; }
+.strip li { list-style: none; padding: var(--s2) var(--s2) 0; display: grid; gap: 12px; border-top: 12px solid var(--line); align-content: start; }
+.strip li b { font: 800 36px/1.1 var(--f-display); }
+.strip li span { font: 400 var(--t-small)/1.35 var(--f-body); color: var(--muted); }
+.strip li .v { font: 800 var(--t-number)/1 var(--f-display); font-variant-numeric: tabular-nums; }
 
-/* paths */
-.col { position: absolute; top: 250px; width: 760px; }
-.col h2 { font-family: var(--f-display); font-weight: 800; font-size: 52px; margin-bottom: 40px; }
-.stepbox { display: flex; align-items: center; gap: 22px; font-size: 38px; height: 92px; }
-.dot { width: 34px; height: 34px; border-radius: 50%; border: 4px solid var(--line); background: var(--bg); flex: none; }
+/* steps (two paths, ladder) */
+.steps { display: grid; gap: 0; }
+.step { display: grid; grid-template-columns: 36px 1fr; gap: 24px; align-items: center; height: 84px; font: 400 32px/1.2 var(--f-body); }
+.step .dot { width: 30px; height: 30px; border-radius: 50%; border: 4px solid var(--line); background: var(--paper); justify-self: center; position: relative; z-index: 1; }
+.rung { display: grid; grid-template-columns: 72px 1fr auto; gap: var(--s2); align-items: center; background: var(--white); border: 1.5px solid var(--line); border-radius: var(--radius); padding: 20px 26px; }
+.rung .n { font: 800 var(--t-number)/1 var(--f-display); color: var(--lake); }
+.rung b { font: 800 34px/1.15 var(--f-display); display: block; }
+.rung span { font: 400 var(--t-small)/1.35 var(--f-body); color: var(--muted); }
+.st { font: 600 18px/1 var(--f-mono); letter-spacing: .08em; padding: 7px 12px; border-radius: 6px; }
+.st.live { background: var(--lake); color: var(--white); } .st.built { background: var(--lake-soft); color: var(--lake); }
+
+/* trend */
+.trend .grid { stroke: var(--line); stroke-width: 1.5; }
+.trend .axis { fill: var(--muted); font: 500 20px var(--f-mono); }
+.trend .ln { fill: none; stroke-linejoin: round; stroke-linecap: round; }
+.trend .end { font: 700 26px var(--f-body); }
+
+.logos { display: flex; align-items: center; gap: var(--s5); }
+.logos img { height: 40px; width: auto; filter: brightness(0); opacity: 0.72; }
 </style>
 </head>
 <body>
 <div id="stage"></div>
 <script>
 const SCR = '../../content/materials/video-assets/screens/';
-const clamp = (x) => Math.max(0, Math.min(1, x));
-const ease = (x) => 1 - Math.pow(1 - clamp(x), 3);
-const inOut = (x) => { x = clamp(x); return x < .5 ? 4*x*x*x : 1 - Math.pow(-2*x + 2, 3) / 2; };
-const p = (t, a, d) => ease((t - a) / d);
-const lerp = (a, b, k) => a + (b - a) * k;
-const $ = (s) => document.querySelector(s);
-const $$ = (s) => [...document.querySelectorAll(s)];
-function show(el, k, dy = 30, dx = 0) { el.style.opacity = k; el.style.transform = `translate(${(1-k)*dx}px, ${(1-k)*dy}px)`; }
-const TICK = '<span class="tick">✓</span>';
+const DECK = '../../content/materials/video-assets/deck/';
+const PATH = ['Letter', 'Symptom', 'Found', 'Door', 'Visit'];
 
-const QUESTIONS = ['Do I have to undress?', 'What will they do to me?', 'What if it is a man?', 'Who do I call, in Finnish?', 'Do I even have to go?'];
+// ---- timing helpers -------------------------------------------------------------------
+const clamp = (x) => Math.max(0, Math.min(1, x));
+const lerp = (a, b, k) => a + (b - a) * k;
+function bezier(x1, y1, x2, y2) { // CSS cubic-bezier as a function of progress
+  const bx = (t) => 3*x1*t*(1-t)**2 + 3*x2*t*t*(1-t) + t**3, by = (t) => 3*y1*t*(1-t)**2 + 3*y2*t*t*(1-t) + t**3;
+  return (x) => { x = clamp(x); let lo = 0, hi = 1; for (let i = 0; i < 30; i++) { const m = (lo + hi) / 2; bx(m) < x ? lo = m : hi = m; } return by((lo + hi) / 2); };
+}
+const SYS = bezier(.5, .05, .3, 1);        // the deck's motion curve (drawer, morph)
+const OUT = bezier(.2, .7, .3, 1);
+const p = (t, a, d, f = OUT) => f((t - a) / d);
+const $ = (s) => document.querySelector(s);
+/** The system fade: 300 ms, opacity with a 12 px settle. */
+function fade(el, t, at, rise = 12) { if (!el) return; const k = p(t, at, .3); el.style.opacity = k; el.style.translate = `0 ${(1 - k) * rise}px`; }
+/** Slow ambient drift for objects (never text): a few pixels over the whole clip. */
+function drift(el, t, dx = 6, dy = 4, rot = 0) { el.style.transform = `translate(${Math.sin(t * .35) * dx}px, ${Math.cos(t * .28) * dy}px) rotate(${rot}deg)`; }
+
+// ---- frame builder --------------------------------------------------------------------
+function frame({ kicker, path, title, big, line, stage, left = '', source = '', wide }) {
+  const pathHtml = path == null ? '' : `<ol class="path" id="path">${PATH.map((s, i) =>
+    `<li class="${i === path ? 'now' : (path === 4 && i === 0) || (path === 3 && i === 0) ? 'done' : ''}"><i></i>${s}</li>`).join('')}</ol>`;
+  return `<div class="frame ${wide ? 'wide' : ''}">
+    <div class="rail"><span class="kicker" id="kick">${kicker}</span>${pathHtml}</div>
+    <div class="body"><div class="head"><h2 class="title ${big ? 'big' : ''}" id="ttl">${title}</h2>${line ? `<p class="line" id="ln">${line}</p>` : ''}</div>
+      <div class="stagebox" id="stg">${stage}</div></div>
+    <div class="foot" id="foot"><div id="fl">${left}</div><div class="source">${source}</div></div></div>`;
+}
+function frameIn(t, at = 0) { fade($('#kick'), t, at + .1, 0); fade($('#path'), t, at + .1, 0); fade($('#ttl'), t, at + .3); fade($('#ln'), t, at + .7); fade($('#foot'), t, at + .2, 0); }
+
+const QUESTIONS = ['Do I have to undress?', 'What will they do to me?', 'What if it is a man?', 'What do I say, in Finnish?', 'Do I even have to go?'];
+const plate = (q, id, answered) => `<div class="plate" id="${id}" ${answered ? 'style="border-left-color:var(--lake)"' : ''}><span class="tick" style="${answered ? '' : 'display:none'}">✓</span><span>${q}</span></div>`;
+function answerPlate(t, id, at) { // the coral bar turns lake and the tick appears: answered by Silta
+  const el = $('#' + id); const k = p(t, at, .3); const tk = el.querySelector('.tick');
+  tk.style.display = k > 0 ? 'grid' : 'none'; tk.style.opacity = k; tk.style.scale = lerp(.6, 1, k);
+  el.style.borderLeftColor = k > .5 ? 'var(--lake)' : 'var(--coral)';
+}
 
 const S = {};
 
-S['01-questions'] = { dur: 11, html: `
-  <div class="abs paper" id="paper" style="left:140px; top:70px; width:820px; height:1000px; rotate:-3deg"><img src="${SCR}letter-fi-no-qr.png"></div>
-  <div class="abs" id="dim" style="inset:0; background:var(--bg)"></div>
-  <div class="abs" style="left:1010px; top:150px; display:grid; gap:26px">${QUESTIONS.map((q,i)=>`<div class="q" id="q${i}">${q}</div>`).join('')}</div>
-  <div class="abs" id="cap" style="left:1010px; top:860px"><div class="title" style="font-size:56px">Hodan, 54 · Helsinki</div><div class="sub" style="margin-top:10px">Her cervical screening letters are in Finnish.</div></div>`,
+// 01 · Hodan's questions. Designed moment: the letter lands.
+S['01-questions'] = { dur: 10, html: frame({
+    kicker: 'Helsinki · cervical screening', wide: true,
+    title: 'A letter <em>she can’t use.</em>',
+    line: 'Her second invitation to cervical screening, in Finnish.',
+    stage: `<div class="sheetpaper" id="lt" style="left:-40px; top:-30px; width:470px; height:760px"><img src="${DECK}letter-fi.png"></div>
+      <div id="qs" style="position:absolute; left:400px; top:30px; display:grid; gap:20px">${QUESTIONS.map((q, i) => plate(q, 'q' + i)).join('')}</div>`,
+    source: 'Hodan is a composite of the women in the data that follows' }),
   render(t) {
-    const land = p(t, 0, 1.1); $('#paper').style.transform = `translateY(${lerp(-1150, 0, land)}px)`;
-    $('#dim').style.opacity = 0.35 * p(t, 1.4, 1);
-    QUESTIONS.forEach((_, i) => show($('#q'+i), p(t, 1.7 + i*1.35, .55), 24, 40));
-    show($('#cap'), p(t, 8.9, .7));
+    frameIn(t);
+    const lt = $('#lt'); const k = p(t, .2, 1.1, SYS); lt.style.opacity = clamp((t - .2) / .3);
+    lt.style.transform = `translateY(${lerp(-700, 0, k)}px) rotate(${lerp(-9, -3, k)}deg)`;
+    if (t > 1.3) lt.style.transform = `translate(${Math.sin(t*.35)*5}px, ${Math.cos(t*.28)*4}px) rotate(-3deg)`;
+    QUESTIONS.forEach((_, i) => fade($('#q' + i), t, 2.0 + i * 1.25, 18));
   } };
 
-S['02-one-in-nine'] = { dur: 5.5, html: `
-  <div class="abs title" id="h" style="left:120px; top:120px; width:1500px">1 in 9 people in Finland has another native language</div>
-  ${Array.from({length:9},(_,i)=>`<div class="person" id="p${i}" style="left:${330+i*150}px; top:470px"><div class="h"></div><div class="b"></div></div>`).join('')}
-  <div class="abs sub mono" id="n" style="left:120px; top:800px; font-size:40px; color:var(--ink)">646,392 people · 11.4% of the population · 2025</div>
-  <div class="source">Statistics Finland, table 11rm</div>`,
+// 02 · Meet Hodan. Designed moment: the letter slides into the drawer (1.8 s).
+S['02-drawer'] = { dur: 8, html: frame({
+    kicker: 'Helsinki · cervical screening', big: true, wide: true,
+    title: 'Meet <em>Hodan.</em>',
+    line: 'She is 54. Her language is Somali. She puts the letter away, and doesn’t go.',
+    stage: `<div class="drawer" id="dr" style="left:90px; top:-20px; width:690px; height:760px">
+      <div class="sheetpaper" id="lt" style="left:90px; top:30px; width:510px; height:720px"><img src="${DECK}letter-fi.png"></div>
+      <div class="front"><span></span></div></div>`,
+    source: 'Hodan is a composite of the women in the data that follows' }),
   render(t) {
-    show($('#h'), p(t, .2, .6));
-    for (let i = 0; i < 9; i++) {
-      const el = $('#p'+i); show(el, p(t, .5 + i*.08, .5), 20);
-      const c = i === 8 && t > 1.6 ? 'var(--coral)' : 'var(--lake-soft)';
-      el.querySelector('.h').style.background = c; el.querySelector('.b').style.background = c;
-      if (i === 8) el.style.transform += ` scale(${1 + .12*Math.sin(Math.PI*clamp((t-1.6)/.5))})`;
-    }
-    show($('#n'), p(t, 2.2, .6));
+    frameIn(t);
+    fade($('#dr'), t, 0, 0);
+    const k = p(t, 2.2, 1.8, SYS);
+    $('#lt').style.transform = `translateY(${lerp(0, 240, k)}px) rotate(${lerp(-3, -1, k)}deg)`;
   } };
 
-const BARS = [['Breast', 83.2, 60.8], ['Cervical', 76.2, 56.3], ['Colorectal', 74.5, 53.4]];
-S['03-bars'] = { dur: 8.5, html: `
-  <div class="abs title" style="left:120px; top:90px">Same letter. About 20 points fewer come.</div>
-  <div class="abs legend" style="left:120px; top:210px"><span><i style="background:var(--lake)"></i>Finnish, Swedish or Sámi</span><span><i style="background:var(--coral)"></i>Another native language</span></div>
-  <div class="abs" id="chart" style="left:220px; top:330px; width:1500px; height:560px; border-bottom:3px solid var(--ink)">
-    ${BARS.map(([n,a,b],i)=>`
-      <div class="bar" id="ba${i}" style="left:${120+i*480}px; background:var(--lake)"></div>
-      <div class="bar" id="bb${i}" style="left:${250+i*480}px; background:var(--coral)"></div>
-      <div class="val" id="va${i}" style="left:${100+i*480}px">${a.toFixed(1)}%</div>
-      <div class="val" id="vb${i}" style="left:${230+i*480}px">${b.toFixed(1)}%</div>
-      <div class="abs" style="left:${120+i*480}px; top:580px; width:250px; text-align:center; font-family:var(--f-display); font-weight:600; font-size:38px">${n}</div>
-      <div class="abs mono" id="g${i}" style="left:${380+i*480}px; width:200px; font-size:34px; font-weight:600; color:var(--coral)">−${(a-b).toFixed(1)} pts</div>`).join('')}
-  </div>
-  <div class="source">Finnish Cancer Registry · screening attendance by native language, 2024</div>`,
+// 03 · The number card. Designed moment: the number counts to 27.
+S['03-gap-number'] = { dur: 6, html: `
+  <div class="numcard">
+    <div class="kicker" id="kick">She is not alone</div>
+    <div class="hero" id="hero" style="color:var(--coral)">0%</div>
+    <p class="line" id="ln">fewer come to cancer screening when their native language is not Finnish or Swedish.</p>
+    <div class="source" id="src">Finnish Cancer Registry, 2024 · relative drop, e.g. breast 60.8% vs 83.2%</div>
+  </div>`,
   render(t) {
-    const H = 560 / 100;
-    BARS.forEach(([n,a,b], i) => {
-      const k = inOut((t - .6 - i*.35) / 1.4);
-      $('#ba'+i).style.height = a*H*k + 'px'; $('#bb'+i).style.height = b*H*k + 'px';
-      const v = p(t, 2.0 + i*.35, .4);
-      $('#va'+i).style.top = (560 - a*H - 52) + 'px'; $('#va'+i).style.opacity = v;
-      $('#vb'+i).style.top = (560 - b*H - 52) + 'px'; $('#vb'+i).style.opacity = v;
-      const g = $('#g'+i); g.style.top = (560 - (a+b)/2*H - 20) + 'px'; show(g, p(t, 3.4 + i*.4, .5), 0, -20);
+    fade($('#kick'), t, .1, 0); fade($('#hero'), t, .2, 0); fade($('#ln'), t, 1.4); fade($('#src'), t, 1.8, 0);
+    $('#hero').textContent = Math.round(27 * p(t, .3, 1.2, SYS)) + '%';
+  } };
+
+// 04 · Gap bars. Designed moment: the bars grow.
+const BARS = [['Breast', '−27%', 83.2, 60.8], ['Cervical', '−26%', 76.2, 56.3], ['Colorectal', '−28%', 74.5, 53.4]];
+S['04-gap-bars'] = { dur: 8, html: frame({
+    kicker: 'She is not alone',
+    title: 'Same letter.<br><em>27% fewer come.</em>',
+    line: 'People whose native language is not Finnish or Swedish attend less, in every programme.',
+    stage: `<div style="position:absolute; inset:110px 0 0 0; display:grid; gap:48px; align-content:start">
+      <div class="gapbars">${BARS.map(([l, r, a, b], i) => `<div class="gapbar" id="g${i}"><span class="gapbar-label">${l}</span><span class="gapbar-rel" id="r${i}">${r}</span>
+        <span class="gapbar-track"><i class="dom" id="a${i}"></i><b style="color:var(--lake)" id="av${i}">${a}%</b></span>
+        <span class="gapbar-track"><i class="oth" id="b${i}"></i><b style="color:var(--coral)" id="bv${i}">${b}%</b></span></div>`).join('')}</div>
+      <div class="legend" id="leg"><span><i style="background:var(--lake)"></i>Finnish, Swedish or Sámi</span><span><i style="background:var(--coral)"></i>Another native language</span></div></div>`,
+    source: 'Finnish Cancer Registry, invitees by native language, 2024' }),
+  render(t) {
+    frameIn(t);
+    const W = 560 / 100;
+    BARS.forEach(([, , a, b], i) => {
+      fade($('#g' + i), t, .5 + i * .15, 0);
+      const k = p(t, 1.0 + i * .3, 1.2, SYS);
+      $('#a' + i).style.width = a * W * k + 'px'; $('#b' + i).style.width = b * W * k + 'px';
+      fade($('#av' + i), t, 2.0 + i * .3, 0); fade($('#bv' + i), t, 2.0 + i * .3, 0); fade($('#r' + i), t, 2.4 + i * .3, 0);
+    });
+    fade($('#leg'), t, 1.2, 0);
+  } };
+
+// 05 · The trend. Designed moment: the lines draw.
+const TREND = [
+  { label: 'Breast', c: 'var(--ink)', w: 4, pts: [[2020, 19.9], [2021, 19.4], [2022, 21.8], [2023, 22.0], [2024, 22.4]], dy: -10 },
+  { label: 'Cervical', c: 'var(--coral)', w: 8, pts: [[2020, 15.6], [2021, 16.1], [2022, 17.7], [2023, 17.7], [2024, 19.9]], dy: 30 },
+  { label: 'Colorectal', c: '#8a979e', w: 4, pts: [[2022, 21.8], [2023, 21.4], [2024, 21.1]], dy: 8 },
+];
+const X = (y) => 90 + (y - 2020) * 175, Y = (v) => 560 - (v - 12) * 40;
+S['05-trend'] = { dur: 7.5, html: frame({
+    kicker: 'And it is growing',
+    title: 'The gap is <em>widening.</em>',
+    line: 'For cervical screening, from <b>15.6</b> to <b>19.9</b> percentage points in four years.',
+    stage: `<svg class="trend" id="tr" viewBox="0 0 1000 640" width="1000" height="640" style="position:absolute; left:0; top:0">
+      ${[14, 16, 18, 20, 22, 24].map((v) => `<line class="grid" x1="90" x2="790" y1="${Y(v)}" y2="${Y(v)}"/><text class="axis" x="70" y="${Y(v) + 7}" text-anchor="end">${v}</text>`).join('')}
+      ${[2020, 2021, 2022, 2023, 2024].map((y) => `<text class="axis" x="${X(y)}" y="610" text-anchor="middle">${y}</text>`).join('')}
+      <text class="axis" x="90" y="${Y(25) - 10}">Gap, percentage points</text>
+      ${TREND.map((s, i) => `<path class="ln" id="ln${i}" stroke="${s.c}" stroke-width="${s.w}" d="M${s.pts.map(([y, v]) => `${X(y)},${Y(v)}`).join(' L')}"/>
+        ${s.pts.map(([y, v], j) => `<circle id="d${i}_${j}" cx="${X(y)}" cy="${Y(v)}" r="${s.w + 3}" fill="${s.c}"/>`).join('')}
+        <text class="end" id="e${i}" x="${X(2024) + 22}" y="${Y(s.pts.at(-1)[1]) + 9 + s.dy}" fill="${s.c}">${s.label} ${s.pts.at(-1)[1]}</text>`).join('')}
+    </svg>`,
+    source: 'Finnish Cancer Registry, screening by native language 2020–2024' }),
+  render(t) {
+    frameIn(t);
+    TREND.forEach((s, i) => {
+      const path = $('#ln' + i); const L = path.getTotalLength(); const k = p(t, 1.0 + (i === 1 ? .6 : 0), 1.8, SYS);
+      path.style.strokeDasharray = L; path.style.strokeDashoffset = L * (1 - k);
+      s.pts.forEach(([y], j) => { const at = (X(y) - X(s.pts[0][0])) / (X(2024) - X(s.pts[0][0]) || 1); $(`#d${i}_${j}`).style.opacity = k >= at - .001 ? 1 : 0; });
+      fade($('#e' + i), t, 3.2 + (i === 1 ? .4 : 0), 0);
     });
   } };
 
-S['04-cervical-gap'] = { dur: 5.5, html: `
-  <div class="abs title" style="left:120px; top:120px">And the cervical gap is growing</div>
-  <div class="abs" style="left:120px; top:330px; display:flex; align-items:baseline; gap:40px">
-    <div class="mono" id="num" style="font-size:260px; font-weight:600; color:var(--coral); line-height:1">15.6</div>
-    <div class="sub" style="font-size:48px">points</div></div>
-  <div class="abs mono" id="yr" style="left:130px; top:640px; font-size:56px; color:var(--muted)">2020</div>
-  <div class="abs sub" id="from" style="left:120px; top:760px; font-size:38px">from 15.6 points in 2020 to 19.9 points in 2024</div>
-  <div class="source">Finnish Cancer Registry · cervical screening, gap by native language</div>`,
+// 06 · Somali-origin women. Number card in coral.
+S['06-somali'] = { dur: 6, html: `
+  <div class="numcard">
+    <div class="kicker" id="kick">Women like Hodan</div>
+    <div class="hero" id="hero" style="color:var(--coral)">19%</div>
+    <p class="line" id="ln">of Somali-origin women attend cervical screening, against 67% of Finnish women.</p>
+    <div class="source" id="src">Peer-reviewed study of migrant-origin women in Finland (PMC7663516)</div>
+  </div>`,
+  render(t) { fade($('#kick'), t, .1, 0); fade($('#hero'), t, .3); fade($('#ln'), t, 1.0); fade($('#src'), t, 1.4, 0); } };
+
+// 07 · The door. Designed moment: the coral marks the first step.
+const STEPS = [['Invitation', 'The letter arrives'], ['Attends', 'The first step'], ['Result', 'Sent by post'], ['Follow-up', 'After an abnormal result']];
+S['07-door'] = { dur: 8.5, html: frame({
+    kicker: 'Where it opens',
+    title: 'The gap opens <em>at the door.</em>',
+    line: 'Once people are inside, follow-up is equal. Translating the letter alone did not help.',
+    stage: `<div style="position:absolute; inset:130px 0 0 0; display:grid; gap:84px; align-content:start">
+      <ul class="strip">${STEPS.map(([b, s], i) => `<li id="s${i}"><b>${b}</b><span>${s}</span>${i === 1 ? '<span class="v" id="v1" style="color:var(--coral)">−27%</span>' : i === 3 ? '<span class="v" id="v3" style="color:var(--lake); font-size:38px; white-space:nowrap">87.1 vs 84.8%</span>' : ''}</li>`).join('')}</ul>
+      <div id="nor" style="display:flex; gap:24px; align-items:baseline"><span style="font:800 48px/1 var(--f-display); color:var(--lake); white-space:nowrap">46.5% vs 47.4%</span><span style="font:400 27px/1.3 var(--f-body)">attendance with a translated invitation vs the standard one</span></div></div>`,
+    source: 'Finnish Cancer Registry 2024 · randomised trial, Norway (n = 11,347)' }),
   render(t) {
-    const k = inOut((t - 1.0) / 2.2);
-    $('#num').textContent = lerp(15.6, 19.9, k).toFixed(1);
-    $('#yr').textContent = String(Math.round(lerp(2020, 2024, k)));
-    show($('#from'), p(t, 3.4, .6));
+    frameIn(t);
+    STEPS.forEach((_, i) => fade($('#s' + i), t, .6 + i * .2, 0));
+    const k = p(t, 1.8, .9, SYS);
+    $('#s0').style.borderTopColor = $('#s1').style.borderTopColor = `color-mix(in srgb, var(--coral) ${k * 100}%, var(--line))`;
+    fade($('#v1'), t, 2.4);
+    const k3 = p(t, 3.4, .6, SYS); $('#s3').style.borderTopColor = `color-mix(in srgb, var(--lake) ${k3 * 100}%, var(--line))`;
+    fade($('#v3'), t, 3.7); fade($('#nor'), t, 5.2);
   } };
 
-S['05-somali'] = { dur: 6, html: `
-  <div class="abs title" style="left:120px; top:120px">Cervical screening, Somali-origin women</div>
-  <div class="abs" style="left:120px; top:360px; width:1600px; display:grid; gap:70px">
-    <div><div style="font-size:38px; margin-bottom:16px">Finnish women</div><div style="display:flex; align-items:center; gap:24px"><div id="b1" style="height:90px; background:var(--lake); border-radius:0 10px 10px 0"></div><span class="mono" id="v1" style="font-size:56px; font-weight:600">67%</span></div></div>
-    <div><div style="font-size:38px; margin-bottom:16px">Somali-origin women</div><div style="display:flex; align-items:center; gap:24px"><div id="b2" style="height:90px; background:var(--coral); border-radius:0 10px 10px 0"></div><span class="mono" id="v2" style="font-size:56px; font-weight:600; color:var(--coral)">19%</span></div></div>
-  </div>
-  <div class="source">Finnish population survey of migrant women (PMC5346186, PMC7663516)</div>`,
-  render(t) {
-    const W = 1300 / 100;
-    $('#b1').style.width = 67*W*inOut((t-.5)/1.3) + 'px'; $('#b2').style.width = 19*W*inOut((t-.9)/1.3) + 'px';
-    $('#v1').style.opacity = p(t, 1.8, .4); $('#v2').style.opacity = p(t, 2.2, .4);
-  } };
-
-const NODES = ['Invitation', 'Attends', 'Result', 'Follow-up'];
-S['06-pathway'] = { dur: 9, html: `
-  <div class="abs title" style="left:120px; top:110px">The gap opens at the door</div>
-  ${NODES.map((n,i)=>`<div class="node" id="n${i}" style="left:${150+i*430}px; top:400px">${n}</div>`).join('')}
-  ${[0,1,2].map(i=>`<div class="link" id="l${i}" style="left:${450+i*430}px; top:470px; width:130px"></div>`).join('')}
-  <div class="abs mono" id="lost" style="left:400px; top:590px; width:330px; text-align:center; font-size:34px; font-weight:600; color:var(--coral)">≈ 20 points<br>fewer come</div>
-  <div class="abs" id="eq" style="left:1440px; top:590px; width:360px; text-align:center"><div class="mono" style="font-size:34px; font-weight:600; color:var(--lake)">87.1% vs 84.8%</div><div style="font-size:30px; color:var(--muted); margin-top:6px">no gap once inside</div></div>
-  <div class="abs sub" id="nor" style="left:120px; top:820px; font-size:36px">Translating the letter alone did not help: 46.5% vs 47.4% (Norway, randomised trial).</div>
-  <div class="source">Finnish Cancer Registry 2024 (colposcopy after referral) · Norway RCT, n = 11,347</div>`,
-  render(t) {
-    NODES.forEach((_, i) => show($('#n'+i), p(t, .3 + i*.25, .5), 20));
-    [0,1,2].forEach(i => { const l = $('#l'+i); l.style.opacity = p(t, .9 + i*.25, .4); });
-    const hot = p(t, 2.2, .6);
-    $('#l0').style.background = hot > 0 ? `color-mix(in srgb, var(--coral) ${hot*100}%, var(--line))` : 'var(--line)';
-    $('#n0').style.borderColor = `color-mix(in srgb, var(--coral) ${hot*100}%, var(--line))`;
-    $('#n1').style.borderColor = `color-mix(in srgb, var(--coral) ${hot*100}%, var(--line))`;
-    show($('#lost'), p(t, 2.6, .5), -10);
-    const eq = p(t, 4.2, .5); show($('#eq'), eq, -10); $('#n3').style.borderColor = `color-mix(in srgb, var(--lake) ${eq*100}%, var(--line))`;
-    show($('#nor'), p(t, 5.8, .6));
-  } };
-
-const LEFT = ['Procurement', 'Integration with record systems', 'Data agreements', 'Value for residents'];
+// 08 · Why we start with Hodan. Designed moment: one path crawls, the other is there at once.
+const LEFT = ['Procurement', 'Integration', 'Data agreements', 'Value for residents'];
 const RIGHT = ['The letter in her hand', 'Silta, in her language', 'Value today'];
-S['07-two-paths'] = { dur: 13, html: `
-  <div class="abs title" style="left:120px; top:90px">Why we start with the resident</div>
-  <div class="col" id="cl" style="left:120px"><h2 style="color:var(--muted)">Start with the county</h2>
-    <div style="position:relative">${LEFT.map((s,i)=>`<div class="stepbox" id="ls${i}"><span class="dot"></span><span>${s}</span></div>`).join('')}
-    <div class="abs" id="lp" style="left:15px; top:46px; width:4px; background:var(--muted)"></div></div>
-    <div id="lnote" style="font-size:30px; color:var(--coral); margin-top:30px; max-width:700px">Registers only see people who already came in.</div></div>
-  <div class="col" id="cr" style="left:1040px"><h2 style="color:var(--lake)">Start with the resident</h2>
-    <div style="position:relative">${RIGHT.map((s,i)=>`<div class="stepbox" id="rs${i}"><span class="dot"></span><span>${s}</span></div>`).join('')}
-    <div class="abs" id="rp" style="left:15px; top:46px; width:4px; background:var(--lake)"></div></div>
-    <div id="rnote" style="font-size:30px; color:var(--lake); margin-top:30px; max-width:700px">Reaches her where the 20 points disappear.</div></div>
-  <div class="abs" id="cap" style="left:120px; top:930px; font-family:var(--f-display); font-weight:600; font-size:48px">Silta works today, with no contract.</div>`,
+const steps = (arr, id) => `<div class="steps" style="position:relative">${arr.map((s, i) => `<div class="step" id="${id}${i}"><span class="dot"></span><span>${s}</span></div>`).join('')}
+  <div id="${id}bar" style="position:absolute; left:15px; top:42px; width:6px; border-radius:3px"></div></div>`;
+S['08-why'] = { dur: 11, html: frame({
+    kicker: 'Why we start with Hodan',
+    title: 'Value from <em>day one.</em>',
+    line: 'A county system needs procurement and integration first, and registers only see people who already came in.',
+    stage: `<div style="position:absolute; inset:48px 0 0 0; display:grid; grid-template-columns:1fr 1fr; gap:48px">
+      <div id="cl"><div class="kicker" style="color:var(--muted); margin-bottom:30px">Start with the county</div>${steps(LEFT, 'l')}</div>
+      <div id="cr"><div class="kicker" style="color:var(--lake); margin-bottom:30px">Start with Hodan</div>${steps(RIGHT, 'r')}
+        <div id="today" class="tag k-county" style="margin-top:30px"><i></i>Works today, with no contract</div></div></div>`,
+    source: 'Silta adoption ladder · registers record attendance, not the steps before it' }),
   render(t) {
-    show($('#cl'), p(t, .2, .6)); show($('#cr'), p(t, .6, .6));
-    const lk = clamp((t - 1.2) / 7.0);
-    $('#lp').style.height = lk * (LEFT.length - 1) * 92 + 'px';
-    LEFT.forEach((_, i) => { const on = lk * (LEFT.length - 1) >= i - .01 && t > 1.2;
-      const d = $('#ls'+i+' .dot'); d.style.borderColor = on ? 'var(--muted)' : 'var(--line)'; d.style.background = on ? 'var(--muted)' : 'var(--bg)';
-      $('#ls'+i).style.color = on ? 'var(--ink)' : 'var(--muted)'; });
-    const rk = clamp((t - 2.2) / 1.6);
-    $('#rp').style.height = rk * (RIGHT.length - 1) * 92 + 'px';
-    RIGHT.forEach((_, i) => { const on = rk * (RIGHT.length - 1) >= i - .01 && t > 2.2;
-      const d = $('#rs'+i+' .dot'); d.style.borderColor = on ? 'var(--lake)' : 'var(--line)'; d.style.background = on ? 'var(--lake)' : 'var(--bg)'; });
-    $('#lnote').style.opacity = p(t, 5.5, .6); $('#rnote').style.opacity = p(t, 4.2, .6);
-    const dim = p(t, 9.2, .8); $('#cl').style.opacity = lerp(1, .32, dim) * p(t, .2, .6);
-    $('#cr').style.transform = `scale(${1 + .04*dim})`; $('#cr').style.transformOrigin = 'left top';
-    show($('#cap'), p(t, 9.8, .6));
+    frameIn(t); fade($('#cl'), t, .6, 0); fade($('#cr'), t, .9, 0);
+    const run = (arr, id, at, dur, col) => {
+      const k = p(t, at, dur, clamp); const pos = k * (arr.length - 1);
+      $('#' + id + 'bar').style.height = pos * 84 + 'px'; $('#' + id + 'bar').style.background = col;
+      arr.forEach((_, i) => { const on = t >= at && pos >= i - .001; const d = $(`#${id}${i} .dot`);
+        d.style.borderColor = on ? col : 'var(--line)'; d.style.background = on ? col : 'var(--paper)';
+        $(`#${id}${i}`).style.color = on ? 'var(--ink)' : 'var(--muted)'; });
+    };
+    run(LEFT, 'l', 1.4, 7.0, 'var(--muted)'); run(RIGHT, 'r', 2.0, .9, 'var(--lake)');
+    fade($('#today'), t, 3.2);
+    $('#cl').style.opacity = lerp(1, .35, p(t, 8.8, .3)) * p(t, .6, .3);
   } };
 
-function phoneScene(id, img, dur, side, opts = {}) {
-  S[id] = { dur, html: `
-    ${opts.pre || ''}
-    <div class="abs phone" id="ph" style="left:240px; top:61px"><div class="screen"><img id="shot" src="${SCR}${img}"></div></div>
-    <div class="abs" style="left:860px; top:${opts.top ?? 150}px; width:960px; display:grid; gap:20px">${side}</div>
-    ${opts.post || ''}`,
-    render(t) {
-      const ph = $('#ph'); const k = p(t, opts.enter ?? 0, .7); ph.style.opacity = k; ph.style.transform = `translateY(${(1-k)*60}px)`;
-      const im = $('#shot'); const max = Math.max(0, im.getBoundingClientRect().height - 930);
-      const [a, b] = opts.pan ?? [1.2, dur - 1]; const stops = opts.stops;
-      let y;
-      if (stops) { // [[time, fraction], ...]
-        y = stops[0][1]; for (let i = 1; i < stops.length; i++) { const [t0, f0] = stops[i-1], [t1, f1] = stops[i]; if (t >= t0) y = lerp(f0, f1, inOut((t - t0) / (t1 - t0))); }
-      } else y = inOut((t - a) / (b - a)) * (opts.to ?? 1);
-      im.style.transform = `translateY(${-y * max}px)`;
-      opts.render?.(t);
-    } };
+// phone helper: the deck phone frame (18 px ink bezel around a 324 × 702 screen) with a scripted pan
+function panPhone(t, stops) {
+  const im = $('#shot'); const max = Math.max(0, im.getBoundingClientRect().height - 702);
+  let f = stops[0][1]; for (let i = 1; i < stops.length; i++) { const [t0, f0] = stops[i - 1], [t1, f1] = stops[i]; if (t >= t0) f = lerp(f0, f1, SYS((t - t0) / (t1 - t0))); }
+  im.style.transform = `translateY(${-f * max}px)`;
 }
 
-phoneScene('08-phone-letter', 'so-03-letter-result-full.png', 8.5, `
-  <div class="title" id="t1" style="font-size:64px">She photographs the letter.<br>Silta explains it in Somali.</div>
-  <div class="sub" id="t2">The time, the place and what to do, copied as printed.</div>
-  <div id="t3"><span class="chip">Gemini reads the photo</span></div>`,
-  { enter: 1.9, pan: [3.2, 7.6], to: .55,
-    pre: `<div class="abs paper" id="lt" style="left:240px; top:120px; width:560px; height:820px; padding:36px 40px"><img src="${SCR}letter-fi-no-qr.png"></div>
-          <div class="abs" id="vf" style="left:220px; top:100px; width:600px; height:860px; border:6px solid #fff; border-radius:24px; box-shadow:0 0 0 2000px rgba(15,22,25,.25)"></div>
-          <div class="abs" id="flash" style="inset:0; background:#fff"></div>`,
-    render(t) {
-      const out = p(t, 1.7, .4); $('#lt').style.opacity = 1 - out; $('#vf').style.opacity = (1 - out) * p(t, .2, .4);
-      $('#flash').style.opacity = t > 1.35 && t < 1.95 ? 1 - clamp((t - 1.35) / .6) : 0;
-      show($('#t1'), p(t, 2.3, .6)); show($('#t2'), p(t, 2.8, .6)); show($('#t3'), p(t, 3.4, .6));
-    } });
-
-function qa(i, q, a) { return `<div id="qq${i}"><div class="q" style="font-size:42px"><span class="tick" id="tk${i}">✓</span>${q}</div><div class="ans" id="aa${i}" style="margin-top:14px">${a}</div></div>`; }
-function qaRender(t, i, tq, ta) { show($('#qq'+i), p(t, tq, .5), 20, 30); const k = p(t, ta, .4); $('#tk'+i).style.opacity = k; $('#tk'+i).style.transform = `scale(${lerp(.4,1,k)})`; show($('#aa'+i), k, 10); }
-
-phoneScene('09-phone-visit', 'so-06-visit-full.png', 10, `
-  <div class="sub" id="hd" style="font-family:var(--f-data); font-size:26px; letter-spacing:.06em">WHAT HAPPENS AT THE VISIT · IN SOMALI</div>
-  ${qa(0, 'Do I have to undress?', 'From the waist down. She can keep a long top or skirt on.')}
-  ${qa(1, 'What will they do to me?', 'A nurse, a private room, about 10 minutes, step by step. She can ask for a pause.')}`,
-  { stops: [[0, 0], [1.5, 0], [4.0, .32], [6.5, .45], [9, .55]],
-    render(t) { show($('#hd'), p(t, .5, .5)); qaRender(t, 0, 1.0, 3.6); qaRender(t, 1, 4.6, 6.6); } });
-
-phoneScene('10-phone-rights', 'so-07-rights-full.png', 11, `
-  <div class="sub" id="hd" style="font-family:var(--f-data); font-size:26px; letter-spacing:.06em">YOUR RIGHTS · IN SOMALI</div>
-  ${qa(0, 'What if it is a man?', 'She can ask for a woman to take the sample. Most sample takers are women.')}
-  ${qa(1, 'Who do I call, in Finnish?', 'Finnish sentences to show at the desk, with their meaning, read aloud.')}
-  ${qa(2, 'Do I even have to go?', 'Free, and her own choice. She can change the time.')}
-  <div id="el"><span class="chip">ElevenLabs reads it aloud</span></div>`,
-  { top: 90, stops: [[0, 0], [1.2, 0], [3.4, .22], [6.0, .22], [7.6, .62], [11, .66]],
-    render(t) { show($('#hd'), p(t, .4, .5)); qaRender(t, 0, .9, 2.9); qaRender(t, 1, 4.6, 7.4); qaRender(t, 2, 8.4, 9.4); show($('#el'), p(t, 7.9, .5)); } });
-
-const RUNGS = [
-  ['Hodan, on her own', 'Her letter explained, the visit and her rights, in Somali.', 'live', 'LIVE'],
-  ['The county', 'Prints a Silta QR code on the letters it already sends.', 'built', 'BUILT'],
-  ['The nurse', 'Opens her visit code: a Finnish summary with her wishes, before she sits down.', 'built', 'BUILT'],
-  ['In the room', 'A home self-sampling kit offered: 56% took one, against ~13% by post.', 'built', 'BUILT'],
-];
-S['11-ladder'] = { dur: 14, html: `
-  <div class="abs title" style="left:120px; top:80px">Every adopter adds impact</div>
-  ${RUNGS.map(([w,x,c,l],i)=>`<div class="rung" id="r${i}" style="left:${120+i*230}px; top:${830-i*190}px"><div class="who">${w}<span class="st ${c}">${l}</span></div><div class="what">${x}</div></div>`).join('')}
-  <div class="abs" id="qr" style="left:1350px; top:120px; width:420px; height:250px; overflow:hidden; border-radius:12px; box-shadow:0 18px 40px rgba(20,32,40,.18); background:#fff">
-    <img src="${SCR}letter-fi-with-qr.png" style="width:420px; position:absolute; bottom:0"></div>
-  <div class="source">Kit uptake: London, kit offered at a GP visit vs by post · Status: Silta master narrative, adoption ladder</div>`,
+// 09 · The letter becomes a lesson. Designed moment: the paper turns into the phone (0.9 s).
+S['09-letter-photo'] = { dur: 9, html: frame({
+    kicker: 'First way in · the letter', path: 0,
+    title: 'The letter becomes <em>a lesson.</em>',
+    line: 'She photographs it. Silta explains it in Somali: the time, the place and what to do.',
+    stage: `<div class="sheetpaper" id="lt" style="left:170px; top:0; width:500px; height:720px"><img src="${DECK}letter-fi.png"></div>
+      <div id="flash" style="position:absolute; left:150px; top:-20px; width:540px; height:760px; background:#fff; opacity:0"></div>
+      <div class="phone" id="ph" style="left:260px; top:-6px"><div class="scr"><img id="shot" src="${SCR}so-03-letter-result-full.png"></div></div>`,
+    left: '<span class="tag" id="gm"><i></i>Gemini reads the photo</span>',
+    source: 'Screens from the running app · machine-made text, checked against the letter' }),
   render(t) {
-    RUNGS.forEach((_, i) => show($('#r'+i), p(t, .6 + i*3.1, .6), 30, -30));
-    show($('#qr'), p(t, 3.9, .6)); $('#qr').style.opacity *= 1 - p(t, 6.4, .5);
+    frameIn(t);
+    const lt = $('#lt'); fade(lt, t, .2, 0);
+    const m = p(t, 2.0, .9, SYS);
+    lt.style.transform = `translate(${lerp(0, -250, m)}px, ${lerp(0, 90, m)}px) scale(${lerp(1, .62, m)}) rotate(${lerp(-2, -5, m)}deg)`;
+    lt.style.opacity = Math.min(lt.style.opacity, lerp(1, .9, m));
+    $('#flash').style.opacity = t > 1.7 && t < 2.1 ? .9 * (1 - clamp((t - 1.7) / .4)) : 0;
+    const ph = $('#ph'); ph.style.opacity = p(t, 2.15, .6); ph.style.transform = `translate(${lerp(-120, 0, m)}px, 0) scale(${lerp(.6, 1, m)})`; ph.style.transformOrigin = '30% 80%';
+    if (t > 3) ph.style.transform = `translate(${Math.sin(t*.35)*4}px, ${Math.cos(t*.28)*3}px)`;
+    panPhone(t, [[0, 0], [3.4, 0], [7.4, .5], [9, .5]]);
+    fade($('#gm'), t, 3.0, 0);
   } };
 
-S['12-end'] = { dur: 8, html: `
-  <div class="abs" id="w" style="left:120px; top:200px; font-family:var(--f-display); font-weight:800; font-size:180px; color:var(--lake); letter-spacing:-.02em">Silta</div>
-  <div class="abs title" id="line" style="left:120px; top:440px; width:1500px; font-size:68px">Equal cancer care starts before the first appointment.</div>
-  <div class="abs" id="chips" style="left:120px; top:650px; display:flex; gap:16px; flex-wrap:wrap; width:1700px">
-    <span class="chip soft">Not a medical device</span><span class="chip soft">No names stored</span><span class="chip soft">Live on Aiven, in the EU</span></div>
-  <div class="abs" id="foot" style="left:120px; top:800px; display:grid; gap:12px; font-size:28px; color:var(--muted)">
-    <div>Built with Gemini · ElevenLabs · Aiven &nbsp;·&nbsp; Timo · Mea · Milla &nbsp;·&nbsp; Junction 2026</div>
-    <div class="mono" style="font-size:24px">Hodan is a composite. Sources: mostly-awaited-flounder.eur-1.aiven.app</div></div>`,
-  render(t) { show($('#w'), p(t, .2, .7)); show($('#line'), p(t, .9, .7)); show($('#chips'), p(t, 1.8, .6)); show($('#foot'), p(t, 2.6, .6)); } };
+// 10 · What happens at the visit. Designed moment: coral questions turn lake as Silta answers them.
+S['10-visit'] = { dur: 10, html: frame({
+    kicker: 'Her questions, answered', path: 0,
+    title: 'What happens <em>at the visit.</em>',
+    line: 'Step by step, in Somali, with pictures and a human voice.',
+    stage: `<div class="phone" id="ph" style="left:0; top:-6px"><div class="scr"><img id="shot" src="${SCR}so-06-visit-full.png"></div></div>
+      <div style="position:absolute; left:420px; top:40px; display:grid; gap:48px">
+        <div id="qa0">${plate('Do I have to undress?', 'p0')}<p class="answer" id="a0">From the waist down. She can keep a long top or skirt on.</p></div>
+        <div id="qa1">${plate('What will they do to me?', 'p1')}<p class="answer" id="a1">A nurse, a private room, about 10 minutes. She can ask for a pause.</p></div></div>`,
+    source: 'Silta cervical screening guide, Somali · screens from the running app' }),
+  render(t) {
+    frameIn(t); fade($('#ph'), t, .3, 0); $('#ph').style.translate = `${Math.sin(t*.35)*4}px ${Math.cos(t*.28)*3}px`;
+    panPhone(t, [[0, 0], [1.4, 0], [3.6, .32], [6.0, .45], [10, .55]]);
+    fade($('#qa0'), t, 1.0); answerPlate(t, 'p0', 3.6); fade($('#a0'), t, 3.8);
+    fade($('#qa1'), t, 4.8); answerPlate(t, 'p1', 6.6); fade($('#a1'), t, 6.8);
+  } };
 
-// ---------- transparent overlays (PNG, cropped to the element) ----------
+// 11 · Her rights and the Finnish words. Same moment, plus the sentence for the desk.
+S['11-rights'] = { dur: 11, html: frame({
+    kicker: 'Her rights · at the visit', path: 4,
+    title: 'She can ask <em>for a woman.</em>',
+    line: 'Most sample takers are women. Silta gives her the Finnish sentence to show at the desk.',
+    stage: `<div class="phone" id="ph" style="left:0; top:-6px"><div class="scr"><img id="shot" src="${SCR}so-07-rights-full.png"></div></div>
+      <div style="position:absolute; left:420px; top:40px; display:grid; gap:44px">
+        <div id="qa0">${plate('What if it is a man?', 'p0')}<p class="answer" id="a0">She can ask for a woman to take the sample. A request, not a guarantee.</p></div>
+        <div id="qa1">${plate('What do I say, in Finnish?', 'p1')}<p class="answer" id="a1"><b style="font-weight:700">“Toivoisin, että näytteen ottaa nainen.”</b><br>Shown on screen, or played aloud.</p></div></div>`,
+    left: '<span class="tag" id="el"><i></i>ElevenLabs reads the Finnish aloud</span>',
+    source: 'Silta cervical screening guide, Somali · screens from the running app' }),
+  render(t) {
+    frameIn(t); fade($('#ph'), t, .3, 0); $('#ph').style.translate = `${Math.sin(t*.35)*4}px ${Math.cos(t*.28)*3}px`;
+    panPhone(t, [[0, 0], [1.2, 0], [3.4, .22], [5.6, .22], [7.4, .64], [11, .66]]);
+    fade($('#qa0'), t, .9); answerPlate(t, 'p0', 3.2); fade($('#a0'), t, 3.4);
+    fade($('#qa1'), t, 5.0); answerPlate(t, 'p1', 7.4); fade($('#a1'), t, 7.6); fade($('#el'), t, 7.8, 0);
+  } };
+
+// 12 · Each step a county takes. Designed moment: the clinic screen slides in beside the third rung.
+const RUNGS = [
+  ['0', 'On her own', 'The letter explained, the visit and her rights, in Somali.', 'live', 'LIVE'],
+  ['1', 'A QR code on the letter', 'One printed strip on every invitation.', 'built', 'BUILT'],
+  ['2', 'The nurse reads her summary', 'In Finnish, before she sits down.', 'built', 'BUILT'],
+];
+S['12-county'] = { dur: 12, html: frame({
+    kicker: 'For the wellbeing services county',
+    title: 'Each step <em>adds impact.</em>',
+    line: 'Nothing is needed to start. Every step a county takes makes Silta worth more.',
+    stage: `<div style="position:absolute; inset:24px 0 0 0; display:grid; gap:16px; width:560px; align-content:start">${RUNGS.map(([n, b, s, c, l], i) =>
+      `<div class="rung" id="u${i}"><span class="n">${n}</span><div><b>${b}</b><span>${s}</span></div><span class="st ${c}">${l}</span></div>`).join('')}
+      <div class="rung" id="u3" style="grid-template-columns:1fr"><div><b style="color:var(--lake)">56% vs ~13%</b><span>took a self-sampling kit offered at a GP visit, against kits sent by post (London).</span></div></div></div>
+      <div class="browser" id="br" style="left:600px; top:40px; width:380px"><div class="bar"><i></i><i></i><i></i></div><img src="${DECK}clinic-fi.png"></div>
+      <div class="qrstrip" id="qr" style="left:590px; top:60px; width:390px; padding:6px"><img src="${DECK}letter-qr-block.png" style="width:100%; display:block"></div>`,
+    source: 'Silta adoption ladder · kit uptake: London study, GP visit vs by post' }),
+  render(t) {
+    frameIn(t);
+    [0, 1, 2, 3].forEach((i) => fade($('#u' + i), t, 1.0 + i * 2.4, 18));
+    const q = $('#qr'); fade(q, t, 3.6, 0); q.style.transform = `translateY(${lerp(30, 0, p(t, 3.4, .9, SYS))}px) rotate(1.5deg)`;
+    q.style.opacity = Math.min(q.style.opacity, 1 - p(t, 5.8, .3));
+    const b = $('#br'); const k = p(t, 5.9, .9, SYS); b.style.opacity = clamp((t - 5.9) / .3); b.style.transform = `translateX(${lerp(60, 0, k)}px)`;
+  } };
+
+// 13 · Close. Designed moment: the letter, now with its QR strip, rises out of the drawer (1.8 s).
+S['13-close'] = { dur: 9, html: frame({
+    kicker: 'Helsinki pilot', wide: true,
+    title: 'Silta works at the door, <em>from today.</em>',
+    line: 'Hodan’s next letter carries a QR code.',
+    stage: `<div class="drawer" id="dr" style="left:90px; top:-20px; width:690px; height:760px">
+      <div class="sheetpaper" id="lt" style="left:90px; top:30px; width:510px; height:720px"><img src="${DECK}letter-fi.png"></div>
+      <div class="qrstrip" id="qr" style="left:20px; top:300px; width:650px; padding:6px"><img src="${DECK}letter-qr-block.png" style="width:100%; display:block"></div>
+      <div class="front"><span></span></div></div>`,
+    left: `<div class="logos" id="lg"><img src="${DECK}google-deepmind.png" alt=""><img src="${DECK}aiven.png" alt=""><img src="${DECK}mlh.png" alt=""></div>`,
+    source: 'Timo · Mea · Milla · Hodan is a composite' }),
+  render(t) {
+    frameIn(t); fade($('#dr'), t, 0, 0);
+    const k = p(t, .8, 1.8, SYS);
+    $('#lt').style.transform = `translateY(${lerp(285, -6, k)}px) rotate(${lerp(-1, 2, k)}deg)`;
+    $('#qr').style.transform = `translateY(${lerp(285, -6, k)}px) rotate(${lerp(-1, 1, k)}deg)`;
+    fade($('#lg'), t, 2.6, 0);
+  } };
+
+// ---------- overlays: transparent PNGs, cropped to the element ----------
 const OVERLAYS = {};
-QUESTIONS.forEach((q, i) => { OVERLAYS[`q${i+1}`] = `<div class="q">${q}</div>`; OVERLAYS[`q${i+1}-answered`] = `<div class="q">${TICK}${q}</div>`; });
-OVERLAYS['name-hodan'] = `<div style="background:var(--surface); padding:24px 36px; border-radius:14px; box-shadow:0 10px 30px rgba(20,32,40,.12)"><div class="title" style="font-size:52px">Hodan, 54 · Helsinki</div><div class="sub" style="font-size:32px; margin-top:6px">Her cervical screening letters are in Finnish.</div></div>`;
-OVERLAYS['chip-gemini'] = `<span class="chip">Gemini reads the photo</span>`;
-OVERLAYS['chip-elevenlabs'] = `<span class="chip">ElevenLabs reads it aloud</span>`;
-OVERLAYS['chip-aiven'] = `<span class="chip">Live on Aiven, in the EU</span>`;
-OVERLAYS['caption-composite'] = `<span class="chip soft">Hodan is a composite persona</span>`;
+QUESTIONS.forEach((q, i) => { OVERLAYS[`q${i + 1}`] = plate(q, 'x'); OVERLAYS[`q${i + 1}-answered`] = plate(q, 'x', true); });
+OVERLAYS['lower-third-hodan'] = `<div style="background:var(--white); border-left:9px solid var(--coral); padding:30px 45px 33px 36px; display:grid; gap:12px; box-shadow:var(--shadow)">
+  <span class="kicker">Helsinki · cervical screening</span><span class="title">Hodan, 54</span><span class="line">Her language is Somali.</span></div>`;
+OVERLAYS['lower-third-silta'] = `<div style="background:var(--white); border-left:9px solid var(--lake); padding:30px 45px 33px 36px; display:grid; gap:12px; box-shadow:var(--shadow)">
+  <span class="kicker" style="color:var(--lake)">Silta · in her language</span><span class="title">No name. No login.</span><span class="line">Works today, before any county joins.</span></div>`;
+OVERLAYS['caption-plate'] = `<div style="background:var(--white); padding:18px 30px; border-radius:6px; font:400 36px/1.35 var(--f-body); max-width:1500px">She puts the letter away, and doesn’t go.</div>`;
+OVERLAYS['tag-gemini'] = `<span class="tag"><i></i>Gemini reads the photo</span>`;
+OVERLAYS['tag-elevenlabs'] = `<span class="tag"><i></i>ElevenLabs reads the Finnish aloud</span>`;
+OVERLAYS['tag-aiven'] = `<span class="tag"><i></i>Live on Aiven, in the EU</span>`;
+OVERLAYS['tag-composite'] = `<span class="tag k-person"><i></i>Hodan is a composite</span>`;
 for (const [k, s] of Object.entries({
-  'source-registry': 'Finnish Cancer Registry · screening attendance by native language, 2024',
-  'source-somali': 'Finnish population survey of migrant women (PMC5346186, PMC7663516)',
-  'source-london': 'Kit offered at a GP visit vs by post · London study',
-  'source-norway': 'Translated invitations: 46.5% vs 47.4% · Norway RCT, n = 11,347',
-})) OVERLAYS[k] = `<div class="mono" style="background:rgba(246,247,245,.92); padding:10px 18px; border-radius:8px; font-size:24px; color:var(--muted)">${s}</div>`;
+  'source-registry': 'Finnish Cancer Registry, invitees by native language, 2024',
+  'source-somali': 'Peer-reviewed study of migrant-origin women in Finland (PMC7663516)',
+  'source-london': 'Self-sampling kit offered at a GP visit vs by post · London study',
+  'source-norway': 'Randomised trial, Norway (n = 11,347)',
+})) OVERLAYS[k] = `<div style="background:var(--white); padding:10px 18px; border-radius:6px; font:500 18px/1.35 var(--f-mono); color:var(--muted)">${s}</div>`;
 
 // ---------- boot ----------
 const qs = new URLSearchParams(location.search);
