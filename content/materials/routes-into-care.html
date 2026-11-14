@@ -1,54 +1,48 @@
 <title>Routes Into Care</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Mock-up for /pathway: three routes into cancer care (screening, symptom, doctor's suggestion) merging into one trunk, with only statistically significant differences shown.">
+<meta name="description" content="Mock-up for /pathway: the gaps on three routes into cancer care (screening letter, symptom, doctor's suggestion) and where Silta helps, with the evidence for each step and its limits.">
 <meta name="tags" content="pathway, mockup, routes, screening, symptom, data">
 <meta name="author" content="Claude, for the Silta team">
 <meta name="updated" content="2026-11-14">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <style>
-/* Layout: three headline numbers, then a route map (three entries merging into one trunk), then the selected step's detail. Two colours: ink and coral (the gap). */
+/* Layout: one card = route map, Silta bands under it, and the selected step's detail strip. Then a short limits block. Two colours: ink and coral (the gap). */
 :root {
   --bg: #f7f8f6; --surface: #ffffff; --ink: #142028; --muted: #5b676e; --faint: #b9c2c0; --line: #e2e7e4;
-  --coral: #c2512f; --coral-soft: #f8e6df; --band: #eef1ef;
+  --coral: #c2512f; --band: #eef1ef; --band-on: #dde3e0; --shadow: rgba(20, 32, 40, .18);
   --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
   --body: "Atkinson Hyperlegible", Verdana, system-ui, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #0f171b; --surface: #162026; --ink: #e5ecef; --muted: #98a7ae; --faint: #4a5a61; --line: #27363d;
-  --coral: #e5774b; --coral-soft: #3a2219; --band: #1b272d; color-scheme: dark } }
+  --coral: #e5774b; --band: #1d2a30; --band-on: #2a3a41; --shadow: rgba(0, 0, 0, .55); color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #0f171b; --surface: #162026; --ink: #e5ecef; --muted: #98a7ae; --faint: #4a5a61; --line: #27363d;
-  --coral: #e5774b; --coral-soft: #3a2219; --band: #1b272d; color-scheme: dark }
+  --coral: #e5774b; --band: #1d2a30; --band-on: #2a3a41; --shadow: rgba(0, 0, 0, .55); color-scheme: dark }
 
 body { background: var(--bg); color: var(--ink); font: 16px/1.55 var(--body); }
 .wrap { max-width: 1080px; margin: 0 auto; padding-block: 40px 64px;
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
   display: flex; flex-direction: column; gap: 28px; }
 .eyebrow { font: 600 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0; }
-h1 { font: 800 clamp(30px, 4.4vw, 46px)/1.05 var(--display); margin: 8px 0 10px; text-wrap: balance; letter-spacing: -.01em; }
-.lede { margin: 0; max-width: 62ch; color: var(--muted); }
+h1 { font: 800 clamp(30px, 4.4vw, 44px)/1.05 var(--display); margin: 8px 0 10px; text-wrap: balance; letter-spacing: -.01em; }
+.lede { margin: 0; max-width: 64ch; color: var(--muted); }
 .lede b { color: var(--ink); }
+.label { font: 600 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0; }
 
-.nums { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.nums > div { padding: 18px 20px 18px 0; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-.nums > div + div { padding-left: 20px; border-left: 1px solid var(--line); }
-.nums b { font: 800 40px/1 var(--display); font-variant-numeric: tabular-nums; }
-.nums .gap b { color: var(--coral); }
-.nums span { font-size: 14px; color: var(--muted); max-width: 30ch; }
-@media (max-width: 720px) { .nums { grid-template-columns: 1fr; } .nums > div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); } }
-
-.map { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px 18px 10px; display: flex; flex-direction: column; gap: 10px; }
+/* the one container */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 14px; }
 .legend { display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: 13px; color: var(--muted); align-items: center; }
 .legend svg { vertical-align: middle; margin-right: 6px; }
+.legend .gapkey { color: var(--coral); font-weight: 700; }
 .scroll { overflow-x: auto; }
-svg.routes { display: block; width: 100%; min-width: 760px; height: auto; font-family: var(--body); }
+.canvas { min-width: 760px; display: flex; flex-direction: column; gap: 6px; }
+svg.routes { display: block; width: 100%; height: auto; font-family: var(--body); }
 .routes text { fill: var(--ink); font-size: 13px; }
 .routes .route-name { font: 600 11px var(--mono); letter-spacing: .08em; fill: var(--muted); text-transform: uppercase; }
 .routes .sub { fill: var(--muted); font-size: 12px; }
-.routes .band { fill: var(--band); }
-.routes .band-label { font: 600 11px var(--mono); letter-spacing: .08em; fill: var(--muted); }
 .seg { fill: none; stroke-linecap: round; }
 .seg.lang { stroke: var(--ink); stroke-width: 3.5; }
 .seg.other { stroke: var(--ink); stroke-width: 3; stroke-dasharray: .1 7; }
@@ -64,214 +58,303 @@ svg.routes { display: block; width: 100%; min-width: 760px; height: auto; font-f
 .node[aria-pressed="true"] text { font-weight: 700; }
 .pill rect { fill: var(--coral); }
 .pill text { fill: #fff; font: 700 12.5px var(--mono); }
-.routes .callout { fill: var(--coral); font: 700 12.5px var(--body); }
-.hint { font-size: 13px; color: var(--muted); margin: 0; }
 
-.detail { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 28px; }
-@media (max-width: 760px) { .detail { grid-template-columns: 1fr; } }
-.detail h2 { font: 800 26px/1.15 var(--display); margin: 6px 0 10px; text-wrap: balance; }
-.detail p { margin: 0 0 10px; max-width: 64ch; }
-.detail .src { font: 500 12px/1.5 var(--mono); color: var(--muted); margin-top: 12px; }
-.detail .limit { font-size: 14px; color: var(--muted); }
-table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; margin: 6px 0 12px; font-size: 14.5px; }
-th, td { text-align: right; padding: 7px 10px; border-bottom: 1px solid var(--line); }
+/* Silta bands, aligned to the map's x scale (viewBox 0–1000 → 0–100%) */
+.silta { border-top: 1px solid var(--line); padding-top: 10px; display: flex; flex-direction: column; gap: 4px; }
+.silta-head { display: flex; gap: 12px; align-items: baseline; margin-bottom: 2px; }
+.silta-head span { font-size: 13px; color: var(--muted); }
+.sbar { display: block; height: 22px; padding: 0 10px; border: 0; border-radius: 6px; background: var(--band); color: var(--muted);
+  font: 600 12px/22px var(--mono); text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
+.sbar:hover { color: var(--ink); }
+.sbar:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+.sbar.on { background: var(--band-on); color: var(--ink); }
+.sbar[aria-expanded="true"] { color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
+.sinfo { margin: 2px 0 8px; font-size: 14.5px; max-width: 72ch; }
+
+/* info panel: top of the card, floats above the routes, fixed height so the map never jumps */
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 6px 20px -8px var(--shadow);
+  padding: 16px 20px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 17rem); gap: 10px 32px; min-height: 13.25rem; align-content: start; }
+@media (max-width: 760px) { .panel { grid-template-columns: 1fr; } }
+.panel > * { min-width: 0; }
+.panel h2 { font: 800 22px/1.15 var(--display); margin: 6px 0 6px; text-wrap: balance; }
+.panel p { margin: 0; max-width: 68ch; }
+.panel.empty { grid-template-columns: 1fr; place-items: center; align-content: center; text-align: center; color: var(--muted); }
+.panel.empty p { max-width: 44ch; }
+.side { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+.tag { display: inline-flex; align-items: center; gap: 8px; font: 600 11px var(--mono); letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+.tag svg { flex: none; }
+.silta-line { border-left: 2px solid var(--ink); padding-left: 14px; }
+.silta-line p { margin: 4px 0 0; font-size: 15px; }
+.more { font: 700 14px var(--body); color: var(--ink); background: none; border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+.more:hover { border-color: var(--ink); }
+.more:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.panel .src, .src { font: 500 12px/1.5 var(--mono); color: var(--muted); margin: 8px 0 0; }
+/* data popup */
+dialog.pop { border: 1px solid var(--line); border-radius: 14px; background: var(--surface); color: var(--ink); padding: 20px 22px; width: min(40rem, calc(100vw - 32px)); box-shadow: 0 20px 50px -12px var(--shadow); }
+dialog.pop::backdrop { background: rgba(10, 20, 25, .35); }
+.pop-head { display: flex; justify-content: space-between; align-items: start; gap: 16px; }
+.pop h3 { font: 800 20px/1.2 var(--display); margin: 0 0 10px; text-wrap: balance; }
+.pop .x { border: 0; background: none; color: var(--muted); font: 400 26px/1 var(--body); cursor: pointer; padding: 0 4px; }
+.pop .x:hover { color: var(--ink); }
+.pop .x:focus-visible { outline: 2px solid var(--ink); border-radius: 4px; }
+.pop .scrollx { overflow-x: auto; }
+.pop p { margin: 0 0 8px; }
+.note { font-size: 14px; color: var(--muted); }
+table { border-collapse: collapse; width: 100%; max-width: 40rem; font-variant-numeric: tabular-nums; margin: 4px 0 10px; font-size: 14.5px; }
+th, td { text-align: right; padding: 6px 10px; border-bottom: 1px solid var(--line); }
 th:first-child, td:first-child { text-align: left; padding-left: 0; }
 th { font: 600 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 td.gap { color: var(--coral); font-weight: 700; }
 tr.total td { font-weight: 700; border-bottom: 0; }
-.side { border-left: 1px solid var(--line); padding-left: 24px; display: flex; flex-direction: column; gap: 14px; }
-@media (max-width: 760px) { .side { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); padding-top: 16px; } }
-.side h3 { font: 600 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 4px; }
-.side p { margin: 0; font-size: 15px; }
-.tag { display: inline-block; font: 600 11px var(--mono); letter-spacing: .05em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
-details.notes { font-size: 14px; color: var(--muted); }
-details.notes summary { cursor: pointer; color: var(--ink); font-weight: 700; }
-details.notes ul { margin: 8px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
-@media (prefers-reduced-motion: no-preference) { .node circle.ring { transition: opacity .15s; } }
+
+/* limits */
+.limits { display: flex; flex-direction: column; gap: 10px; max-width: 76ch; }
+.limits h2 { font: 800 21px/1.2 var(--display); margin: 0; }
+.limits ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; }
+details.sources { font-size: 14px; color: var(--muted); }
+details.sources summary { cursor: pointer; color: var(--ink); font-weight: 700; }
+details.sources ul { font-size: 14px; margin-top: 8px; }
+@media (prefers-reduced-motion: no-preference) { .node circle.ring { transition: opacity .15s; } .sbar { transition: background .15s, color .15s; } }
 </style>
 
 <div class="wrap">
   <header>
     <p class="eyebrow">Silta · Routes into cancer care · mock-up</p>
-    <h1>Three ways in, and we can only see one</h1>
-    <p class="lede">People reach cancer care through a screening letter, through a symptom they notice, or because a doctor orders a test. <b>Only the screening route is measured by native language</b>, and that is where the largest gap is. Select a step on the map.</p>
+    <h1>Where people fall out of cancer care</h1>
+    <p class="lede">People reach cancer care through a screening letter, a symptom they notice, or a test a doctor orders. On each route, people whose native language is not Finnish, Swedish or Sámi meet gaps that Silta is built for. <b>Only the screening route is measured by language, and there the gap is large.</b> </p>
   </header>
 
-  <section class="nums" aria-label="Key numbers">
-    <div class="gap"><b>−21 pp</b><span>screening attendance when the native language is not Finnish, Swedish or Sámi (2024, all three programmes)</span></div>
-    <div class="gap"><b>+84 days</b><span>to treatment when the symptom route starts at a public health centre (one lymphoma study)</span></div>
-    <div><b>3 of 11</b><span>steps on this map are measured by native language, all of them in screening</span></div>
-  </section>
-
-  <section class="map" aria-label="Route map">
+  <section class="card" aria-label="Routes into care">
+    <div class="panel empty" data-d="panel" aria-live="polite"></div>
     <div class="legend">
       <span><svg width="34" height="8"><line x1="2" y1="4" x2="32" y2="4" class="seg lang"/></svg>Measured by native language</span>
-      <span><svg width="34" height="8"><line x1="3" y1="4" x2="31" y2="4" class="seg other"/></svg>Measured another way (origin, care sector, county)</span>
+      <span><svg width="34" height="8"><line x1="3" y1="4" x2="31" y2="4" class="seg other"/></svg>Measured another way</span>
       <span><svg width="34" height="8"><line x1="3" y1="4" x2="31" y2="4" class="seg none"/></svg>Not measured</span>
+      <span class="gapkey">Coral = significant gap</span>
     </div>
+
     <div class="scroll">
-      <svg class="routes" viewBox="0 0 1000 440" role="group" aria-label="Three routes into cancer care merging at the diagnostic exam">
-        <rect class="band" x="22" y="14" width="96" height="396" rx="10"/>
-        <text class="band-label" x="70" y="430" text-anchor="middle">SILTA</text>
+      <div class="canvas">
+        <svg class="routes" viewBox="0 0 1000 400" role="group" aria-label="Three routes into cancer care merging at the diagnostic exam">
+          <text class="route-name" x="34" y="34">Screening letter</text>
+          <text class="route-name" x="34" y="156">Symptom</text>
+          <text class="route-name" x="34" y="312">Doctor's suggestion</text>
 
-        <text class="route-name" x="34" y="44">Screening letter</text>
-        <text class="route-name" x="34" y="166">Symptom</text>
-        <text class="route-name" x="34" y="322">Doctor's suggestion</text>
+          <!-- screening -->
+          <path class="seg lang" d="M70 70 L430 70"/>
+          <path class="seg other" d="M430 70 L560 70 C 640 70, 640 200, 700 200"/>
+          <!-- symptom -->
+          <path class="seg none" d="M70 200 L200 200"/>
+          <path class="seg other" d="M200 200 C 250 200, 260 162, 320 162 L480 162 C 600 162, 600 200, 700 200"/>
+          <path class="seg other" d="M200 200 C 250 200, 260 238, 320 238 L480 238 C 600 238, 600 200, 700 200"/>
+          <text class="sub" x="330" y="144">Public health centre</text>
+          <text class="sub" x="330" y="266">Private or occupational care</text>
+          <!-- doctor -->
+          <path class="seg none" d="M70 340 L250 340 C 560 340, 580 200, 700 200"/>
+          <!-- trunk -->
+          <path class="seg none" d="M700 200 L930 200"/>
+          <path d="M930 193 L944 200 L930 207 Z" fill="var(--faint)"/>
 
-        <!-- screening -->
-        <path class="seg lang" d="M70 80 L430 80"/>
-        <path class="seg other" d="M430 80 L560 80 C 640 80, 640 210, 700 210"/>
-        <!-- symptom -->
-        <path class="seg other" d="M70 210 L200 210"/>
-        <path class="seg other" d="M200 210 C 250 210, 260 172, 320 172 L480 172 C 600 172, 600 210, 700 210"/>
-        <path class="seg other" d="M200 210 C 250 210, 260 248, 320 248 L480 248 C 600 248, 600 210, 700 210"/>
-        <text class="sub" x="330" y="154">Public health centre</text>
-        <text class="sub" x="330" y="276">Private or occupational care</text>
-        <text class="callout" x="490" y="154">+84 days to treatment</text>
-        <!-- doctor -->
-        <path class="seg none" d="M70 350 L250 350 C 560 350, 580 210, 700 210"/>
-        <!-- trunk -->
-        <path class="seg none" d="M700 210 L930 210"/>
-        <path d="M930 203 L944 210 L930 217 Z" fill="var(--faint)"/>
+          <g class="pill" transform="translate(250 36)"><rect x="-34" y="-13" width="68" height="24" rx="12"/><text text-anchor="middle" y="4">−21 pp</text></g>
+          <g class="pill" transform="translate(430 36)"><rect x="-30" y="-13" width="60" height="24" rx="12"/><text text-anchor="middle" y="4">−9 pp</text></g>
+          <g class="pill" transform="translate(540 140)"><rect x="-38" y="-13" width="76" height="24" rx="12"/><text text-anchor="middle" y="4">+84 d</text></g>
+        </svg>
 
-        <g class="pill" transform="translate(250 46)"><rect x="-34" y="-13" width="68" height="24" rx="12"/><text text-anchor="middle" y="4">−21 pp</text></g>
-        <g class="pill" transform="translate(430 46)"><rect x="-30" y="-13" width="60" height="24" rx="12"/><text text-anchor="middle" y="4">−9 pp</text></g>
-      </svg>
+        <div class="silta" data-d="silta">
+          <div class="silta-head"><p class="label">Where Silta helps</p><span>Select a band to see what it does.</span></div>
+        </div>
+      </div>
     </div>
-    <p class="hint">Pills mark gaps between native-language groups where the 95% confidence interval excludes zero. Differences that are not significant are not shown.</p>
+
   </section>
 
-  <section class="detail" aria-live="polite">
-    <div data-d="main"></div>
-    <aside class="side" data-d="side"></aside>
-  </section>
-
-  <details class="notes">
-    <summary>How to read this, limits and sources</summary>
+  <section class="limits" aria-label="Limitations">
+    <h2>Limitations</h2>
     <ul>
-      <li>“Other native language” includes people whose native language is unknown. The registry does not split attendance by individual language.</li>
-      <li>The three screening programmes are combined on the map. Gaps are within 2 points of each other at attendance, so one figure stands for all three; select a step for each programme.</li>
-      <li>The symptom-route fork comes from one Finnish study of diffuse large B-cell lymphoma (160 patients, 2014–2020). It groups people by where they first sought care, not by language.</li>
-      <li>Sources: Finnish Cancer Registry screening statistics 2024 (native language, previous result); Kuitunen et al., Cancer Medicine 2026;15:e71920; THL Maamu 2010–12 (IJERPH 2021 18(5):2229); National Cancer Strategy 2026–2035. Captured in the team knowledge base (madviking/junction2026, sources/).</li>
+      <li>Only 3 of the 11 steps are recorded by native language, all of them in screening. Beyond screening we rely on studies grouped by origin or care sector, and some steps have no data at all.</li>
+      <li>“Other native language” pools many languages and includes people whose language is unknown. We use native language as a proxy for needing language support, which it only approximates.</li>
+      <li>The symptom-route figures come from one lymphoma study (160 patients) and a 2010–12 survey grouped by origin. They show which way the gap runs, not how large it is for the people Silta serves.</li>
+      <li>We show a difference only when its 95% confidence interval excludes zero. This left out colposcopy after an abnormal cervical result (+2.3 pp, not significant), waiting times (county medians, not tested by language) and digital-clinic contact rates (descriptive only).</li>
     </ul>
-  </details>
+    <details class="sources">
+      <summary>Sources</summary>
+      <ul>
+        <li>Finnish Cancer Registry, screening statistics by native language and previous result, 2022–2024.</li>
+        <li>Kuitunen et al., Cancer Medicine 2026;15:e71920 (doi:10.1002/cam4.71920).</li>
+        <li>THL Maamu 2010–12, in IJERPH 2021;18(5):2229.</li>
+        <li>National Cancer Strategy 2026–2035, Goal 3 and sub-goals 1.3 and 2.5.</li>
+        <li>All captured in the team knowledge base (madviking/junction2026, sources/).</li>
+      </ul>
+    </details>
+  </section>
 </div>
+
+<dialog class="pop" id="pop" aria-labelledby="pop-title">
+  <div class="pop-head"><h3 id="pop-title"></h3><button class="x" type="button" id="pop-close" aria-label="Close">×</button></div>
+  <div class="scrollx" data-d="pop"></div>
+</dialog>
 
 <script>
 (function () {
-  // Nodes on the map: x, y, label lines, label position, measurement level, detail id.
+  // Map nodes: position, label lines, evidence level, detail id.
   var NODES = [
-    {id: "letter", x: 70, y: 80, l: ["Invitation", "letter"], lv: "lang", pos: "below"},
-    {id: "attend", x: 250, y: 80, l: ["Attends", "screening"], lv: "lang", pos: "below"},
-    {id: "follow", x: 430, y: 80, l: ["Follow-up after", "a positive test"], lv: "lang", pos: "below"},
-    {id: "notice", x: 70, y: 210, l: ["Notices a", "symptom"], lv: "other", pos: "below"},
-    {id: "contact", x: 200, y: 210, l: ["First", "contact"], lv: "other", pos: "below"},
-    {id: "fork", x: 400, y: 172, l: ["Doctor visit,", "referral"], lv: "other", pos: "abovefar", hide: true},
-    {id: "fork", x: 400, y: 248, l: [], lv: "other"},
-    {id: "visit", x: 70, y: 350, l: ["Visit for", "something else"], lv: "none", pos: "below"},
-    {id: "suggest", x: 250, y: 350, l: ["Doctor orders", "a test"], lv: "none", pos: "below"},
-    {id: "diag", x: 700, y: 210, l: ["Diagnostic", "exam"], lv: "none", pos: "below"},
-    {id: "treat", x: 860, y: 210, l: ["Treatment", "starts"], lv: "none", pos: "below"}
+    {id: "letter", x: 70, y: 70, l: ["Invitation", "letter"], lv: "lang"},
+    {id: "attend", x: 250, y: 70, l: ["Attends", "screening"], lv: "lang"},
+    {id: "follow", x: 430, y: 70, l: ["Follow-up after", "a positive test"], lv: "lang"},
+    {id: "notice", x: 70, y: 200, l: ["Notices a", "symptom"], lv: "none"},
+    {id: "contact", x: 200, y: 200, l: ["First", "contact"], lv: "other"},
+    {id: "fork", x: 400, y: 162, l: [], lv: "other", sub: "doctor visit → referral"},
+    {id: "fork", x: 400, y: 238, l: [], lv: "other"},
+    {id: "visit", x: 70, y: 340, l: ["Visit for", "something else"], lv: "none"},
+    {id: "suggest", x: 250, y: 340, l: ["Doctor orders", "a test"], lv: "none"},
+    {id: "diag", x: 700, y: 200, l: ["Diagnostic", "exam"], lv: "none"},
+    {id: "treat", x: 860, y: 200, l: ["Treatment", "starts"], lv: "none"}
   ];
 
-  var t = function (rows, total) {
-    return "<table><thead><tr><th>Programme</th><th>Finnish, Swedish, Sámi</th><th>Other language</th><th>Gap</th></tr></thead><tbody>" +
-      rows.map(function (r, i) { return '<tr' + (total && i === rows.length - 1 ? ' class="total"' : '') + '><td>' + r[0] + '</td><td>' + r[1] + '</td><td>' + r[2] + '</td><td class="' + (r[3].charAt(0) === "−" ? "gap" : "") + '">' + r[3] + '</td></tr>'; }).join("") + "</tbody></table>";
+  // Silta features as bands under the map. x0–x1 in map units; steps = the steps the band covers.
+  var BANDS = [
+    {id: "find", name: "Find", x0: 40, x1: 230, steps: ["letter", "notice", "contact"],
+      text: "Official Finnish health information in the person's own language, such as what a screening letter means or what a symptom may need."},
+    {id: "prepare", name: "Prepare", x0: 170, x1: 430, steps: ["contact", "fork", "attend"],
+      text: "Describe what you noticed by voice, tapping or writing. It is a checklist, not a diagnosis."},
+    {id: "navigate", name: "Navigate", x0: 170, x1: 460, steps: ["contact", "attend", "follow"],
+      text: "Who to call in the person's county and what to expect. It adds a Finnish call script to read aloud and a reminder of the right to a free professional interpreter."},
+    {id: "visit", name: "At the visit", x0: 220, x1: 730, steps: ["attend", "fork", "suggest", "diag"],
+      text: "A visit card and flash cards show symptoms and questions with very little Finnish."},
+    {id: "clinician", name: "For the clinician", x0: 40, x1: 430, steps: ["fork", "visit", "suggest"],
+      text: "A one-screen Finnish summary, preferences known in advance, and a prompt to offer a home self-sampling kit when cervical screening is overdue."},
+    {id: "after", name: "After the visit", x0: 370, x1: 890, steps: ["follow", "fork", "diag", "treat"],
+      text: "Tells people what happens next, how long it usually takes, and when to call if nothing arrives."}
+  ];
+
+  var LV = {
+    lang: {txt: "Measured by native language", line: '<line x1="2" y1="4" x2="26" y2="4" class="seg lang"/>'},
+    other: {txt: "Measured another way", line: '<line x1="3" y1="4" x2="25" y2="4" class="seg other"/>'},
+    none: {txt: "Not measured by language", line: '<line x1="3" y1="4" x2="25" y2="4" class="seg none"/>'}
   };
 
+  function table(head, rows, totalLast) {
+    return "<table><thead><tr>" + head.map(function (h) { return "<th>" + h + "</th>"; }).join("") + "</tr></thead><tbody>" +
+      rows.map(function (r, i) {
+        return "<tr" + (totalLast && i === rows.length - 1 ? ' class="total"' : "") + ">" +
+          r.map(function (c) { return '<td class="' + (/^[−+]/.test(c) ? "gap" : "") + '">' + c + "</td>"; }).join("") + "</tr>";
+      }).join("") + "</tbody></table>";
+  }
+  var LANG = ["", "Finnish, Swedish, Sámi", "Other language", "Gap"];
+
   var D = {
-    letter: {tag: "Measured by native language", h: "Everyone in the age group gets the same letter",
-      body: "<p>In 2024 the three programmes invited 979,412 people whose native language is Finnish, Swedish or Sámi, and 78,914 with another native language.</p>",
-      silta: "The person scans a QR code on the letter, and Silta explains in their language what the letter is and what to do next.",
-      county: "Print a Silta QR block on the invitation letter in every programme.",
+    letter: {lv: "lang", h: "Everything starts with a letter",
+      p: "In 2024 the three programmes invited 78,914 people whose native language is not Finnish, Swedish or Sámi. Every programme starts with a letter.",
+      silta: "Scanning the QR code on the letter opens Silta. It explains the letter in the person's language and says what to do next.",
+      data: table(["Invited, 2024", "People"], [["Finnish, Swedish, Sámi", "979,412"], ["Other native language", "78,914"]]),
       src: "Finnish Cancer Registry, native-language tables 2024."},
-    attend: {tag: "Measured by native language", h: "The largest drop is the first step",
-      body: "<p>Share of invited people who attended, 2024.</p>" +
-        t([["Breast", "83.2%", "60.8%", "−22.4 pp"], ["Cervical", "76.2%", "56.3%", "−19.9 pp"], ["Colorectal", "74.5%", "53.4%", "−21.1 pp"], ["All three", "77.8%", "57.0%", "−20.8 pp"]], true) +
-        "<p>Once someone misses a round, few come back: about 18% of previous non-attenders attend the next colorectal round, against 91–93% of previous attenders.</p>" +
-        '<p class="limit">Every gap is significant (95% CI excludes zero). “All three” is pooled from invitee counts.</p>',
-      silta: "What the test involves, how to book or rebook, and flash cards to show at the appointment, in the person's language.",
-      county: "Contact other-language invitees before the first appointment and right after a first missed round.",
+    attend: {lv: "lang", h: "Attendance is 21 points lower",
+      p: "57% of other-language invitees attended screening in 2024, against 78% of Finnish, Swedish and Sámi speakers. The gap is about the same in all three programmes. Few people who miss a round come back.",
+      silta: "It explains the test and how to book or rebook, with flash cards to show at the appointment.",
+      data: table(["Programme"].concat(LANG.slice(1)), [["Breast", "83.2%", "60.8%", "−22.4 pp"], ["Cervical", "76.2%", "56.3%", "−19.9 pp"], ["Colorectal", "74.5%", "53.4%", "−21.1 pp"], ["All three", "77.8%", "57.0%", "−20.8 pp"]], true) +
+        '<p class="note">All gaps are significant (95% CI excludes zero). “All three” is pooled from invitee counts. Of people who missed a colorectal round, about 18% attend the next one; of previous attenders, 91–93% do.</p>',
       src: "Finnish Cancer Registry, native language and previous-result tables 2024; two-proportion tests."},
-    follow: {tag: "Measured by native language", h: "After a positive stool test, the colorectal gap remains",
-      body: t([["Colorectal: colonoscopy", "77.1%", "68.3%", "−8.8 pp"]]) +
-        "<p>Pooled 2022–2024, 95% CI 6.3–11.3 points. After an abnormal cervical result there is no significant difference. Breast follow-up is reported only as a referral rate.</p>",
-      silta: "What a colonoscopy is, how to prepare, and when to call if no appointment has arrived.",
-      county: "Send the positive-result follow-up in the patient's language, with a named contact.",
+    follow: {lv: "lang", h: "Fewer complete follow-up after a positive test",
+      p: "68% of other-language invitees had a colonoscopy after a positive stool test, against 77% (2022–24). After an abnormal cervical result, the difference is not significant.",
+      silta: "What a colonoscopy is, how to prepare for it, and when to call if no appointment has arrived.",
+      data: table(["Colorectal, 2022–24"].concat(LANG.slice(1)), [["Colonoscopy done", "77.1%", "68.3%", "−8.8 pp"]]) +
+        '<p class="note">The 95% CI of the gap is 6.3–11.3 points. Breast follow-up is reported only as a referral rate.</p>',
       src: "Finnish Cancer Registry, native-language tables 2022–2024."},
-    notice: {tag: "Not recorded routinely", h: "No register records when a symptom starts",
-      body: "<p>Registers start counting at first contact. Lung cancer has no screening programme, so for it this is the only route.</p>",
-      silta: "“I noticed something”: official guidance from public Finnish health sites, in the person's language. It does not diagnose.",
-      county: "Record the date of symptom onset at the first contact.",
+    notice: {lv: "none", h: "Recognising that a symptom matters",
+      p: "No register records when a symptom starts, so this step cannot be measured for anyone. For cancers without screening, such as lung cancer, it is the only way in.",
+      silta: "“I noticed something” gives official guidance in the person's language. It does not diagnose.",
       src: "National Cancer Strategy 2026–2035, sub-goal 2.5."},
-    contact: {tag: "Measured by origin, any care", h: "Where people first go is not random",
-      body: "<p>95% of Somali-origin women had their latest doctor visit at a municipal health centre, against about 20% of the general population.</p>" +
-        "<p>Unmet need for a doctor's care: 5.5% of Somali-origin, 15.2% of Russian-origin and 28.8% of Kurdish-origin adults, against 1.5% overall (all significant).</p>" +
-        '<p class="limit">THL Maamu 2010–12, ages 18–64, by origin, not cancer-specific.</p>',
-      silta: "Who to contact in the person's region, a Finnish call script to read aloud, and the right to a free interpreter. No login needed.",
-      county: "Record native language and interpreter need at first contact.",
-      src: "IJERPH 2021 18(5):2229 (THL Maamu)."},
-    fork: {tag: "One study, by care sector", h: "Where you start decides how long it takes",
-      body: "<p>Days from symptom onset, by where patients first sought care.</p>" +
-        "<table><thead><tr><th>Step</th><th>Private or occupational</th><th>Public health centre</th></tr></thead><tbody>" +
-        "<tr><td>Doctor visit</td><td>43</td><td>94</td></tr><tr><td>Referral</td><td>77</td><td>147</td></tr>" +
-        '<tr class="total"><td>Treatment starts</td><td>123</td><td class="gap">207</td></tr></tbody></table>' +
-        '<p class="limit">One cancer type (diffuse large B-cell lymphoma), 160 patients, 2014–2020. Grouped by first provider, not by language. Most people Silta serves start on the public branch (see “First contact”).</p>',
-      silta: "Flash cards to show symptoms, and a Finnish summary the doctor can read at the first visit.",
-      county: "Add native language to referral timing, so this fork can be measured for the people Silta serves.",
-      src: "Kuitunen et al., Cancer Medicine 2026;15:e71920 (doi:10.1002/cam4.71920)."},
-    visit: {tag: "Not measured", h: "A test ordered during another visit is invisible",
-      body: "<p>A doctor may order a test during a visit for something else, or at an occupational health check. No register shows how often this happens, or for whom.</p>",
-      silta: "Explains the test and the referral in the person's language, and what happens next.",
-      county: "Record the route into diagnosis (screening, symptom, doctor's suggestion) together with native language.",
-      src: "No source: this route is not reported."},
-    diag: {tag: "Measured by county only", h: "All routes meet at the diagnostic exam",
-      body: "<p>Waiting times to the diagnostic exam are reported by county, not by language. Waits are longest in the capital region, where most other-language speakers live.</p>",
+    contact: {lv: "other", h: "Knowing where to go",
+      p: "People of foreign origin depend far more on municipal health centres and report more unmet need for a doctor's care. The survey grouped people by origin, not language, and did not look at cancer.",
+      silta: "Who to contact in their region, a Finnish call script to read aloud, and their right to a free interpreter.",
+      data: table(["THL Maamu 2010–12", "Group", "Overall"], [["Latest doctor visit at a health centre, Somali-origin women", "95%", "~20%"], ["Unmet need, Somali origin", "5.5%", "1.5%"], ["Unmet need, Russian origin", "15.2%", "1.5%"], ["Unmet need, Kurdish origin", "28.8%", "1.5%"]]) +
+        '<p class="note">Ages 18–64. Unmet-need differences are significant.</p>',
+      src: "IJERPH 2021;18(5):2229 (THL Maamu)."},
+    fork: {lv: "other", h: "The public route is slower",
+      p: "Patients who first went to a public health centre started treatment 84 days later than those who went to private or occupational care. The figure comes from one Finnish lymphoma study. Most people Silta serves start on the public route.",
+      silta: "Flash cards for showing symptoms, plus a Finnish summary the doctor can read at the first visit.",
+      data: table(["Days from symptom onset", "Private or occupational", "Public health centre"], [["Doctor visit", "43", "94"], ["Referral", "77", "147"], ["Treatment starts", "123", "207"]], true) +
+        '<p class="note">Diffuse large B-cell lymphoma, 160 patients, 2014–2020. Grouped by first provider, not by language.</p>',
+      src: "Kuitunen et al., Cancer Medicine 2026;15:e71920."},
+    visit: {lv: "none", h: "Understanding why a test was ordered",
+      p: "Doctors sometimes order a test during a visit for something else, or at an occupational health check. No register shows how often this happens, or for whom.",
+      silta: "It explains the test, the referral and the next steps in the person's language.",
+      src: "Not reported in any source we found."},
+    diag: {lv: "none", h: "Waiting for the diagnostic exam",
+      p: "Waiting times are reported by county, not by language. They are longest in the capital region, where most other-language speakers live. All three routes meet here.",
       silta: "Silta cannot shorten the queue. It tells people what to expect and when to call if nothing arrives.",
-      county: "Add native language to the waiting-time indicator.",
       src: "Finnish Cancer Registry, “Delays in access to colonoscopy”, 2024."},
-    treat: {tag: "Not measured by language", h: "Time to treatment is measured, but not by language",
-      body: "<p>The National Cancer Strategy sets targets for time to treatment (Goal 3), but none of its indicators split by native language.</p>",
-      silta: "After-visit step: what happens next, typical waits, and when to call.",
-      county: "Add native language to the Goal 3 timing indicators.",
-      src: "National Cancer Strategy 2026–2035, Goal 3 and sub-goal 2.5."}
+    treat: {lv: "none", h: "Time to treatment",
+      p: "None of the National Cancer Strategy's indicators split by native language, although Goal 3 sets target times for starting treatment.",
+      silta: "What happens next, how long it usually takes, and when to call.",
+      src: "National Cancer Strategy 2026–2035, Goal 3."}
   };
   D.suggest = D.visit;
 
   var svg = document.querySelector("svg.routes"), NS = "http://www.w3.org/2000/svg";
-  var mainEl = document.querySelector("[data-d=main]"), sideEl = document.querySelector("[data-d=side]");
-  var sel = "attend";
+  var panel = document.querySelector("[data-d=panel]");
+  var siltaEl = document.querySelector("[data-d=silta]");
+  var pop = document.getElementById("pop"), popBody = document.querySelector("[data-d=pop]"), popTitle = document.getElementById("pop-title");
+  var sel = null, openBand = null;
+  document.getElementById("pop-close").addEventListener("click", function () { pop.close(); });
+  pop.addEventListener("click", function (e) { if (e.target === pop) pop.close(); });
   function el(tag, attrs, parent) { var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; }
+  function same(a, b) { return a === b || (a === "visit" && b === "suggest") || (a === "suggest" && b === "visit"); }
 
   NODES.forEach(function (n) {
-    var g = el("g", {"class": "node " + n.lv, tabindex: n.l.length ? "0" : "-1", role: "button", "data-id": n.id,
-      "aria-label": (n.l.join(" ") || "Doctor visit, referral, private branch")}, svg);
+    var g = el("g", {"class": "node " + n.lv, tabindex: n.l.length || n.sub ? "0" : "-1", role: "button", "data-id": n.id,
+      "aria-label": n.l.join(" ") || "Doctor visit and referral"}, svg);
     el("circle", {"class": "hit", cx: n.x, cy: n.y, r: 20}, g);
     el("circle", {"class": "ring", cx: n.x, cy: n.y, r: 13}, g);
     el("circle", {"class": "dot", cx: n.x, cy: n.y, r: 7}, g);
-    var y0 = n.pos === "abovefar" ? n.y - 40 : n.y + 28;
     n.l.forEach(function (line, i) {
-      if (n.pos === "abovefar") return;
-      var tx = el("text", {x: n.x, y: y0 + i * 16, "text-anchor": n.x < 90 ? "start" : "middle"}, g);
-      if (n.x < 90) tx.setAttribute("x", n.x - 12);
+      var left = n.x < 90;
+      var tx = el("text", {x: left ? n.x - 12 : n.x, y: n.y + 28 + i * 16, "text-anchor": left ? "start" : "middle"}, g);
       tx.textContent = line;
     });
-    if (n.id === "fork" && n.l.length) {
-      var tx = el("text", {x: n.x, y: n.y + 26, "text-anchor": "middle", "class": "sub"}, g);
-      tx.textContent = "doctor visit → referral";
-    }
-    g.addEventListener("click", function () { sel = n.id; render(); });
-    g.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); sel = n.id; render(); } });
+    if (n.sub) { el("text", {x: n.x, y: n.y + 26, "text-anchor": "middle", "class": "sub"}, g).textContent = n.sub; }
+    var pick = function () { sel = same(sel, n.id) ? null : n.id; render(); };
+    g.addEventListener("click", pick);
+    g.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); } });
+  });
+
+  BANDS.forEach(function (b) {
+    var btn = document.createElement("button");
+    btn.className = "sbar"; btn.type = "button"; btn.id = "band-" + b.id;
+    btn.style.marginLeft = (b.x0 / 10) + "%"; btn.style.width = ((b.x1 - b.x0) / 10) + "%";
+    btn.textContent = b.name; btn.setAttribute("aria-expanded", "false"); btn.setAttribute("aria-controls", "info-" + b.id);
+    var info = document.createElement("p");
+    info.className = "sinfo"; info.id = "info-" + b.id; info.hidden = true; info.textContent = b.text;
+    info.style.marginLeft = (b.x0 / 10) + "%";
+    btn.addEventListener("click", function () { openBand = openBand === b.id ? null : b.id; render(); });
+    siltaEl.appendChild(btn); siltaEl.appendChild(info);
+    b.btn = btn; b.info = info;
   });
 
   function render() {
-    svg.querySelectorAll(".node").forEach(function (g) {
-      var same = g.dataset.id === sel || (sel === "suggest" && g.dataset.id === "visit") || (sel === "visit" && g.dataset.id === "suggest");
-      g.setAttribute("aria-pressed", same ? "true" : "false");
+    svg.querySelectorAll(".node").forEach(function (g) { g.setAttribute("aria-pressed", same(g.dataset.id, sel) ? "true" : "false"); });
+    BANDS.forEach(function (b) {
+      b.btn.classList.toggle("on", b.steps.indexOf(sel) > -1 || (sel === "suggest" && b.steps.indexOf("visit") > -1) || (sel === "visit" && b.steps.indexOf("suggest") > -1));
+      b.btn.setAttribute("aria-expanded", openBand === b.id ? "true" : "false");
+      b.info.hidden = openBand !== b.id;
     });
+    if (!sel) {
+      panel.className = "panel empty";
+      panel.innerHTML = "<p>Select a step on the map to see the gap, its evidence and what Silta does.</p>";
+      return;
+    }
     var d = D[sel];
-    mainEl.innerHTML = '<span class="tag">' + d.tag + "</span><h2>" + d.h + "</h2>" + d.body + '<p class="src">Source: ' + d.src + "</p>";
-    sideEl.innerHTML = "<div><h3>What Silta does</h3><p>" + d.silta + "</p></div><div><h3>What the county can do</h3><p>" + d.county + "</p></div>";
+    panel.className = "panel";
+    panel.innerHTML = '<div><span class="tag"><svg width="28" height="8">' + LV[d.lv].line + "</svg>" + LV[d.lv].txt + "</span>" +
+      "<h2>" + d.h + "</h2><p>" + d.p + '</p><p class="src">Source: ' + d.src + "</p></div>" +
+      '<div class="side"><div class="silta-line"><p class="label">Silta</p><p>' + d.silta + "</p></div>" +
+      (d.data ? '<button class="more" type="button" id="more" aria-haspopup="dialog">Show data</button>' : "") + "</div>";
+    var more = document.getElementById("more");
+    if (more) more.addEventListener("click", function () {
+      popTitle.textContent = d.h;
+      popBody.innerHTML = d.data + '<p class="src">Source: ' + d.src + "</p>";
+      pop.showModal();
+    });
   }
   render();
 })();

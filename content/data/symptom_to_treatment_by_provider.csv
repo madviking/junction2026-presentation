@@ -1,7 +1,0 @@
-step,order,private_occupational_days,public_primary_days
-Symptom onset,0,0,0
-First contact,1,42,72
-Physician visit,2,43,94
-Referral,3,77,147
-Specialist visit,4,118,204
-Treatment start,5,123,207

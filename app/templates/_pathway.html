@@ -1,30 +1,47 @@
-{# Interactive pathway timeline for /pathway. Data: content/data/pathway.json; script: static/pathway.js. #}
-<figure class="silta-pathway" aria-label="Screening and symptom pathway by native language">
+{# Routes into care for /pathway. Data: content/data/pathway.json; script: static/pathway.js.
+   The route lines are drawn here; nodes, Silta bands, the info panel and the data popup are filled by the script. #}
+<figure class="silta-pathway" aria-label="Three routes into cancer care">
   <div class="pw-card">
-    <div class="pw-bar">
-      <div class="pw-seg" role="group" aria-label="Screening programme">
-        <button type="button" data-p="colorectal" aria-pressed="true">Colorectal</button>
-        <button type="button" data-p="breast" aria-pressed="false">Breast</button>
-        <button type="button" data-p="cervical" aria-pressed="false">Cervical</button>
-      </div>
-      <div class="pw-legend">
-        <span><i class="pw-k pw-lang"></i>Measured by native language</span>
-        <span><i class="pw-k pw-ind"></i>Indirect: by county, origin or all invitees</span>
-        <span><i class="pw-k pw-none"></i>Not measured</span>
+    <div class="pw-panel pw-empty" data-pw="panel" aria-live="polite"><p>{{ pathway.page.prompt }}</p></div>
+
+    <div class="pw-legend">
+      <span><svg width="34" height="8" aria-hidden="true"><line x1="2" y1="4" x2="32" y2="4" class="pw-seg pw-lang"/></svg>{{ pathway.levels.lang }}</span>
+      <span><svg width="34" height="8" aria-hidden="true"><line x1="3" y1="4" x2="31" y2="4" class="pw-seg pw-other"/></svg>{{ pathway.levels.other }}</span>
+      <span><svg width="34" height="8" aria-hidden="true"><line x1="3" y1="4" x2="31" y2="4" class="pw-seg pw-none"/></svg>Not measured</span>
+      <span class="pw-gapkey">Coral = significant gap</span>
+    </div>
+
+    <div class="pw-scroll">
+      <div class="pw-canvas">
+        <svg class="pw-routes" viewBox="0 0 1000 400" role="group" aria-label="Three routes into cancer care merging at the diagnostic exam">
+          <text class="pw-route" x="34" y="34">Screening letter</text>
+          <text class="pw-route" x="34" y="156">Symptom</text>
+          <text class="pw-route" x="34" y="312">Doctor's suggestion</text>
+          <path class="pw-seg pw-lang" d="M70 70 L430 70"/>
+          <path class="pw-seg pw-other" d="M430 70 L560 70 C 640 70, 640 200, 700 200"/>
+          <path class="pw-seg pw-none" d="M70 200 L200 200"/>
+          <path class="pw-seg pw-other" d="M200 200 C 250 200, 260 162, 320 162 L480 162 C 600 162, 600 200, 700 200"/>
+          <path class="pw-seg pw-other" d="M200 200 C 250 200, 260 238, 320 238 L480 238 C 600 238, 600 200, 700 200"/>
+          <text class="pw-sub" x="330" y="144">Public health centre</text>
+          <text class="pw-sub" x="330" y="266">Private or occupational care</text>
+          <path class="pw-seg pw-none" d="M70 340 L250 340 C 560 340, 580 200, 700 200"/>
+          <path class="pw-seg pw-none" d="M700 200 L930 200"/>
+          <path class="pw-arrow" d="M930 193 L944 200 L930 207 Z"/>
+          <g class="pw-pill" transform="translate(250 36)"><rect x="-34" y="-13" width="68" height="24" rx="12"/><text text-anchor="middle" y="4">−21 pp</text></g>
+          <g class="pw-pill" transform="translate(430 36)"><rect x="-30" y="-13" width="60" height="24" rx="12"/><text text-anchor="middle" y="4">−9 pp</text></g>
+          <g class="pw-pill" transform="translate(540 140)"><rect x="-38" y="-13" width="76" height="24" rx="12"/><text text-anchor="middle" y="4">+84 d</text></g>
+        </svg>
+        <div class="pw-silta" data-pw="bands">
+          <div class="pw-silta-head"><span class="pw-label">Where Silta helps</span><span>Select a band to see what it does.</span></div>
+        </div>
       </div>
     </div>
-    <div class="pw-scroll"><div class="pw-tl" data-pw="main"></div></div>
-    <p class="pw-unit">Each value is the share of people who reached that step and took it (2024 unless noted). Pills show the gap in percentage points, in coral when the 95% confidence interval excludes zero. Boxed labels are national strategy targets.</p>
-    <div class="pw-sym-wrap">
-      <div class="pw-eyebrow">Symptom route (“I noticed something”), including lung cancer · no screening programme</div>
-      <div class="pw-scroll"><div class="pw-tl pw-sym" data-pw="sym"></div></div>
-    </div>
   </div>
-  <div class="pw-detail" aria-live="polite">
-    <article class="pw-panel" data-pw="problem"></article>
-    <article class="pw-panel pw-solve" data-pw="solve"></article>
-  </div>
-  <div class="pw-charts" data-pw="charts"></div>
-  <noscript><p>The interactive pathway needs JavaScript. The archived data page at /pathway/archive shows the same figures as static charts and tables.</p></noscript>
+
+  <dialog class="pw-pop" id="pw-pop" aria-labelledby="pw-pop-title">
+    <div class="pw-pop-head"><h3 id="pw-pop-title"></h3><button class="pw-x" type="button" id="pw-pop-close" aria-label="Close">×</button></div>
+    <div data-pw="pop"></div>
+  </dialog>
+  <noscript><p>The interactive map needs JavaScript. The archived data page at /pathway/archive shows the screening figures as static charts and tables.</p></noscript>
   <script type="application/json" id="pathway-data">{{ pathway | tojson }}</script>
 </figure>
