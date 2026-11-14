@@ -55,7 +55,7 @@ def pathway(request: Request):
     data = content.pathway()
     available = charts.by_id()
     steps = [step for prog in data["programmes"].values() for step in prog["steps"].values()]
-    steps += list(data["symptom"].values())
+    steps += list(data.get("symptom", {}).values())
     wanted = {c for step in steps for c in step.get("charts", [])}
     rendered = {name: available[name].render() for name in sorted(wanted) if name in available}
     return render(request, "pathway.html", "pathway", pathway=data, charts=rendered)

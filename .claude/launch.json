@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "site",
+      "runtimeExecutable": ".venv/bin/python",
+      "runtimeArgs": ["-m", "uvicorn", "app.main:app", "--reload", "--reload-dir", "app", "--reload-dir", "content", "--port", "8400"],
+      "port": 8400
+    }
+  ]
+}

@@ -29,8 +29,11 @@ Open with one person: she noticed a lump three weeks ago and does not know whom 
 ## The front doors are in Finnish
 
 - Omaolo, Maisa, Lunna and 116117: Finnish, Swedish, partly English; most need bank ID.
+- First contact is moving to chat: non-native speakers are 4.8% of residents but **3% of digital-clinic users** (8 counties, 2026 study).
 - Translated letters alone do not help (Norway: 46.5% vs 47.4%).
 - Acting at the visit does (London: 56% took a self-sampling kit offered at a GP visit, vs ~13% by post).
+
+Note: Digital-clinic figure: Kujansivu et al., Scand J Prim Health Care 2026, register study of eight wellbeing services counties, 2022–2025. Descriptive, no significance tests; Helsinki and Vantaa–Kerava are not in it. 0.12 vs 0.20 digital contacts per person.
 
 ---
 

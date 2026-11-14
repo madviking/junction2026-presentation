@@ -337,7 +337,8 @@ body:has(.silta-report) { background: var(--silta-surface); }
 .pw-blk ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
 .pw-cost { font-size: 14px; color: var(--silta-muted); border: 1px dashed var(--pw-neutral); border-radius: 8px; padding: 8px 12px; }
 .pw-src { font: 500 11px/1.5 var(--silta-font-data); color: var(--silta-muted); }
-.silta-pw-page { max-width: 1072px; margin: 0 auto; padding: 32px 16px 64px; display: flex; flex-direction: column; gap: 20px; }
+.silta-pw-page { max-width: 1072px; width: 100%; min-width: 0; margin: 0 auto; padding: 32px 16px 64px; display: flex; flex-direction: column; gap: 20px; }
+.silta-pw-page > * { min-width: 0; } /* let the 820px timeline scroll inside .pw-scroll instead of widening the page */
 .silta-pw-head { display: flex; flex-direction: column; gap: 10px; }
 .silta-pw-head h1 { font: 800 clamp(28px, 4.4vw, 42px)/1.1 var(--silta-font-display); letter-spacing: -.015em; margin: 0; }
 .silta-pw-lede { font-size: 18px; color: var(--silta-muted); max-width: 70ch; margin: 0; }
@@ -348,6 +349,7 @@ body:has(.silta-report) { background: var(--silta-surface); }
 .pw-charts { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .pw-charts[hidden] { display: none; }
 .pw-chart:only-child { grid-column: 1 / -1; }
+@media (max-width: 820px) { .pw-charts { grid-template-columns: 1fr; } }
 .pw-chart { background: var(--silta-surface); border: 1px solid var(--silta-line); border-radius: 12px; padding: 16px; margin: 0; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 .pw-chart figcaption { display: flex; flex-direction: column; gap: 2px; font-size: 14px; }
 .pw-chart figcaption span { color: var(--silta-muted); font-size: 13px; }

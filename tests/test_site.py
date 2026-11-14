@@ -136,6 +136,7 @@ def test_pathway_embeds_data_and_step_charts(client):
     available = charts.by_id()
     steps = [step for prog in data["programmes"].values() for step in prog["steps"].values()]
     steps += list(data["symptom"].values())
+    assert any(step.get("charts") for step in data["symptom"].values())
     for step in steps:
         for chart in step.get("charts", []):
             assert chart in available, chart
