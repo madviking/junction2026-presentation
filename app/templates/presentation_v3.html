@@ -8,7 +8,7 @@
   {%- elif s.kind == 'paper' -%}
   <figure class="paper"><img src="{{ s.src }}" alt="{{ s.alt }}"{% if s.pos %} style="object-position: {{ s.pos }}"{% endif %}>{% if s.caption %}<figcaption>{{ s.caption }}</figcaption>{% endif %}</figure>
   {%- else -%}
-  <figure class="phone"><img src="{{ s.src }}" alt="{{ s.alt }}"{% if s.pos %} style="object-position: {{ s.pos }}"{% endif %}>{% if s.caption %}<figcaption>{{ s.caption }}</figcaption>{% endif %}</figure>
+  <figure class="phone"><span class="bezel"><img src="{{ s.src }}" alt="{{ s.alt }}"{% if s.pos %} style="object-position: {{ s.pos }}"{% endif %}></span>{% if s.caption %}<figcaption>{{ s.caption }}</figcaption>{% endif %}</figure>
   {%- endif -%}
 {%- endmacro -%}
 {%- macro bars(rows) -%}
@@ -23,6 +23,29 @@
     {%- endfor %}
     <div class="legend"><span><i class="dom"></i>Native Finnish, Swedish or Sámi</span><span><i class="oth"></i>Other native language</span></div>
   </div>
+{%- endmacro -%}
+{%- macro trend(series) -%}
+  {#- Gap in percentage points by year; x 2020–2024, y 10–25 pp. -#}
+  {%- set x0, dx, y0, ky = 40, 92, 176, 9.6 -%}
+  <figure class="trend">
+    <figcaption class="trend-title">Gap in percentage points, 2020–2024</figcaption>
+    <svg viewBox="0 0 560 200" role="img" aria-label="The gap grew from 2020 to 2024: breast 19.9 to 22.4 points, cervical 15.6 to 19.9 points; colorectal stayed about 21 points from 2022 to 2024.">
+      {%- for v in [10, 15, 20, 25] %}
+      <line class="grid" x1="{{ x0 }}" x2="{{ x0 + 4 * dx }}" y1="{{ y0 - (v - 10) * ky }}" y2="{{ y0 - (v - 10) * ky }}"/>
+      <text class="axis" x="{{ x0 - 10 }}" y="{{ y0 - (v - 10) * ky + 4 }}" text-anchor="end">{{ v }}</text>
+      {%- endfor %}
+      {%- for yr in [2020, 2021, 2022, 2023, 2024] %}
+      <text class="axis" x="{{ x0 + (yr - 2020) * dx }}" y="{{ y0 + 20 }}" text-anchor="middle">{{ yr }}</text>
+      {%- endfor %}
+      {%- for ser in series %}
+      {%- set pts = [] %}{% for p in ser.points %}{% set _ = pts.append((x0 + (p[0] - 2020) * dx) ~ ',' ~ (y0 - (p[1] - 10) * ky)) %}{% endfor %}
+      <polyline class="line t-{{ ser.tone }}" points="{{ pts | join(' ') }}"/>
+      {%- for p in ser.points %}<circle class="dot t-{{ ser.tone }}" cx="{{ x0 + (p[0] - 2020) * dx }}" cy="{{ y0 - (p[1] - 10) * ky }}" r="3.5"/>{% endfor %}
+      {%- set last = ser.points[-1] %}
+      <text class="end t-{{ ser.tone }}" x="{{ x0 + (last[0] - 2020) * dx + 10 }}" y="{{ y0 - (last[1] - 10) * ky + (ser.dy or 4) }}">{{ ser.label }} {{ last[1] }}</text>
+      {%- endfor %}
+    </svg>
+  </figure>
 {%- endmacro -%}
 <!doctype html>
 <html lang="en">
@@ -52,7 +75,7 @@
           <header class="rail">
             <span class="kicker">{{ s.kicker or '' }}</span>
             {%- if s.path %}
-            <ol class="path" aria-label="Hodan's path, step {{ s.path }} of {{ deck.path | length }}">
+            <ol class="path" aria-label="The path, step {{ s.path }} of {{ deck.path | length }}">
               {%- for step in deck.path %}<li{% if loop.index == s.path %} class="now" aria-current="step"{% elif loop.index < s.path %} class="done"{% endif %}><i></i>{{ step }}</li>{% endfor %}
             </ol>
             {%- endif %}
@@ -101,6 +124,13 @@
               {%- if s.logos %}
               <div class="logos">{% for l in s.logos %}<img src="{{ l.src }}" alt="{{ l.alt }}">{% endfor %}</div>
               {%- endif %}
+              {%- elif s.layout == 'team' %}
+              <div class="team">
+                <figure class="team-photo">{% if s.photo %}<img src="{{ s.photo }}" alt="The team: {{ s.people | map(attribute='name') | join(', ') }}">{% else %}<span>Team photo</span>{% endif %}</figure>
+                <ul class="people">
+                  {%- for p in s.people %}<li><b>{{ p.name }}</b><span>{{ p.role }}</span></li>{% endfor %}
+                </ul>
+              </div>
               {%- else %}
               <div class="screens n{{ s.screens | length }}">{% for sc in s.screens %}{{ screen(sc) }}{% endfor %}</div>
               {%- endif %}
@@ -125,6 +155,12 @@
             <h3 class="sheet-title">{{ d.title }}</h3>
             {%- if d.chart == 'screening' %}
             {{ bars(deck.screening_bars) }}
+            {%- endif %}
+            {%- if d.trend %}
+            {{ trend(deck.gap_trend) }}
+            {%- endif %}
+            {%- if d.image %}
+            <img class="sheet-image" src="{{ d.image.src }}" alt="{{ d.image.alt }}">
             {%- endif %}
             <ul class="sheet-items">
               {%- for it in d['items'] or [] %}

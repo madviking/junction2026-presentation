@@ -95,30 +95,36 @@ def dashboard_redirect():
     return RedirectResponse(PATHWAY_SLIDE, status_code=307)
 
 
+# The site's deck is v3: Hodan's path with drill-ins, one layout system
+# (content/presentation-v3.yaml, app/static/deck-v3.css, rules in
+# content/materials/silta-design-system.html). Earlier decks stay reachable.
 @app.get("/presentation", response_class=HTMLResponse)
 def presentation(request: Request):
+    return templates.TemplateResponse(
+        request, "presentation_v3.html", {"site": content.site(), "deck": content.deck_v3()}
+    )
+
+
+@app.get("/presentation/v3")
+def presentation_v3_redirect():
+    return RedirectResponse("/presentation", status_code=307)
+
+
+# Deck v1 (content/presentation.md), the first deck.
+@app.get("/presentation/v1", response_class=HTMLResponse)
+def presentation_v1(request: Request):
     meta, slides = content.slides()
     return templates.TemplateResponse(
         request, "presentation.html", {"site": content.site(), "meta": meta, "slides": slides}
     )
 
 
-# Deck v2, built from the master narrative (content/materials/master-narrative.html).
-# Both decks stay live until the team picks one.
+# Deck v2 (content/presentation-v2.md), built from the master narrative.
 @app.get("/presentation/v2", response_class=HTMLResponse)
 def presentation_v2(request: Request):
     meta, slides = content.slides("presentation-v2.md")
     return templates.TemplateResponse(
         request, "presentation.html", {"site": content.site(), "meta": meta, "slides": slides}
-    )
-
-
-# Deck v3: Hodan's path with drill-ins, one layout system (content/presentation-v3.yaml,
-# app/static/deck-v3.css). v1 and v2 stay live until the team picks one.
-@app.get("/presentation/v3", response_class=HTMLResponse)
-def presentation_v3(request: Request):
-    return templates.TemplateResponse(
-        request, "presentation_v3.html", {"site": content.site(), "deck": content.deck_v3()}
     )
 
 

@@ -40,26 +40,37 @@ highlights:
     title: Works from day one
     text: No county contract or integration needed
   - icon: shield-check
-    title: Fully anonymous
-    text: Complies with regulation
+    title: No personal data
+    text: Not a medical device by design
   - icon: language
     title: 14 languages
     text: Read aloud, tap, type or speak
 
 # Landing page: how Silta connects to Goal 3 of the National Cancer Strategy 2026-2035.
-# Indicators from the strategy (Figure 1, p. 5); numbers from brain ideas/silta.md and
-# sources/2026-11-13-web-research-minorities-screening.md.
+# Indicators from the strategy (Figure 1, p. 5). Numbers: lung-cancer intervals from brain
+# sources/2026-11-13-web-research-az-gaps-interventions.md (UEF Kuittinen, unpublished, via Yle MOT);
+# screening gap from sources/2026-11-14-cancerregistry-screening-by-language.md (2024: breast 22.4,
+# cervical 19.9, colorectal 21.1 pp); 16,561 from notes/2026-11-14-1630-silta-financial-lean-case.md;
+# "3 of 11 steps" from the limitations in content/data/pathway.json.
+# Each point can carry `src` + `src_url` (shown as "Source: ..."); `src_link` uses a key from `links`; `src_label` changes the prefix.
 goal3:
   title: "Goal 3: equal and effective cancer care"
-  lede: Goal 3 is measured by treatment starting on time, cancer mortality and survival. For minorities, the time is lost before the first contact, and that is where Silta works.
+  lede: Goal 3 is measured by treatment starting on time, cancer mortality and survival. For people with another native language, the gap opens before the first contact, where no register looks. That is where Silta works.
   points:
     - indicator: Treatment within target times
-      text: In lung cancer, over 50 of about 155 days pass between the first symptom and the first contact (provisional Finnish study). Silta shortens that part with the right door, the words to say in Finnish and a reminder to call if nothing arrives.
+      text: In lung cancer, over 50 of about 155 days pass before the first contact. Silta shortens that part with the right door, the words to say in Finnish and a reminder to call if nothing arrives.
+      src: UEF study (unpublished), reported by Yle MOT
+      src_url: https://yle.fi/a/74-20251023
     - indicator: Mortality and survival
-      text: Screening and earlier contact find cancer at an earlier stage. People with another native language attend screening about 20 points less often, so the room to improve is largest here.
+      text: People with another native language attend screening 20–22 points less often in all three programmes. Attending like Finnish and Swedish speakers would mean 16,561 more people screened a year.
+      src: Finnish Cancer Registry, 2024
+      src_url: https://stats.cancerregistry.fi/joukkistilastot/
     - indicator: A number a county can follow
-      text: Registers do not record the steps before the first contact. Silta counts them anonymously, by stage and language, in the county view.
-  also: Also serves Goal 2 (80% screening attendance in every county) and sub-goal 1.3 (equal attendance regardless of native language).
+      text: Registers do not record the steps before the first contact. Silta counts them anonymously, by stage and language.
+      src_label: Live
+      src: county view
+      src_link: county
+  also: Only 3 of 11 pathway steps are recorded by native language, all in screening; for the rest we use published studies. Silta also serves Goal 2 (80% screening attendance in every county).
 
 # Landing page: safe to use now, and how it grows into the health system.
 # Sources: brain ideas/silta.md sections 5-6 and 8 (EU MDR Rule 11, GDPR Art. 9), ideas/silta-service-paths.md.

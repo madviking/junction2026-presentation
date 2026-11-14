@@ -1,5 +1,5 @@
 ---
-title: Pitch video — five storylines
+title: Pitch video — five storylines (earlier ideation, superseded by video-strategy.html)
 description: Five distinct 2-minute storylines for the Silta pitch video (story-led, demo-led, data-led, county-led), each with narrative, timing, shot list, preparation and risks.
 tags: [video, pitch, storyboard]
 author: Milla Railo

@@ -2,7 +2,7 @@
 {% from "_demo_login.html" import demo_login %}
 {% from "_slider.html" import phone_slider %}
 {% block body %}
-<main class="page-body">
+<main class="page-body silta-landing">
   <div class="container-xl">
     <section class="silta-hero">
       <div class="silta-hero-text">
@@ -13,7 +13,7 @@
         {% if site.lede %}<p class="silta-hero-lede">{{ site.lede }}</p>{% endif %}
         <div class="silta-cta">
           {% if site.links.consumer %}
-          <a class="btn btn-primary btn-lg" href="{{ site.links.consumer.url }}"><i class="ti ti-device-mobile me-2"></i>Try Silta</a>
+          <a class="btn btn-primary btn-lg" href="{{ site.links.consumer.url }}"><i class="ti ti-device-mobile me-2"></i>Try the live demo</a>
           {% endif %}
           <a class="btn btn-lg" href="/video"><i class="ti ti-player-play me-2"></i>Watch the video</a>
           <a class="btn btn-lg" href="/presentation"><i class="ti ti-presentation me-2"></i>See the deck</a>
@@ -51,10 +51,11 @@
         <div class="silta-goal-point">
           <h3>{{ point.indicator }}</h3>
           <p>{{ point.text }}</p>
+          {% if point.src %}<p class="silta-goal-src">{{ point.src_label or "Source" }}: {% set src_url = site.links[point.src_link].url if point.src_link else point.src_url %}{% if src_url %}<a href="{{ src_url }}">{{ point.src }}</a>{% else %}{{ point.src }}{% endif %}</p>{% endif %}
         </div>
         {% endfor %}
       </div>
-      <p class="silta-goal-also">{{ site.goal3.also }} <a href="/presentation#/pathway">See the evidence, step by step <i class="ti ti-arrow-right"></i></a></p>
+      <p class="silta-goal-also">{{ site.goal3.also }} <a href="/presentation#/pathway">See the evidence and its limits <i class="ti ti-arrow-right"></i></a></p>
     </section>
     {% endif %}
 

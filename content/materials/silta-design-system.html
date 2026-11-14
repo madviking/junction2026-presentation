@@ -43,7 +43,8 @@
   .r.foot { left: 36px; right: 36px; bottom: 18px; height: 20px; color: var(--moss); }
   .typesample { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 16px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--line); }
   .demo-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
-  .demo-row .phone img { width: 160px; height: 346px; border-width: 5px; border-radius: 20px; }
+  .demo-row .phone .bezel { padding: 9px; border-radius: 26px; }
+  .demo-row .phone .bezel img { width: 160px; height: 346px; border-radius: 17px; }
   .demo-row .browser img { width: 300px; height: 300px; }
   .demo-row .paper img:first-child { width: 220px; height: 300px; }
   .video { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
@@ -66,14 +67,14 @@
   <header>
     <span class="kicker">Silta · team reference</span>
     <h1>Silta Design System</h1>
-    <p class="muted">One system for deck v3 (<a href="/presentation/v3">/presentation/v3</a>) and the pitch video. The CSS lives in <span class="mono">app/static/deck-v3.css</span>; this page uses the same file, so what you see here is what the deck renders. Slide content is in <span class="mono">content/presentation-v3.yaml</span>.</p>
+    <p class="muted">One system for deck v3 (<a href="/presentation">/presentation</a>) and the pitch video. The CSS lives in <span class="mono">app/static/deck-v3.css</span>; this page uses the same file, so what you see here is what the deck renders. Slide content is in <span class="mono">content/presentation-v3.yaml</span>.</p>
   </header>
 
   <section>
     <h2 class="sec">Rules</h2>
     <ul class="do">
       <li><b>One sentence per slide.</b> A title and one line. Everything else goes into a drill-in.</li>
-      <li><b>At most three numbers in view</b>, and every number has a source in its drill-in or the foot.</li>
+      <li><b>At most three numbers in view</b>, and every number has a source in its drill-in or the foot. Sources name the publisher or study (10 px mono), never a file path.</li>
       <li><b>Screens are always real</b> and always in a frame: phone, browser or paper.</li>
       <li><b>Nothing moves position between slides.</b> Kicker, title, path, chips and source always sit in the same place.</li>
       <li><b>Colour means something</b> (below). Never use coral or moss as decoration.</li>
@@ -106,7 +107,7 @@
       <div class="typesample"><span class="mono">--t-body 18 · body 400</span><span style="font:400 18px/1.45 var(--f-body)">Cards, drill-in sheets and anything read up close.</span></div>
       <div class="typesample"><span class="mono">--t-small 15 · body 700</span><span style="font:700 15px/1 var(--f-body)">Chips, captions</span></div>
       <div class="typesample"><span class="mono">--t-label 13 · mono 600 caps</span><span class="kicker">Hodan's path</span></div>
-      <div class="typesample"><span class="mono">--t-source 12 · mono 500</span><span class="source" style="text-align:left">Finnish Cancer Registry, invitees by native language, 2024</span></div>
+      <div class="typesample"><span class="mono">--t-source 10 · mono 500</span><span class="source" style="text-align:left">Finnish Cancer Registry, invitees by native language, 2024</span></div>
     </div>
   </section>
 
@@ -134,10 +135,11 @@
           <tr><td><b>stages</b></td><td>Four-step stage strip and two money marks</td><td>Found earlier, treated more easily</td></tr>
           <tr><td><b>embed</b></td><td>A full-slide interactive page</td><td>Pathway (journey + data), Ways in (discoverability)</td></tr>
           <tr><td><b>morph</b></td><td>Paper that turns into phones on the next click</td><td>The letter becomes a lesson</td></tr>
-          <tr><td><b>screens</b></td><td>1–3 phones, or a phone and a browser</td><td>The door, the visit, "I noticed something", the county</td></tr>
-          <tr><td><b>cards</b></td><td>Four cards in a 2×2 grid</td><td>Safe to use today, What we don't claim</td></tr>
+          <tr><td><b>screens</b></td><td>1–3 phones (12 px bezel), or a phone and a browser</td><td>"I noticed something", the door, the visit</td></tr>
+          <tr><td><b>cards</b></td><td>Four cards in a 2×2 grid</td><td>What's in it for the county, Safe to use today</td></tr>
           <tr><td><b>facts</b></td><td>Four large numbers and the partner logo plate</td><td>Already running</td></tr>
           <tr><td><b>close</b></td><td>The letter, now with a QR strip, rising out of the drawer</td><td>Silta works at the door, from today</td></tr>
+          <tr><td><b>team</b></td><td>Team photo and three names with roles</td><td>Built by a family</td></tr>
         </tbody>
       </table>
     </div>
@@ -147,8 +149,8 @@
     <h2 class="sec">Components</h2>
     <div class="grid g2">
       <div class="box">
-        <span class="label">Hodan's path (rail, right)</span>
-        <ol class="path"><li class="done"><i></i>Letter</li><li class="done"><i></i>Found</li><li class="now"><i></i>Door</li><li><i></i>Visit</li></ol>
+        <span class="label">The path (rail, right)</span>
+        <ol class="path"><li class="done"><i></i>Letter</li><li class="done"><i></i>Symptom</li><li class="done"><i></i>Found</li><li class="now"><i></i>Door</li><li><i></i>Visit</li></ol>
         <span class="muted">Shown on journey slides only. The current step is coral.</span>
       </div>
       <div class="box">
@@ -168,7 +170,7 @@
     <div class="box">
       <span class="label">Screen frames: phone (375×812 captures), browser (desktop captures, content column), paper (letters)</span>
       <div class="demo-row">
-        <figure class="phone"><img src="/media/screens/v3/path-door.png" alt="Phone frame example: the door screen."></figure>
+        <figure class="phone"><span class="bezel"><img src="/media/screens/v3/path-door.png" alt="Phone frame example: the door screen."></span></figure>
         <figure class="browser"><span class="browser-bar" aria-hidden="true"><i></i><i></i><i></i></span><img src="/media/screens/v3/clinic-fi.png" alt="Browser frame example: the clinician view."></figure>
         <figure class="paper"><img src="/media/screens/v3/letter-fi.png" alt="Paper frame example: the Finnish invitation letter."></figure>
       </div>
@@ -178,11 +180,11 @@
 
   <section>
     <h2 class="sec">Video</h2>
-    <p>The video uses the same system at 1920×1080: every deck size × 1.5, the same colours and fonts. Export slides straight from <a href="/presentation/v3">/presentation/v3</a> (press F for full screen) or build title cards from these specs.</p>
+    <p>The video uses the same system at 1920×1080: every deck size × 1.5, the same colours and fonts. Export slides straight from <a href="/presentation">/presentation</a> (press F for full screen) or build title cards from these specs.</p>
     <div class="video">
       <div class="vframe" role="img" aria-label="Video frame with the title-safe area and a lower third in the bottom left.">
         <div class="safe"></div>
-        <div class="lower"><span class="kicker">Hodan's path · Door</span><b>The right door, and the words to say.</b><span>Silta shows her door and the Finnish sentences to say.</span></div>
+        <div class="lower"><span class="kicker">Both ways · the right door</span><b>The right door, and the words to say.</b><span>Silta shows her door and the Finnish sentences to say.</span></div>
       </div>
       <div class="scroll">
         <table class="spec">
@@ -191,7 +193,7 @@
             <tr><td>Title-safe area</td><td>108 px sides and top, 84 px bottom (matches the deck margins × 1.5)</td></tr>
             <tr><td>Lower third</td><td>White plate, 6 px left bar in the step's colour, bottom-left on the safe line. Kicker 20 px mono caps, title 78 px display 800, line 36 px body.</td></tr>
             <tr><td>Number card</td><td>Full frame on paper; one number at 225 px display 800 in coral or lake, one line of 36 px under it, source 18 px mono at the bottom.</td></tr>
-            <tr><td>Screen shot</td><td>Phone frame 342×741 px (deck 228×494 × 1.5) with 9 px ink border; never full-bleed phone recordings.</td></tr>
+            <tr><td>Screen shot</td><td>Phone frame: 18 px ink bezel around a 324×702 px screen (deck 12 px around 216×468, × 1.5); never full-bleed phone recordings.</td></tr>
             <tr><td>Captions</td><td>36 px Atkinson Hyperlegible, ink on a white plate, max two lines, bottom centre inside the safe area.</td></tr>
             <tr><td>End card</td><td>"Silta works at the door, from today." in the close layout, team names in mono caps, sources line.</td></tr>
             <tr><td>Motion</td><td>Fades 300 ms. One designed moment per scene: the letter into the drawer (1.8 s), the letter into the guide (0.9 s), a sheet sliding in (0.2 s). No zooms on text.</td></tr>

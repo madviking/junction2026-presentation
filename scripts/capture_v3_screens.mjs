@@ -51,9 +51,11 @@ console.log('letter-fi')
 // 2. The Somali cervical guide the letter's QR code opens: start, part 1, part 2.
 await page.goto(`${base}/r/so/learn/cervical`)
 await shot(page, 'guide-so-start')
-await tap('Bilow')
+await page.getByRole('button', { name: 'Bilow' }).last().click()
+await page.waitForLoadState('networkidle')
 await shot(page, 'guide-so-why')
-await tap('Xiga')
+await page.getByRole('button', { name: 'Xiga' }).last().click()
+await page.waitForLoadState('networkidle')
 await shot(page, 'guide-so-visit')
 
 // 3. The screening route in English.
@@ -126,5 +128,37 @@ await county.goto(`${base}/county/helsinki`)
 await shot(county, 'county-helsinki', { clip: { x: 320, y: 0, width: 640, height: 820 }, fullPage: true })
 const journeysTop = await county.getByRole('heading', { name: 'Silta journeys' }).evaluate((el) => el.getBoundingClientRect().top + window.scrollY)
 await shot(county, 'county-journeys', { clip: { x: 320, y: journeysTop - 24, width: 640, height: 820 }, fullPage: true })
+
+// 7. Olga's symptom route in Russian: she taps where it is and picks the card, then shows the
+// doctor the Finnish summary on her own phone (the "clinician view" button on her visit card).
+const ruTexts = await bundle('ru')
+const ru = (english) => {
+  const key = keyOf[english]
+  if (!key || !ruTexts[key]) throw new Error(`no Russian text for "${english}"`)
+  return ruTexts[key].text
+}
+await page.goto(`${base}/r/ru`)
+await page.waitForLoadState('networkidle')
+await tap(ru('Start'))
+await page.waitForURL(/\/v\//)
+await tap(ru('I have a symptom that worries me'))
+await page.getByRole('button', { name: ru('Chest, breast and armpit') }).click()
+await page.getByRole('button', { name: ru('A new lump or swelling') }).click()
+await shot(page, 'olga-cards-ru')
+await page.getByRole('button', { name: ru('Continue'), exact: true }).click()
+await page.getByRole('button', { name: ru('2 to 4 weeks') }).click()
+await page.getByRole('button', { name: ru('Continue'), exact: true }).click()
+await tap(ru('I live in Finland and have a home municipality'))
+await page.waitForTimeout(800)
+await tap(ru('I contacted them'))
+await tap(ru('I got an appointment'))
+await page.getByLabel(ru('When is your appointment?')).fill('2026-12-01')
+await tap(ru('Save the date'))
+await tap(ru('My visit is now'))
+await tap(ru('Show your visit card'))
+await page.waitForURL(/\/card/)
+await tap(ru('Clinician view'))
+await page.waitForTimeout(600)
+await shot(page, 'olga-summary-fi')
 
 await browser.close()

@@ -50,3 +50,13 @@
   description: The one story behind the video, live pitch and deck v2. Six beats, personas, number bank, compliance, maturity, adoption ladder, tech partners, jury Q&A, what we don't claim. Same page as master-narrative.html.
   tags: [pitch, video, narrative]
   updated: 2026-11-14
+- title: Pitch video strategy (claude.ai)
+  url: https://claude.ai/artifact/MLrf2wXWvCUKSvhQfkiuoz
+  description: The letter in the drawer — one scenario (Hodan, cervical screening), the data, why we start with the resident rather than the county, and the adoption ladder. Filmed with screen recordings, a table top and graphics. Same page as video-strategy.html. Private until shared.
+  tags: [video, pitch]
+  updated: 2026-11-14
+- title: Pitch video assets (claude.ai)
+  url: https://claude.ai/artifact/RAda1hbQs9KRy3NHkkU5KD
+  description: Twelve rendered clips, overlays, app audio and real Silta screens for the pitch video, in edit order. Same page as video-assets/index.html; the files themselves are in content/materials/video-assets/. Private until shared.
+  tags: [video, pitch, assets]
+  updated: 2026-11-14

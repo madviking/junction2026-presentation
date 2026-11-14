@@ -1,0 +1,201 @@
+<title>Silta Video Assets</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Rendered clips, overlays, app audio and real Silta screens for the pitch video 'The letter in the drawer', in timeline order, ready for Descript.">
+<meta name="tags" content="video, pitch, assets, descript">
+<meta name="author" content="Milla Railo">
+<meta name="updated" content="2026-11-14">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: an edit-bay contact sheet. Clips in timeline order as numbered rows (the order is the edit), then overlays on a checkerboard, audio, screens. Silta tokens. */
+:root {
+  --bg: #f6f7f5; --surface: #ffffff; --ink: #142028; --muted: #56636b; --line: #d6ddd8;
+  --lake: #1d5f8a; --lake-soft: #dcebf5; --coral: #c2512f; --coral-soft: #f6e2da; --sand-soft: #f3ead2;
+  --check-a: #e9ece9; --check-b: #ffffff;
+  --f-display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "Atkinson Hyperlegible", Verdana, system-ui, sans-serif;
+  --f-data: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f1619; --surface: #162026; --ink: #e5ecef; --muted: #98a7ae; --line: #27363d;
+  --lake: #7cbbe6; --lake-soft: #18323f; --coral: #f08f6c; --coral-soft: #3a2219; --sand-soft: #33291a;
+  --check-a: #1d2a30; --check-b: #26353c; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0f1619; --surface: #162026; --ink: #e5ecef; --muted: #98a7ae; --line: #27363d;
+  --lake: #7cbbe6; --lake-soft: #18323f; --coral: #f08f6c; --coral-soft: #3a2219; --sand-soft: #33291a;
+  --check-a: #1d2a30; --check-b: #26353c; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 40px 64px; }
+.wrap { max-width: 1120px; margin: 0 auto; display: grid; gap: 52px; }
+h1, h2, h3 { font-family: var(--f-display); margin: 0; line-height: 1.15; text-wrap: balance; }
+h1 { font-size: clamp(2rem, 5vw, 2.9rem); font-weight: 800; }
+h2 { font-size: 1.5rem; font-weight: 800; }
+h3 { font-size: 1.05rem; font-weight: 600; }
+p { margin: 0; }
+.eyebrow { font-family: var(--f-data); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.lede { max-width: 68ch; font-size: 1.08rem; }
+.muted { color: var(--muted); }
+.mono { font-family: var(--f-data); font-size: 0.85em; }
+section { display: grid; gap: 16px; }
+.note { background: var(--sand-soft); border-radius: 10px; padding: 14px 16px; max-width: 80ch; }
+
+.beat { display: grid; gap: 12px; }
+.beat-head { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: baseline; border-top: 2px solid var(--ink); padding-top: 10px; }
+.beat-head .time { font-family: var(--f-data); color: var(--muted); font-size: 0.85rem; }
+.clips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 760px) { .clips { grid-template-columns: 1fr; } }
+.clip { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; display: grid; min-width: 0; }
+.clip video { width: 100%; aspect-ratio: 16 / 9; display: block; background: var(--bg); }
+.clip .meta { padding: 10px 14px 14px; display: grid; gap: 4px; }
+.clip .name { display: flex; justify-content: space-between; gap: 10px; font-family: var(--f-data); font-size: 0.85rem; }
+.clip .len { color: var(--muted); }
+.film { border: 2px dashed var(--coral); border-radius: 10px; padding: 14px 16px; display: grid; gap: 4px; align-content: center; color: var(--ink); }
+.film .eyebrow { color: var(--coral); }
+
+.overlays { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+.ov { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--surface); display: grid; }
+.ov .pic { background-color: var(--check-b); background-image: linear-gradient(45deg, var(--check-a) 25%, transparent 25%, transparent 75%, var(--check-a) 75%), linear-gradient(45deg, var(--check-a) 25%, transparent 25%, transparent 75%, var(--check-a) 75%);
+  background-size: 18px 18px; background-position: 0 0, 9px 9px; padding: 16px; display: grid; place-items: center; min-height: 110px; }
+.ov img { max-width: 100%; max-height: 90px; }
+.ov .name { font-family: var(--f-data); font-size: 0.78rem; padding: 8px 12px; color: var(--muted); }
+
+.audio { display: grid; gap: 10px; }
+.track { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 320px); gap: 8px 16px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+@media (max-width: 640px) { .track { grid-template-columns: 1fr; } }
+.track audio { width: 100%; }
+.track .file { font-family: var(--f-data); font-size: 0.78rem; color: var(--muted); }
+
+.screens { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.scr { display: grid; gap: 6px; min-width: 0; }
+.scr img { width: 100%; border-radius: 14px; border: 1px solid var(--line); display: block; }
+.scr span { font-family: var(--f-data); font-size: 0.74rem; color: var(--muted); overflow-wrap: anywhere; }
+ul { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; }
+footer { color: var(--muted); font-size: 0.9rem; border-top: 1px solid var(--line); padding-top: 16px; }
+</style>
+
+<div class="wrap">
+
+<header style="display:grid; gap:14px">
+  <p class="eyebrow">Silta · pitch video · assets for Descript</p>
+  <h1>Silta video assets</h1>
+  <p class="lede">Twelve motion-graphic clips built from Silta's real screens, in the order of the 2-minute edit, plus overlays, the app's own audio and the raw screens. All clips are 1920×1080, 30 fps, MP4, without sound.</p>
+  <p class="note"><b>Where the files are:</b> <span class="mono">content/materials/video-assets/</span> in the presentation repo, in the folders <span class="mono">clips/</span>, <span class="mono">overlays/</span>, <span class="mono">audio/</span>, <span class="mono">screens/</span> and <span class="mono">stills/</span>. Drag them into Descript from there; this page is for watching.</p>
+</header>
+
+<section aria-labelledby="edit">
+  <h2 id="edit">The edit, in order</h2>
+  <p class="muted" style="max-width:70ch">Dashed boxes are table-top shots you still film. Each clip builds, then holds its last frame, so trim the tails to the voice-over.</p>
+
+  <div class="beat">
+    <div class="beat-head"><h3>Hodan's questions</h3><span class="time">0:00–0:15 · no voice-over</span></div>
+    <div class="clips">
+      <div class="film"><span class="eyebrow">Film</span><p>Table top: the letter lands, hands open it. About 4 s.</p></div>
+      <div class="clip"><video src="clips/01-questions.mp4" controls muted playsinline preload="metadata"></video><div class="meta"><div class="name"><span>01-questions.mp4</span><span class="len">11 s</span></div><p class="muted">The letter lands; five questions appear; "Hodan, 54 · Helsinki".</p></div></div>
+    </div>
+  </div>
+
+  <div class="beat">
+    <div class="beat-head"><h3>She is not alone: the gap</h3><span class="time">0:15–0:40</span></div>
+    <div class="clips">
+      <div class="clip"><video src="clips/02-one-in-nine.mp4" controls muted playsinline preload="metadata"></video><div class="meta"><div class="name"><span>02-one-in-nine.mp4</span><span class="len">5.5 s</span></div><p class="muted">1 in 9 · 646,392 people · 11.4%.</p></div></div>
+      <div class="clip"><video src="clips/03-bars.mp4" controls muted playsinline preload="metadata"></video><div class="meta"><div class="name"><span>03-bars.mp4</span><span class="len">8.5 s</span></div><p class="muted">Three paired bars, 2024, with the gap in points.</p></div></div>
+      <div class="clip"><video src="clips/04-cervical-gap.mp4" controls muted playsinline preload="metadata"></video><div class="meta"><div class="name"><span>04-cervical-gap.mp4</span><span class="len">5.5 s</span></div><p class="muted">The cervical gap counts up from 15.6 to 19.9 points, 2020 → 2024.</p></div></div>
+      <div class="clip"><video src="clips/05-somali.mp4" controls muted playsinline preload="metadata"></video><div class="meta"><div class="name"><span>05-somali.mp4</span><span class="len">6 s</span></div><p class="muted">Somali-origin women 19% vs Finnish women 67%.</p></div></div>
+      <div class="clip"><video src="clips/06-pathway.mp4" controls muted playsinline preload="metadata"></video><div class="meta"><div class="name"><span>06-pathway.mp4</span><span class="len">9 s</span></div><p class="muted">The gap opens at the door; follow-up is equal; translation alone did not help.</p></div></div>
+    </div>
+  </div>
+
+  <div class="beat">
+    <div class="beat-head"><h3>Why we start with her</h3><span class="time">0:40–0:55</span></div>
+    <div class="clips">
+      <div class="clip"><video src="clips/07-two-paths.mp4" controls muted playsinline preload="metadata"></video><div class="meta"><div class="name"><span>07-two-paths.mp4</span><span class="len">13 s</span></div><p class="muted">County-first steps slowly, resident-first lights at once; ends on "Silta works today, with no contract."</p></div></div>
+    </div>
+  </div>
+
+  <div class="beat">
+    <div class="beat-head"><h3>Every question answered, in Somali</h3><span class="time">0:55–1:33</span></div>
+    <div class="clips">
+      <div class="film"><span class="eyebrow">Film</span><p>Table top: the drawer opens, she photographs the letter with her phone. About 4 s.</p></div>
+      <div class="clip"><video src="clips/08-phone-letter.mp4" controls muted playsinline preload="metadata"></video><div class="meta"><div class="name"><span>08-phone-letter.mp4</span><span class="len">8.5 s</span></div><p class="muted">The letter, a camera flash, then Gemini's real explanation in Somali.</p></div></div>
+      <div class="clip"><video src="clips/09-phone-visit.mp4" controls muted playsinline preload="metadata"></video><div class="meta"><div class="name"><span>09-phone-visit.mp4</span><span class="len">10 s</span></div><p class="muted">The visit guide in Somali; "Do I have to undress?" and "What will they do to me?" get ticks.</p></div></div>
+      <div class="clip"><video src="clips/10-phone-rights.mp4" controls muted playsinline preload="metadata"></video><div class="meta"><div class="name"><span>10-phone-rights.mp4</span><span class="len">11 s</span></div><p class="muted">Her rights; "What if it is a man?" ticked; the Finnish desk sentences. Lay <span class="mono">fi-desk-woman-takes-sample.mp3</span> under the end.</p></div></div>
+    </div>
+  </div>
+
+  <div class="beat">
+    <div class="beat-head"><h3>Each adopter adds impact</h3><span class="time">1:33–1:50</span></div>
+    <div class="clips">
+      <div class="clip"><video src="clips/11-ladder.mp4" controls muted playsinline preload="metadata"></video><div class="meta"><div class="name"><span>11-ladder.mp4</span><span class="len">14 s</span></div><p class="muted">Four rungs: Hodan alone (live), the county, the nurse, the kit in the room (built).</p></div></div>
+    </div>
+  </div>
+
+  <div class="beat">
+    <div class="beat-head"><h3>Out of the drawer</h3><span class="time">1:50–2:00</span></div>
+    <div class="clips">
+      <div class="film"><span class="eyebrow">Film</span><p>Table top: the letter on the table next to the phone, the drawer open and empty. About 3 s.</p></div>
+      <div class="clip"><video src="clips/12-end.mp4" controls muted playsinline preload="metadata"></video><div class="meta"><div class="name"><span>12-end.mp4</span><span class="len">8 s</span></div><p class="muted">Silta, the line, trust chips, partners, team, the composite-persona note and the sources address.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="ov">
+  <h2 id="ov">Overlays</h2>
+  <p class="muted" style="max-width:70ch">Transparent PNGs at 2×, for laying over the table-top shots or any clip. The checkerboard shows the transparent parts.</p>
+  <div class="overlays">
+    <div class="ov"><div class="pic"><img src="overlays/q1.png" alt="Question card: Do I have to undress?"></div><span class="name">q1.png</span></div>
+    <div class="ov"><div class="pic"><img src="overlays/q2.png" alt="Question card: What will they do to me?"></div><span class="name">q2.png</span></div>
+    <div class="ov"><div class="pic"><img src="overlays/q3.png" alt="Question card: What if it is a man?"></div><span class="name">q3.png</span></div>
+    <div class="ov"><div class="pic"><img src="overlays/q4.png" alt="Question card: Who do I call, in Finnish?"></div><span class="name">q4.png</span></div>
+    <div class="ov"><div class="pic"><img src="overlays/q5.png" alt="Question card: Do I even have to go?"></div><span class="name">q5.png</span></div>
+    <div class="ov"><div class="pic"><img src="overlays/q3-answered.png" alt="Question card with a tick: What if it is a man?"></div><span class="name">q1–q5-answered.png (tick)</span></div>
+    <div class="ov"><div class="pic"><img src="overlays/name-hodan.png" alt="Name caption: Hodan, 54, Helsinki"></div><span class="name">name-hodan.png</span></div>
+    <div class="ov"><div class="pic"><img src="overlays/caption-composite.png" alt="Chip: Hodan is a composite persona"></div><span class="name">caption-composite.png</span></div>
+    <div class="ov"><div class="pic"><img src="overlays/chip-gemini.png" alt="Chip: Gemini reads the photo"></div><span class="name">chip-gemini.png</span></div>
+    <div class="ov"><div class="pic"><img src="overlays/chip-elevenlabs.png" alt="Chip: ElevenLabs reads it aloud"></div><span class="name">chip-elevenlabs.png</span></div>
+    <div class="ov"><div class="pic"><img src="overlays/chip-aiven.png" alt="Chip: Live on Aiven, in the EU"></div><span class="name">chip-aiven.png</span></div>
+    <div class="ov"><div class="pic"><img src="overlays/source-registry.png" alt="Source line: Finnish Cancer Registry"></div><span class="name">source-registry.png</span></div>
+    <div class="ov"><div class="pic"><img src="overlays/source-somali.png" alt="Source line: Finnish population survey"></div><span class="name">source-somali.png</span></div>
+    <div class="ov"><div class="pic"><img src="overlays/source-london.png" alt="Source line: London study"></div><span class="name">source-london.png</span></div>
+    <div class="ov"><div class="pic"><img src="overlays/source-norway.png" alt="Source line: Norway RCT"></div><span class="name">source-norway.png</span></div>
+  </div>
+</section>
+
+<section aria-labelledby="au">
+  <h2 id="au">The app's own audio</h2>
+  <p class="muted" style="max-width:70ch">Downloaded from the live app's play buttons. Ask Timo whether the Somali clips are human-recorded or ElevenLabs before crediting them.</p>
+  <div class="audio">
+    <div class="track"><div><h3>"Toivoisin, että näytteen ottaa nainen."</h3><span class="file">fi-desk-woman-takes-sample.mp3 · I would like a woman to take the sample.</span></div><audio src="audio/fi-desk-woman-takes-sample.mp3" controls preload="none"></audio></div>
+    <div class="track"><div><h3>"Jännittää. Voisitko edetä hitaasti?"</h3><span class="file">fi-desk-nervous-go-slowly.mp3 · I am nervous. Could you go slowly?</span></div><audio src="audio/fi-desk-nervous-go-slowly.mp3" controls preload="none"></audio></div>
+    <div class="track"><div><h3>Somali: taking the sample</h3><span class="file">so-visit-taking-the-sample.mp3 · the visit guide, read aloud</span></div><audio src="audio/so-visit-taking-the-sample.mp3" controls preload="none"></audio></div>
+    <div class="track"><div><h3>Somali: you can ask for a woman</h3><span class="file">so-rights-ask-for-a-woman.mp3 · her rights, read aloud</span></div><audio src="audio/so-rights-ask-for-a-woman.mp3" controls preload="none"></audio></div>
+  </div>
+</section>
+
+<section aria-labelledby="sc">
+  <h2 id="sc">Real screens, Somali</h2>
+  <p class="muted" style="max-width:70ch">From the live app, 1170×2532. The same screens in English (<span class="mono">en-*</span>) and whole-page versions (<span class="mono">*-full</span>) are in the <span class="mono">screens/</span> folder.</p>
+  <div class="screens">
+    <div class="scr"><img src="screens/so-01-home.png" alt="Silta home screen in Somali" loading="lazy"><span>so-01-home</span></div>
+    <div class="scr"><img src="screens/so-02-letter.png" alt="I got a letter: take a photo, in Somali" loading="lazy"><span>so-02-letter</span></div>
+    <div class="scr"><img src="screens/so-03a-letter-reading.png" alt="Reading your letter, spinner" loading="lazy"><span>so-03a-letter-reading</span></div>
+    <div class="scr"><img src="screens/so-03-letter-result.png" alt="The letter explained in Somali by Gemini" loading="lazy"><span>so-03-letter-result</span></div>
+    <div class="scr"><img src="screens/so-04-guide.png" alt="Cervical screening guide overview in Somali" loading="lazy"><span>so-04-guide</span></div>
+    <div class="scr"><img src="screens/so-06-visit.png" alt="What happens at the visit, in Somali" loading="lazy"><span>so-06-visit</span></div>
+    <div class="scr"><img src="screens/so-07-rights.png" alt="Your rights, in Somali" loading="lazy"><span>so-07-rights</span></div>
+    <div class="scr"><img src="screens/so-07-rights-desk.png" alt="Finnish sentences to show at the desk" loading="lazy"><span>so-07-rights-desk</span></div>
+  </div>
+</section>
+
+<section aria-labelledby="todo">
+  <h2 id="todo">Still yours to make</h2>
+  <ul style="max-width:70ch">
+    <li>Three table-top shots, about 30 minutes: one table, a phone overhead, anyone's hands. Print <span class="mono">screens/letter-fi-no-qr.png</span> as the letter.</li>
+    <li>The voice-over, about 250 words, from the video strategy page.</li>
+    <li>A quiet music bed, then subtitles for the Somali screens using the <span class="mono">en-*</span> captures.</li>
+  </ul>
+</section>
+
+<footer>Rebuild with <span class="mono">scripts/video/capture.mjs</span>, <span class="mono">render.mjs</span> and <span class="mono">encode.swift</span> (see <span class="mono">video-assets/README.md</span>). Captured from the live app on 14 Nov 2026.</footer>
+
+</div>

@@ -1,4 +1,5 @@
 import base64
+import re
 
 import pytest
 from markupsafe import escape
@@ -30,7 +31,8 @@ def basic(password: str) -> dict:
         ("/presentation/v2", "Same letter. Twenty points fewer come."),
         ("/team/m/master-narrative.html", "Silta Master Narrative"),
         ("/team/m/silta-design-system.html", "Silta Design System"),
-        ("/presentation/v3", "Meet Hodan."),
+        ("/presentation", "Meet Hodan."),
+        ("/presentation/v1", "A bridge to cancer care"),
         ("/video", "The video is not up yet"),
         ("/try", "For residents"),
         ("/printouts", "one-page summary"),
@@ -171,7 +173,7 @@ def test_old_data_urls_redirect_to_pathway_slide(client, old):
 
 def test_pathway_is_a_deck_slide_not_a_menu_item(client):
     deck = client.get("/presentation").text
-    assert '<section id="pathway" class="embed">' in deck
+    assert '<section class="l-embed" id="pathway">' in deck
     assert 'src="/presentation/pathway"' in deck
     landing = client.get("/").text
     assert 'href="/pathway"' not in landing
@@ -329,13 +331,14 @@ def test_every_printout_has_a_short_description():
 def test_deck_v3_uses_one_layout_system(client):
     """Deck v3: every slide renders, every image exists, every chip opens its own sheet."""
     deck = content.deck_v3()
-    html = client.get("/presentation/v3").text
+    html = client.get("/presentation").text
     assert "/static/deck-v3.css" in html and "/static/deck-v3.js" in html
     assert html.count("<section") == len(deck["slides"])
-    allowed = {"opener", "number", "stages", "embed", "morph", "screens", "cards", "facts", "close"}
+    allowed = {"opener", "number", "stages", "embed", "morph", "screens", "cards", "facts", "close", "team"}
     for slide in deck["slides"]:
         assert slide["layout"] in allowed, slide["id"]
         assert f'id="{slide["id"]}"' in html
+        assert not re.search(r"brain |sources/|backend/|\.md\b", slide.get("source", "")), slide["id"]
         images = [slide.get("letter"), slide.get("qr"), (slide.get("from") or {}).get("src")]
         images += [s["src"] for s in slide.get("screens", [])] + [l["src"] for l in slide.get("logos", [])]
         for src in filter(None, images):
@@ -344,5 +347,15 @@ def test_deck_v3_uses_one_layout_system(client):
             assert drill["kind"] in {"person", "county", "euro", "data"}
             sheet = f'{slide["id"]}-{i}'
             assert f'data-drill="{sheet}"' in html and f'id="{sheet}"' in html
+            if drill.get("image"):
+                assert (settings.content_dir() / drill["image"]["src"].removeprefix("/")).is_file()
             for item in drill.get("items", []):
                 assert item.get("source"), f"{sheet}: an item has no source"
+                assert not re.search(r"brain |sources/|backend/|\.md|\.ya?ml", item["source"]), f"{sheet}: internal reference in {item['source']!r}"
+
+
+def test_v3_is_the_default_deck_and_old_decks_stay(client):
+    assert client.get("/presentation/v3", follow_redirects=False).headers["location"] == "/presentation"
+    assert "/static/deck-v3.css" in client.get("/presentation").text
+    assert "/static/deck.css" in client.get("/presentation/v1").text
+    assert "/static/deck.css" in client.get("/presentation/v2").text
