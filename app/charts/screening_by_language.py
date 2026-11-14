@@ -38,7 +38,7 @@ def build(p: dict):
             )
         )
     table = {
-        "columns": ["Programme", "Domestic %", "Other/unknown %", "Gap (pp)"],
+        "columns": ["Programme", "Domestic %", "Other/unknown %", "Gap (percentage points)"],
         "rows": [[r["programme"], r["domestic_pct"], r["other_pct"], r["gap_pp"]] for r in rows],
     }
     return fig, table

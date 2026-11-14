@@ -201,6 +201,27 @@ def test_pathway_data_is_complete():
     assert data["page"]["limitations"] and data["page"]["sources"]
 
 
+def test_pathway_impact_view_is_complete_and_rendered(client):
+    data = content.pathway()
+    impact = data["impact"]
+    assert impact["prompt"] and impact["caveat"] and impact["sources"]
+    assert set(impact["steps"]) <= set(data["steps"])
+    for sid, step in impact["steps"].items():
+        assert step.get("title") and step.get("text") and step.get("src"), sid
+    assert len(impact["findings"]) == 4
+    for f in impact["findings"]:
+        assert f.get("step") and f.get("value") and f.get("label") and f.get("text")
+    for table in (impact["table"], impact["groups"]):
+        assert all(len(row) == len(table["head"]) for row in table["rows"])
+    assert impact["groups"]["title"] and impact["groups"]["note"]
+    html = client.get("/pathway").text
+    assert impact["groups"]["title"].replace("'", "&#39;") in html
+    assert 'data-pw-mode="analysis"' in html and 'data-pw-mode="impact"' in html
+    assert "Key findings" in html and impact["findings"][0]["label"] in html
+    # Plain wording instead of "pp" on both views of the map
+    assert " pp" not in html
+
+
 def test_tech_challenge_pages(client, tmp_path, monkeypatch):
     import shutil
 

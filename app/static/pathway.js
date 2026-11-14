@@ -1,10 +1,15 @@
 // Routes into care on /pathway. Data: content/data/pathway.json, embedded as #pathway-data.
 // Draws the map nodes, the Silta bands, the info panel and the data popup. Charts named in a
 // step's `charts` (rows of chart ids) are embedded as #pw-fig-<id> and drawn with Plotly in the popup.
+// Two views share the map: "analysis" (gaps) and "impact" (costs, from D.impact). The view is set as
+// data-mode on .silta-pw-page (CSS hides pw-for-* elements) and kept in the URL as #impact.
 (function () {
   var root = document.querySelector(".silta-pathway");
   if (!root) return;
   var D = JSON.parse(document.getElementById("pathway-data").textContent);
+  var page = root.closest(".silta-pw-page") || root;
+  var modeBtns = root.querySelectorAll("[data-pw-mode]");
+  var mode = location.hash === "#impact" ? "impact" : "analysis";
   var NS = "http://www.w3.org/2000/svg";
   var svg = root.querySelector("svg.pw-routes");
   var panel = root.querySelector("[data-pw=panel]");
@@ -92,6 +97,33 @@
   pop.addEventListener("click", function (e) { if (e.target === pop) pop.close(); });
   document.addEventListener("silta:theme", drawCharts);
 
+  // View switch: Analysis / Impact
+  function setMode(m, fromHash) {
+    mode = m === "impact" ? "impact" : "analysis";
+    page.setAttribute("data-mode", mode);
+    modeBtns.forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.pwMode === mode ? "true" : "false"); });
+    if (!fromHash && window.history && history.replaceState) {
+      history.replaceState(null, "", mode === "impact" ? "#impact" : location.pathname + location.search);
+    }
+    render();
+  }
+  modeBtns.forEach(function (b) { b.addEventListener("click", function () { setMode(b.dataset.pwMode); }); });
+  window.addEventListener("hashchange", function () { setMode(location.hash === "#impact" ? "impact" : "analysis", true); });
+
+  function renderImpact() {
+    var I = D.impact;
+    if (!sel) {
+      panel.className = "pw-panel pw-empty";
+      panel.innerHTML = "<p><b>" + esc(I.lede) + "</b> " + esc(I.prompt) + "</p>";
+      return;
+    }
+    var d = I.steps[sel];
+    panel.className = "pw-panel pw-impact";
+    panel.innerHTML = '<div><span class="pw-tag pw-costtag">What it costs</span>' +
+      (d ? "<h3>" + esc(d.title) + "</h3><p>" + esc(d.text) + '</p><p class="pw-src">Source: ' + esc(d.src) + "</p>"
+         : "<h3>" + esc(D.steps[sel].title) + "</h3><p>" + esc(I.missing) + "</p>") + "</div>";
+  }
+
   function render() {
     svg.querySelectorAll(".pw-node").forEach(function (g) { g.setAttribute("aria-pressed", g.dataset.id === sel ? "true" : "false"); });
     bands.forEach(function (b) {
@@ -99,6 +131,7 @@
       b.btn.setAttribute("aria-expanded", openBand === b.id ? "true" : "false");
       b.info.hidden = openBand !== b.id;
     });
+    if (mode === "impact") { renderImpact(); return; }
     if (!sel) {
       panel.className = "pw-panel pw-empty";
       panel.innerHTML = "<p>" + esc(D.page.prompt) + "</p>";
@@ -113,5 +146,5 @@
     var more = panel.querySelector(".pw-more");
     if (more) more.addEventListener("click", function () { openData(d); });
   }
-  render();
+  setMode(mode, true);
 })();

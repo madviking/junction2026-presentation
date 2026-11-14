@@ -4,7 +4,7 @@
 {# Routes into cancer care. Data and text: content/data/pathway.json; script: static/pathway.js.
    Charts listed under a step's `charts` are rendered here (app/charts/) and drawn in that step's data popup. #}
 <main class="page-body">
-  <div class="silta-pw-page">
+  <div class="silta-pw-page" data-mode="analysis">
     <header class="silta-pw-head">
       <p class="pw-eyebrow">Silta · Routes into cancer care · data 2020–2024</p>
       <h1>{{ pathway.page.title }}</h1>
@@ -12,6 +12,44 @@
     </header>
 
     {% include "_pathway.html" %}
+
+    {% set impact = pathway.impact %}
+    <section class="silta-pw-impact pw-for-impact" aria-label="Impact: key findings and step-by-step costs">
+      <h2>Key findings</h2>
+      <div class="pw-finds">
+        {% for f in impact.findings %}
+        <div class="pw-find pw-{{ f.tone }}">
+          <span class="pw-label">{{ f.step }}</span>
+          <span class="pw-find-v">{{ f.value }}</span>
+          <span class="pw-find-l">{{ f.label }}</span>
+          <p>{{ f.text }}</p>
+        </div>
+        {% endfor %}
+      </div>
+      <p class="pw-impact-sum">{{ impact.summary }}</p>
+
+      <h2>{{ impact.groups.title }}</h2>
+      <div class="pw-tscroll">
+        <table class="pw-steps pw-groups">
+          <thead><tr>{% for h in impact.groups.head %}<th>{{ h }}</th>{% endfor %}</tr></thead>
+          <tbody>{% for row in impact.groups.rows %}<tr{% if loop.first %} class="pw-base"{% endif %}>{% for c in row %}<td>{{ c }}</td>{% endfor %}</tr>{% endfor %}</tbody>
+        </table>
+      </div>
+      <p class="pw-note">{{ impact.groups.note }}</p>
+
+      <h2>Step by step</h2>
+      <div class="pw-tscroll">
+        <table class="pw-steps">
+          <thead><tr>{% for h in impact.table.head %}<th>{{ h }}</th>{% endfor %}</tr></thead>
+          <tbody>{% for row in impact.table.rows %}<tr>{% for c in row %}<td>{{ c }}</td>{% endfor %}</tr>{% endfor %}</tbody>
+        </table>
+      </div>
+      <p class="pw-note">{{ impact.caveat }}</p>
+      <details class="silta-pw-notes">
+        <summary>Cost sources</summary>
+        <ul>{% for s in impact.sources %}<li>{{ s }}</li>{% endfor %}</ul>
+      </details>
+    </section>
 
     <section class="silta-pw-limits" aria-label="Limitations">
       <h2>Limitations</h2>

@@ -9,7 +9,7 @@
       "“Other native language” pools many languages and includes people whose language is unknown. We use native language as a proxy for needing language support, which it only approximates.",
       "Language, education and region of birth overlap. Across about 290 municipalities, language still predicts lower breast and colorectal attendance after controlling for education, age, urbanisation and unemployment. This is an area-level model and does not prove cause.",
       "The symptom-route figures come from one lymphoma study (160 patients) and two surveys grouped by origin (2010–12 and 2018–19). They show which way the gap runs, not how large it is for the people Silta serves.",
-      "We show a difference only when its 95% confidence interval excludes zero. This left out colposcopy after an abnormal cervical result (+2.3 pp, not significant), waiting times (county medians, not tested by language) and digital-clinic contact rates (descriptive only). Attendance by region of birth is shown as published, without a test."
+      "We show a difference only when its 95% confidence interval excludes zero. This left out colposcopy after an abnormal cervical result (+2.3 percentage points, not significant), waiting times (county medians, not tested by language) and digital-clinic contact rates (descriptive only). Attendance by region of birth is shown as published, without a test."
     ],
     "sources": [
       "Finnish Cancer Registry, mass-screening statistics by native language, region of birth and previous result, 2020–2024 (published 20 May 2026).",
@@ -72,13 +72,13 @@
       "text": "57% of other-language invitees attended screening in 2024, against 78% of Finnish, Swedish and Sámi speakers. The gap is about the same in all three programmes. Few people who miss a round come back.",
       "charts": [["screening_by_language", "screening_by_birth_region"], ["gap_trend"]],
       "tables": [
-        {"head": ["Programme, 2024", "Finnish, Swedish, Sámi", "Other language", "Gap (95% CI)"],
-         "rows": [["Breast", "83.2%", "60.8%", "−22.4 pp (21.7–23.0)"], ["Cervical", "76.2%", "56.3%", "−19.9 pp (19.3–20.4)"], ["Colorectal", "74.5%", "53.4%", "−21.1 pp (20.5–21.9)"], ["All three", "77.8%", "57.0%", "−20.8 pp"]],
+        {"head": ["Programme, 2024", "Finnish, Swedish, Sámi", "Other language", "Gap, percentage points (95% CI)"],
+         "rows": [["Breast", "83.2%", "60.8%", "−22.4 (21.7–23.0)"], ["Cervical", "76.2%", "56.3%", "−19.9 (19.3–20.4)"], ["Colorectal", "74.5%", "53.4%", "−21.1 (20.5–21.9)"], ["All three", "77.8%", "57.0%", "−20.8"]],
          "total": true}
       ],
       "notes": [
         "All gaps are significant. “All three” is pooled from invitee counts. The national target is 80% attendance in every programme, with no difference by native language.",
-        "The breast and cervical gaps widened from 2020 to 2024 (breast +2.5 pp, 95% CI 1.6–3.4; cervical +4.2 pp, 3.4–5.0).",
+        "The breast and cervical gaps widened from 2020 to 2024 (breast +2.5 percentage points, 95% CI 1.6–3.4; cervical +4.2, 3.4–5.0).",
         "Of people who missed a colorectal round, about 18% attend the next one; of previous attenders, 91–93% do.",
         "Attendance by region of birth is shown as the registry publishes it, without a significance test."
       ],
@@ -90,8 +90,8 @@
       "title": "Fewer complete follow-up after a positive test",
       "text": "68% of other-language invitees had a colonoscopy after a positive stool test, against 77% (2022–24). After an abnormal cervical result, the difference is not significant.",
       "tables": [
-        {"head": ["Colorectal, 2022–24", "Finnish, Swedish, Sámi", "Other language", "Gap"],
-         "rows": [["Colonoscopy done", "77.1%", "68.3%", "−8.8 pp"]]}
+        {"head": ["Colorectal, 2022–24", "Finnish, Swedish, Sámi", "Other language", "Gap, percentage points"],
+         "rows": [["Colonoscopy done", "77.1%", "68.3%", "−8.8"]]}
       ],
       "notes": [
         "Pooled over 2022–24 because yearly groups are small (about 370–500 positive tests a year). The 95% CI of the gap is 6.3–11.3 points.",
@@ -160,5 +160,190 @@
       "silta": "What happens next, how long it usually takes, and when to call.",
       "src": "National Cancer Strategy 2026–2035, Goal 3."
     }
+  },
+  "impact": {
+    "_about": "The Impact view of /pathway: who is not reached and what it costs. Language is the main line; birth region, education and county sit beside it. Numbers from brain notes/2026-11-14-1630-silta-financial-lean-case.md, sources/2026-11-14-web-research-costs-and-funding.md, sources/2026-11-14-cancerregistry-screening-by-language.md and sources/data/2026-11-14-silta-cost-model.json.",
+    "lede": "One in four people invited to screening is not reached. The system pays for the invitation either way, and pays again at treatment when a cancer is found late.",
+    "prompt": "Select a step on the map to see what it costs.",
+    "missing": "We found no cost figure for this step.",
+    "steps": {
+      "letter": {
+        "title": "Every invitation is already paid for",
+        "text": "The three programmes sent 1,058,326 invitations in 2024, 78,914 of them to people whose native language is not Finnish, Swedish or Sámi. A breast screening invitation costs about €31 including the booked mammogram slot, paid whether or not the person comes. Unused breast slots are worth up to €1.95M a year, €0.30M of it for other-language invitees.",
+        "src": "Syöpäsäätiö / Nordic Healthcare Group cost statistics 2024 (breast screening €10.59M); Finnish Cancer Registry invitations 2024."
+      },
+      "attend": {
+        "title": "251,000 people not reached a year",
+        "text": "In 2024, 251,466 invited people did not attend screening: one in four. Reaching the national target of 80% in every programme takes about 45,000 more screenings a year (cervical and colorectal; breast is already at 81.6%), about €1.7M in screening costs. Language is the largest gap we can measure: if other-language invitees attended like Finnish and Swedish speakers, 16,561 more people would be screened.",
+        "src": "Finnish Cancer Registry 2024; programme costs from Syöpäsäätiö / NHG 2024, the STM screening decree memo and Virtanen et al. 2015."
+      },
+      "follow": {
+        "title": "One in four skip the colonoscopy",
+        "text": "Nationally, 72.7% of people with a positive stool test had the colonoscopy in 2024. In the 2022 round, 87 colorectal cancers were found in people who tested positive but skipped it. Other-language invitees skip it more often: closing that gap means about 44 more colonoscopies a year, about €12,000. One cancer found at stage I instead of III avoids about €30,170 of treatment.",
+        "src": "THL Sotkanet indicator 6411; Finnish Cancer Registry 2022–24; THL unit cost 2024 (gastro outpatient visit, our proxy for a colonoscopy); Joranger et al., Eur J Health Econ 2020."
+      },
+      "contact": {
+        "title": "About €460 to reach a specialist",
+        "text": "A nurse contact (€51), a doctor visit (€125) and a specialist outpatient visit (about €284) add up to about €460 of system cost before any imaging or tests. In Helsinki the person pays €71.30, for the specialist visit only.",
+        "src": "THL national unit costs 2024; City of Helsinki health service fees 2026."
+      },
+      "fork": {
+        "title": "84 more days for the cancer to grow",
+        "text": "The public route was 84 days slower to treatment in one lymphoma study. No study prices the delay itself. Its cost shows up at treatment, if the cancer has reached a later stage by then.",
+        "src": "Kuitunen et al., Cancer Medicine 2026;15:e71920."
+      },
+      "visit": {
+        "title": "The cheapest extra screening happens here",
+        "text": "Offering a self-sampling kit during a visit for something else costs about €45 per extra screening, close to a routine screening (€31). Reaching the same person by nurse phone calls costs about €360. In a London pilot, 56% took a kit offered at the visit and 65% returned it, against about 13% by post.",
+        "src": "Virtanen et al., BMC Women's Health 2015 (unit costs, 2012 prices); THL unit costs 2024; YouScreen pilot, London (133 practices)."
+      },
+      "diag": {
+        "title": "The wait has no price tag yet",
+        "text": "Waiting times are reported by county, not by language. Helsinki's median from a positive stool test to colonoscopy is 3.4 months, against 0.8 in the best counties. We found no cost for the wait itself.",
+        "src": "Finnish Cancer Registry, “Delays in access to colonoscopy”, 2024."
+      },
+      "treat": {
+        "title": "Late diagnosis adds €15,000–30,000 per patient",
+        "text": "Breast cancer found after it has spread to the lymph nodes costs €15,100 more over 10 years than cancer found while local (€39,500 vs €24,400). Colorectal cancer found at stage III costs €30,170 more than at stage I (€56,800 vs €26,630). Kela and pension funds also paid €50M in sickness allowances and disability pensions for these two cancers in 2024.",
+        "src": "Lehtinen et al., Duodecim 2019 (specialist care, 2017 prices); Joranger et al., Eur J Health Econ 2020 (Norwegian model); Syöpäsäätiö / Nordic Healthcare Group 2024."
+      }
+    },
+    "findings": [
+      {
+        "step": "Attends screening · everyone",
+        "tone": "gap",
+        "value": "251,000",
+        "label": "people not reached a year",
+        "text": "One in four invited do not attend. Reaching 80% in every programme takes 45,000 more screenings a year."
+      },
+      {
+        "step": "Attends screening · by language",
+        "tone": "gap",
+        "value": "16,561",
+        "label": "screenings missed a year",
+        "text": "57 in 100 other-language invitees attend, against 78 in 100 Finnish and Swedish speakers."
+      },
+      {
+        "step": "Treatment starts",
+        "tone": "gap",
+        "value": "+€15–30k",
+        "label": "extra cost per patient found late",
+        "text": "Breast +€15,100 (spread to lymph nodes). Colorectal +€30,170 (stage III vs I)."
+      },
+      {
+        "step": "Visit for other reason",
+        "tone": "gain",
+        "value": "€45 vs €360",
+        "label": "cost per extra screening",
+        "text": "Kit offered at a visit vs a nurse phoning. Only the €45 route pays for itself."
+      }
+    ],
+    "groups": {
+      "title": "Who isn't reached",
+      "head": [
+        "Attended screening, 2024",
+        "Breast",
+        "Cervical",
+        "Colorectal"
+      ],
+      "rows": [
+        [
+          "Everyone invited",
+          "81.6%",
+          "73.9%",
+          "73.5%"
+        ],
+        [
+          "Other native language",
+          "60.8%",
+          "56.3%",
+          "53.4%"
+        ],
+        [
+          "Born in Africa",
+          "45.1%",
+          "49.0%",
+          "40.5%"
+        ],
+        [
+          "Primary education only",
+          "63.5%",
+          "50.8%",
+          "61.5%"
+        ],
+        [
+          "City of Helsinki",
+          "74.3%",
+          "—",
+          "69.6%"
+        ]
+      ],
+      "note": "The groups overlap, and many people belong to more than one. Across municipalities, language still predicts lower attendance after controlling for education. — = not in our sources. Sources: Finnish Cancer Registry 2024 (language, birth region, education); THL Sotkanet 3621 and 6103 (Helsinki)."
+    },
+    "summary": "Reaching the 80% target in every programme means about 45,000 more screenings a year, about €1.7M in screening costs. Each cancer found before it spreads saves €15,000–30,000 of treatment. Language is the largest single gap we can measure, at 16,561 screenings a year. Helsinki already receives about €121M a year in state funding for its foreign-language residents, and none of it is earmarked.",
+    "table": {
+      "head": [
+        "Pathway step",
+        "Gap",
+        "Money",
+        "Source"
+      ],
+      "rows": [
+        [
+          "Invitation letter",
+          "1.06M invited, 78,914 other language",
+          "≈ €31 per breast invitee, paid either way; up to €1.95M of booked breast slots unused",
+          "NHG 2024, Cancer Registry"
+        ],
+        [
+          "Attends screening",
+          "1 in 4 don't attend; other language 57% vs 78%",
+          "251,000 not reached; ≈ 45,000 more screenings (≈ €1.7M) to reach 80%",
+          "Cancer Registry, NHG, STM, Virtanen 2015"
+        ],
+        [
+          "Follow-up after a positive test",
+          "1 in 4 skip; other language 68% vs 77%",
+          "87 cancers among those who skipped (2022); ≈ €12k a year closes the language gap",
+          "Sotkanet, Cancer Registry, THL unit costs"
+        ],
+        [
+          "First contact → doctor → referral",
+          "+84 days on the public route",
+          "€51 nurse + €125 doctor + €284 specialist ≈ €460",
+          "THL 2024, Kuitunen 2026"
+        ],
+        [
+          "Visit for other reason",
+          "Not measured",
+          "€45 per extra screening with a kit offered at the visit, vs €360 by phone",
+          "Virtanen 2015, THL 2024, YouScreen"
+        ],
+        [
+          "Diagnostic exam",
+          "3.4 vs 0.8 months' wait, by county",
+          "No cost by language",
+          "Cancer Registry delays 2024"
+        ],
+        [
+          "Treatment starts",
+          "Not measured by language",
+          "Breast local €24,400 vs lymph nodes €39,500; colorectal stage I €26,630 vs III €56,800",
+          "Lehtinen 2019, Joranger 2020"
+        ]
+      ]
+    },
+    "caveat": "Costs are orders of magnitude, not forecasts. Stage costs are 2017 (breast, Finland, specialist care only) and about 2019 (colorectal, Norwegian model) prices. Beyond the screening steps, no cost here is measured by language.",
+    "sources": [
+      "Finnish Cancer Registry, mass-screening statistics 2020–2024 (language, birth region, education, previous result); THL Sotkanet 3621, 6103, 6411.",
+      "THL, national unit costs of social and health services 2023–2024.",
+      "Lehtinen et al., Duodecim 2019;135:953–60 (breast cancer costs by stage).",
+      "Joranger et al., Eur J Health Econ 2020;21:321–334 (colorectal cancer costs by stage).",
+      "Virtanen, Anttila, Nieminen, BMC Women's Health 2015 (cervical screening and self-sampling costs); YouScreen pilot, London.",
+      "Syöpäsäätiö / Nordic Healthcare Group cancer cost statistics 2024; STM screening decree memo (colorectal programme cost).",
+      "Ministry of Finance, wellbeing services county funding model, 20 Aug 2025 (foreign-language criterion).",
+      "City of Helsinki and Länsi-Uusimaa client fees 2026; Kela private doctor reimbursement 2026.",
+      "Method and every figure: team knowledge base (madviking/junction2026), notes/2026-11-14-1630-silta-financial-lean-case.md."
+    ]
   }
 }
