@@ -69,6 +69,16 @@
         <iframe class="embed" src="{{ s.src }}" title="{{ s.title }}"></iframe>
         {% if s.notes %}<aside class="notes">{{ s.notes }}</aside>{% endif %}
       </section>
+      {%- elif s.layout == 'intro' %}
+      {#- Silta's introduction: name, meaning and punchline from content/site.yaml, as on the front page. #}
+      <section class="l-intro"{% if s.id %} id="{{ s.id }}"{% endif %}>
+        <div class="intro">
+          <h2 class="intro-name">{{ site.name }}</h2>
+          <p class="intro-meaning">{{ site.meaning }}</p>
+          <p class="intro-claim">{{ site.punchline }}</p>
+        </div>
+        {% if s.notes %}<aside class="notes">{{ s.notes }}</aside>{% endif %}
+      </section>
       {%- else %}
       <section class="l-{{ s.layout }}"{% if s.id %} id="{{ s.id }}"{% endif %}>
         <div class="frame">

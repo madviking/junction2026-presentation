@@ -123,6 +123,10 @@ slides:
     title: "The routes into cancer care, the gap at each step and where Silta helps. Click a step for its evidence."
     notes: "The journey with its data. The gap opens at the first step; after the door, breast and cervical follow-up is equal (colposcopy 87.1% vs 84.8%). Two routes matter for Silta: the screening letter (Hodan) and noticing a symptom (Olga)."
 
+  - layout: intro
+    id: silta
+    notes: "Silta enters here. Name, meaning and punchline come from content/site.yaml, as on the front page. Then the two ways in."
+
   - layout: morph
     id: letter
     kicker: First way in · the letter
