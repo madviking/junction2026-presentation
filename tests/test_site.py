@@ -55,13 +55,30 @@ def test_try_page_lists_phone_line_and_screening_letter(client):
     assert "/r/en/learn/cervical" in html
 
 
-def test_admin_demo_login_is_shown_on_try_and_landing_pages(client):
+def test_admin_demo_login_is_shown_on_try_page(client):
     demo = content.site()["links"]["admin"]["demo_login"]
     assert demo["email"] == "demo@silta.test"
-    for path in ("/try", "/"):
-        html = client.get(path).text
-        assert demo["email"] in html and demo["password"] in html, path
-        assert "View-only demo account" in html, path
+    html = client.get("/try").text
+    assert demo["email"] in html and demo["password"] in html
+    assert "View-only demo account" in html
+
+
+def test_landing_shows_where_silta_fits_and_no_try_section(client):
+    html = client.get("/").text
+    assert 'class="silta-fit-map"' in html
+    for step in content.site()["paths_fit"]["steps"]:
+        assert step["title"] in html
+    for item in content.site()["paths_fit"]["planned"]["items"]:
+        assert item in html
+    assert "<h2>Try it</h2>" not in html
+    assert "One journey, five steps" not in html
+    assert "Only 3 of 11 pathway steps" not in html
+
+
+def test_team_link_sits_apart_on_the_right(client):
+    html = client.get("/").text
+    right = html.index('navbar-nav ms-md-auto')
+    assert html.index('href="/try"') < right < html.index('href="/team"')
 
 
 def test_try_page_groups_links(client):

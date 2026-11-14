@@ -1,0 +1,69 @@
+{# Landing: a radically simplified version of the pathway slide (/presentation#/pathway).
+   Three routes into cancer care merge at the diagnostic exam; the lake zone is where Silta works today,
+   the sand zone (specialist care) is where Silta is planned to go next (`paths_fit.planned`).
+   Text from site.yaml `paths_fit`; the closing paragraph from content/landing.md. #}
+{% set fit = site.paths_fit %}
+<section class="silta-section silta-block silta-fit" aria-labelledby="fit-title">
+  <p class="silta-eyebrow">{{ fit.eyebrow }}</p>
+  <h2 id="fit-title">{{ fit.title }}</h2>
+  <p class="silta-lede">{{ fit.lede }}</p>
+
+  <figure class="silta-fit-figure">
+    <div class="silta-fit-scroll">
+      <svg class="silta-fit-map" viewBox="0 0 1000 330" role="img" aria-labelledby="fit-map-title">
+        <title id="fit-map-title">Three routes into cancer care, a screening letter, a symptom and a doctor's suggestion, merge at the diagnostic exam and lead to treatment. Silta covers each route up to the diagnostic exam. In specialist care, from the diagnostic exam to treatment, Silta support is planned.</title>
+        <rect class="fit-zone" x="0" y="0" width="676" height="330" rx="14"/>
+        <text class="fit-zone-label" x="22" y="30">Silta</text>
+        <rect class="fit-zone fit-zone-care" x="684" y="0" width="316" height="330" rx="14"/>
+        <text class="fit-zone-label fit-zone-label-care" x="704" y="30">Specialist care</text>
+        <text class="fit-zone-tag" x="704" y="52">{{ fit.planned.tag }}</text>
+
+        <text class="fit-route" x="40" y="70">Screening letter</text>
+        <text class="fit-route" x="40" y="165">Symptom</text>
+        <text class="fit-route" x="40" y="260">Doctor's suggestion</text>
+
+        <path class="fit-line" d="M60 92 L480 92 C 610 92, 630 187, 720 187"/>
+        <path class="fit-line" d="M60 187 L720 187"/>
+        <path class="fit-line" d="M60 282 L480 282 C 610 282, 630 187, 720 187"/>
+        <path class="fit-line fit-line-care" d="M720 187 L950 187"/>
+        <path class="fit-arrow" d="M950 180 L964 187 L950 194 Z"/>
+
+        <circle class="fit-node" cx="60" cy="92" r="7"/><text class="fit-label" x="74" y="118">Invitation letter</text>
+        <circle class="fit-node" cx="350" cy="92" r="7"/><text class="fit-label" x="350" y="118" text-anchor="middle">Screening</text>
+        <circle class="fit-node" cx="60" cy="187" r="7"/><text class="fit-label" x="74" y="213">Notices a symptom</text>
+        <circle class="fit-node" cx="350" cy="187" r="7"/><text class="fit-label" x="350" y="213" text-anchor="middle">First contact</text>
+        <circle class="fit-node" cx="530" cy="187" r="7"/><text class="fit-label" x="530" y="213" text-anchor="middle">Doctor visit, referral</text>
+        <circle class="fit-node" cx="60" cy="282" r="7"/><text class="fit-label" x="74" y="308">Visit for something else</text>
+        <circle class="fit-node" cx="350" cy="282" r="7"/><text class="fit-label" x="350" y="308" text-anchor="middle">Doctor orders a test</text>
+        <circle class="fit-node fit-node-care" cx="720" cy="187" r="8"/><text class="fit-label" x="742" y="160" text-anchor="middle">Diagnostic exam</text>
+        <circle class="fit-node fit-node-care" cx="890" cy="187" r="8"/><text class="fit-label" x="890" y="160" text-anchor="middle">Treatment starts</text>
+      </svg>
+    </div>
+    <div class="silta-fit-legend">
+      <ol class="silta-fit-steps">
+        {% for step in fit.steps %}
+        <li>
+          <span class="silta-fit-num" aria-hidden="true">{{ loop.index }}</span>
+          <div><strong>{{ step.title }}</strong><span>{{ step.text }}</span></div>
+        </li>
+        {% endfor %}
+      </ol>
+      {% if fit.planned %}
+      <div class="silta-fit-planned">
+        <p class="silta-eyebrow">{{ fit.planned.tag }}</p>
+        <ol class="silta-fit-steps" start="{{ fit.steps | length + 1 }}">
+          {% for item in fit.planned["items"] %}
+          <li>
+            <span class="silta-fit-num silta-fit-num-planned" aria-hidden="true">{{ fit.steps | length + loop.index }}</span>
+            <div><strong>{{ item }}</strong></div>
+          </li>
+          {% endfor %}
+        </ol>
+      </div>
+      {% endif %}
+    </div>
+  </figure>
+
+  {% if landing.html %}<div class="silta-fit-note">{{ landing.html | safe }}</div>{% endif %}
+  <p class="silta-fit-more"><a href="/presentation#/pathway">{{ fit.link }} <i class="ti ti-arrow-right"></i></a></p>
+</section>

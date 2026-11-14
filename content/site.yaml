@@ -50,10 +50,10 @@ highlights:
 # Indicators from the strategy (Figure 1, p. 5). Numbers: lung-cancer intervals from brain
 # sources/2026-11-13-web-research-az-gaps-interventions.md (UEF Kuittinen, unpublished, via Yle MOT);
 # screening gap from sources/2026-11-14-cancerregistry-screening-by-language.md (2024: breast 22.4,
-# cervical 19.9, colorectal 21.1 pp); 16,561 from notes/2026-11-14-1630-silta-financial-lean-case.md;
-# "3 of 11 steps" from the limitations in content/data/pathway.json.
+# cervical 19.9, colorectal 21.1 pp); 16,561 from notes/2026-11-14-1630-silta-financial-lean-case.md.
 # Each point can carry `src` + `src_url` (shown as "Source: ..."); `src_link` uses a key from `links`; `src_label` changes the prefix.
 goal3:
+  eyebrow: National Cancer Strategy 2026–2035
   title: "Goal 3: equal and effective cancer care"
   lede: Goal 3 is measured by treatment starting on time, cancer mortality and survival. For people with another native language, the gap opens before the first contact, where no register looks. That is where Silta works.
   points:
@@ -70,11 +70,11 @@ goal3:
       src_label: Live
       src: county view
       src_link: county
-  also: Only 3 of 11 pathway steps are recorded by native language, all in screening; for the rest we use published studies. Silta also serves Goal 2 (80% screening attendance in every county).
 
 # Landing page: safe to use now, and how it grows into the health system.
 # Sources: brain ideas/silta.md sections 5-6 and 8 (EU MDR Rule 11, GDPR Art. 9), ideas/silta-service-paths.md.
 rollout:
+  eyebrow: Regulation and rollout
   title: Safe to use today, without waiting for the health system
   lede: Silta is built to stay on the information side of medical-device and privacy rules, so residents can use it before any county or doctor takes part.
   stages:
@@ -101,6 +101,30 @@ rollout:
         - National guidance from Terveyskylä by article ID.
         - The county as data controller, with its own impact assessment.
         - Native-speaker and clinical review of every language.
+
+# Landing page: where Silta sits on the routes into cancer care. A simplified version of the
+# pathway slide (content/data/pathway.json: nodes and the Silta bands); drawn by
+# app/templates/_paths_fit.html. Steps follow the bands find/prepare, navigate, atvisit+clinician, after.
+paths_fit:
+  eyebrow: Where Silta fits
+  title: Three ways into cancer care. Silta helps on each one until the diagnostic exam.
+  lede: People reach cancer care through a screening letter, a symptom they notice or a test a doctor orders. Silta works in the steps before specialist care takes over.
+  link: See the full pathway, its gaps and their evidence
+  steps:
+    - title: Understand
+      text: The screening letter or the symptom, explained in your own language.
+    - title: Find the right door
+      text: Who to contact in your county, and the words to say in Finnish.
+    - title: At the visit
+      text: A visit card. The clinician reads a one-screen Finnish summary.
+    - title: After the visit
+      text: What happens next, and when to call if nothing arrives.
+  # Shown in the specialist-care zone of the figure: not built yet.
+  planned:
+    tag: Planned
+    items:
+      - Help navigate the treatment path
+      - Own-language support and patient information
 
 # Keys are used by printouts (`qr: consumer`) and the "Try the app" page.
 # The "Try the app" page shows the links named in `link_groups`, in that order;

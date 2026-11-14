@@ -3,6 +3,7 @@
 :root,
 [data-bs-theme="light"] {
   --silta-bg: #f6f7f5;
+  --silta-sand-soft: #f1ede3;
   --silta-surface: #ffffff;
   --silta-ink: #142028;
   --silta-muted: #56636b;
@@ -29,6 +30,7 @@
 }
 [data-bs-theme="dark"] {
   --silta-bg: #0f1619;
+  --silta-sand-soft: #262420;
   --silta-surface: #162026;
   --silta-ink: #e5ecef;
   --silta-muted: #98a7ae;
@@ -61,6 +63,11 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .silta-nav { background: var(--silta-surface); border-bottom: 1px solid var(--silta-line); }
 .silta-brand { font-family: var(--silta-font-display); font-weight: 800; font-size: 24px; color: var(--silta-lake) !important; }
 .silta-nav .nav-item.active .nav-link { color: var(--silta-lake); }
+.silta-nav .navbar-brand { margin-right: 40px; }
+@media (min-width: 768px) {
+  .silta-nav .navbar-nav { gap: 10px; }
+  .silta-nav .navbar-nav .nav-link { padding-left: 10px; padding-right: 10px; }
+}
 #theme-toggle { background: none; border: 0; color: var(--silta-muted); font-size: 20px; }
 [data-bs-theme="dark"] .theme-dark-hide, [data-bs-theme="light"] .theme-light-hide { display: none; }
 
@@ -88,6 +95,16 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .silta-highlights strong { display: block; font-family: var(--silta-font-display); font-weight: 800; font-size: 19px; line-height: 1.15; color: var(--silta-ink); }
 .silta-highlights span { display: block; margin-top: 3px; font-size: 14px; line-height: 1.3; color: var(--silta-muted); }
 .silta-cta { display: flex; flex-wrap: wrap; gap: 10px; }
+/* the three hero buttons stay on one row from wide-tablet width up */
+@media (min-width: 820px) {
+  .silta-cta { flex-wrap: nowrap; }
+  .silta-cta .btn { white-space: nowrap; padding-left: 16px; padding-right: 16px; font-size: 17px; }
+  .silta-cta .btn .me-2 { margin-right: 6px !important; }
+}
+@media (min-width: 820px) and (max-width: 1399.98px) {
+  .silta-cta { gap: 8px; }
+  .silta-cta .btn { font-size: 16px; padding-left: 13px; padding-right: 13px; }
+}
 .silta-phone { margin: 0; width: 260px; border-radius: 32px; padding: 10px; background: var(--silta-ink); box-shadow: 0 20px 50px rgba(20, 32, 40, .25); }
 .silta-phone img { display: block; width: 100%; border-radius: 24px; }
 [data-bs-theme="dark"] .silta-phone { background: #2a3a42; }
@@ -95,10 +112,10 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 /* landing phone slider (scroll-snap; script in landing.html) */
 .silta-slider { display: grid; justify-items: center; gap: 12px; width: 260px; }
 .silta-slider .silta-phone { width: 100%; }
-.silta-slider-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; border-radius: 24px; scrollbar-width: none; overscroll-behavior-x: contain; }
+.silta-slider-track { display: flex; background: #ffffff; overflow-x: auto; scroll-snap-type: x mandatory; border-radius: 24px; scrollbar-width: none; overscroll-behavior-x: contain; }
 .silta-slider-track::-webkit-scrollbar { display: none; }
 .silta-slider-track:focus-visible { outline: 3px solid var(--silta-lake); outline-offset: 4px; }
-.silta-slide { flex: 0 0 100%; margin: 0; scroll-snap-align: center; }
+.silta-slide { flex: 0 0 100%; margin: 0; scroll-snap-align: center; box-sizing: border-box; padding: 18px 14px; background: #ffffff; } /* white screen margin around the (light) app screenshot */
 .silta-slide img { display: block; width: 100%; height: auto; border-radius: 0; }
 .silta-slider-caption { margin: 0; min-height: 3.9em; color: var(--silta-ink); font-size: 15px; line-height: 1.3; text-align: center; text-wrap: balance; }
 .silta-slider-nav { display: flex; align-items: center; gap: 8px; }
@@ -117,19 +134,61 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .silta-fact-value { text-wrap: balance; }
 .silta-more { margin: 12px 0 0; text-align: right; font-weight: 700; }
 
-/* landing: Goal 3 link and rollout stages */
-.silta-goal { margin-top: 24px; }
-.silta-goal-points { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px 28px; margin-top: 20px; }
-.silta-goal-point { border-top: 3px solid var(--silta-lake); padding-top: 12px; }
-.silta-goal-point h3, .silta-stage h3 { font-size: 19px; font-weight: 800; margin: 0 0 6px; }
-.silta-goal-point p { margin: 0; }
-.silta-goal-point .silta-goal-src { margin-top: 8px; font-size: 14px; color: var(--silta-muted); }
-.silta-goal-also { margin: 20px 0 0; color: var(--silta-muted); }
-.silta-goal-also a { font-weight: 700; white-space: nowrap; }
-.silta-stages { list-style: none; padding: 0; margin: 20px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
-.silta-stage ul { margin: 10px 0 0; padding-left: 18px; display: grid; gap: 6px; }
-.silta-stage-now { border-color: var(--silta-lake); box-shadow: inset 0 4px 0 var(--silta-lake); }
-.silta-stage-now .silta-eyebrow { color: var(--silta-lake); }
+/* landing: Goal 3, rollout and "where Silta fits" share one block layout: eyebrow, title, lede, cards */
+.silta-block > .silta-eyebrow { margin-bottom: 8px; }
+.silta-block > h2 { font-size: clamp(24px, 3vw, 32px); font-weight: 800; margin: 0 0 12px; }
+.silta-cards { list-style: none; padding: 0; margin: 28px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+.silta-card { box-shadow: inset 0 4px 0 var(--silta-line); }
+.silta-card-accent { box-shadow: inset 0 4px 0 var(--silta-lake); }
+.silta-card-accent .silta-eyebrow { color: var(--silta-lake); }
+.silta-card .card-body { padding: 28px; }
+.silta-card h3 { font-size: 19px; font-weight: 800; margin: 0 0 10px; }
+.silta-card p, .silta-card li { line-height: 1.6; }
+.silta-card p:last-child { margin-bottom: 0; }
+.silta-card ul { margin: 14px 0 0; padding-left: 18px; display: grid; gap: 10px; }
+.silta-card .silta-card-src { margin-top: 12px; font-size: 14px; color: var(--silta-muted); }
+
+/* landing: where Silta fits on the routes into care (simplified pathway slide) */
+.silta-fit-figure { margin: 28px 0 0; background: var(--silta-surface); border: 1px solid var(--silta-line); border-radius: 8px; padding: 24px; }
+.silta-fit-scroll { overflow-x: auto; }
+.silta-fit-map { display: block; width: 100%; min-width: 680px; height: auto; font-family: var(--silta-font-body); }
+.silta-fit-map .fit-zone { fill: var(--silta-lake-soft); }
+.silta-fit-map .fit-zone-label { font: 800 22px var(--silta-font-display); fill: var(--silta-lake); }
+.silta-fit-map .fit-zone-care { fill: var(--silta-sand-soft); }
+.silta-fit-map .fit-zone-label-care { fill: var(--silta-muted); }
+.silta-fit-map .fit-zone-tag { font: 600 12px var(--silta-font-data); letter-spacing: .08em; text-transform: uppercase; fill: var(--silta-muted); }
+.silta-fit-map .fit-route { font: 600 13px var(--silta-font-data); letter-spacing: .08em; text-transform: uppercase; fill: var(--silta-ink); }
+.silta-fit-map .fit-line { fill: none; stroke: var(--silta-lake); stroke-width: 3; }
+.silta-fit-map .fit-line-care { stroke: var(--silta-muted); stroke-dasharray: 8 6; stroke-width: 2.5; }
+.silta-fit-map .fit-arrow { fill: var(--silta-muted); }
+.silta-fit-map .fit-node { fill: var(--silta-surface); stroke: var(--silta-lake); stroke-width: 3; }
+.silta-fit-map .fit-node-care { stroke: var(--silta-muted); }
+.silta-fit-map .fit-label { font-size: 15px; fill: var(--silta-ink); }
+/* legend columns line up with the two zones of the map (676 and 316 of 1000 units, 8 apart) */
+.silta-fit-legend { display: grid; grid-template-columns: 67.6fr 31.6fr; column-gap: 0.8%; margin-top: 20px; }
+.silta-fit-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+.silta-fit-planned { padding-left: 20px; }
+.silta-fit-planned .silta-eyebrow { display: none; }
+.silta-fit-planned .silta-fit-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.silta-fit-num.silta-fit-num-planned { background: transparent; color: var(--silta-muted); border: 2px dashed var(--silta-muted); }
+.silta-fit-planned .silta-fit-steps div strong { color: var(--silta-muted); }
+.silta-fit-steps li { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; }
+.silta-fit-num { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--silta-lake); color: var(--tblr-primary-fg); font: 700 14px var(--silta-font-data); }
+.silta-fit-steps div strong { display: block; font-family: var(--silta-font-display); font-weight: 800; font-size: 17px; line-height: 1.2; color: var(--silta-ink); }
+.silta-fit-steps div span { display: block; margin-top: 4px; font-size: 14.5px; line-height: 1.45; color: var(--silta-muted); }
+.silta-fit-note { max-width: 70ch; margin-top: 24px; }
+.silta-fit-note p { font-size: 17px; line-height: 1.6; margin: 0; }
+.silta-fit-more { margin: 12px 0 0; font-weight: 700; }
+@media (max-width: 991.98px) {
+  .silta-fit-legend { grid-template-columns: 1fr; row-gap: 24px; }
+  .silta-fit-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .silta-fit-planned { padding: 16px; border-radius: 8px; background: var(--silta-sand-soft); }
+  .silta-fit-planned .silta-eyebrow { display: block; }
+}
+@media (max-width: 575.98px) {
+  .silta-fit-figure { padding: 16px; }
+  .silta-fit-steps, .silta-fit-planned .silta-fit-steps { grid-template-columns: 1fr; }
+}
 
 /* long-form text */
 .silta-prose { max-width: 70ch; padding: 24px 0; }
@@ -454,18 +513,3 @@ html:has(.silta-pw-page), html:has(.silta-pw-page) body { height: 100%; overflow
 .silta-landing .silta-section { padding: 32px 0; }
 .silta-landing .silta-section > h2 { margin-bottom: 20px; }
 .silta-landing .silta-lede { line-height: 1.6; margin-bottom: 0; }
-.silta-landing .silta-goal { margin-top: 40px; }
-.silta-landing .silta-goal-points { gap: 32px 40px; margin-top: 36px; }
-.silta-landing .silta-goal-point { padding-top: 18px; }
-.silta-landing .silta-goal-point h3, .silta-landing .silta-stage h3 { margin-bottom: 10px; }
-.silta-landing .silta-goal-point p { line-height: 1.65; }
-.silta-landing .silta-goal-also { margin-top: 32px; }
-.silta-landing .silta-stages { gap: 24px; margin-top: 32px; }
-.silta-landing .silta-stage .card-body { padding: 28px; }
-.silta-landing .silta-stage ul { margin-top: 14px; gap: 10px; }
-.silta-landing .silta-prose { padding: 8px 0; }
-.silta-landing .silta-prose h2 { margin-top: 32px; margin-bottom: 16px; }
-.silta-landing .silta-prose ol, .silta-landing .silta-prose ul { gap: 8px; margin-bottom: 20px; }
-.silta-landing .row-cards .card-body { padding: 28px; }
-.silta-landing .silta-link-icon { font-size: 40px; }
-.silta-landing .row-cards .card-title { font-size: 20px; font-weight: 700; margin-top: 14px !important; margin-bottom: 8px !important; }
