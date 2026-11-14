@@ -109,7 +109,6 @@ paths_fit:
   eyebrow: Where Silta fits
   title: Three ways into cancer care. Silta helps on each one until the diagnostic exam.
   lede: People reach cancer care through a screening letter, a symptom they notice or a test a doctor orders. Silta works in the steps before specialist care takes over.
-  link: See the full pathway, its gaps and their evidence
   steps:
     - title: Understand
       text: The screening letter or the symptom, explained in your own language.
@@ -127,16 +126,39 @@ paths_fit:
       - Own-language support and patient information
 
 # Keys are used by printouts (`qr: consumer`) and the "Try the app" page.
-# The "Try the app" page shows the links named in `link_groups`, in that order;
-# `source` appears under its technical section. Other keys (e.g. `site`) stay
-# available to printouts but are not listed there.
+# The "Try the app" page embeds `consumer` live in its hero, then shows the links named in
+# `link_groups`, in that order; `source` appears under its technical section. Other keys
+# (e.g. `site`) stay available to printouts but are not listed there.
+# Per link, optional for that page: `preview` (kind: paper | phone | browser, src, alt, caption; a
+# paper preview also zooms into `zoom_src` at the bottom of the sheet), `languages: true`
+# (one chip per entry in `languages` below; the link's "/en" segment is swapped for the code),
+# `menu` (the phone line's keypad menu), `short` (its line in the hero's jump list).
 link_groups:
-  - title: For residents
-    lede: What a resident sees — the app, the screening letter and its guide, and the phone line.
-    links: [consumer, screening_letter, screening_guide, phone]
-  - title: For the county
-    lede: What county staff see — anonymous figures, and the tools to run the content.
+  - eyebrow: For residents
+    title: The letter, its guide, and a phone line
+    lede: A screening letter carries a QR code to a picture guide in the resident's language. People who do not read can call and speak instead.
+    links: [screening_letter, screening_guide, phone]
+  - eyebrow: For the county
+    title: Anonymous figures and the content tools
+    lede: County staff see counts by stage, outcome and language, never a person. The team edits texts, approves audio and watches spend in admin.
     links: [county, admin]
+
+# The 14 languages of the letter and the guide (tech: resident languages). Native names.
+languages:
+  - {code: fi, name: Suomi}
+  - {code: sv, name: Svenska}
+  - {code: en, name: English}
+  - {code: ru, name: Русский}
+  - {code: et, name: Eesti}
+  - {code: uk, name: Українська}
+  - {code: ar, name: العربية, dir: rtl}
+  - {code: so, name: Soomaali}
+  - {code: fa, name: فارسی, dir: rtl}
+  - {code: zh, name: 中文}
+  - {code: yue, name: 粵語}
+  - {code: vi, name: Tiếng Việt}
+  - {code: th, name: ไทย}
+  - {code: bg, name: Български}
 
 links:
   consumer:
@@ -147,13 +169,30 @@ links:
   screening_guide:
     label: Screening guide (cervical)
     url: https://fond-useful-corgi.eur-1.aiven.app/r/en/learn/cervical
-    description: What the screening letter's QR code opens. A five-part picture guide in 14 languages — why, the visit, your rights, after, common questions. Swap "en" in the address for so, ar, ru, uk, fa, et, sv, fi, zh, yue, vi, th or bg.
+    description: What the letter's QR code opens. Five short parts with pictures and audio — why, the visit, your rights, after, common questions.
     icon: school
+    action: Open the guide
+    short: What the QR code opens
+    languages: true
+    preview:
+      kind: phone
+      src: /media/screens/v3/guide-so-why.png
+      alt: "The guide in Somali: part 1 of 5, 'why it matters', a microscope picture and a speaker button."
+      caption: Somali, part 1 of 5
   screening_letter:
     label: Example screening letter
     url: https://fond-useful-corgi.eur-1.aiven.app/letter/cervical/en
-    description: A cervical screening invitation as a Helsinki resident gets it, with the Silta QR code. Every language, printable. All versions are on the printouts page.
+    description: A cervical screening invitation as a Helsinki resident gets it, with the Silta QR code at the bottom. Printable; all versions are on the printouts page.
     icon: mail-opened
+    action: Open the letter
+    short: In 14 languages, with a QR code
+    languages: true
+    preview:
+      kind: paper
+      src: /media/screens/v3/letter-fi.png
+      alt: "The Finnish cervical screening invitation: the time, place and PIN, and at the bottom a QR code box."
+      zoom_src: /media/screens/try/letter-fi-qr.png
+      caption: Finnish letter, QR code at the bottom
   # The product's own demo phone line (Twilio number on the ElevenLabs agent
   # "Silta phone line", tech/scripts/phone_agent.py) — public by design, not a personal number.
   phone:
@@ -161,18 +200,43 @@ links:
     url: tel:+18784255777
     display: +1 878 425 5777
     action: Call
-    description: Call and talk to Silta in your language. A keypad menu picks the language, or just speak; the agent finds the right door for your area. US number; calls from Finland are international.
+    short: Speak instead of reading
+    description: Talk to Silta in your language. Press a key or just speak; the agent finds the right door for your area. US number; calls from Finland are international.
     icon: phone-call
+    # The greeting's keypad menu (tech/scripts/phone_agent.py, MENU and MORE).
+    menu:
+      - {key: "1", name: Suomi}
+      - {key: "2", name: Svenska}
+      - {key: "3", name: English}
+      - {key: "4", name: Русский}
+      - {key: "5", name: Українська}
+      - {key: "6", name: العربية, dir: rtl}
+      - {key: "7", name: Soomaali}
+      - {key: "8", name: فارسی, dir: rtl}
+      - {key: "9", name: Eesti}
+      - {key: "0", name: "Tiếng Việt · 中文"}
   county:
     label: County view
     url: https://fond-useful-corgi.eur-1.aiven.app/county/helsinki
-    description: Public figures and anonymous counts by stage, outcome and language.
+    description: Public figures for Helsinki, and anonymous counts by stage, outcome and language. Refreshes every 15 seconds.
     icon: map-2
+    action: Open the county view
+    short: Counts by language, never a person
+    preview:
+      kind: browser
+      src: /media/screens/try/county.png
+      alt: "The Helsinki county view: foreign-language share of residents 21.2 %, and breast and cervical screening participation."
   admin:
     label: Admin
     url: https://fond-useful-corgi.eur-1.aiven.app/admin
-    description: Edit and publish texts, approve audio, usage and audit.
+    description: Edit and publish texts in every language, approve audio, see spend and the audit log.
     icon: settings
+    action: Open admin
+    short: View-only demo account
+    preview:
+      kind: browser
+      src: /media/screens/try/admin-content.png
+      alt: "Silta admin, Content: 749 texts with a review status per language, signed in as the view-only demo viewer."
     # Public on purpose: a view-only account that sees every admin page and cannot change
     # anything (tech/backend/admin/service.ts, DEMO_VIEWER). The sign-in page shows it too.
     # Team editor accounts stay in the password manager.

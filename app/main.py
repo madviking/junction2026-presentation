@@ -48,7 +48,11 @@ def render(request: Request, template: str, active: str, **context) -> HTMLRespo
 
 
 def qr_svg(url: str) -> Markup:
-    return Markup(segno.make(url, error="m").svg_inline(scale=6, border=0, dark="#142028"))
+    qr = segno.make(url, error="m")
+    width, height = qr.symbol_size(scale=6, border=0)
+    svg = qr.svg_inline(scale=6, border=0, dark="#142028")
+    # segno sets a fixed width/height and no viewBox; with one, CSS can resize the code without cropping it
+    return Markup(svg.replace("<svg ", f'<svg viewBox="0 0 {width} {height}" ', 1))
 
 
 @app.get("/healthz", response_class=PlainTextResponse)
@@ -148,7 +152,8 @@ def tech_page(request: Request, slug: str):
 
 @app.get("/try", response_class=HTMLResponse)
 def try_app(request: Request):
-    return render(request, "try.html", "try")
+    consumer = (content.site().get("links") or {}).get("consumer")
+    return render(request, "try.html", "try", qr=qr_svg(consumer["url"]) if consumer else "")
 
 
 @app.get("/printouts", response_class=HTMLResponse)

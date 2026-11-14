@@ -85,9 +85,25 @@ def test_try_page_groups_links(client):
     html = client.get("/try").text
     residents, county = html.index("For residents"), html.index("For the county")
     tech = html.index("Technical information")
-    assert residents < html.index("Silta phone line") < county < html.index("Admin") < tech
+    # the hero's jump list names the cards too, so look from the residents' section on
+    assert residents < html.index("Silta phone line", residents) < county < html.index("Admin", county) < tech
     assert tech < html.index("github.com/madviking/junction2026tech")
     assert "mostly-awaited-flounder" not in html  # no card for the site itself
+
+
+def test_try_page_is_visual(client):
+    site = content.site()
+    html = client.get("/try").text
+    assert f'<iframe src="{site["links"]["consumer"]["url"]}"' in html  # the live app in the hero
+    assert "data-live-toggle" in html and "/static/try-live.js" in html  # maximise for a demo
+    assert "<svg" in html  # QR code to the app
+    for lang in site["languages"]:  # chips for the letter and the guide
+        assert f'/letter/cervical/{lang["code"]}"' in html
+        assert f'/r/{lang["code"]}/learn/cervical"' in html
+    for item in site["links"]["phone"]["menu"]:  # the phone line's keypad menu
+        assert f"<b>{item['key']}</b>" in html
+    for key in ["screening_letter", "screening_guide", "phone", "county", "admin"]:
+        assert f'href="#try-{key}"' in html and f'id="try-{key}"' in html
 
 
 def test_screening_letter_printout_links_every_language(client):
@@ -194,7 +210,6 @@ def test_pathway_is_a_deck_slide_not_a_menu_item(client):
     assert 'src="/presentation/pathway"' in deck
     landing = client.get("/").text
     assert 'href="/pathway"' not in landing
-    assert 'href="/presentation#/pathway"' in landing
     embed = client.get("/presentation/pathway").text
     assert "silta-nav" not in embed and "theme-toggle" not in embed
     assert '<base target="_blank">' in embed

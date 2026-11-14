@@ -3,67 +3,156 @@
 
 {% from "_demo_login.html" import demo_login %}
 
-{% macro link_card(link) %}
-<div class="card h-100">
-  <div class="card-body">
-    <div class="d-flex align-items-center gap-2 mb-2">
-      <i class="ti ti-{{ link.icon }} silta-link-icon"></i>
-      <h3 class="card-title m-0">{{ link.label }}</h3>
-    </div>
-    <p class="text-secondary">{{ link.description }}</p>
-    <p class="silta-url mb-0"><code>{{ link.display or link.url }}</code></p>
-    {% if link.demo_login %}{{ demo_login(link.demo_login) }}{% endif %}
-  </div>
-  <div class="card-footer">
-    <a class="btn btn-primary w-100" href="{{ link.url }}">{{ link.action or "Open" }} <i class="ti ti-{{ 'phone' if link.url.startswith('tel:') else 'external-link' }} ms-1"></i></a>
+{# A link's English address in another language: ".../en" or ".../en/..." → that code. #}
+{% macro lang_url(url, code) -%}
+{%- if url.endswith('/en') -%}{{ url[:-3] }}/{{ code }}{%- else -%}{{ url | replace('/en/', '/' ~ code ~ '/') }}{%- endif -%}
+{%- endmacro %}
+
+{% macro preview(link) %}
+{% set p = link.preview %}
+{% if p and p.kind == "paper" %}
+<div class="silta-try-media silta-try-media-paper">
+  <img class="silta-try-paper" src="{{ p.src }}" alt="{{ p.alt }}" loading="lazy">
+  {% if p.zoom_src %}<img class="silta-try-zoom" src="{{ p.zoom_src }}" alt="" aria-hidden="true" loading="lazy">{% endif %}
+</div>
+{% elif p and p.kind == "phone" %}
+<div class="silta-try-media silta-try-media-phone">
+  <div class="silta-phone"><img src="{{ p.src }}" alt="{{ p.alt }}" loading="lazy"></div>
+</div>
+{% elif p and p.kind == "browser" %}
+<div class="silta-try-media silta-try-media-browser">
+  <div class="silta-browser">
+    <div class="silta-browser-bar" aria-hidden="true"><i></i><i></i><i></i><span>{{ link.url | replace("https://", "") }}</span></div>
+    <img src="{{ p.src }}" alt="{{ p.alt }}" loading="lazy">
   </div>
 </div>
+{% elif link.menu %}
+<div class="silta-try-media silta-try-media-keypad">
+  <ol class="silta-keypad" aria-label="The call's keypad menu">
+    {% for m in link.menu %}
+    <li><b>{{ m.key }}</b><span{% if m.dir %} dir="{{ m.dir }}"{% endif %}>{{ m.name }}</span></li>
+    {% endfor %}
+  </ol>
+  <p class="silta-keypad-or">or just speak your language</p>
+</div>
+{% endif %}
+{% endmacro %}
+
+{% macro try_card(key, link) %}
+<li class="card silta-try-card" id="try-{{ key }}">
+  {{ preview(link) }}
+  <div class="card-body">
+    <h3><i class="ti ti-{{ link.icon }}" aria-hidden="true"></i>{{ link.label }}</h3>
+    {% if link.preview and link.preview.caption %}<p class="silta-eyebrow">{{ link.preview.caption }}</p>{% endif %}
+    <p>{{ link.description }}</p>
+    {% if link.display %}<p class="silta-try-number">{{ link.display }}</p>{% endif %}
+    {% if link.languages and site.languages %}
+    <ul class="silta-langs" aria-label="{{ link.label }} in other languages">
+      {% for l in site.languages %}
+      <li><a href="{{ lang_url(link.url, l.code) }}" lang="{{ l.code }}"{% if l.dir %} dir="{{ l.dir }}"{% endif %}{% if l.code == 'en' %} aria-current="true"{% endif %}>{{ l.name }}</a></li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% if link.demo_login %}{{ demo_login(link.demo_login) }}{% endif %}
+  </div>
+  <div class="silta-try-action">
+    <a class="btn btn-primary w-100" href="{{ link.url }}">{{ link.action or "Open" }} <i class="ti ti-{{ 'phone' if link.url.startswith('tel:') else 'external-link' }} ms-1"></i></a>
+  </div>
+</li>
 {% endmacro %}
 
 {% block body %}
-<main class="page-body">
+<main class="page-body silta-landing">
   <div class="container-xl">
-    <div class="silta-page-head">
-      <p class="silta-eyebrow">Access</p>
-      <h1 class="page-title">Try the app</h1>
-    </div>
+    {% set consumer = site.links.consumer %}
+    {% if consumer %}
+    <section class="silta-try-hero">
+      <div class="silta-try-hero-text">
+        <p class="silta-eyebrow">Try the app · live, no sign-up</p>
+        <h1 class="silta-try-title">Silta is live. Tap through the real app.</h1>
+        <p class="silta-hero-lede">Pick a language, tap where it worries you, and get the right door with the words to say in Finnish. No name, no ID.</p>
+        <div class="silta-try-scan">
+          {% if qr %}<div class="silta-try-qr" aria-hidden="true">{{ qr }}</div>{% endif %}
+          <div>
+            <p class="silta-try-scan-title">Scan to try it on your own phone</p>
+            <p class="silta-url mb-3"><code>{{ consumer.url | replace("https://", "") }}</code></p>
+            <a class="btn btn-primary btn-lg" href="{{ consumer.url }}"><i class="ti ti-device-mobile me-2"></i>Open the app</a>
+          </div>
+        </div>
+      </div>
+      <ul class="silta-highlights silta-try-jump" aria-label="More ways in">
+        {% for group in site.link_groups %}{% for key in group.links if site.links[key] %}{% set l = site.links[key] %}
+        <li>
+          <i class="ti ti-{{ l.icon }}" aria-hidden="true"></i>
+          <a href="#try-{{ key }}"><strong>{{ l.label }}</strong>{% if l.short %}<span>{{ l.short }}</span>{% endif %}</a>
+        </li>
+        {% endfor %}{% endfor %}
+      </ul>
+      {# The slot keeps the hero's layout while the phone is maximised (static/try-live.js). #}
+      <div class="silta-try-live">
+        <figure class="silta-live" aria-label="The live Silta app for residents">
+          <div class="silta-phone">
+            <div class="silta-live-screen">
+              {# Until the app has loaded, the view shows its first page as a still (site.hero_screens[0]). #}
+              <div class="silta-live-view"{% if site.hero_screens %} style="background-image: url('{{ site.hero_screens[0].src }}')"{% endif %}>
+                <iframe src="{{ consumer.url }}" title="The live Silta app for residents" loading="lazy" onload="this.classList.add('is-loaded')"></iframe>
+              </div>
+            </div>
+          </div>
+          <figcaption>
+            <span class="silta-live-label"><span class="silta-live-dot" aria-hidden="true"></span>Live app, not a recording</span>
+            <button type="button" class="silta-live-toggle" data-live-toggle aria-pressed="false">
+              <i class="ti ti-arrows-maximize" aria-hidden="true"></i><span>Maximise for a demo</span>
+            </button>
+          </figcaption>
+          {% if qr %}
+          {# Shown beside the phone only while maximised: the audience can scan it and follow along. #}
+          <div class="silta-live-side">
+            <div class="silta-live-qr" aria-hidden="true">{{ qr }}</div>
+            <p class="silta-live-side-title">Try it on your own phone</p>
+            <p class="silta-live-side-url">{{ consumer.url | replace("https://", "") | trim("/") }}</p>
+          </div>
+          {% endif %}
+        </figure>
+      </div>
+    </section>
+    {% endif %}
 
     {% for group in site.link_groups %}
-    <section class="silta-section">
-      <h2>{{ group.title }}</h2>
-      {% if group.lede %}<p class="text-secondary silta-lede">{{ group.lede }}</p>{% endif %}
-      <div class="row row-cards">
-        {% for key in group.links if site.links[key] %}
-        <div class="col-md-6">{{ link_card(site.links[key]) }}</div>
-        {% endfor %}
-      </div>
-
+    <section class="silta-section silta-block" aria-labelledby="try-group-{{ loop.index }}">
+      {% if group.eyebrow %}<p class="silta-eyebrow">{{ group.eyebrow }}</p>{% endif %}
+      <h2 id="try-group-{{ loop.index }}">{{ group.title }}</h2>
+      {% if group.lede %}<p class="silta-lede">{{ group.lede }}</p>{% endif %}
+      <ul class="silta-try-cards silta-try-cards-{{ group.links | length }}">
+        {% for key in group.links if site.links[key] %}{{ try_card(key, site.links[key]) }}{% endfor %}
+      </ul>
     </section>
     {% endfor %}
 
-    <section class="silta-section">
-      <h2>Technical information</h2>
-      <div class="card">
-        <div class="card-body silta-tech-info">
-          {% if site.links.source %}
-          <div>
-            <p class="silta-eyebrow">Source code</p>
-            <p class="mb-1">{{ site.links.source.description }}</p>
-            <a href="{{ site.links.source.url }}"><i class="ti ti-brand-github me-1"></i>{{ site.links.source.url | replace("https://", "") }}</a>
-          </div>
-          {% endif %}
-          <div>
-            <p class="silta-eyebrow">Built with</p>
-            <p class="mb-0">{{ site.technologies | join(" · ") }}</p>
-          </div>
-          <div>
-            <p class="silta-eyebrow">Tech partners</p>
-            <p class="mb-1">Where Aiven, Gemini and ElevenLabs fit in the resident's journey.</p>
-            <a href="/tech">How we use each tech partner <i class="ti ti-arrow-right"></i></a>
-          </div>
-        </div>
+    <section class="silta-section silta-block silta-try-tech" aria-labelledby="try-tech">
+      <p class="silta-eyebrow">Technical information</p>
+      <h2 id="try-tech" class="visually-hidden">Technical information</h2>
+      <div class="silta-meta">
+      {% if site.links.source %}
+      <div>
+        <h3>Source code</h3>
+        <p class="mb-1">{{ site.links.source.description }}</p>
+        <a href="{{ site.links.source.url }}"><i class="ti ti-brand-github me-1"></i>{{ site.links.source.url | replace("https://", "") }}</a>
+      </div>
+      {% endif %}
+      <div>
+        <h3>Built with</h3>
+        <p>{{ site.technologies | join(" · ") }}</p>
+      </div>
+      <div>
+        <h3>Tech partners</h3>
+        <p class="mb-1">Where Aiven, Gemini and ElevenLabs fit in the resident's journey.</p>
+        <a href="/tech">How we use each tech partner <i class="ti ti-arrow-right"></i></a>
+      </div>
       </div>
     </section>
   </div>
 </main>
 {% endblock %}
+
+{% block scripts %}<script src="/static/try-live.js" defer></script>{% endblock %}

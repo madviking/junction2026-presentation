@@ -176,9 +176,8 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .silta-fit-num { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--silta-lake); color: var(--tblr-primary-fg); font: 700 14px var(--silta-font-data); }
 .silta-fit-steps div strong { display: block; font-family: var(--silta-font-display); font-weight: 800; font-size: 17px; line-height: 1.2; color: var(--silta-ink); }
 .silta-fit-steps div span { display: block; margin-top: 4px; font-size: 14.5px; line-height: 1.45; color: var(--silta-muted); }
-.silta-fit-note { max-width: 70ch; margin-top: 24px; }
+.silta-fit-note { margin-top: 24px; }
 .silta-fit-note p { font-size: 17px; line-height: 1.6; margin: 0; }
-.silta-fit-more { margin: 12px 0 0; font-weight: 700; }
 @media (max-width: 991.98px) {
   .silta-fit-legend { grid-template-columns: 1fr; row-gap: 24px; }
   .silta-fit-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -426,10 +425,132 @@ dialog.pw-pop::backdrop { background: rgba(10, 20, 25, .4); }
 .silta-pw-notes summary { cursor: pointer; color: var(--silta-ink); font-weight: 700; }
 .silta-pw-notes ul { padding-left: 18px; display: grid; gap: 4px; margin: 8px 0; }
 
-/* try page: technical information row */
-.silta-tech-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
-.silta-tech-info .silta-eyebrow { margin-bottom: 4px; }
-.silta-tech-info a { word-break: break-all; }
+/* Try page (/try): hero with the live app in a phone, then one card per way in, each led by a picture. */
+.silta-try-hero { display: grid; grid-template-columns: minmax(0, 560px) minmax(0, 1fr) auto; gap: 40px; align-items: center; padding: 40px 0 32px; }
+.silta-try-jump a { color: inherit; text-decoration: none; }
+.silta-try-jump a:hover strong { color: var(--silta-lake); }
+.silta-try-jump strong { font-size: 17px; }
+.silta-try-jump li { padding: 13px 0; }
+.silta-try-card { scroll-margin-top: 24px; }
+.silta-try-title { font-size: clamp(36px, 5.2vw, 64px); line-height: 1; font-weight: 800; color: var(--silta-lake); margin: 0 0 18px; max-width: 14ch; }
+.silta-try-scan { display: flex; align-items: center; gap: 24px; padding: 20px; border: 1px solid var(--silta-line); border-radius: 16px; background: var(--silta-surface); max-width: 560px; }
+.silta-try-qr { flex: none; width: 132px; padding: 10px; background: #ffffff; border-radius: 10px; border: 1px solid var(--silta-line); }
+.silta-try-qr svg { display: block; width: 100%; height: auto; }
+.silta-try-scan-title { font-family: var(--silta-font-display); font-weight: 800; font-size: 20px; line-height: 1.2; margin: 0 0 6px; }
+.silta-try-scan .silta-url code { font-size: 13px; }
+/* The live app: rendered at a 390 x 835 phone viewport and scaled by --s, inside a white screen
+   margin like the landing slider's. Maximised (.is-max, static/try-live.js) it becomes a fixed
+   overlay on a darkened page and the script sets --s to fit the window; the iframe never moves
+   in the DOM, so the app keeps its state. */
+.silta-try-live { justify-self: center; }
+.silta-live { --s: .66; --pad-x: 14px; --pad-y: 20px; margin: 0; display: grid; justify-items: center; gap: 12px; }
+.silta-live .silta-phone { width: auto; }
+.silta-live-screen { padding: var(--pad-y) var(--pad-x); border-radius: 24px; background: #ffffff; }
+.silta-live-view { position: relative; width: calc(390px * var(--s)); height: calc(835px * var(--s)); overflow: hidden; border-radius: 6px; background: #ffffff top / 100% auto no-repeat; }
+.silta-live-view iframe { position: absolute; top: 0; left: 0; width: 390px; height: 835px; border: 0; transform: scale(var(--s)); transform-origin: 0 0; opacity: 0; transition: opacity .3s; }
+.silta-live-view iframe.is-loaded { opacity: 1; }
+.silta-live figcaption { display: grid; justify-items: center; gap: 8px; }
+.silta-live-label { display: flex; align-items: center; gap: 8px; color: var(--silta-muted); font: 600 13px var(--silta-font-data); letter-spacing: .04em; }
+.silta-live-dot { width: 9px; height: 9px; border-radius: 50%; background: #2f9e5b; box-shadow: 0 0 0 4px rgba(47, 158, 91, .18); }
+.silta-live-toggle { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border: 1px solid var(--silta-line); border-radius: 999px; background: var(--silta-surface);
+  color: var(--silta-ink); font: 700 14px var(--silta-font-body); cursor: pointer; }
+.silta-live-toggle:hover { border-color: var(--silta-lake); color: var(--silta-lake); }
+.silta-live-toggle .ti { font-size: 18px; }
+.silta-live.is-max { position: fixed; inset: 0; z-index: 1050; --pad-x: 18px; --pad-y: 26px; align-content: center; gap: 16px;
+  background: rgba(6, 12, 15, .92); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.silta-live.is-max .silta-phone { box-shadow: 0 30px 80px rgba(0, 0, 0, .6); background: #2a3a42; }
+.silta-live.is-max .silta-live-label { color: #b8c6cc; }
+.silta-live.is-max .silta-live-toggle { background: transparent; border-color: rgba(255, 255, 255, .3); color: #ffffff; }
+.silta-live.is-max .silta-live-toggle:hover { border-color: #ffffff; }
+body.silta-live-open { overflow: hidden; }
+/* the QR panel beside the maximised phone */
+.silta-live-side { display: none; }
+.silta-live.is-max { grid-template-columns: auto auto; justify-content: center; column-gap: clamp(32px, 6vw, 96px); }
+.silta-live.is-max > .silta-phone { grid-column: 1; grid-row: 1; }
+.silta-live.is-max > figcaption { grid-column: 1; grid-row: 2; }
+.silta-live.is-max .silta-live-side { display: grid; justify-items: center; gap: 10px; grid-column: 2; grid-row: 1 / span 2; align-self: center; max-width: 300px; text-align: center; }
+.silta-live-qr { width: clamp(180px, 22vw, 280px); padding: 16px; background: #ffffff; border-radius: 16px; }
+.silta-live-qr svg { display: block; width: 100%; height: auto; }
+.silta-live-side-title { margin: 8px 0 0; font: 800 clamp(20px, 2vw, 28px)/1.15 var(--silta-font-display); color: #ffffff; text-wrap: balance; }
+.silta-live-side-url { margin: 0; font: 500 14px var(--silta-font-data); color: #b8c6cc; word-break: break-all; }
+@media (max-width: 899.98px) { .silta-live.is-max .silta-live-side { display: none; } }
+@media (prefers-reduced-motion: no-preference) {
+  .silta-live.is-max { animation: silta-live-in .2s ease-out; }
+  @keyframes silta-live-in { from { background: rgba(6, 12, 15, 0); } }
+}
+
+.silta-try-cards { list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 24px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.silta-try-cards-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.silta-try-card { overflow: hidden; display: flex; flex-direction: column; }
+.silta-try-card .card-body { padding: 22px 24px 8px; display: flex; flex-direction: column; gap: 10px; }
+.silta-try-card h3 { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 800; margin: 0; }
+.silta-try-card h3 .ti { font-size: 24px; color: var(--silta-lake); }
+.silta-try-card .card-body > p { margin: 0; line-height: 1.55; }
+.silta-try-card .card-body > .silta-eyebrow { margin: -4px 0 0; }
+.silta-try-action { margin-top: auto; padding: 14px 24px 24px; }
+.silta-try-number { font: 700 22px var(--silta-font-data); letter-spacing: .02em; color: var(--silta-ink); }
+
+/* picture area at the top of each card */
+.silta-try-media { position: relative; height: 280px; overflow: hidden; background: var(--silta-lake-soft); border-bottom: 1px solid var(--silta-line); }
+.silta-try-media-phone { display: flex; justify-content: center; padding-top: 28px; }
+.silta-try-media-phone .silta-phone { width: 210px; padding: 8px 8px 0; border-radius: 28px 28px 0 0; box-shadow: 0 16px 40px rgba(20, 32, 40, .22); }
+.silta-try-media-phone .silta-phone img { border-radius: 20px 20px 0 0; }
+.silta-try-media-paper { background: var(--silta-sand-soft); }
+.silta-try-paper { position: absolute; left: 50%; top: 26px; width: 230px; height: 330px; object-fit: cover; object-position: top; transform: translateX(-62%) rotate(-3deg);
+  background: #fff; box-shadow: 0 12px 30px rgba(20, 32, 40, .18); }
+/* a magnified view of the QR box at the bottom of the same letter */
+.silta-try-zoom { position: absolute; right: 14px; bottom: 22px; width: 62%; max-width: 250px; height: auto; border-radius: 10px;
+  background: #fff; border: 3px solid var(--silta-lake); box-shadow: 0 10px 26px rgba(20, 32, 40, .25); transform: rotate(2deg); }
+.silta-try-media-browser { height: 300px; display: flex; justify-content: center; padding: 28px 28px 0; }
+.silta-browser { width: 100%; max-width: 560px; border-radius: 12px 12px 0 0; overflow: hidden; background: #ffffff; box-shadow: 0 16px 40px rgba(20, 32, 40, .2); border: 1px solid var(--silta-line); border-bottom: 0; }
+.silta-browser-bar { display: flex; align-items: center; gap: 6px; padding: 9px 12px; background: #eef1ef; border-bottom: 1px solid #d6ddd8; }
+.silta-browser-bar i { width: 10px; height: 10px; border-radius: 50%; background: #c9d1cd; }
+.silta-browser-bar span { margin-left: 8px; flex: 1; min-width: 0; padding: 2px 10px; border-radius: 6px; background: #ffffff; color: #56636b; font: 500 11.5px var(--silta-font-data); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.silta-browser img { display: block; width: 100%; height: auto; }
+[data-bs-theme="dark"] .silta-browser { border-color: #2a3a42; }
+
+/* the phone line's keypad menu */
+.silta-try-media-keypad { display: grid; align-content: center; justify-items: center; gap: 12px; padding: 20px; background: var(--silta-ink); }
+[data-bs-theme="dark"] .silta-try-media-keypad { background: #0b1114; }
+.silta-keypad { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 92px); gap: 8px; }
+.silta-keypad li { display: grid; justify-items: center; gap: 1px; padding: 6px 4px; border-radius: 12px; background: rgba(255, 255, 255, .08); color: #e5ecef; }
+.silta-keypad li:last-child { grid-column: 1 / -1; }
+.silta-keypad b { font: 700 18px/1.1 var(--silta-font-data); color: #ffffff; }
+.silta-keypad span { font-size: 11.5px; line-height: 1.2; color: #b8c6cc; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.silta-keypad-or { margin: 0; color: #b8c6cc; font: 600 12px var(--silta-font-data); letter-spacing: .06em; text-transform: uppercase; }
+
+/* language chips under the letter and the guide */
+.silta-langs { list-style: none; margin: 2px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.silta-langs a { display: inline-block; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--silta-line); font-size: 13.5px; color: var(--silta-ink); text-decoration: none; }
+.silta-langs a:hover { border-color: var(--silta-lake); color: var(--silta-lake); }
+.silta-langs a[aria-current="true"] { background: var(--silta-lake-soft); border-color: var(--silta-lake); color: var(--silta-lake); font-weight: 700; }
+
+.silta-try-tech .silta-meta { margin-top: 4px; }
+.silta-try-tech h3 { font-size: 20px; font-weight: 800; }
+.silta-try-tech a { word-break: break-word; }
+
+@media (max-width: 1199.98px) {
+  .silta-try-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 1199.98px) {
+  .silta-try-hero { grid-template-columns: minmax(0, 1fr) auto; }
+  .silta-try-jump { grid-column: 1; grid-row: 2; width: auto; max-width: 560px; justify-self: stretch; }
+  .silta-try-live { grid-column: 2; grid-row: 1 / span 2; }
+}
+@media (max-width: 767.98px) {
+  .silta-try-hero { grid-template-columns: 1fr; }
+  .silta-try-jump { grid-row: auto; }
+}
+@media (max-width: 767.98px) {
+  .silta-try-hero { padding-top: 24px; }
+  /* on a phone the reader already holds a phone: no embedded phone, no QR code */
+  .silta-try-live, .silta-try-qr { display: none; }
+  .silta-try-scan { padding: 0; border: 0; background: none; }
+  .silta-try-scan-title { display: none; }
+  .silta-try-cards, .silta-try-cards-2 { grid-template-columns: 1fr; }
+  .silta-try-media { height: 240px; }
+  .silta-try-media-browser { height: 240px; padding: 20px 16px 0; }
+}
 
 /* View-only demo login under the Admin link (try and landing pages). */
 .silta-demo-login {
