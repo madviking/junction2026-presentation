@@ -1,7 +1,7 @@
 # AGENTS.md — Silta project site (junction2026-presentation)
 
 The team's public face and shared shelf for Junction 2026: the landing page, the
-data dashboard, the deck, the video, printouts, links to the app, and the team's
+pathway data page, the deck, the video, printouts, links to the app, and the team's
 internal materials. Python (FastAPI + Jinja), Tabler UI kit, Plotly charts, one
 Docker image. The product itself lives in `../tech` (`junction2026tech`); the
 knowledge base lives in `../brain` (`junction2026`).
@@ -37,7 +37,9 @@ one-pagers, charts, mock-ups, exports, PDFs.
 | `content/materials/` | Team-internal artefacts + `_links.yaml` for external ones | `/team` (password) |
 | `content/media/` | Public images and video used by pages and slides | `/media/...` |
 | `content/data/*.csv` | Dashboard data, each traced to a brain source (`content/data/README.md`) | — |
-| `app/charts/*.py` | One module per dashboard chart, auto-discovered | `/dashboard` |
+| `content/data/pathway.json` | The pathway page: steps, evidence levels, findings, actions, page text; `charts` per step | `/pathway` |
+| `app/charts/*.py` | One module per chart, auto-discovered; shown on a pathway step via `charts` | `/pathway`, `/pathway/archive` |
+| `content/dashboard_archive.yaml` | The earlier report-style data page, kept for reference | `/pathway/archive` (`/dashboard` redirects to `/pathway`) |
 | `app/main.py` | Routes. `app/content.py` loads content, `app/auth.py` guards `/team` | — |
 | `compose.aiven.yaml` | Aiven Runtime manifest (hosting); `compose.yaml` = plain Docker host; `local.compose.yaml` = live-edit overlay | — |
 | `app/templates/`, `app/static/` | Jinja templates, Silta CSS on top of Tabler, deck and print CSS | — |
@@ -53,7 +55,7 @@ in two layers:
    diagram, a key number, a screenshot) with one sentence that states the takeaway.
    A judge who reads only this layer still gets the point.
 2. **Drill down.** Method, caveats, the full data and the reasoning sit below it or
-   behind it: collapsed panels, linked pages, the dashboard, the brain repo. Nothing
+   behind it: collapsed panels, linked pages, the pathway page, the brain repo. Nothing
    is hidden, but none of it comes first.
 
 How we write:
@@ -96,7 +98,7 @@ mostly visually, how their technology fits into Silta**, and can then drill down
   panel, in this order: how Silta uses it, architecture, what is live vs planned,
   what the challenge asks, why it matters. Keep the body as careful as its sources.
 
-## Adding a dashboard chart
+## Adding a chart
 
 1. Put the data in `content/data/<name>.csv` and add a row to `content/data/README.md` naming its source.
    Real, sourced numbers only; sample data must be called `sample_*.csv` and say so in the subtitle.
@@ -105,7 +107,8 @@ mostly visually, how their technology fits into Silta**, and can then drill down
    `(figure, table)`. Start from `new_figure(p)` and use only palette keys (`p["lake"]`,
    `p["coral"]`, `p["reference"]`, ...), never raw colors, so light and dark both work.
 3. One axis per chart, a legend for two or more series, a data table, a hover template.
-4. `make test`, then look at `/dashboard` in both themes.
+4. To show it on the pathway page, add its module name to a step's `charts` list in `content/data/pathway.json`.
+5. `make test`, then look at `/pathway` in both themes.
 
 ## Run
 

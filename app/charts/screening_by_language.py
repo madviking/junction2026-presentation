@@ -19,8 +19,8 @@ def build(p: dict):
     fig = new_figure(p, yaxis={"range": [0, 100], "ticksuffix": "%", "gridcolor": p["line"],
                                "tickfont": {"color": p["muted"]}, "zeroline": False})
     series = (
-        ("Finnish, Swedish or Sámi", "domestic_pct", "domestic_invited", p["reference"]),
-        ("Other or unknown language", "other_pct", "other_invited", p["lake"]),
+        ("Finnish, Swedish or Sámi", "domestic_pct", "domestic_invited", p["lake"]),
+        ("Other or unknown language", "other_pct", "other_invited", p["coral"]),
     )
     for name, pct, invited, color in series:
         fig.add_trace(

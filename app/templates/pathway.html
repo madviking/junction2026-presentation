@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Pathway — {{ site.name }}{% endblock %}
+{% block body %}
+{# The care pathway by native language. Data and text: content/data/pathway.json; script: static/pathway.js.
+   Charts listed under a step's `charts` are rendered here (app/charts/) and drawn when that step is selected. #}
+<main class="page-body">
+  <div class="silta-pw-page">
+    <header class="silta-pw-head">
+      <p class="pw-eyebrow">Silta · Pathway · data 2020–2024</p>
+      <h1>{{ pathway.page.title }}</h1>
+      <p class="silta-pw-lede">{{ pathway.page.lede | safe }}</p>
+    </header>
+
+    {% include "_pathway.html" %}
+
+    <p class="silta-pw-side">{{ pathway.page.step0 | safe }}</p>
+
+    <details class="silta-pw-notes">
+      <summary>How to read this, limits and sources</summary>
+      <ul>{% for n in pathway.page.notes %}<li>{{ n }}</li>{% endfor %}</ul>
+      <p>The earlier report-style data page, with all of its charts and text, is kept at <a href="/pathway/archive">/pathway/archive</a>.</p>
+    </details>
+  </div>
+  {% for item in charts.values() %}
+  <script type="application/json" id="pw-fig-{{ item.chart.id }}">{"title": {{ item.chart.title | tojson }}, "subtitle": {{ item.chart.subtitle | tojson }}, "source": {{ item.chart.source | tojson }}, "height": {{ item.chart.height }}, "light": {{ item.figures.light | safe }}, "dark": {{ item.figures.dark | safe }}}</script>
+  {% endfor %}
+</main>
+{% endblock %}
+{% block scripts %}
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+<script src="/static/pathway.js"></script>
+{% endblock %}

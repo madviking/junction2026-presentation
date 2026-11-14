@@ -1,0 +1,30 @@
+{# Interactive pathway timeline for /pathway. Data: content/data/pathway.json; script: static/pathway.js. #}
+<figure class="silta-pathway" aria-label="Screening and symptom pathway by native language">
+  <div class="pw-card">
+    <div class="pw-bar">
+      <div class="pw-seg" role="group" aria-label="Screening programme">
+        <button type="button" data-p="colorectal" aria-pressed="true">Colorectal</button>
+        <button type="button" data-p="breast" aria-pressed="false">Breast</button>
+        <button type="button" data-p="cervical" aria-pressed="false">Cervical</button>
+      </div>
+      <div class="pw-legend">
+        <span><i class="pw-k pw-lang"></i>Measured by native language</span>
+        <span><i class="pw-k pw-ind"></i>Indirect: by county, origin or all invitees</span>
+        <span><i class="pw-k pw-none"></i>Not measured</span>
+      </div>
+    </div>
+    <div class="pw-scroll"><div class="pw-tl" data-pw="main"></div></div>
+    <p class="pw-unit">Each value is the share of people who reached that step and took it (2024 unless noted). Pills show the gap in percentage points, in coral when the 95% confidence interval excludes zero. Boxed labels are national strategy targets.</p>
+    <div class="pw-sym-wrap">
+      <div class="pw-eyebrow">Symptom route (“I noticed something”), including lung cancer · no screening programme</div>
+      <div class="pw-scroll"><div class="pw-tl pw-sym" data-pw="sym"></div></div>
+    </div>
+  </div>
+  <div class="pw-detail" aria-live="polite">
+    <article class="pw-panel" data-pw="problem"></article>
+    <article class="pw-panel pw-solve" data-pw="solve"></article>
+  </div>
+  <div class="pw-charts" data-pw="charts"></div>
+  <noscript><p>The interactive pathway needs JavaScript. The archived data page at /pathway/archive shows the same figures as static charts and tables.</p></noscript>
+  <script type="application/json" id="pathway-data">{{ pathway | tojson }}</script>
+</figure>

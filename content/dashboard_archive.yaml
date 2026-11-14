@@ -1,3 +1,5 @@
+# ARCHIVED 2026-11-14: the earlier report-style data story, kept at /pathway/archive for reference
+# (graphs and wording). The live page is /pathway (content/data/pathway.json).
 # /dashboard: a short report-style data story.
 # Each section: title (informational) → intro (links to the previous section) → one figure,
 # table or list → finding → folded details. Findings stay neutral; Silta's proposed responses
