@@ -26,7 +26,7 @@ def build(p: dict):
     fig.update_layout(template.layout, showlegend=False)
     for col, (name, key) in enumerate(PROGRAMMES, start=1):
         values = [float(r[key]) for r in rows][::-1]
-        colors = [p["reference"] if region == "Finland" else p["lake"] for region in regions]
+        colors = [p["lake"] if region == "Finland" else p["coral"] for region in regions]
         fig.add_trace(
             go.Bar(
                 x=values,
@@ -42,7 +42,7 @@ def build(p: dict):
             row=1,
             col=col,
         )
-        fig.update_xaxes(range=[0, 100], ticksuffix="%", gridcolor=p["line"], zeroline=False,
+        fig.update_xaxes(range=[0, 100], tickvals=[0, 50], ticksuffix="%", gridcolor=p["line"], zeroline=False,
                          tickfont={"color": p["muted"]}, row=1, col=col)
     fig.update_yaxes(tickfont={"color": p["muted"]}, gridcolor="rgba(0,0,0,0)")
     fig.update_annotations(font={"family": FONT, "color": p["ink"], "size": 13})

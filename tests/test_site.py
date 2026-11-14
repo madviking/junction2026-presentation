@@ -23,7 +23,7 @@ def basic(password: str) -> dict:
     [
         ("/healthz", "ok"),
         ("/", "Silta"),
-        ("/dashboard", "Screening attendance by native language"),
+        ("/dashboard", "The gap opens at the first step"),
         ("/presentation", 'class="reveal"'),
         ("/video", "The video is not up yet"),
         ("/try", "Demo path"),
@@ -105,6 +105,26 @@ def test_every_chart_renders_both_themes_and_a_table():
         rendered = chart.render()
         assert set(rendered["figures"]) == {"light", "dark"}
         assert rendered["table"]["columns"] and rendered["table"]["rows"]
+
+
+def test_dashboard_story_is_complete():
+    story = content.dashboard()
+    blocks = story["blocks"]
+    assert len(blocks) == 9  # context + 8 findings
+    available = charts.by_id()
+    for block in blocks:
+        assert block.get("headline"), block["id"]
+        if block.get("chart"):
+            assert block["chart"] in available, block["chart"]
+        if not block.get("placeholder"):
+            assert block.get("source"), f"{block['id']} has no source"
+
+
+def test_dashboard_shows_every_story_chart(client):
+    html = client.get("/dashboard").text
+    for block in content.dashboard()["blocks"]:
+        if block.get("chart"):
+            assert f'data-chart="{block["chart"]}"' in html
 
 
 def test_tech_challenge_pages(client, tmp_path, monkeypatch):

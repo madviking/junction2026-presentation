@@ -129,3 +129,7 @@ def discover() -> list[Chart]:
             )
         )
     return sorted(charts, key=lambda c: (c.order, c.id))
+
+
+def by_id() -> dict[str, Chart]:
+    return {chart.id: chart for chart in discover()}

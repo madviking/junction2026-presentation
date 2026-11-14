@@ -1,0 +1,7 @@
+programme,step,domestic_pct,other_pct,gap_pp,ci_low,ci_high,other_n,years,verdict
+Breast,Attended screening,83.2,60.8,-22.4,-23.0,-21.7,24803,2024,gap
+Breast,Referred on after further exams,29.9,25.5,-4.4,-8.5,-0.3,458,2024,unclear
+Cervical,Attended screening,76.2,56.3,-19.9,-20.4,-19.3,34391,2024,gap
+Cervical,Attended colposcopy after referral,84.8,87.1,2.3,-0.6,5.2,557,2024,none
+Colorectal,Attended screening,74.5,53.4,-21.1,-21.9,-20.5,19720,2024,gap
+Colorectal,Colonoscopy after positive test,,,-8.8,-11.3,-6.3,1363,2022–2024 pooled,gap
