@@ -1,61 +1,43 @@
-{# Routes into care for /pathway. Data: content/data/pathway.json; script: static/pathway.js.
-   The route lines are drawn here; nodes, Silta bands, the info panel and the data popup are filled by the script.
+{# Routes into care for the pathway slide (/presentation/pathway). Data: content/data/pathway.json; script: static/pathway.js.
+   The route lines and pills are drawn here; nodes, Silta bands and the info card over the map are filled by the script.
    Two views share the map: Analysis (gaps, coral pills) and Impact (costs, blue tags, `impact` in pathway.json).
    Elements marked pw-for-analysis / pw-for-impact show only in that view (data-mode on .silta-pw-page). #}
 <figure class="silta-pathway" aria-label="Three routes into cancer care">
-  <div class="pw-card">
-    <div class="pw-modes" role="group" aria-label="Choose a view">
-      <button type="button" class="pw-mode" data-pw-mode="analysis" aria-pressed="true"><b>Analysis</b><span>where people drop out</span></button>
-      <button type="button" class="pw-mode" data-pw-mode="impact" aria-pressed="false"><b>Impact</b><span>who isn't reached, and the cost</span></button>
-    </div>
-
-    <div class="pw-panel pw-empty" data-pw="panel" aria-live="polite"><p>{{ pathway.page.prompt }}</p></div>
-
-    <div class="pw-legend">
-      <span><svg width="34" height="8" aria-hidden="true"><line x1="2" y1="4" x2="32" y2="4" class="pw-seg pw-lang"/></svg>{{ pathway.levels.lang }}</span>
-      <span><svg width="34" height="8" aria-hidden="true"><line x1="3" y1="4" x2="31" y2="4" class="pw-seg pw-other"/></svg>{{ pathway.levels.other }}</span>
-      <span><svg width="34" height="8" aria-hidden="true"><line x1="3" y1="4" x2="31" y2="4" class="pw-seg pw-none"/></svg>Not measured</span>
-      <span class="pw-gapkey pw-for-analysis">Coral = significant gap</span>
-      <span class="pw-costkey pw-for-impact">Blue = cost and reach</span>
-      <span class="pw-ctxkey pw-for-impact">Outlined = context</span>
-    </div>
-
-    <div class="pw-scroll">
-      <div class="pw-canvas">
-        <svg class="pw-routes" viewBox="0 0 1000 420" role="group" aria-label="Three routes into cancer care merging at the diagnostic exam">
-          <text class="pw-route" x="34" y="34">Screening letter</text>
-          <text class="pw-route" x="34" y="156">Symptom</text>
-          <text class="pw-route" x="34" y="312">Doctor's suggestion</text>
-          <path class="pw-seg pw-lang" d="M70 70 L430 70"/>
-          <path class="pw-seg pw-other" d="M430 70 L560 70 C 640 70, 640 200, 700 200"/>
-          <path class="pw-seg pw-none" d="M70 200 L200 200"/>
-          <path class="pw-seg pw-other" d="M200 200 C 250 200, 260 162, 320 162 L480 162 C 600 162, 600 200, 700 200"/>
-          <path class="pw-seg pw-other" d="M200 200 C 250 200, 260 238, 320 238 L480 238 C 600 238, 600 200, 700 200"/>
-          <text class="pw-sub" x="330" y="144">Public health centre</text>
-          <text class="pw-sub" x="330" y="266">Private or occupational care</text>
-          <path class="pw-seg pw-none" d="M70 340 L250 340 C 560 340, 580 200, 700 200"/>
-          <path class="pw-seg pw-none" d="M700 200 L930 200"/>
-          <path class="pw-arrow" d="M930 193 L944 200 L930 207 Z"/>
-          <g class="pw-for-analysis">
-            <g class="pw-pill" transform="translate(252 32)"><rect x="-82" y="-17" width="164" height="34" rx="9"/><text text-anchor="middle" y="-2">57% attend</text><text class="pw-pill-sub" text-anchor="middle" y="11">vs 78% Finnish, Swedish</text></g>
-            <g class="pw-pill" transform="translate(436 32)"><rect x="-70" y="-17" width="140" height="34" rx="9"/><text text-anchor="middle" y="-2">68% followed up</text><text class="pw-pill-sub" text-anchor="middle" y="11">vs 77%</text></g>
-            <g class="pw-pill" transform="translate(540 138)"><rect x="-58" y="-17" width="116" height="34" rx="9"/><text text-anchor="middle" y="-2">+84 days</text><text class="pw-pill-sub" text-anchor="middle" y="11">to treatment</text></g>
-          </g>
-          <g class="pw-for-impact">
-            {# Solid blue: headline and money figures. Outlined: context figures. Details for every step are in the panel. #}
-            <g class="pw-pill pw-cost" transform="translate(255 32)"><rect x="-98" y="-23" width="196" height="46" rx="9"/><text text-anchor="middle" y="-8">251,000 not reached</text><text class="pw-pill-sub" text-anchor="middle" y="6">1 in 4 invited, every year</text><text class="pw-pill-sub" text-anchor="middle" y="18">€31 paid per invitation anyway</text></g>
-            <g class="pw-pill pw-ctx" transform="translate(470 32)"><rect x="-105" y="-23" width="210" height="46" rx="9"/><text text-anchor="middle" y="-8">1 in 4 skip colonoscopy</text><text class="pw-pill-sub" text-anchor="middle" y="6">after a positive test;</text><text class="pw-pill-sub" text-anchor="middle" y="18">87 cancers among them (2022)</text></g>
-            <g class="pw-pill pw-cost" transform="translate(540 136)"><rect x="-95" y="-17" width="190" height="34" rx="9"/><text text-anchor="middle" y="-2">≈ €460 to a specialist</text><text class="pw-pill-sub" text-anchor="middle" y="11">+84 days on the public route</text></g>
-            <g class="pw-pill pw-cost" transform="translate(860 150)"><rect x="-123" y="-17" width="246" height="34" rx="9"/><text text-anchor="middle" y="-2">+€15–30k per late diagnosis</text><text class="pw-pill-sub" text-anchor="middle" y="11">breast +€15,100 · colorectal +€30,170</text></g>
-            <g class="pw-pill pw-ctx" transform="translate(700 272)"><rect x="-100" y="-17" width="200" height="34" rx="9"/><text text-anchor="middle" y="-2">3.4 months' wait</text><text class="pw-pill-sub" text-anchor="middle" y="11">Helsinki; 0.8 in best counties</text></g>
-            <g class="pw-pill pw-cost" transform="translate(470 392)"><rect x="-135" y="-17" width="270" height="34" rx="9"/><text text-anchor="middle" y="-2">€45 per extra screening</text><text class="pw-pill-sub" text-anchor="middle" y="11">kit offered at a visit, vs €360 by phone</text></g>
-          </g>
-        </svg>
-        <div class="pw-silta" data-pw="bands">
-          <div class="pw-silta-head"><span class="pw-label">Where Silta helps</span><span>Select a band to see what it does.</span></div>
-        </div>
-      </div>
-    </div>
+  <div class="pw-map">
+    <svg class="pw-routes" viewBox="0 0 1000 420" role="group" aria-label="Three routes into cancer care merging at the diagnostic exam">
+      <text class="pw-route" x="34" y="34">Screening letter</text>
+      <text class="pw-route" x="34" y="156">Symptom</text>
+      <text class="pw-route" x="34" y="312">Doctor's suggestion</text>
+      <path class="pw-seg pw-lang" d="M70 70 L430 70"/>
+      <path class="pw-seg pw-other" d="M430 70 L560 70 C 640 70, 640 200, 700 200"/>
+      <path class="pw-seg pw-none" d="M70 200 L200 200"/>
+      <path class="pw-seg pw-other" d="M200 200 C 250 200, 260 162, 320 162 L480 162 C 600 162, 600 200, 700 200"/>
+      <path class="pw-seg pw-other" d="M200 200 C 250 200, 260 238, 320 238 L480 238 C 600 238, 600 200, 700 200"/>
+      <text class="pw-sub" x="330" y="144">Public health centre</text>
+      <text class="pw-sub" x="330" y="266">Private or occupational care</text>
+      <path class="pw-seg pw-none" d="M70 340 L250 340 C 560 340, 580 200, 700 200"/>
+      <path class="pw-seg pw-none" d="M700 200 L930 200"/>
+      <path class="pw-arrow" d="M930 193 L944 200 L930 207 Z"/>
+      <g class="pw-for-analysis">
+        <g class="pw-pill" transform="translate(252 32)"><rect x="-82" y="-17" width="164" height="34" rx="9"/><text text-anchor="middle" y="-2">57% attend</text><text class="pw-pill-sub" text-anchor="middle" y="11">vs 78% Finnish, Swedish</text></g>
+        <g class="pw-pill" transform="translate(436 32)"><rect x="-70" y="-17" width="140" height="34" rx="9"/><text text-anchor="middle" y="-2">68% followed up</text><text class="pw-pill-sub" text-anchor="middle" y="11">vs 77%</text></g>
+        <g class="pw-pill" transform="translate(540 138)"><rect x="-58" y="-17" width="116" height="34" rx="9"/><text text-anchor="middle" y="-2">+84 days</text><text class="pw-pill-sub" text-anchor="middle" y="11">to treatment</text></g>
+      </g>
+      <g class="pw-for-impact">
+        {# Solid blue: headline and money figures. Outlined: context figures. Details for every step are in the panel. #}
+        <g class="pw-pill pw-cost" transform="translate(262 32)"><rect x="-98" y="-23" width="196" height="46" rx="9"/><text text-anchor="middle" y="-8">251,000 not reached</text><text class="pw-pill-sub" text-anchor="middle" y="6">1 in 4 invited, every year</text><text class="pw-pill-sub" text-anchor="middle" y="18">€31 paid per invitation anyway</text></g>
+        <g class="pw-pill pw-ctx" transform="translate(470 32)"><rect x="-105" y="-23" width="210" height="46" rx="9"/><text text-anchor="middle" y="-8">1 in 4 skip colonoscopy</text><text class="pw-pill-sub" text-anchor="middle" y="6">after a positive test;</text><text class="pw-pill-sub" text-anchor="middle" y="18">87 cancers among them (2022)</text></g>
+        <g class="pw-pill pw-cost" transform="translate(540 136)"><rect x="-95" y="-17" width="190" height="34" rx="9"/><text text-anchor="middle" y="-2">≈ €460 to a specialist</text><text class="pw-pill-sub" text-anchor="middle" y="11">+84 days on the public route</text></g>
+        <g class="pw-pill pw-cost" transform="translate(860 150)"><rect x="-123" y="-17" width="246" height="34" rx="9"/><text text-anchor="middle" y="-2">+€15–30k per late diagnosis</text><text class="pw-pill-sub" text-anchor="middle" y="11">breast +€15,100 · colorectal +€30,170</text></g>
+        <g class="pw-pill pw-ctx" transform="translate(700 272)"><rect x="-100" y="-17" width="200" height="34" rx="9"/><text text-anchor="middle" y="-2">3.4 months' wait</text><text class="pw-pill-sub" text-anchor="middle" y="11">Helsinki; 0.8 in best counties</text></g>
+        <g class="pw-pill pw-cost" transform="translate(470 392)"><rect x="-135" y="-17" width="270" height="34" rx="9"/><text text-anchor="middle" y="-2">€45 per extra screening</text><text class="pw-pill-sub" text-anchor="middle" y="11">kit offered at a visit, vs €360 by phone</text></g>
+      </g>
+    </svg>
+    <div class="pw-over" data-pw="panel" aria-live="polite"></div>
+  </div>
+  <div class="pw-silta">
+    <span class="pw-label">Where Silta helps</span>
+    <div class="pw-sbars" data-pw="bands"></div>
   </div>
 
   <dialog class="pw-pop" id="pw-pop" aria-labelledby="pw-pop-title">

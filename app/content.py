@@ -121,29 +121,43 @@ class Slide:
     html: str
     notes: str = ""
     classes: str = ""
+    id: str = ""  # anchor for /presentation#/<id>
 
 
-def slides() -> tuple[dict, list[Slide]]:
-    """content/presentation.md: slides separated by a line with only `---`.
+def deck_v3() -> dict:
+    """content/presentation-v3.yaml: deck v3, one layout per slide (see the file header).
 
-    A line `Note:` starts speaker notes (press S in the deck). A first line
-    `<!-- class: name -->` adds a CSS class to that slide (e.g. `title`, `statement`).
+    A `number` slide without its own `bars` uses the shared `screening_bars`.
     """
-    meta, body = split_frontmatter(_read(settings.content_dir() / "presentation.md"))
+    deck = yaml.safe_load(_read(settings.content_dir() / "presentation-v3.yaml")) or {}
+    for slide in deck.get("slides", []):
+        if slide.get("layout") == "number" and not slide.get("bars"):
+            slide["bars"] = deck.get("screening_bars", [])
+    return deck
+
+
+def slides(filename: str = "presentation.md") -> tuple[dict, list[Slide]]:
+    """content/presentation.md (or another deck file, e.g. presentation-v2.md): slides
+    separated by a line with only `---`.
+
+    A line `Note:` starts speaker notes (press S in the deck). Leading comments
+    `<!-- class: name -->` add a CSS class to that slide (e.g. `title`, `statement`) and
+    `<!-- id: name -->` give it an address, /presentation#/name.
+    """
+    meta, body = split_frontmatter(_read(settings.content_dir() / filename))
     out: list[Slide] = []
     for chunk in SLIDE_BREAK.split(body):
         chunk = chunk.strip()
         if not chunk:
             continue
-        classes = ""
-        class_match = re.match(r"<!--\s*class:\s*([\w -]+?)\s*-->\s*", chunk)
-        if class_match:
-            classes, chunk = class_match.group(1), chunk[class_match.end():]
+        attrs = {"class": "", "id": ""}
+        while match := re.match(r"<!--\s*(class|id):\s*([\w -]+?)\s*-->\s*", chunk):
+            attrs[match.group(1)], chunk = match.group(2), chunk[match.end():]
         notes = ""
         note_split = re.split(r"^Note:\s*$", chunk, maxsplit=1, flags=re.MULTILINE)
         if len(note_split) == 2:
             chunk, notes = note_split
-        out.append(Slide(render_markdown(chunk), render_markdown(notes) if notes.strip() else "", classes))
+        out.append(Slide(render_markdown(chunk), render_markdown(notes) if notes.strip() else "", attrs["class"], attrs["id"]))
     return meta, out
 
 

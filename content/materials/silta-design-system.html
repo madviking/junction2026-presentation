@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Silta Design System</title>
+<meta name="description" content="One layout system for deck v3 and the pitch video: colours and what they mean, type scale, the slide frame, nine layouts, components (path, chips, sheets, phone/browser/paper frames) and the 1920×1080 video specs.">
+<meta name="tags" content="design, deck, video, presentation">
+<meta name="author" content="Timo Railo (drafted with Claude)">
+<meta name="updated" content="2026-11-14">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<link rel="stylesheet" href="/static/deck-v3.css">
+<style>
+  /* This page reuses the deck's tokens and components from /static/deck-v3.css. */
+  body { margin: 0; font: 400 17px/1.55 var(--f-body); }
+  .page { max-width: 1120px; margin: 0 auto; padding: 48px max(20px, env(safe-area-inset-left, 0px)) 96px; display: grid; gap: 64px; }
+  .page > header { display: grid; gap: 14px; border-bottom: 1px solid var(--line); padding-bottom: 32px; }
+  .page h1 { font: 800 56px/1 var(--f-display); letter-spacing: -0.02em; margin: 0; }
+  .page h2.sec { font: 800 32px/1.1 var(--f-display); margin: 0; letter-spacing: -0.01em; }
+  .page p { margin: 0; max-width: 72ch; }
+  .page section { display: grid; gap: 20px; }
+  .muted { color: var(--muted); }
+  .grid { display: grid; gap: 16px; }
+  .g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .box { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+  .swatch { height: 64px; border-radius: 10px; border: 1px solid var(--line); }
+  .mono { font: 500 13px/1.4 var(--f-mono); color: var(--muted); }
+  .label { font: 600 var(--t-label)/1 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  table.spec { width: 100%; border-collapse: collapse; font-size: 15px; }
+  table.spec th, table.spec td { text-align: left; padding: 10px 12px 10px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  table.spec th { font: 600 12px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .scroll { overflow-x: auto; }
+  /* the frame diagram: the 1280×720 slide at half size */
+  .canvas { position: relative; width: 640px; height: 360px; background: var(--paper); border: 1px solid var(--ink); border-radius: 6px; flex: none; }
+  .canvas .r { position: absolute; border: 1.5px dashed; border-radius: 4px; font: 600 11px/1 var(--f-mono); padding: 5px; letter-spacing: .06em; text-transform: uppercase; }
+  .r.rail { left: 36px; right: 36px; top: 28px; height: 14px; color: var(--coral); }
+  .r.head { left: 36px; width: 215px; top: 54px; bottom: 50px; color: var(--ink); }
+  .r.stage { left: 275px; right: 36px; top: 54px; bottom: 50px; color: var(--lake); }
+  .r.foot { left: 36px; right: 36px; bottom: 18px; height: 20px; color: var(--moss); }
+  .typesample { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 16px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .demo-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
+  .demo-row .phone img { width: 160px; height: 346px; border-width: 5px; border-radius: 20px; }
+  .demo-row .browser img { width: 300px; height: 300px; }
+  .demo-row .paper img:first-child { width: 220px; height: 300px; }
+  .video { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .vframe { position: relative; aspect-ratio: 16 / 9; width: 100%; max-width: 720px; background: var(--paper); border: 1px solid var(--ink); border-radius: 6px; overflow: hidden; }
+  .vframe .safe { position: absolute; inset: 5.6% 5.6% 7.8%; border: 1.5px dashed var(--muted); border-radius: 4px; }
+  .vframe .lower { position: absolute; left: 5.6%; bottom: 7.8%; background: var(--white); border-left: 6px solid var(--coral); padding: 2.2% 3%; display: grid; gap: 4px; max-width: 58%; box-shadow: var(--shadow); }
+  .vframe .lower .kicker { font-size: clamp(8px, 1.3vw, 13px); }
+  .vframe .lower b { font: 800 clamp(16px, 3vw, 30px)/1.05 var(--f-display); }
+  .vframe .lower span { font: 400 clamp(10px, 1.6vw, 16px)/1.3 var(--f-body); }
+  .do { display: grid; gap: 8px; }
+  .do li { margin-left: 1.1em; }
+  @media (max-width: 860px) {
+    .g2, .g3, .g4 { grid-template-columns: minmax(0, 1fr); }
+    .typesample { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <span class="kicker">Silta · team reference</span>
+    <h1>Silta Design System</h1>
+    <p class="muted">One system for deck v3 (<a href="/presentation/v3">/presentation/v3</a>) and the pitch video. The CSS lives in <span class="mono">app/static/deck-v3.css</span>; this page uses the same file, so what you see here is what the deck renders. Slide content is in <span class="mono">content/presentation-v3.yaml</span>.</p>
+  </header>
+
+  <section>
+    <h2 class="sec">Rules</h2>
+    <ul class="do">
+      <li><b>One sentence per slide.</b> A title and one line. Everything else goes into a drill-in.</li>
+      <li><b>At most three numbers in view</b>, and every number has a source in its drill-in or the foot.</li>
+      <li><b>Screens are always real</b> and always in a frame: phone, browser or paper.</li>
+      <li><b>Nothing moves position between slides.</b> Kicker, title, path, chips and source always sit in the same place.</li>
+      <li><b>Colour means something</b> (below). Never use coral or moss as decoration.</li>
+      <li>No emoji, no icons as decoration, no gradients except the drawer.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 class="sec">Colour and what it means</h2>
+    <div class="grid g4">
+      <div class="box"><div class="swatch" style="background:var(--coral)"></div><b>Coral</b><span class="mono">--coral #c2512f</span><span>The person and the gap: Hodan, "other language", the drill-in "For Hodan", emphasis in titles.</span></div>
+      <div class="box"><div class="swatch" style="background:var(--lake)"></div><b>Lake</b><span class="mono">--lake #1d5f8a</span><span>Silta and the county: "native language" series, facts, "For the county".</span></div>
+      <div class="box"><div class="swatch" style="background:var(--moss)"></div><b>Moss</b><span class="mono">--moss #2f6f4f</span><span>Money only: euro figures and the "In euros" drill-in.</span></div>
+      <div class="box"><div class="swatch" style="background:var(--ink)"></div><b>Ink</b><span class="mono">--ink #142028</span><span>Text, phone frames, "The data" chips, the logo plate.</span></div>
+      <div class="box"><div class="swatch" style="background:var(--paper)"></div><b>Paper</b><span class="mono">--paper #f6f7f5</span><span>Slide and video ground.</span></div>
+      <div class="box"><div class="swatch" style="background:var(--white)"></div><b>White</b><span class="mono">--white #ffffff</span><span>Cards, sheets, screens.</span></div>
+      <div class="box"><div class="swatch" style="background:var(--muted)"></div><b>Muted</b><span class="mono">--muted #56636b</span><span>Sources, captions, path steps not yet reached.</span></div>
+      <div class="box"><div class="swatch" style="background:var(--line)"></div><b>Line</b><span class="mono">--line #d9dfdc</span><span>Hairlines and frames.</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec">Type: three families, eight sizes</h2>
+    <p class="muted">Bricolage Grotesque for titles and numbers, Atkinson Hyperlegible for reading, IBM Plex Mono for labels and sources. Sizes are for the 1280×720 slide; multiply by 1.5 for 1920×1080 video.</p>
+    <div>
+      <div class="typesample"><span class="mono">--t-hero 150 · display 800</span><span style="font:800 96px/1 var(--f-display);color:var(--coral)">27%</span></div>
+      <div class="typesample"><span class="mono">--t-title 52 · display 800</span><span class="title">Understood <em>at the visit.</em></span></div>
+      <div class="typesample"><span class="mono">--t-number 44 · display 800</span><span style="font:800 44px/1 var(--f-display);color:var(--lake)">316</span></div>
+      <div class="typesample"><span class="mono">--t-line 24 · body 400</span><span class="line">She shows her code. The nurse reads her situation in Finnish.</span></div>
+      <div class="typesample"><span class="mono">--t-body 18 · body 400</span><span style="font:400 18px/1.45 var(--f-body)">Cards, drill-in sheets and anything read up close.</span></div>
+      <div class="typesample"><span class="mono">--t-small 15 · body 700</span><span style="font:700 15px/1 var(--f-body)">Chips, captions</span></div>
+      <div class="typesample"><span class="mono">--t-label 13 · mono 600 caps</span><span class="kicker">Hodan's path</span></div>
+      <div class="typesample"><span class="mono">--t-source 12 · mono 500</span><span class="source" style="text-align:left">Finnish Cancer Registry, invitees by native language, 2024</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec">The frame</h2>
+    <p class="muted">Every slide is 1280×720 with margins 56 top, 72 sides, 36 bottom, and four regions. Spacing uses one scale: 8, 16, 24, 32, 48, 64.</p>
+    <div class="scroll">
+      <div class="canvas" role="img" aria-label="Slide frame at half size: rail at the top, head on the left, stage on the right, foot at the bottom.">
+        <div class="r rail">Rail · kicker + path</div>
+        <div class="r head">Head · title + one line (430 px)</div>
+        <div class="r stage">Stage · the visual</div>
+        <div class="r foot">Foot · chips + source</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec">Layouts</h2>
+    <div class="scroll">
+      <table class="spec">
+        <thead><tr><th>Layout</th><th>Stage holds</th><th>Used for</th></tr></thead>
+        <tbody>
+          <tr><td><b>opener</b></td><td>The letter sliding into a drawer</td><td>Meet Hodan</td></tr>
+          <tr><td><b>number</b></td><td>Gap bars: label, relative drop, two bars</td><td>Same letter. 27% fewer come.</td></tr>
+          <tr><td><b>stages</b></td><td>Four-step stage strip and two money marks</td><td>Found earlier, treated more easily</td></tr>
+          <tr><td><b>embed</b></td><td>A full-slide interactive page</td><td>Pathway (journey + data), Ways in (discoverability)</td></tr>
+          <tr><td><b>morph</b></td><td>Paper that turns into phones on the next click</td><td>The letter becomes a lesson</td></tr>
+          <tr><td><b>screens</b></td><td>1–3 phones, or a phone and a browser</td><td>The door, the visit, "I noticed something", the county</td></tr>
+          <tr><td><b>cards</b></td><td>Four cards in a 2×2 grid</td><td>Safe to use today, What we don't claim</td></tr>
+          <tr><td><b>facts</b></td><td>Four large numbers and the partner logo plate</td><td>Already running</td></tr>
+          <tr><td><b>close</b></td><td>The letter, now with a QR strip, rising out of the drawer</td><td>Silta works at the door, from today</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec">Components</h2>
+    <div class="grid g2">
+      <div class="box">
+        <span class="label">Hodan's path (rail, right)</span>
+        <ol class="path"><li class="done"><i></i>Letter</li><li class="done"><i></i>Found</li><li class="now"><i></i>Door</li><li><i></i>Visit</li></ol>
+        <span class="muted">Shown on journey slides only. The current step is coral.</span>
+      </div>
+      <div class="box">
+        <span class="label">Drill-in chips (foot, left)</span>
+        <div class="chips" style="flex-wrap:wrap"><button class="chip k-data" type="button"><i></i>The data</button><button class="chip k-person" type="button"><i></i>For Hodan</button><button class="chip k-county" type="button"><i></i>For the county</button><button class="chip k-euro" type="button"><i></i>In euros</button></div>
+        <span class="muted">Always in this order, only where they have content. Each opens a side sheet; every item in it carries a source.</span>
+      </div>
+      <div class="box">
+        <span class="label">Sheet item</span>
+        <ul class="sheet-items k-person" style="--k:var(--coral)"><li><span class="item-value">19% vs 67%</span><span class="item-text">Somali-origin women vs Finnish women attending cervical screening.</span><span class="item-source">brain sources/…minorities-screening.md §A</span></li></ul>
+      </div>
+      <div class="box">
+        <span class="label">Gap bar</span>
+        <div class="gapbars" style="max-width:none"><div class="gapbar" style="grid-template-columns:90px 80px minmax(0,1fr)"><span class="gapbar-label">Breast</span><span class="gapbar-rel" style="font-size:30px">−27%</span><span class="gapbar-track"><i class="dom" style="width:83.2%"></i><b>83.2%</b></span><span class="gapbar-track"><i class="oth" style="width:60.8%"></i><b>60.8%</b></span></div></div>
+      </div>
+    </div>
+    <div class="box">
+      <span class="label">Screen frames: phone (375×812 captures), browser (desktop captures, content column), paper (letters)</span>
+      <div class="demo-row">
+        <figure class="phone"><img src="/media/screens/v3/path-door.png" alt="Phone frame example: the door screen."></figure>
+        <figure class="browser"><span class="browser-bar" aria-hidden="true"><i></i><i></i><i></i></span><img src="/media/screens/v3/clinic-fi.png" alt="Browser frame example: the clinician view."></figure>
+        <figure class="paper"><img src="/media/screens/v3/letter-fi.png" alt="Paper frame example: the Finnish invitation letter."></figure>
+      </div>
+      <span class="muted">Recapture with <span class="mono">node scripts/capture_v3_screens.mjs</span> (local app at :5300).</span>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec">Video</h2>
+    <p>The video uses the same system at 1920×1080: every deck size × 1.5, the same colours and fonts. Export slides straight from <a href="/presentation/v3">/presentation/v3</a> (press F for full screen) or build title cards from these specs.</p>
+    <div class="video">
+      <div class="vframe" role="img" aria-label="Video frame with the title-safe area and a lower third in the bottom left.">
+        <div class="safe"></div>
+        <div class="lower"><span class="kicker">Hodan's path · Door</span><b>The right door, and the words to say.</b><span>Silta shows her door and the Finnish sentences to say.</span></div>
+      </div>
+      <div class="scroll">
+        <table class="spec">
+          <thead><tr><th>Element</th><th>1920×1080 spec</th></tr></thead>
+          <tbody>
+            <tr><td>Title-safe area</td><td>108 px sides and top, 84 px bottom (matches the deck margins × 1.5)</td></tr>
+            <tr><td>Lower third</td><td>White plate, 6 px left bar in the step's colour, bottom-left on the safe line. Kicker 20 px mono caps, title 78 px display 800, line 36 px body.</td></tr>
+            <tr><td>Number card</td><td>Full frame on paper; one number at 225 px display 800 in coral or lake, one line of 36 px under it, source 18 px mono at the bottom.</td></tr>
+            <tr><td>Screen shot</td><td>Phone frame 342×741 px (deck 228×494 × 1.5) with 9 px ink border; never full-bleed phone recordings.</td></tr>
+            <tr><td>Captions</td><td>36 px Atkinson Hyperlegible, ink on a white plate, max two lines, bottom centre inside the safe area.</td></tr>
+            <tr><td>End card</td><td>"Silta works at the door, from today." in the close layout, team names in mono caps, sources line.</td></tr>
+            <tr><td>Motion</td><td>Fades 300 ms. One designed moment per scene: the letter into the drawer (1.8 s), the letter into the guide (0.9 s), a sheet sliding in (0.2 s). No zooms on text.</td></tr>
+            <tr><td>Colour per beat</td><td>Hodan and the gap in coral; Silta, the county and facts in lake; euros in moss.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+</body>
+</html>

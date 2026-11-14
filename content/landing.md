@@ -1,7 +1,7 @@
 ---
 # Short "how it works" text on the landing page, below the Goal 3 and rollout sections.
 # Keep it short: the hero, benefit boxes, goal3 and rollout blocks live in site.yaml,
-# and the evidence lives on /pathway. Sources: brain repo, ideas/silta.md and sources/.
+# and the evidence lives on the pathway slide (/presentation#/pathway). Sources: brain repo, ideas/silta.md and sources/.
 ---
 
 ## One journey, five steps

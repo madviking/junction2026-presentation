@@ -16,7 +16,7 @@ event: Junction 2026 · AstraZeneca — Equal Care Across Finland
 # (needs the app running; see the script header).
 hero_screens:
   - src: /media/screens/slider-01-language.png
-    alt: "Silta's first screen: 'Choose your language' with a red 112 call button and a grid of 13 languages."
+    alt: "Silta's first screen: 'Choose your language' with a red 112 call button and a grid of 14 languages."
     caption: Pick your language. The 112 button stays on every screen.
   - src: /media/screens/slider-02-body-map.png
     alt: "'What worries you?' with a body figure, body-part buttons and picture cards with speaker buttons."
@@ -43,7 +43,7 @@ highlights:
     title: Fully anonymous
     text: Complies with regulation
   - icon: language
-    title: 13 languages
+    title: 14 languages
     text: Read aloud, tap, type or speak
 
 # Landing page: how Silta connects to Goal 3 of the National Cancer Strategy 2026-2035.
@@ -112,7 +112,7 @@ links:
   screening_guide:
     label: Screening guide (cervical)
     url: https://fond-useful-corgi.eur-1.aiven.app/r/en/learn/cervical
-    description: What the screening letter's QR code opens. A five-part picture guide in 13 languages — why, the visit, your rights, after, common questions. Swap "en" in the address for so, ar, ru, uk, fa, et, sv, fi, zh, yue, vi or th.
+    description: What the screening letter's QR code opens. A five-part picture guide in 14 languages — why, the visit, your rights, after, common questions. Swap "en" in the address for so, ar, ru, uk, fa, et, sv, fi, zh, yue, vi, th or bg.
     icon: school
   screening_letter:
     label: Example screening letter

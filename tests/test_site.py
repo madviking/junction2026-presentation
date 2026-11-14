@@ -24,9 +24,13 @@ def basic(password: str) -> dict:
     [
         ("/healthz", "ok"),
         ("/", "Silta"),
-        ("/pathway", "Where people fall out of cancer care"),
+        ("/presentation/pathway", "Where people fall out of cancer care"),
         ("/pathway/archive", "Where in the screening pathway the gap appears"),
         ("/presentation", 'class="reveal"'),
+        ("/presentation/v2", "Same letter. Twenty points fewer come."),
+        ("/team/m/master-narrative.html", "Silta Master Narrative"),
+        ("/team/m/silta-design-system.html", "Silta Design System"),
+        ("/presentation/v3", "Meet Hodan."),
         ("/video", "The video is not up yet"),
         ("/try", "For residents"),
         ("/printouts", "one-page summary"),
@@ -72,7 +76,7 @@ def test_screening_letter_printout_links_every_language(client):
     response = client.get("/printouts/cervical-screening-letter.md")
     assert response.status_code == 200
     assert "<svg" in response.text  # QR code to the guide
-    for lang in ["fi", "sv", "en", "ru", "et", "uk", "ar", "so", "fa", "zh", "yue", "vi", "th"]:
+    for lang in ["fi", "sv", "en", "ru", "et", "uk", "ar", "so", "fa", "zh", "yue", "vi", "th", "bg"]:
         assert f"/letter/cervical/{lang}" in response.text
         assert f"/r/{lang}/learn/cervical" in response.text
 
@@ -158,14 +162,27 @@ def test_dashboard_story_is_complete():
             assert section.get("source"), f"{section['id']} has no source"
 
 
-def test_dashboard_redirects_to_pathway(client):
-    response = client.get("/dashboard", follow_redirects=False)
+@pytest.mark.parametrize("old", ["/pathway", "/dashboard"])
+def test_old_data_urls_redirect_to_pathway_slide(client, old):
+    response = client.get(old, follow_redirects=False)
     assert response.status_code == 307
-    assert response.headers["location"] == "/pathway"
+    assert response.headers["location"] == "/presentation#/pathway"
+
+
+def test_pathway_is_a_deck_slide_not_a_menu_item(client):
+    deck = client.get("/presentation").text
+    assert '<section id="pathway" class="embed">' in deck
+    assert 'src="/presentation/pathway"' in deck
+    landing = client.get("/").text
+    assert 'href="/pathway"' not in landing
+    assert 'href="/presentation#/pathway"' in landing
+    embed = client.get("/presentation/pathway").text
+    assert "silta-nav" not in embed and "theme-toggle" not in embed
+    assert '<base target="_blank">' in embed
 
 
 def test_pathway_embeds_data_and_step_charts(client):
-    html = client.get("/pathway").text
+    html = client.get("/presentation/pathway").text
     assert 'id="pathway-data"' in html
     assert "/static/pathway.js" in html
     assert "Limitations" in html
@@ -214,7 +231,7 @@ def test_pathway_impact_view_is_complete_and_rendered(client):
     for table in (impact["table"], impact["groups"]):
         assert all(len(row) == len(table["head"]) for row in table["rows"])
     assert impact["groups"]["title"] and impact["groups"]["note"]
-    html = client.get("/pathway").text
+    html = client.get("/presentation/pathway").text
     assert impact["groups"]["title"].replace("'", "&#39;") in html
     assert 'data-pw-mode="analysis"' in html and 'data-pw-mode="impact"' in html
     assert "Key findings" in html and impact["findings"][0]["label"] in html
@@ -307,3 +324,25 @@ def test_every_printout_has_a_short_description():
     for item in content.printouts():
         assert item.description, f"{item.path} has no description"
         assert len(item.description) <= 80, f"{item.path}: description too long"
+
+
+def test_deck_v3_uses_one_layout_system(client):
+    """Deck v3: every slide renders, every image exists, every chip opens its own sheet."""
+    deck = content.deck_v3()
+    html = client.get("/presentation/v3").text
+    assert "/static/deck-v3.css" in html and "/static/deck-v3.js" in html
+    assert html.count("<section") == len(deck["slides"])
+    allowed = {"opener", "number", "stages", "embed", "morph", "screens", "cards", "facts", "close"}
+    for slide in deck["slides"]:
+        assert slide["layout"] in allowed, slide["id"]
+        assert f'id="{slide["id"]}"' in html
+        images = [slide.get("letter"), slide.get("qr"), (slide.get("from") or {}).get("src")]
+        images += [s["src"] for s in slide.get("screens", [])] + [l["src"] for l in slide.get("logos", [])]
+        for src in filter(None, images):
+            assert (settings.content_dir() / src.removeprefix("/")).is_file(), src
+        for i, drill in enumerate(slide.get("drills", []), start=1):
+            assert drill["kind"] in {"person", "county", "euro", "data"}
+            sheet = f'{slide["id"]}-{i}'
+            assert f'data-drill="{sheet}"' in html and f'id="{sheet}"' in html
+            for item in drill.get("items", []):
+                assert item.get("source"), f"{sheet}: an item has no source"

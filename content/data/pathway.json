@@ -2,6 +2,7 @@
   "_about": "The /pathway page: three routes into cancer care, the gap at each step, its evidence and the Silta bands. Read by app/templates/_pathway.html and app/static/pathway.js. Numbers from brain sources/2026-11-14-cancerregistry-screening-by-language.md, sources/2026-11-14-europepmc-unmet-need-and-access-by-origin.md, sources/2026-11-14-espoo-equity-talk-kuitunen.md, sources/2026-11-13-web-research-minorities-screening.md and notes/2026-11-14-0145-silta-deep-data-analysis.md. Each step's `silta` text is kept for a later Silta section and is not shown in the top panel.",
   "page": {
     "title": "Where people fall out of cancer care",
+    "title_html": "Where people <em>fall out</em> of cancer care",
     "lede": "People reach cancer care through a screening letter, a symptom they notice, or a test a doctor orders. On each route, people whose native language is not Finnish, Swedish or Sámi meet gaps that Silta is built for. <b>Only the screening route is measured by language, and there the gap is large.</b>",
     "prompt": "Select a step on the map to see the gap and its evidence.",
     "limitations": [
@@ -162,7 +163,7 @@
     }
   },
   "impact": {
-    "_about": "The Impact view of /pathway: who is not reached and what it costs. Language is the main line; birth region, education and county sit beside it. Numbers from brain notes/2026-11-14-1630-silta-financial-lean-case.md, sources/2026-11-14-web-research-costs-and-funding.md, sources/2026-11-14-cancerregistry-screening-by-language.md and sources/data/2026-11-14-silta-cost-model.json.",
+    "_about": "The Impact view of the pathway slide: who is not reached and what it costs. Language is the main line; birth region, education and county sit beside it. Numbers from brain notes/2026-11-14-1630-silta-financial-lean-case.md, sources/2026-11-14-web-research-costs-and-funding.md, sources/2026-11-14-cancerregistry-screening-by-language.md and sources/data/2026-11-14-silta-cost-model.json.",
     "lede": "One in four people invited to screening is not reached. The system pays for the invitation either way, and pays again at treatment when a cancer is found late.",
     "prompt": "Select a step on the map to see what it costs.",
     "missing": "We found no cost figure for this step.",

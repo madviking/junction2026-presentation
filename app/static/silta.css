@@ -285,44 +285,37 @@ body:has(.silta-report) { background: var(--silta-surface); }
   .silta-step[data-used="false"] { padding: 6px 12px; }
 }
 
-/* ---- Pathway page (/pathway; static/pathway.js, templates/pathway.html + _pathway.html) ----
-   One card: info panel on top, route map, Silta bands. Two colours: ink for structure, coral for gaps.
+/* ---- Pathway slide (/presentation/pathway, embedded in the deck; static/pathway.js, templates/pathway.html + _pathway.html) ----
+   Laid out like the deck's other infographic slide (content/media/ways-in.html): headline and view tabs, the map
+   full width, a card over the map for the step or band clicked, Silta bands below, legend and drill-down links at
+   the bottom. Two colours: ink for structure, coral for gaps (lake for costs in the Impact view).
    Line style shows the evidence: solid = by native language, dotted = another way, dashed grey = not measured. */
-.silta-pathway { --pw-faint: #b9c2c0; --pw-band: #eef1ef; --pw-band-on: #dde3e0; --pw-shadow: rgba(20, 32, 40, .18);
+.silta-pathway { --pw-faint: #b9c2c0; --pw-band: #e4e9e6; --pw-band-on: #dde3e0; --pw-shadow: rgba(20, 32, 40, .18);
   font-family: var(--silta-font-body); font-size: 16px; line-height: 1.55; margin: 0; display: flex; flex-direction: column; min-width: 0; }
 [data-bs-theme="dark"] .silta-pathway { --pw-faint: #4a5a61; --pw-band: #1d2a30; --pw-band-on: #2a3a41; --pw-shadow: rgba(0, 0, 0, .55); }
 .silta-pathway p { margin: 0; }
 .pw-eyebrow, .pw-label { font: 600 11.5px var(--silta-font-data); letter-spacing: .08em; text-transform: uppercase; color: var(--silta-muted); margin: 0; }
-.pw-card { background: var(--silta-surface); border: 1px solid var(--silta-line); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
-.pw-card > * { min-width: 0; }
-
-.pw-panel { background: var(--silta-surface); border: 1px solid var(--silta-line); border-radius: 12px; box-shadow: 0 6px 20px -8px var(--pw-shadow);
-  padding: 16px 20px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 32px; min-height: 12rem; align-content: start; }
-.pw-panel > * { min-width: 0; }
-.pw-panel h3 { font: 800 22px/1.15 var(--silta-font-display); margin: 6px 0; text-wrap: balance; }
-.pw-panel p { max-width: 72ch; }
-.pw-panel.pw-empty { grid-template-columns: 1fr; place-items: center; align-content: center; text-align: center; color: var(--silta-muted); }
 .pw-tag { display: inline-flex; align-items: center; gap: 8px; font: 600 11px var(--silta-font-data); letter-spacing: .05em; text-transform: uppercase; color: var(--silta-muted); }
 .pw-tag svg { flex: none; }
 .pw-src { font: 500 12px/1.5 var(--silta-font-data); color: var(--silta-muted); margin-top: 8px !important; }
-.pw-more { font: 700 14px var(--silta-font-body); color: var(--silta-ink); background: none; border: 1px solid var(--silta-line); border-radius: 999px; padding: 4px 14px; cursor: pointer; white-space: nowrap; }
+.pw-more { justify-self: start; font: 700 14px var(--silta-font-body); color: var(--silta-ink); background: none; border: 1px solid var(--silta-line); border-radius: 999px; padding: 4px 14px; cursor: pointer; white-space: nowrap; }
 .pw-more:hover { border-color: var(--silta-ink); }
 
-.pw-legend { display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: 13px; color: var(--silta-muted); align-items: center; }
+.pw-legend { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 13px; color: var(--silta-muted); align-items: center; }
 .pw-legend svg { vertical-align: middle; margin-right: 6px; }
 .pw-gapkey { color: var(--silta-coral); font-weight: 700; }
-.pw-scroll { overflow-x: auto; }
-.pw-canvas { min-width: 760px; display: flex; flex-direction: column; gap: 6px; }
 svg.pw-routes { display: block; width: 100%; height: auto; font-family: var(--silta-font-body); }
-.pw-routes text { fill: var(--silta-ink); font-size: 13px; }
-.pw-routes .pw-route { font: 600 11px var(--silta-font-data); letter-spacing: .08em; fill: var(--silta-muted); text-transform: uppercase; }
-.pw-routes .pw-sub { fill: var(--silta-muted); font-size: 12px; }
+.pw-routes text { fill: var(--silta-ink); font-size: 14px; }
+.pw-routes .pw-route { font: 600 11.5px var(--silta-font-data); letter-spacing: .08em; fill: var(--silta-muted); text-transform: uppercase; }
+.pw-routes .pw-sub { fill: var(--silta-muted); font-size: 12.5px; }
 .pw-arrow { fill: var(--pw-faint); }
 .pw-seg { fill: none; stroke-linecap: round; }
 .pw-seg.pw-lang { stroke: var(--silta-ink); stroke-width: 3.5; }
 .pw-seg.pw-other { stroke: var(--silta-ink); stroke-width: 3; stroke-dasharray: .1 7; }
 .pw-seg.pw-none { stroke: var(--pw-faint); stroke-width: 2.5; stroke-dasharray: 7 6; }
-.pw-node { cursor: pointer; outline: none; }
+.pw-node { cursor: pointer; outline: none; transition: opacity .2s; }
+svg.pw-focus .pw-node:not(.pw-lit) { opacity: .3; }
+svg.pw-focus .pw-node.pw-lit .pw-ring { opacity: .45; }
 .pw-node .pw-dot { fill: var(--silta-surface); stroke: var(--silta-ink); stroke-width: 2.5; }
 .pw-node.pw-lang .pw-dot { fill: var(--silta-ink); }
 .pw-node.pw-none .pw-dot { stroke: var(--pw-faint); }
@@ -334,15 +327,13 @@ svg.pw-routes { display: block; width: 100%; height: auto; font-family: var(--si
 .pw-pill rect { fill: var(--silta-coral); }
 .pw-pill text { fill: var(--silta-surface); font: 700 12.5px var(--silta-font-data); }
 
-.pw-silta { border-top: 1px solid var(--silta-line); padding-top: 10px; display: flex; flex-direction: column; gap: 4px; }
-.pw-silta-head { display: flex; gap: 12px; align-items: baseline; margin-bottom: 2px; font-size: 13px; color: var(--silta-muted); }
-.pw-sbar { display: block; height: 22px; padding: 0 10px; border: 0; border-radius: 6px; background: var(--pw-band); color: var(--silta-muted);
-  font: 600 12px/22px var(--silta-font-data); text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
+.pw-silta { border-top: 1px solid var(--silta-line); padding-top: 8px; display: flex; flex-direction: column; gap: 5px; }
+.pw-sbars { position: relative; height: calc(var(--rows, 1) * 24px - 4px); }
+.pw-sbar { position: absolute; top: calc(var(--row, 0) * 24px); height: 20px; padding: 0 10px; border: 0; border-radius: 6px; background: var(--pw-band); color: var(--silta-muted);
+  font: 600 12.5px/20px var(--silta-font-data); text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
 .pw-sbar:hover { color: var(--silta-ink); }
 .pw-sbar.pw-on, .pw-sbar.pw-on:hover { background: var(--silta-lake); color: var(--silta-surface); }
-.pw-sbar[aria-expanded="true"] { color: var(--silta-lake); box-shadow: inset 0 0 0 1.5px var(--silta-lake); }
-.pw-sbar.pw-on[aria-expanded="true"] { color: var(--silta-surface); box-shadow: 0 0 0 2px var(--silta-surface), 0 0 0 3.5px var(--silta-lake); }
-.pw-sinfo { margin: 2px 0 8px !important; font-size: 14.5px; max-width: 72ch; }
+.pw-sbar[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--silta-bg), 0 0 0 3.5px var(--silta-lake); }
 .silta-pathway button:focus-visible, .pw-pop button:focus-visible { outline: 2px solid var(--silta-ink); outline-offset: 2px; }
 
 dialog.pw-pop { border: 1px solid var(--silta-line); border-radius: 14px; background: var(--silta-surface); color: var(--silta-ink); padding: 20px 22px;
@@ -365,17 +356,12 @@ dialog.pw-pop::backdrop { background: rgba(10, 20, 25, .4); }
 .pw-pop td.pw-gapv { color: var(--silta-coral); font-weight: 700; }
 .pw-pop tr.pw-total td { font-weight: 700; border-bottom: 0; }
 .pw-note { font-size: 14px; color: var(--silta-muted); margin: 0 0 6px; max-width: 80ch; }
-@media (prefers-reduced-motion: no-preference) { .pw-node .pw-ring { transition: opacity .15s; } .pw-sbar { transition: background .15s, color .15s; } }
+@media (prefers-reduced-motion: no-preference) { .pw-node .pw-ring { transition: opacity .15s; } .pw-sbar { transition: background .15s, color .15s; } .pw-over { transition: opacity .15s; } }
 
-.silta-pw-page { max-width: 1072px; width: 100%; min-width: 0; margin: 0 auto; padding: 32px 16px 64px; display: flex; flex-direction: column; gap: 24px; }
-.silta-pw-page > * { min-width: 0; }
-.silta-pw-head { display: flex; flex-direction: column; gap: 10px; }
-.silta-pw-head h1 { font: 800 clamp(28px, 4.4vw, 42px)/1.1 var(--silta-font-display); letter-spacing: -.015em; margin: 0; text-wrap: balance; }
-.silta-pw-lede { font-size: 18px; color: var(--silta-muted); max-width: 70ch; margin: 0; }
-.silta-pw-lede b { color: var(--silta-ink); }
-.silta-pw-limits { display: flex; flex-direction: column; gap: 10px; max-width: 80ch; }
-.silta-pw-limits h2 { font: 800 21px/1.2 var(--silta-font-display); margin: 0; }
+.silta-pw-limits { display: flex; flex-direction: column; gap: 10px; }
+.silta-pw-limits h2, .silta-pw-impact h2 { font: 800 19px/1.2 var(--silta-font-display); margin: 8px 0 0; }
 .silta-pw-limits > ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 15px; }
+.silta-pw-limits ul.pw-srclist { font-size: 13.5px; color: var(--silta-muted); }
 .silta-pw-notes { font-size: 14px; color: var(--silta-muted); }
 .silta-pw-notes summary { cursor: pointer; color: var(--silta-ink); font-weight: 700; }
 .silta-pw-notes ul { padding-left: 18px; display: grid; gap: 4px; margin: 8px 0; }
@@ -394,13 +380,6 @@ dialog.pw-pop::backdrop { background: rgba(10, 20, 25, .4); }
 
 /* Pathway views: Analysis (gaps, coral) and Impact (costs, lake). data-mode on .silta-pw-page; pathway.js switches it. */
 .silta-pw-page[data-mode="analysis"] .pw-for-impact, .silta-pw-page[data-mode="impact"] .pw-for-analysis { display: none; }
-.pw-modes { display: inline-flex; align-self: flex-start; gap: 2px; padding: 3px; background: var(--pw-band); border-radius: 999px; }
-.pw-mode { display: inline-flex; align-items: baseline; gap: 6px; border: 0; border-radius: 999px; background: none; color: var(--silta-muted);
-  padding: 5px 14px; cursor: pointer; font: 400 12.5px/1.3 var(--silta-font-body); white-space: nowrap; }
-.pw-mode b { font: 700 14px/1.3 var(--silta-font-display); color: var(--silta-ink); }
-.pw-mode:hover b { color: var(--silta-lake); }
-.pw-mode[aria-pressed="true"] { background: var(--silta-surface); color: var(--silta-muted); box-shadow: 0 1px 3px var(--pw-shadow); }
-.pw-mode[data-pw-mode="impact"][aria-pressed="true"] b { color: var(--silta-lake); }
 .pw-pill .pw-pill-sub { font: 500 10.5px var(--silta-font-data); }
 .pw-pill.pw-cost rect { fill: var(--silta-lake); }
 .pw-pill.pw-ctx rect { fill: var(--silta-surface); stroke: var(--silta-muted); stroke-width: 1.3; }
@@ -412,10 +391,8 @@ dialog.pw-pop::backdrop { background: rgba(10, 20, 25, .4); }
 .pw-steps.pw-groups td:last-child { color: var(--silta-ink); font-size: inherit; }
 .pw-costkey { color: var(--silta-lake); font-weight: 700; }
 .pw-tag.pw-costtag { color: var(--silta-lake); }
-.pw-panel.pw-empty b { color: var(--silta-ink); }
 
 .silta-pw-impact { display: flex; flex-direction: column; gap: 14px; }
-.silta-pw-impact h2 { font: 800 21px/1.2 var(--silta-font-display); margin: 8px 0 0; }
 .pw-finds { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
 .pw-find { background: var(--silta-surface); border: 1px solid var(--silta-line); border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px; }
 .pw-find-v { font: 800 30px/1.05 var(--silta-font-display); color: var(--silta-coral); font-variant-numeric: tabular-nums; margin-top: 4px; }
@@ -429,3 +406,40 @@ table.pw-steps { border-collapse: collapse; width: 100%; font-size: 14.5px; back
 .pw-steps td:nth-child(2) { font-variant-numeric: tabular-nums; }
 .pw-steps td:last-child { color: var(--silta-muted); font-size: 13px; }
 .pw-steps tr:last-child td { border-bottom: 0; }
+
+/* Slide layout. The deck frames it at 1280x700 (embed=True in app/main.py: no menu, light theme). */
+html:has(.silta-pw-page), html:has(.silta-pw-page) body { height: 100%; overflow: hidden; background: var(--silta-bg); }
+.silta-pw-page { --pw-faint: #b9c2c0; --pw-shadow: rgba(20, 32, 40, .18);
+  height: 100vh; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 10px; padding: 22px 40px 12px; }
+.pw-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 8px 32px; }
+.pw-top h1 { font: 800 44px/1.05 var(--silta-font-display); letter-spacing: -.015em; margin: 0; text-wrap: balance; }
+.pw-top h1 em { font-style: normal; color: var(--silta-coral); }
+.pw-modes { display: flex; gap: 22px; }
+.pw-mode { border: 0; background: none; padding: 4px 0; cursor: pointer; font: 700 15px var(--silta-font-body); color: var(--silta-muted);
+  border-bottom: 3px solid transparent; white-space: nowrap; }
+.pw-mode:hover { color: var(--silta-ink); }
+.pw-mode[aria-pressed="true"] { color: var(--silta-ink); border-bottom-color: var(--silta-ink); }
+/* Width follows the height left for the map (viewBox 1000x420), so map and bands always fit the slide; the bands
+   share the map's width, so they stay on its x scale. 285px = everything on the slide except the map. */
+.silta-pathway { display: flex; flex-direction: column; justify-content: center; gap: 8px; min-height: 0;
+  width: min(100%, calc((100vh - 285px) * 1000 / 420)); justify-self: center; }
+.pw-map { position: relative; }
+/* The card over the map: at rest bottom right (the takeaway), on a click on the side away from what was clicked. */
+.pw-over { position: absolute; width: 400px; max-height: 100%; overflow-y: auto; background: var(--silta-surface); border: 1px solid var(--silta-line);
+  border-radius: 12px; box-shadow: 0 14px 34px -12px var(--pw-shadow); padding: 14px 18px; display: grid; gap: 6px; align-content: start; font-size: 15px; line-height: 1.45; }
+.pw-over p { margin: 0; }
+.pw-over h3 { font: 800 21px/1.15 var(--silta-font-display); margin: 2px 28px 2px 0; text-wrap: balance; }
+.pw-over.pw-at-right { top: 0; right: 0; }
+.pw-over.pw-at-left { top: 0; left: 0; }
+.pw-over.pw-at-rest { right: 0; bottom: 0; width: 360px; font-size: 14.5px; box-shadow: none; background: transparent; border: 0; padding: 0; color: var(--silta-muted); }
+.pw-over.pw-at-rest b { color: var(--silta-ink); }
+.pw-over-x { position: absolute; top: 6px; right: 8px; }
+.pw-hint { display: flex; gap: 8px; align-items: baseline; font-size: 13.5px; }
+.pw-hint i { flex: none; width: 9px; height: 9px; border-radius: 50%; background: var(--silta-coral); display: inline-block; }
+.silta-pw-page[data-mode="impact"] .pw-hint i { background: var(--silta-lake); }
+.pw-silta-tag { color: var(--silta-lake); }
+.pw-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 24px; }
+.pw-links { display: flex; gap: 20px; }
+.pw-textbtn { border: 0; background: none; padding: 0; cursor: pointer; color: var(--silta-lake); font: 700 14px var(--silta-font-body);
+  text-decoration: underline; text-underline-offset: 3px; }
+.silta-pathway button:focus-visible, .silta-pw-page button:focus-visible, .pw-node:focus-visible .pw-ring { outline: 2px solid var(--silta-ink); outline-offset: 2px; opacity: 1; }

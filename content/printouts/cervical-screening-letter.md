@@ -1,6 +1,6 @@
 ---
-title: Example cervical screening letter — 13 languages
-description: Sample screening invitation with the Silta QR code, in 13 languages.
+title: Example cervical screening letter — 14 languages
+description: Sample screening invitation with the Silta QR code, in 14 languages.
 qr: screening_guide
 tags: [screening, letter, cervical, languages]
 ---
@@ -32,6 +32,7 @@ Each letter page has a print button and a language picker.
 | Cantonese | 廣東話 | [Open the letter](https://fond-useful-corgi.eur-1.aiven.app/letter/cervical/yue) | [Open the guide](https://fond-useful-corgi.eur-1.aiven.app/r/yue/learn/cervical) |
 | Vietnamese | Tiếng Việt | [Open the letter](https://fond-useful-corgi.eur-1.aiven.app/letter/cervical/vi) | [Open the guide](https://fond-useful-corgi.eur-1.aiven.app/r/vi/learn/cervical) |
 | Thai | ไทย | [Open the letter](https://fond-useful-corgi.eur-1.aiven.app/letter/cervical/th) | [Open the guide](https://fond-useful-corgi.eur-1.aiven.app/r/th/learn/cervical) |
+| Bulgarian | Български | [Open the letter](https://fond-useful-corgi.eur-1.aiven.app/letter/cervical/bg) | [Open the guide](https://fond-useful-corgi.eur-1.aiven.app/r/bg/learn/cervical) |
 
 ## What the guide covers
 

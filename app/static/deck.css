@@ -42,3 +42,48 @@ html, body { background: var(--bg); color: var(--ink); }
 }
 .deck-home:hover, .deck-home:focus-visible { color: var(--lake); }
 @media print { .deck-home { display: none; } }
+
+/* ---- Deck v2 components (content/presentation-v2.md). Additive: the v1 deck uses none of these. */
+.reveal .kicker { font-family: var(--font-data); font-size: 0.42em; letter-spacing: 0.08em; text-transform: uppercase; color: var(--coral); margin: 0 0 0.5em; }
+.reveal .src { font-family: var(--font-data); font-size: 0.36em; color: var(--muted); margin-top: 0.8em; line-height: 1.4; }
+.reveal .lead { font-size: 0.78em; color: var(--ink); max-width: 46em; }
+.reveal .cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.6em; align-items: start; }
+.reveal .cols.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.reveal .cols.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.reveal .cols.five { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.4em; }
+.reveal .card { background: #fff; border: 1px solid #d9dfdc; border-radius: 12px; padding: 0.55em 0.65em; font-size: 0.56em; line-height: 1.35; }
+.reveal .card h3 { font-size: 1.35em; margin: 0 0 0.3em; }
+.reveal .card p { margin: 0 0 0.4em; }
+.reveal .card .fix { color: var(--lake); font-weight: 700; }
+.reveal .card.lake { border-color: var(--lake); }
+.reveal .card .step { font-family: var(--font-data); font-size: 0.8em; color: var(--lake); letter-spacing: 0.06em; text-transform: uppercase; }
+.reveal .card .law { font-family: var(--font-data); font-size: 0.78em; color: var(--coral); letter-spacing: 0.04em; }
+.reveal .big { font-family: var(--font-display); font-weight: 800; font-size: 2.2em; line-height: 1; color: var(--coral); display: block; font-variant-numeric: tabular-nums; }
+.reveal .big.lake { color: var(--lake); }
+.reveal .num { display: grid; gap: 0.25em; font-size: 0.6em; }
+.reveal .num span:last-child { color: var(--ink); }
+.reveal .split { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 1em; align-items: center; }
+.reveal .phones { display: flex; gap: 0.5em; justify-content: center; }
+.reveal .phones img { height: 470px; width: auto; margin: 0; border-radius: 18px; border: 1px solid #d9dfdc; box-shadow: 0 6px 18px rgba(20, 32, 40, 0.12); }
+.reveal .v2chart { width: 100%; height: auto; max-height: 430px; }
+.reveal .v2chart .grid line { stroke: #d9dfdc; stroke-width: 1; }
+.reveal .v2chart .axis { fill: var(--muted); font-family: var(--font-data); font-size: 12px; }
+.reveal .v2chart .dom { fill: var(--lake); }
+.reveal .v2chart .oth { fill: var(--coral); }
+.reveal .v2chart .val { font-family: var(--font-data); font-size: 14px; font-weight: 600; }
+.reveal .v2chart .val.d { fill: var(--lake); }
+.reveal .v2chart .val.o { fill: var(--coral); }
+.reveal .v2chart .gap { fill: var(--ink); font-family: var(--font-data); font-size: 14px; font-weight: 600; }
+.reveal .v2chart .cat { fill: var(--ink); font-family: var(--font-body); font-size: 16px; font-weight: 700; }
+.reveal .legend { font-size: 0.42em; color: var(--muted); display: flex; gap: 1.4em; }
+.reveal .legend i { display: inline-block; width: 0.9em; height: 0.9em; border-radius: 3px; margin-right: 0.4em; vertical-align: -0.1em; }
+.reveal table.ladder { font-size: 0.5em; width: 100%; border-collapse: collapse; }
+.reveal table.ladder th { font-family: var(--font-data); font-weight: 500; font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); text-align: left; border-bottom: 1px solid #d9dfdc; padding: 0 0.6em 0.4em 0; }
+.reveal table.ladder td { border-bottom: 1px solid #d9dfdc; padding: 0.45em 0.6em 0.45em 0; vertical-align: top; }
+.reveal table.ladder td:first-child { font-family: var(--font-display); font-weight: 800; white-space: nowrap; }
+.reveal .pill { font-family: var(--font-data); font-size: 0.7em; padding: 0.1em 0.5em; border-radius: 999px; margin-left: 0.4em; font-weight: 500; }
+.reveal .pill.live { background: #2f7a4d; color: #fff; }
+.reveal .pill.built { background: var(--lake-soft); color: var(--lake); }
+.reveal .pill.plan { background: #e3e7e5; color: var(--muted); }
+.reveal .quiet { color: var(--muted); }
+.reveal section.persona .who { font-family: var(--font-data); font-size: 0.42em; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }

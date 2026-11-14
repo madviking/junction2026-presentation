@@ -1,21 +1,41 @@
 {% extends "base.html" %}
 {% block title %}Pathway — {{ site.name }}{% endblock %}
 {% block body %}
-{# Routes into cancer care. Data and text: content/data/pathway.json; script: static/pathway.js.
-   Charts listed under a step's `charts` are rendered here (app/charts/) and drawn in that step's data popup. #}
-<main class="page-body">
-  <div class="silta-pw-page" data-mode="analysis">
-    <header class="silta-pw-head">
-      <p class="pw-eyebrow">Silta · Routes into cancer care · data 2020–2024</p>
-      <h1>{{ pathway.page.title }}</h1>
-      <p class="silta-pw-lede">{{ pathway.page.lede | safe }}</p>
-    </header>
+{# Routes into cancer care: one deck slide (/presentation#/pathway embeds /presentation/pathway, frame 1280x700).
+   Laid out like the other infographic slide (content/media/ways-in.html): headline and view tabs on top, the
+   diagram full width, details as a card over the diagram on click. Key findings, cost tables, limitations and
+   sources open in the popup from the links at the bottom, so nothing scrolls.
+   Data and text: content/data/pathway.json; script: static/pathway.js. #}
+<main class="silta-pw-page" data-mode="analysis">
+  <header class="pw-top">
+    <h1>{{ (pathway.page.title_html or pathway.page.title) | safe }}</h1>
+    <div class="pw-modes" role="group" aria-label="Choose a view">
+      <button type="button" class="pw-mode" data-pw-mode="analysis" aria-pressed="true">Where people drop out</button>
+      <button type="button" class="pw-mode" data-pw-mode="impact" aria-pressed="false">Who isn't reached, and the cost</button>
+    </div>
+  </header>
 
-    {% include "_pathway.html" %}
+  {% include "_pathway.html" %}
 
-    {% set impact = pathway.impact %}
-    <section class="silta-pw-impact pw-for-impact" aria-label="Impact: key findings and step-by-step costs">
-      <h2>Key findings</h2>
+  <footer class="pw-foot">
+    <div class="pw-legend">
+      <span><svg width="30" height="8" aria-hidden="true"><line x1="2" y1="4" x2="28" y2="4" class="pw-seg pw-lang"/></svg>{{ pathway.levels.lang }}</span>
+      <span><svg width="30" height="8" aria-hidden="true"><line x1="3" y1="4" x2="27" y2="4" class="pw-seg pw-other"/></svg>{{ pathway.levels.other }}</span>
+      <span><svg width="30" height="8" aria-hidden="true"><line x1="3" y1="4" x2="27" y2="4" class="pw-seg pw-none"/></svg>Not measured</span>
+      <span class="pw-gapkey pw-for-analysis">Coral = significant gap</span>
+      <span class="pw-costkey pw-for-impact">Blue = cost and reach</span>
+      <span class="pw-ctxkey pw-for-impact">Outlined = context</span>
+    </div>
+    <div class="pw-links">
+      <button type="button" class="pw-textbtn pw-for-impact" data-pw-open="findings">Key findings and costs</button>
+      <button type="button" class="pw-textbtn" data-pw-open="limits">Limitations and sources</button>
+    </div>
+  </footer>
+
+  {# Drill-down content for the popup (pathway.js copies it in). #}
+  {% set impact = pathway.impact %}
+  <template id="pw-sec-findings" data-title="Key findings and costs">
+    <div class="silta-pw-impact">
       <div class="pw-finds">
         {% for f in impact.findings %}
         <div class="pw-find pw-{{ f.tone }}">
@@ -49,18 +69,19 @@
         <summary>Cost sources</summary>
         <ul>{% for s in impact.sources %}<li>{{ s }}</li>{% endfor %}</ul>
       </details>
-    </section>
-
-    <section class="silta-pw-limits" aria-label="Limitations">
+    </div>
+  </template>
+  <template id="pw-sec-limits" data-title="Limitations and sources">
+    <div class="silta-pw-limits">
+      <p>{{ pathway.page.lede | safe }}</p>
       <h2>Limitations</h2>
       <ul>{% for n in pathway.page.limitations %}<li>{{ n }}</li>{% endfor %}</ul>
-      <details class="silta-pw-notes">
-        <summary>Sources</summary>
-        <ul>{% for s in pathway.page.sources %}<li>{{ s }}</li>{% endfor %}</ul>
-        <p>The earlier report-style data page is kept at <a href="/pathway/archive">/pathway/archive</a>.</p>
-      </details>
-    </section>
-  </div>
+      <h2>Sources</h2>
+      <ul class="pw-srclist">{% for s in pathway.page.sources %}<li>{{ s }}</li>{% endfor %}</ul>
+      <p class="pw-note">The earlier report-style data page is kept at <a href="/pathway/archive">/pathway/archive</a>.</p>
+    </div>
+  </template>
+
   {% for item in charts.values() %}
   <script type="application/json" id="pw-fig-{{ item.chart.id }}">{"title": {{ item.chart.title | tojson }}, "subtitle": {{ item.chart.subtitle | tojson }}, "source": {{ item.chart.source | tojson }}, "height": {{ item.chart.height }}, "light": {{ item.figures.light | safe }}, "dark": {{ item.figures.dark | safe }}}</script>
   {% endfor %}

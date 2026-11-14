@@ -1,0 +1,147 @@
+{#- Deck v3: one layout system (app/static/deck-v3.css), content in content/presentation-v3.yaml.
+    Every slide is a 1280×720 frame with the same regions: rail (kicker + Hodan's path),
+    head (title + one line), stage (the visual), foot (drill-in chips + source).
+    Drill-ins open as a side sheet inside the slide; Esc or the close button shuts them. -#}
+{%- macro screen(s) -%}
+  {%- if s.kind == 'browser' -%}
+  <figure class="browser"><span class="browser-bar" aria-hidden="true"><i></i><i></i><i></i></span><img src="{{ s.src }}" alt="{{ s.alt }}"{% if s.pos %} style="object-position: {{ s.pos }}"{% endif %}>{% if s.caption %}<figcaption>{{ s.caption }}</figcaption>{% endif %}</figure>
+  {%- elif s.kind == 'paper' -%}
+  <figure class="paper"><img src="{{ s.src }}" alt="{{ s.alt }}"{% if s.pos %} style="object-position: {{ s.pos }}"{% endif %}>{% if s.caption %}<figcaption>{{ s.caption }}</figcaption>{% endif %}</figure>
+  {%- else -%}
+  <figure class="phone"><img src="{{ s.src }}" alt="{{ s.alt }}"{% if s.pos %} style="object-position: {{ s.pos }}"{% endif %}>{% if s.caption %}<figcaption>{{ s.caption }}</figcaption>{% endif %}</figure>
+  {%- endif -%}
+{%- endmacro -%}
+{%- macro bars(rows) -%}
+  <div class="gapbars">
+    {%- for r in rows %}
+    <div class="gapbar">
+      <span class="gapbar-label">{{ r.label }}</span>
+      <span class="gapbar-rel">{{ r.rel }}</span>
+      <span class="gapbar-track"><i class="dom" style="width: {{ r.dom }}%"></i><b>{{ r.dom }}%</b></span>
+      <span class="gapbar-track"><i class="oth" style="width: {{ r.oth }}%"></i><b>{{ r.oth }}%</b></span>
+    </div>
+    {%- endfor %}
+    <div class="legend"><span><i class="dom"></i>Native Finnish, Swedish or Sámi</span><span><i class="oth"></i>Other native language</span></div>
+  </div>
+{%- endmacro -%}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ deck.title }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="/static/deck-v3.css">
+</head>
+<body class="v3">
+  <a class="deck-home" href="/" aria-label="Back to the site">{{ site.name }}</a>
+  <div class="reveal">
+    <div class="slides">
+      {%- for s in deck.slides %}
+      {%- if s.layout == 'embed' %}
+      <section class="l-embed"{% if s.id %} id="{{ s.id }}"{% endif %}>
+        <iframe class="embed" src="{{ s.src }}" title="{{ s.title }}"></iframe>
+        {% if s.notes %}<aside class="notes">{{ s.notes }}</aside>{% endif %}
+      </section>
+      {%- else %}
+      <section class="l-{{ s.layout }}"{% if s.id %} id="{{ s.id }}"{% endif %}>
+        <div class="frame">
+          <header class="rail">
+            <span class="kicker">{{ s.kicker or '' }}</span>
+            {%- if s.path %}
+            <ol class="path" aria-label="Hodan's path, step {{ s.path }} of {{ deck.path | length }}">
+              {%- for step in deck.path %}<li{% if loop.index == s.path %} class="now" aria-current="step"{% elif loop.index < s.path %} class="done"{% endif %}><i></i>{{ step }}</li>{% endfor %}
+            </ol>
+            {%- endif %}
+          </header>
+
+          <div class="body">
+            <div class="head">
+              <h2 class="title">{{ s.title | safe }}</h2>
+              {% if s.line %}<p class="line">{{ s.line | safe }}</p>{% endif %}
+              {% if s.who %}<p class="who">{{ s.who }}</p>{% endif %}
+            </div>
+
+            <div class="stage">
+              {%- if s.layout in ['opener', 'close'] %}
+              <div class="drawer-scene{% if s.layout == 'close' %} rising{% endif %}">
+                <figure class="paper drawer-paper"><img src="{{ s.letter }}" alt="{{ s.letter_alt }}">{% if s.qr %}<img class="qr-strip" src="{{ s.qr }}" alt="The Silta QR strip at the foot of the letter: one line in 14 languages, 'Questions about this letter? Silta explains it in your language'.">{% endif %}</figure>
+                <div class="drawer-front" aria-hidden="true"><span></span></div>
+              </div>
+              {%- elif s.layout == 'number' %}
+              {{ bars(s.bars) }}
+              {%- elif s.layout == 'stages' %}
+              <div class="stages">
+                <ol class="stage-strip">
+                  {%- for st in s.stages %}<li class="{{ st.tone }}"><b>{{ st.label }}</b><span>{{ st.text }}</span></li>{% endfor %}
+                </ol>
+                <div class="stage-marks">
+                  {%- for m in s.marks %}<div class="mark {{ m.tone }}"><span class="mark-value">{{ m.value }}</span><span class="mark-text">{{ m.text }}</span></div>{% endfor %}
+                </div>
+              </div>
+              {%- elif s.layout == 'morph' %}
+              <div class="morph">
+                {{ screen(s['from']) }}
+                <div class="morph-to">{% for sc in s.screens %}{{ screen(sc) }}{% endfor %}</div>
+                <span class="fragment morph-trigger" aria-hidden="true"></span>
+              </div>
+              {%- elif s.layout == 'cards' %}
+              <div class="cards n{{ s.cards | length }}">
+                {%- for c in s.cards %}
+                <article class="card">{% if c.tag %}<span class="card-tag">{{ c.tag }}</span>{% endif %}<h3>{{ c.title }}</h3><p>{{ c.text | safe }}</p></article>
+                {%- endfor %}
+              </div>
+              {%- elif s.layout == 'facts' %}
+              <div class="facts n{{ s.facts | length }}">
+                {%- for f in s.facts %}<div class="fact"><span class="fact-value">{{ f.value }}</span><span class="fact-label">{{ f.label }}</span></div>{% endfor %}
+              </div>
+              {%- if s.logos %}
+              <div class="logos">{% for l in s.logos %}<img src="{{ l.src }}" alt="{{ l.alt }}">{% endfor %}</div>
+              {%- endif %}
+              {%- else %}
+              <div class="screens n{{ s.screens | length }}">{% for sc in s.screens %}{{ screen(sc) }}{% endfor %}</div>
+              {%- endif %}
+            </div>
+          </div>
+
+          <footer class="foot">
+            <div class="chips">
+              {%- for d in s.drills or [] %}
+              <button type="button" class="chip k-{{ d.kind }}" data-drill="{{ s.id }}-{{ loop.index }}" aria-haspopup="dialog"><i aria-hidden="true"></i>{{ d.label }}</button>
+              {%- endfor %}
+            </div>
+            {% if s.source %}<p class="source">{{ s.source }}</p>{% endif %}
+          </footer>
+        </div>
+
+        {%- for d in s.drills or [] %}
+        <div class="sheet k-{{ d.kind }}" id="{{ s.id }}-{{ loop.index }}" role="dialog" aria-modal="true" aria-label="{{ d.title }}" hidden>
+          <div class="sheet-scrim" data-close></div>
+          <div class="sheet-panel">
+            <header class="sheet-head"><span class="sheet-kind"><i aria-hidden="true"></i>{{ d.label }}</span><button type="button" class="sheet-close" data-close aria-label="Close">×</button></header>
+            <h3 class="sheet-title">{{ d.title }}</h3>
+            {%- if d.chart == 'screening' %}
+            {{ bars(deck.screening_bars) }}
+            {%- endif %}
+            <ul class="sheet-items">
+              {%- for it in d['items'] or [] %}
+              <li>{% if it.value %}<span class="item-value">{{ it.value }}</span>{% endif %}<span class="item-text">{{ it.text | safe }}</span>{% if it.source %}<span class="item-source">{{ it.source }}</span>{% endif %}</li>
+              {%- endfor %}
+            </ul>
+          </div>
+        </div>
+        {%- endfor %}
+        {% if s.notes %}<aside class="notes">{{ s.notes }}</aside>{% endif %}
+      </section>
+      {%- endif %}
+      {%- endfor %}
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+  <script src="/static/deck-v3.js"></script>
+</body>
+</html>
