@@ -2,50 +2,65 @@
 {% block title %}Data — {{ site.name }}{% endblock %}
 {% block body %}
 <main class="page-body">
-  <div class="container-xl">
+  <div class="container-xl silta-narrow">
     <div class="silta-page-head">
       <p class="silta-eyebrow">Data</p>
-      <h1 class="page-title">Who screening reaches in Finland</h1>
-      <p class="text-secondary silta-lede">Public statistics behind Silta. Hover a mark for the exact figure; open “Data table” under a chart for the numbers.</p>
+      <h1 class="page-title">{{ story.title }}</h1>
+      <p class="text-secondary silta-lede">{{ story.lede }}</p>
     </div>
 
-    <section class="silta-facts mb-4" aria-label="Key facts">
-      {% for fact in site.facts %}
-      <div class="card silta-fact">
+    <div class="silta-story">
+      {% for b in story.blocks %}
+      {% set item = charts.get(b.chart) if b.chart else none %}
+      <section class="card silta-story-block{% if b.placeholder %} silta-story-placeholder{% endif %}" id="{{ b.id }}" aria-labelledby="h-{{ b.id }}">
         <div class="card-body">
-          <div class="silta-fact-value">{{ fact.value }}</div>
-          <p class="silta-fact-label">{{ fact.label }}</p>
-          <p class="silta-src">{{ fact.source }}</p>
-        </div>
-      </div>
-      {% endfor %}
-    </section>
+          <h2 class="silta-story-headline" id="h-{{ b.id }}">{{ b.headline }}</h2>
 
-    <div class="row row-cards">
-      {% for item in charts %}
-      {% set c = item.chart %}
-      <div class="{{ 'col-12' if c.wide else 'col-lg-6' }}">
-        <div class="card h-100" id="{{ c.id }}">
-          <div class="card-header flex-column align-items-start">
-            <h2 class="card-title">{{ c.title }}</h2>
-            {% if c.subtitle %}<p class="card-subtitle mt-1 mb-0">{{ c.subtitle }}</p>{% endif %}
+          {% if b.text %}<p class="silta-story-text">{{ b.text }}</p>{% endif %}
+
+          {% if item %}
+          <div class="silta-chart" data-chart="{{ item.chart.id }}" style="min-height: {{ item.chart.height }}px" role="img" aria-label="{{ item.chart.title }}. {{ item.chart.subtitle }}"></div>
+          <script type="application/json" id="fig-{{ item.chart.id }}">{"light": {{ item.figures.light | safe }}, "dark": {{ item.figures.dark | safe }}}</script>
+          {% endif %}
+
+          {% if b.rows %}
+          <div class="table-responsive">
+            <table class="table table-vcenter silta-story-table">
+              <thead><tr>{% for col in b.rows.columns %}<th>{{ col }}</th>{% endfor %}</tr></thead>
+              <tbody>{% for row in b.rows.body %}<tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>{% endfor %}</tbody>
+            </table>
           </div>
-          <div class="card-body">
-            <div class="silta-chart" data-chart="{{ c.id }}" style="min-height: {{ c.height }}px" role="img" aria-label="{{ c.title }}"></div>
-            <script type="application/json" id="fig-{{ c.id }}">{"light": {{ item.figures.light | safe }}, "dark": {{ item.figures.dark | safe }}}</script>
-            <details class="silta-table mt-3">
-              <summary>Data table</summary>
+          {% endif %}
+
+          {% if b.list_html %}
+          <ul class="silta-story-list">{% for li in b.list_html %}<li>{{ li | safe }}</li>{% endfor %}</ul>
+          {% endif %}
+
+          {% if b.placeholder %}<p class="silta-story-text text-secondary">{{ b.placeholder }}</p>{% endif %}
+
+          {% if b.takeaway %}<p class="silta-story-text">{{ b.takeaway }}</p>{% endif %}
+
+          {% if b.callout %}<p class="silta-callout">{{ b.callout }}</p>{% endif %}
+
+          {% if b.details_html or b.source or item %}
+          <details class="silta-details">
+            <summary>Details and sources</summary>
+            <div class="silta-details-body">
+              {{ b.details_html | safe if b.details_html }}
+              {% if item %}
               <div class="table-responsive">
-                <table class="table table-sm table-vcenter mt-2">
+                <table class="table table-sm table-vcenter">
                   <thead><tr>{% for col in item.table.columns %}<th>{{ col }}</th>{% endfor %}</tr></thead>
                   <tbody>{% for row in item.table.rows %}<tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>{% endfor %}</tbody>
                 </table>
               </div>
-            </details>
-          </div>
-          {% if c.source %}<div class="card-footer silta-src">Source: {{ c.source }}</div>{% endif %}
+              {% endif %}
+              {% if b.source %}<p class="silta-details-src">Source: {{ b.source }}</p>{% endif %}
+            </div>
+          </details>
+          {% endif %}
         </div>
-      </div>
+      </section>
       {% endfor %}
     </div>
   </div>
@@ -55,7 +70,7 @@
 <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
 <script>
   (function () {
-    var config = {displaylogo: false, responsive: true, modeBarButtonsToRemove: ["lasso2d", "select2d"]};
+    var config = {displaylogo: false, responsive: true, displayModeBar: false};
     function theme() { return document.documentElement.getAttribute("data-bs-theme") === "dark" ? "dark" : "light"; }
     function draw() {
       document.querySelectorAll("[data-chart]").forEach(function (el) {
@@ -66,6 +81,10 @@
     }
     draw();
     document.addEventListener("silta:theme", draw);
+    // Charts drawn before layout settles (e.g. in a background tab) come out tiny; resize once loaded.
+    window.addEventListener("load", function () {
+      document.querySelectorAll("[data-chart]").forEach(function (el) { Plotly.Plots.resize(el); });
+    });
   })();
 </script>
 {% endblock %}

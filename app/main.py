@@ -52,7 +52,10 @@ def landing(request: Request):
 
 @app.get("/dashboard", response_class=HTMLResponse)
 def dashboard(request: Request):
-    return render(request, "dashboard.html", "dashboard", charts=[c.render() for c in charts.discover()])
+    story = content.dashboard()
+    available = charts.by_id()
+    rendered = {b["chart"]: available[b["chart"]].render() for b in story.get("blocks", []) if b.get("chart") in available}
+    return render(request, "dashboard.html", "dashboard", story=story, charts=rendered)
 
 
 @app.get("/presentation", response_class=HTMLResponse)

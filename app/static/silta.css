@@ -110,6 +110,27 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .silta-table summary { cursor: pointer; color: var(--silta-muted); font-size: 14px; }
 .card-subtitle { color: var(--silta-muted); font-size: 14px; max-width: 80ch; }
 
+/* dashboard story: headline, one visual, one sentence; everything else folded */
+.silta-story { display: grid; gap: 20px; padding-bottom: 32px; }
+.silta-story-block .card-body { display: grid; gap: 16px; padding: 28px; }
+.silta-story-headline { font-size: clamp(22px, 2.6vw, 26px); font-weight: 800; line-height: 1.2; margin: 0; }
+.silta-story-text { margin: 0; font-size: 17px; line-height: 1.55; max-width: 66ch; }
+.silta-story-list { margin: 0; padding-left: 20px; display: grid; gap: 10px; font-size: 17px; line-height: 1.5; max-width: 70ch; }
+.silta-story-list strong { font-weight: 700; }
+.silta-callout { margin: 0; padding: 12px 16px; border-radius: 8px; background: var(--silta-lake-soft); font-size: 16px; line-height: 1.5; max-width: 66ch; }
+.silta-story-table { font-size: 16px; margin: 0; }
+.silta-details summary { cursor: pointer; color: var(--silta-muted); font-size: 15px; }
+.silta-details-body { padding-top: 12px; font-size: 15px; color: var(--silta-muted); }
+.silta-details-body ul { padding-left: 18px; display: grid; gap: 6px; }
+.silta-details-body p { margin: 12px 0 6px; }
+.silta-details-body strong { color: var(--silta-ink); }
+.silta-details-body table { font-size: 14px; }
+.silta-details-src { font-size: 13px; }
+.silta-story-placeholder { border-style: dashed; }
+@media (max-width: 767.98px) {
+  .silta-story-block .card-body { padding: 18px; }
+}
+
 /* team materials */
 .silta-filters { display: flex; flex-wrap: wrap; gap: 6px; }
 .silta-filters .btn.active { background: var(--silta-lake); color: var(--tblr-primary-fg); border-color: var(--silta-lake); }

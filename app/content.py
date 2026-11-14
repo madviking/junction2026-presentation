@@ -306,5 +306,16 @@ def tech_challenge(slug: str) -> dict | None:
     return next((p for p in tech_challenges() if p["slug"] == slug), None)
 
 
+def dashboard() -> dict:
+    """The /dashboard story (content/dashboard.yaml) with each block's details rendered from Markdown."""
+    data = yaml.safe_load(_read(settings.content_dir() / "dashboard.yaml")) or {}
+    for block in data.get("blocks", []):
+        if block.get("details"):
+            block["details_html"] = render_markdown(block["details"])
+        if block.get("list"):
+            block["list_html"] = [render_markdown(item).removeprefix("<p>").removesuffix("</p>") for item in block["list"]]
+    return data
+
+
 def data_path(name: str) -> Path:
     return settings.content_dir() / "data" / name
