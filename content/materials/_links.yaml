@@ -35,3 +35,8 @@
   description: Discovery view. Screening and symptom pathway by native language, evidence level per step, and proposed fixes per step. Same page as pathway-timeline.html.
   tags: [dashboard, mockup, data]
   updated: 2026-11-14
+- title: Routes into care mockup (claude.ai)
+  url: https://claude.ai/artifact/8bFR7XtQhwcEvXsNX4bmy1
+  description: Next version of /pathway. Three routes into cancer care (screening, symptom, doctor's suggestion) merging at the diagnostic exam; programmes combined; only significant gaps shown. Same page as routes-into-care.html.
+  tags: [pathway, mockup, data]
+  updated: 2026-11-14
