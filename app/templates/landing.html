@@ -16,7 +16,30 @@
           <a class="btn btn-lg" href="/presentation"><i class="ti ti-presentation me-2"></i>See the deck</a>
         </div>
       </div>
-      {% if site.hero_image %}
+      {% if site.hero_screens %}
+      {% set screens = site.hero_screens %}
+      <section class="silta-slider" aria-roledescription="carousel" aria-label="Silta on a phone, step by step">
+        <div class="silta-phone">
+          <div class="silta-slider-track" tabindex="0" aria-label="Screens (swipe or use the arrow keys)">
+            {% for s in screens %}
+            <figure class="silta-slide" role="group" aria-roledescription="slide" aria-label="{{ loop.index }} / {{ screens|length }}" data-caption="{{ s.caption }}">
+              <img src="{{ s.src }}" alt="{{ s.alt }}" width="375" height="812" loading="{{ 'eager' if loop.first else 'lazy' }}">
+            </figure>
+            {% endfor %}
+          </div>
+        </div>
+        <p class="silta-slider-caption" aria-live="polite">{{ screens[0].caption }}</p>
+        <div class="silta-slider-nav">
+          <button type="button" class="btn btn-icon" data-slider="prev" aria-label="Previous screen"><i class="ti ti-chevron-left"></i></button>
+          <div class="silta-slider-dots">
+            {% for s in screens %}
+            <button type="button" data-slider="{{ loop.index0 }}" aria-label="Screen {{ loop.index }}"{% if loop.first %} aria-current="true"{% endif %}></button>
+            {% endfor %}
+          </div>
+          <button type="button" class="btn btn-icon" data-slider="next" aria-label="Next screen"><i class="ti ti-chevron-right"></i></button>
+        </div>
+      </section>
+      {% elif site.hero_image %}
       <figure class="silta-phone">
         <img src="{{ site.hero_image }}" alt="Silta on a phone: the language picker, the first screen a resident sees." loading="eager">
       </figure>
@@ -82,4 +105,53 @@
     </section>
   </div>
 </main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Phone slider: native horizontal scroll-snap; buttons, dots and arrow keys move it.
+  // Advances by itself every 5 s until the visitor touches it; never with reduced motion.
+  (function () {
+    var slider = document.querySelector(".silta-slider");
+    if (!slider) return;
+    var track = slider.querySelector(".silta-slider-track");
+    var slides = slider.querySelectorAll(".silta-slide");
+    var dots = slider.querySelectorAll(".silta-slider-dots button");
+    var caption = slider.querySelector(".silta-slider-caption");
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var current = 0;
+    var timer = null;
+
+    function go(i, smooth) {
+      current = (i + slides.length) % slides.length;
+      track.scrollTo({ left: current * track.clientWidth, behavior: smooth && !reduce ? "smooth" : "auto" });
+    }
+    function show(i) {
+      if (i === current && caption.textContent === slides[i].dataset.caption) return;
+      current = i;
+      caption.textContent = slides[i].dataset.caption;
+      dots.forEach(function (d, n) { if (n === i) d.setAttribute("aria-current", "true"); else d.removeAttribute("aria-current"); });
+    }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+
+    track.addEventListener("scroll", function () {
+      show(Math.round(track.scrollLeft / track.clientWidth));
+    }, { passive: true });
+    slider.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-slider]");
+      if (!b) return;
+      stop();
+      var v = b.dataset.slider;
+      go(v === "prev" ? current - 1 : v === "next" ? current + 1 : Number(v), true);
+    });
+    track.addEventListener("keydown", function (e) {
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+      e.preventDefault();
+      stop();
+      go(current + (e.key === "ArrowRight" ? 1 : -1), true);
+    });
+    ["pointerdown", "wheel", "focusin"].forEach(function (ev) { slider.addEventListener(ev, stop, { passive: true }); });
+    if (!reduce && slides.length > 1) timer = setInterval(function () { go(current + 1, true); }, 5000);
+  })();
+</script>
 {% endblock %}

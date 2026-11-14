@@ -1,9 +1,10 @@
 import base64
 
 import pytest
+from markupsafe import escape
 from fastapi.testclient import TestClient
 
-from app import charts, content
+from app import charts, content, settings
 from app.main import app
 
 
@@ -183,3 +184,15 @@ def test_every_tech_page_has_a_glance():
         assert used <= steps, (page["slug"], used - steps)
         assert 1 <= len(meta.get("numbers") or []) <= 3, page["slug"]
         assert meta.get("live"), page["slug"]
+
+
+def test_landing_screen_slider_shows_every_screen(client):
+    screens = content.site()["hero_screens"]
+    assert len(screens) >= 3
+    html = client.get("/").text
+    assert 'class="silta-slider"' in html
+    for i, screen in enumerate(screens, start=1):
+        assert (settings.content_dir() / screen["src"].removeprefix("/")).is_file(), screen["src"]
+        assert f'src="{screen["src"]}"' in html
+        assert str(escape(screen["alt"])) in html
+        assert f'aria-label="{i} / {len(screens)}"' in html

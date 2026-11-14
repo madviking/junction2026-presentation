@@ -1,12 +1,34 @@
 # Site-wide settings. Edit freely; changes show on reload (no rebuild needed with `make up`).
 # Links can be overridden per deployment with env vars: SILTA_<KEY>_URL (e.g. SILTA_CONSUMER_URL).
+# Defaults are the live Aiven deployment, so printouts made locally carry the right QR code;
+# set SILTA_CONSUMER_URL=http://localhost:5300/ (etc.) to point a local site at a local app.
 
 name: Silta
 meaning: Finnish for “bridge”
 punchline: Helps language minorities in Finland act on possible cancer symptoms and use screening, in their own language.
 event: Junction 2026 · AstraZeneca — Equal Care Across Finland
 
-hero_image: /media/screens/01-language-picker.png
+# Landing-page phone slider, in journey order. Recapture with `node scripts/capture_screens.mjs`
+# (needs the app running; see the script header).
+hero_screens:
+  - src: /media/screens/slider-01-language.png
+    alt: "Silta's first screen: a list of languages under a red Emergency? Call 112 button."
+    caption: Pick your language. The 112 button stays on every screen.
+  - src: /media/screens/slider-02-body-map.png
+    alt: "'What worries you?' with a body figure, body-part buttons and picture cards with speaker buttons."
+    caption: Hard to read? Tap where it is on the body. Every card has a picture and a speaker button.
+  - src: /media/screens/slider-03-body-map-chosen.png
+    alt: "The chest is highlighted on the body figure and the 'A cough for over 3 weeks' card is ticked."
+    caption: Tap the chest and only chest symptoms stay. No name, no ID.
+  - src: /media/screens/slider-04-route.png
+    alt: "'Where do you get health care?' with three guiding questions, a free-text box and a Tap to speak button."
+    caption: Where do you get care? Answer by card, by typing or by speaking.
+  - src: /media/screens/slider-05-door.png
+    alt: "'Contact the county health station and ask for an assessment today', then the call script in Finnish with English meanings."
+    caption: The right door, and the words to say in Finnish, with their meaning and audio.
+  - src: /media/screens/slider-06-body-map-ar.png
+    alt: "The same symptom screen in Arabic, laid out right to left."
+    caption: The same screen in Arabic, right to left.
 
 facts:
   - value: "646,392"
@@ -26,17 +48,17 @@ facts:
 links:
   consumer:
     label: Silta for residents
-    url: http://localhost:5300/
+    url: https://fond-useful-corgi.eur-1.aiven.app/
     description: The mobile web app. Pick a language, describe what you noticed, find the right door.
     icon: device-mobile
   county:
     label: County view
-    url: http://localhost:5300/county/helsinki
+    url: https://fond-useful-corgi.eur-1.aiven.app/county/helsinki
     description: Public figures and anonymous counts by stage, outcome and language.
     icon: map-2
   admin:
     label: Admin
-    url: http://localhost:5300/admin
+    url: https://fond-useful-corgi.eur-1.aiven.app/admin
     description: Edit and publish texts, approve audio, usage and audit. Test users are in the password manager.
     icon: settings
   source:
@@ -46,7 +68,7 @@ links:
     icon: brand-github
   site:
     label: This site
-    url: http://localhost:8400/
+    url: https://mostly-awaited-flounder.eur-1.aiven.app/
     description: Landing page, data, deck and video.
     icon: world
 

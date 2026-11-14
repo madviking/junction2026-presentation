@@ -5,16 +5,18 @@ Usage (from the presentation repo root):
     .venv/bin/python scripts/build_printouts.py help-card  # render one
 
 The texts are knowledge and live in the brain repo: the ```yaml block of each
-../brain/content/printouts/<id>.md, with shared phrases, languages and the QR link base in
+../brain/content/printouts/<id>.md, with shared phrases, languages and the app URL in
 ../brain/content/printouts/shared-phrases.md ($SILTA_BRAIN overrides the brain path).
+QR codes open the live app: a one-language page links to <app_url>/r/<lang>, a multilingual
+page to <app_url>/ (language picker); both carry ?<channel_param>=<channel> for per-channel counting.
 Outputs (this repo):
     content/printouts/<id>.pdf              print file, listed at /printouts
     content/media/printouts/<page>.png      one preview per page
 
 Rendering uses Playwright (Chromium) from the tech repo's frontend install
 (../tech/frontend/node_modules/playwright) or the path in $SILTA_PLAYWRIGHT. QR codes come
-from segno; the page loads Noto Sans and Noto Sans Arabic from Google Fonts, so it needs
-network access. Intermediate HTML goes to a temporary folder and is not kept.
+from segno; the page loads Noto Sans, Noto Sans Arabic, Noto Sans SC/TC (Chinese) and Noto Sans
+Thai from Google Fonts, so it needs network access. Intermediate HTML goes to a temporary folder and is not kept.
 """
 from __future__ import annotations
 
@@ -36,7 +38,6 @@ SRC = BRAIN / "content" / "printouts"
 FILES = ROOT / "content" / "printouts"
 PREVIEWS = ROOT / "content" / "media" / "printouts"
 YAML_RE = re.compile(r"```yaml\n(.*?)\n```", re.S)
-LANG_ORDER = ["en", "fi", "so", "ar", "ru", "uk", "fa"]
 
 
 def load_yaml_block(path: Path) -> dict:
@@ -49,6 +50,8 @@ def load_yaml_block(path: Path) -> dict:
 SHARED = load_yaml_block(SRC / "shared-phrases.md")
 LANGS = SHARED["languages"]
 PHRASES = SHARED["phrases"]
+LANG_ORDER = list(LANGS)  # one page per language, in the app's language-picker order
+FONT_CLASS = {"ar": "arabic", "fa": "arabic", "zh": "sc", "yue": "tc", "th": "thai"}
 
 
 def t(value, lang: str) -> str:
@@ -56,7 +59,9 @@ def t(value, lang: str) -> str:
     if isinstance(value, dict) and "shared" in value:
         value = PHRASES[value["shared"]]
     if isinstance(value, dict):
-        return value.get(lang) or value["en"]
+        if not value.get(lang):
+            sys.exit(f"missing {lang} text for: {value.get('en')!r}")
+        return value[lang]
     return str(value)
 
 
@@ -64,21 +69,35 @@ def e(s: str) -> str:
     return html.escape(s, quote=True)
 
 
-def link(channel: str) -> str:
-    return SHARED["link_base"] + channel
+def short_link(lang: str | None = None) -> str:
+    """What a person can type: the app, opened in `lang` (or at the language picker)."""
+    base = re.sub(r"^https?://", "", SHARED["app_url"].rstrip("/"))
+    return f"{base}/r/{lang}" if lang else f"{base}/"
 
 
-def short_link(channel: str) -> str:
-    return re.sub(r"^https?://", "", link(channel))
+def link(channel: str, lang: str | None = None) -> str:
+    """The QR target: the short link plus the channel code."""
+    scheme = re.match(r"^https?://", SHARED["app_url"]).group(0)
+    return f'{scheme}{short_link(lang)}?{SHARED["channel_param"]}={channel}'
 
 
-def qr(channel: str, cls: str = "qr") -> str:
-    svg = segno.make(link(channel), error="m").svg_inline(border=2, dark="#1b2027", omitsize=True)
+def qr(channel: str, lang: str | None = None, cls: str = "qr") -> str:
+    svg = segno.make(link(channel, lang), error="m").svg_inline(border=2, dark="#1b2027", omitsize=True)
     return f'<div class="{cls}">{svg}</div>'
 
 
+def wrap_host(url: str) -> str:
+    """A long link split into unbreakable pieces at dots, so it never wraps mid-word."""
+    head, _, tail = url.partition(".")
+    return f'<span class="nw">{e(head)}</span><wbr><span class="nw">.{e(tail)}</span>' if tail else e(url)
+
+
+def font(lang: str) -> str:
+    return FONT_CLASS.get(lang, "")
+
+
 def sample_tag() -> str:
-    return '<span class="sample">SAMPLE · link and translations not final</span>'
+    return '<span class="sample">SAMPLE · translations not checked by native speakers</span>'
 
 
 def band(lang: str, right: str | None = None) -> str:
@@ -88,8 +107,7 @@ def band(lang: str, right: str | None = None) -> str:
 
 def page(inner: str, lang: str, preview: str, cls: str) -> str:
     d = LANGS[lang]["dir"]
-    font = "arabic" if d == "rtl" else ""
-    return f'<section class="page {cls} {font}" lang="{lang}" dir="{d}" data-preview="{e(preview)}">{inner}{sample_tag()}</section>'
+    return f'<section class="page {cls} {font(lang)}" lang="{lang}" dir="{d}" data-preview="{e(preview)}">{inner}{sample_tag()}</section>'
 
 
 # ---------- templates ----------
@@ -115,8 +133,8 @@ def a6_front(spec: dict, lang: str) -> str:
             "</div>"
         )
     parts.append(
-        f'<div class="qrrow">{qr(spec["channel"])}<div class="qrtext"><b>{e(t(PHRASES["scan"], lang))}</b>'
-        f'<span class="link" dir="ltr">{e(short_link(spec["channel"]))}</span></div></div>'
+        f'<div class="qrrow">{qr(spec["channel"], lang)}<div class="qrtext"><b>{e(t(PHRASES["scan"], lang))}</b>'
+        f'<span class="link" dir="ltr">{e(short_link(lang))}</span></div></div>'
     )
     foot = [t(PHRASES["free"], lang), t(PHRASES["interpreter"], lang)]
     parts.append(
@@ -133,23 +151,23 @@ def a6_back(spec: dict) -> str:
         + f'<h1>{e(b["title"])}</h1>'
         + '<ol class="steps">' + "".join(f"<li>{e(s)}</li>" for s in b["steps"]) + "</ol>"
         + f'<p class="note">{e(b["note"])}</p>'
-        + f'<p class="link small" dir="ltr">Kanava: {e(spec["channel"])} · {e(short_link(spec["channel"]))}</p>'
+        + f'<p class="link small" dir="ltr">Kanava: {e(spec["channel"])} · {e(short_link())}</p>'
     )
     return page(inner, "fi", f'{spec["id"]}-back-fi', "a6 back")
 
 
 def a4_multilingual(spec: dict) -> str:
     rows = "".join(
-        f'<div class="row" dir="{LANGS[l]["dir"]}" lang="{l}"><span class="lname">{e(LANGS[l]["name"])}</span>'
+        f'<div class="row {font(l)}" dir="{LANGS[l]["dir"]}" lang="{l}"><span class="lname">{e(LANGS[l]["name"])}</span>'
         f'<span class="rtitle">{e(t(spec["title"], l))}</span><span class="rline">{e(t(spec["line"], l))}</span></div>'
         for l in spec["row_languages"]
     )
-    sos = "".join(f'<span dir="{LANGS[l]["dir"]}">{e(t(PHRASES["emergency"], l))}</span>' for l in spec["row_languages"])
+    sos = "".join(f'<span class="{font(l)}" dir="{LANGS[l]["dir"]}" lang="{l}">{e(t(PHRASES["emergency"], l))}</span>' for l in spec["row_languages"])
     inner = (
         band("en", " · ".join(LANGS[l]["name"] for l in spec["row_languages"]))
         + f'<div class="rows">{rows}</div>'
         + '<div class="mid">'
-        + f'<div class="qrbig">{qr(spec["channel"])}<span class="link" dir="ltr">{e(short_link(spec["channel"]))}</span></div>'
+        + f'<div class="qrbig">{qr(spec["channel"])}<span class="link" dir="ltr">{wrap_host(short_link())}</span></div>'
         + f'<div class="staff"><b>Suomeksi</b><p>{e(spec["staff_fi"])}</p></div>'
         + "</div>"
         + f'<div class="sosband"><b>112</b><div>{sos}</div></div>'
@@ -160,19 +178,19 @@ def a4_multilingual(spec: dict) -> str:
 def a4_community(spec: dict, lang: str) -> str:
     signs = "".join(f"<li>{e(t(s, lang))}</li>" for s in spec["signs"])
     tabs = "".join(
-        f'<div class="tab">{qr(spec["channel"], "qr")}<b>{e(t(PHRASES["brand"], lang))}</b><span>{e(t(PHRASES["help_title"], lang))}</span></div>'
+        f'<div class="tab">{qr(spec["channel"], lang)}<b>{e(t(PHRASES["brand"], lang))}</b><span>{e(t(PHRASES["help_title"], lang))}</span></div>'
         for _ in range(8)
     )
     inner = (
         band(lang)
-        + f'<h1 class="huge">{e(t(spec["headline"], lang))}</h1>'
+        + f'<h1 class="huge{" long" if len(t(spec["headline"], lang)) > 30 else ""}">{e(t(spec["headline"], lang))}</h1>'
         + f'<p class="sub">{e(t(spec["sub"], lang))}</p>'
         + f'<ul class="signs">{signs}</ul>'
         + f'<p class="screening">{e(t(spec["screening"], lang))}</p>'
         + '<div class="cta">'
-        + f'{qr(spec["channel"])}'
+        + f'{qr(spec["channel"], lang)}'
         + f'<div><p class="ctatext">{e(t(spec["cta"], lang))}</p><p>{e(t(PHRASES["free"], lang))}</p>'
-        + f'<p>{e(t(PHRASES["interpreter"], lang))}</p><p class="link" dir="ltr">{e(short_link(spec["channel"]))}</p><p class="sos">{e(t(PHRASES["emergency"], lang))}</p></div>'
+        + f'<p>{e(t(PHRASES["interpreter"], lang))}</p><p class="link" dir="ltr">{e(short_link(lang))}</p><p class="sos">{e(t(PHRASES["emergency"], lang))}</p></div>'
         + "</div>"
         + f'<div class="tabs">{tabs}</div>'
     )
@@ -181,13 +199,13 @@ def a4_community(spec: dict, lang: str) -> str:
 
 def letter_block(spec: dict) -> str:
     lines = "".join(
-        f'<p dir="{LANGS[l]["dir"]}" lang="{l}" class="{"arabic" if LANGS[l]["dir"] == "rtl" else ""}">'
-        f'<span class="code">{l.upper()}</span>{e(t(spec["line"], l))}</p>'
+        f'<p lang="{l}" class="{font(l)}"><span class="code">{l.upper()}</span>'
+        f'<span class="text" dir="{LANGS[l]["dir"]}">{e(t(spec["line"], l))}</span></p>'
         for l in spec["row_languages"]
     )
     inner = (
         f'<div class="lqr">{qr(spec["channel"])}<b>{e(t(PHRASES["brand"], "en"))}</b>'
-        f'<span class="link" dir="ltr">{e(short_link(spec["channel"]))}</span></div>'
+        f'<span class="link" dir="ltr">{wrap_host(short_link())}</span></div>'
         f'<div class="llines">{lines}</div>'
     )
     return page(inner, "fi", spec["id"], "letter")
@@ -214,6 +232,9 @@ CSS = """
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { background: #fff; color: var(--ink); font-family: "Noto Sans", "Noto Sans Arabic", system-ui, sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 .arabic, .arabic * { font-family: "Noto Sans Arabic", "Noto Sans", system-ui, sans-serif; }
+.sc, .sc * { font-family: "Noto Sans", "Noto Sans SC", system-ui, sans-serif; }
+.tc, .tc * { font-family: "Noto Sans", "Noto Sans TC", system-ui, sans-serif; }
+.thai, .thai * { font-family: "Noto Sans", "Noto Sans Thai", system-ui, sans-serif; }
 .page { position: relative; overflow: hidden; page-break-after: always; break-after: page; display: flex; flex-direction: column; }
 .band { display: flex; justify-content: space-between; align-items: baseline; background: var(--petrol); color: #fff; }
 .brand { font-weight: 800; letter-spacing: .01em; }
@@ -251,32 +272,32 @@ html, body { background: #fff; color: var(--ink); font-family: "Noto Sans", "Not
 .a6 .note { font-size: 8pt; line-height: 1.35; margin: 3.5mm 6mm 0; padding: 2.5mm 3mm; background: var(--petrol-soft); border-radius: 1.5mm; }
 .a6 .small { font-size: 6.5pt; padding: 3mm 6mm 0; margin-top: auto; }
 
-/* A4 multilingual */
+/* A4 multilingual: up to 12 language rows in two columns */
 .a4 { width: 210mm; height: 297mm; }
-.multi .band { padding: 7mm 14mm; font-size: 9.5pt; }
+.multi .band { padding: 6mm 14mm; font-size: 8pt; gap: 8mm; }
 .multi .brand { font-size: 26pt; }
-.multi .rows { padding: 5mm 14mm 0; display: grid; gap: 0; }
-.multi .row { display: grid; grid-template-columns: 26mm 1fr; column-gap: 5mm; padding: 4.6mm 0; border-bottom: .3mm solid var(--line); }
-.multi .row[dir="rtl"] { font-family: "Noto Sans Arabic", "Noto Sans", sans-serif; }
-.multi .lname { grid-row: span 2; font-size: 8.5pt; font-weight: 700; color: var(--petrol); text-transform: uppercase; letter-spacing: .05em; padding-top: 1.5mm; }
-.multi .rtitle { font-size: 19pt; font-weight: 800; line-height: 1.2; }
-.multi .rline { font-size: 11.5pt; line-height: 1.35; color: #2e353e; }
-.multi .mid { display: grid; grid-template-columns: 64mm 1fr; gap: 8mm; padding: 7mm 14mm 0; align-items: start; }
+.multi .tagline { text-align: end; line-height: 1.5; max-width: 130mm; word-break: keep-all; }
+.multi .rows { padding: 3mm 14mm 0; display: grid; grid-template-columns: 1fr 1fr; column-gap: 9mm; }
+.multi .row { display: grid; align-content: start; gap: .6mm; padding: 2.8mm 0; border-bottom: .3mm solid var(--line); }
+.multi .lname { font-size: 7.5pt; font-weight: 700; color: var(--petrol); text-transform: uppercase; letter-spacing: .05em; }
+.multi .rtitle { font-size: 13.5pt; font-weight: 800; line-height: 1.2; }
+.multi .rline { font-size: 8.8pt; line-height: 1.35; color: #2e353e; }
+.multi .mid { display: grid; grid-template-columns: 50mm 1fr; gap: 8mm; padding: 5mm 14mm 0; align-items: start; }
 .multi .qrbig { display: grid; gap: 2mm; justify-items: center; }
-.multi .qrbig .qr { width: 60mm; height: 60mm; }
-.multi .qrbig .link { font-size: 8pt; }
+.multi .qrbig .qr { width: 48mm; height: 48mm; }
+.multi .qrbig .link { font-size: 7.5pt; text-align: center; }
 .multi .staff { background: var(--petrol-soft); border-radius: 3mm; padding: 5mm; font-size: 9.5pt; line-height: 1.45; display: grid; gap: 2mm; }
 .multi .staff b { color: var(--petrol); text-transform: uppercase; font-size: 8pt; letter-spacing: .06em; }
-.multi .sosband { margin-top: auto; background: var(--red); color: #fff; display: grid; grid-template-columns: auto 1fr; gap: 6mm; align-items: center; padding: 5mm 14mm 8mm; }
-.multi .sosband b { font-size: 34pt; font-weight: 800; }
-.multi .sosband div { display: flex; flex-wrap: wrap; gap: 1mm 5mm; font-size: 9pt; font-weight: 600; }
+.multi .sosband { margin-top: auto; background: var(--red); color: #fff; display: grid; grid-template-columns: auto 1fr; gap: 6mm; align-items: center; padding: 3.5mm 14mm 6.5mm; }
+.multi .sosband b { font-size: 30pt; font-weight: 800; }
+.multi .sosband div { display: flex; flex-wrap: wrap; gap: .8mm 4.5mm; font-size: 8.5pt; font-weight: 600; }
 .multi .sosband span[dir="rtl"] { font-family: "Noto Sans Arabic", sans-serif; }
-.multi .sample { color: #fff; }
 
 /* A4 community */
 .community .band { padding: 7mm 14mm; font-size: 11pt; }
 .community .brand { font-size: 26pt; }
 .community .huge { font-size: 38pt; line-height: 1.12; font-weight: 800; padding: 13mm 14mm 0; }
+.community .huge.long { font-size: 31pt; padding-top: 10mm; }
 .community .sub { font-size: 15pt; line-height: 1.4; padding: 5mm 14mm 0; }
 .community .signs { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; padding: 8mm 14mm 0; }
 .community .signs li { border: .5mm solid var(--petrol); border-radius: 3mm; padding: 4.5mm 5mm; font-size: 16pt; font-weight: 700; line-height: 1.25; min-height: 31mm; display: flex; align-items: center; }
@@ -300,9 +321,12 @@ html, body { background: #fff; color: var(--ink); font-family: "Noto Sans", "Not
 .lqr .qr { width: 36mm; height: 36mm; }
 .lqr b { font-size: 11pt; color: var(--petrol); }
 .lqr .link { font-size: 5.8pt; }
-.llines { display: grid; gap: .8mm; align-content: center; flex: 1; min-width: 0; }
-.llines p { font-size: 8.4pt; line-height: 1.3; display: flex; gap: 2mm; align-items: baseline; }
-.llines .code { font: 700 6.5pt "Noto Sans Mono", monospace; color: var(--petrol); width: 5.5mm; flex: none; }
+.llines { display: grid; grid-template-columns: 1fr 1fr; grid-auto-flow: column; grid-template-rows: repeat(7, auto); column-gap: 4mm; row-gap: .7mm; align-content: safe center; flex: 1; min-width: 0; }
+.llines p { font-size: 6.6pt; line-height: 1.22; display: flex; gap: 1.5mm; align-items: baseline; }
+.llines .text { flex: 1; min-width: 0; }
+.llines .text[dir="rtl"] { text-align: right; }
+.nw { white-space: nowrap; }
+.llines .code { font: 700 5.6pt "Noto Sans Mono", monospace; color: var(--petrol); width: 6mm; flex: none; }
 .letter .sample { bottom: .8mm; }
 """
 
@@ -312,7 +336,7 @@ QR_JS = "document.fonts.ready.then(() => { window.__ready = true; });"
 def build_html(spec: dict) -> str:
     size = PAGE_SIZES[spec["template"]]
     return f"""<!doctype html><html><head><meta charset="utf-8">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700;800&family=Noto+Sans+Arabic:wght@400;600;700;800&family=Noto+Sans+Mono:wght@400;700&display=block">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700;800&family=Noto+Sans+Arabic:wght@400;600;700;800&family=Noto+Sans+Mono:wght@400;700&family=Noto+Sans+SC:wght@400;600;700;800&family=Noto+Sans+TC:wght@400;600;700;800&family=Noto+Sans+Thai:wght@400;600;700;800&display=block">
 <style>@page {{ size: {size}; margin: 0; }}{CSS}</style>
 </head><body>{render_pages(spec)}<script>{QR_JS}</script></body></html>"""
 
@@ -326,6 +350,16 @@ const jobs = JSON.parse(process.env.JOBS);
     const page = await browser.newPage({ deviceScaleFactor: 1.5 });
     await page.goto('file://' + job.html, { waitUntil: 'networkidle' });
     await page.waitForFunction(() => window.__ready === true, null, { timeout: 30000 });
+    // Every page clips its overflow, so text that does not fit would vanish silently: fail instead.
+    const over = await page.$$eval('.page', (els) => els.map((el) => {
+      const p = el.getBoundingClientRect();
+      const out = [...el.querySelectorAll('*')].filter((k) => {
+        const r = k.getBoundingClientRect();
+        return r.width > 0 && (r.top < p.top - 1 || r.bottom > p.bottom + 1 || r.left < p.left - 1 || r.right > p.right + 1);
+      }).length;
+      return [el.dataset.preview, el.scrollHeight - el.clientHeight, el.scrollWidth - el.clientWidth, out];
+    }).filter(([, h, w, out]) => h > 1 || w > 1 || out > 0));
+    if (over.length) { console.error('OVERFLOW', job.id, JSON.stringify(over)); process.exitCode = 1; }
     await page.pdf({ path: job.pdf, preferCSSPageSize: true, printBackground: true });
     for (const el of await page.$$('.page')) {
       const name = await el.getAttribute('data-preview');

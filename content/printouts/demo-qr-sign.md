@@ -1,6 +1,6 @@
 ---
 title: Try Silta — table sign
-description: Big QR code for the review table. Set SILTA_CONSUMER_URL to the deployed app before printing.
+description: Big QR code for the review table. Opens the live app (the `consumer` link in content/site.yaml).
 qr: consumer
 layout: sign
 tags: [sign, demo]
