@@ -38,4 +38,86 @@
     }
   }, true)
   Reveal.on('slidechanged', close)
+
+  // "Next" hint: a big arrow that flies into reveal's small chevron, so a first-time viewer
+  // sees where "next" lives. Plays on load and again after IDLE_MS while the viewer has not
+  // moved yet; stops for good after the first slide change. Not in print or speaker view.
+  const IDLE_MS = 9000
+  if (/print-pdf|receiver/.test(location.search)) return
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
+  const hint = document.createElement('button')
+  hint.type = 'button'
+  hint.className = 'next-hint'
+  hint.setAttribute('aria-label', 'Next slide')
+  hint.hidden = true
+  hint.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 5.5 19.5 12 13 18.5"/></svg><span class="next-hint-label">Next</span>'
+  hint.addEventListener('click', () => Reveal.next())
+  document.body.appendChild(hint)
+
+  let moved = false
+  let idle = null
+  let running = []
+  const chevron = () => document.querySelector('.reveal .controls .navigate-right.enabled')
+
+  function stop() {
+    running.forEach((a) => a.cancel())
+    running = []
+    hint.hidden = true
+  }
+  function ring(target) {
+    target.classList.remove('nudge')
+    void target.offsetWidth // restart the CSS animation
+    target.classList.add('nudge')
+    setTimeout(() => target.classList.remove('nudge'), 2400)
+  }
+  async function play() {
+    const target = chevron()
+    if (moved || running.length || !target || open || document.hidden) return
+    if (reduce) { ring(target); return }
+    hint.hidden = false
+    const from = hint.getBoundingClientRect()
+    const to = target.getBoundingClientRect()
+    const dx = to.left + to.width / 2 - (from.left + from.width / 2)
+    const dy = to.top + to.height / 2 - (from.top + from.height / 2)
+    const scale = Math.max(to.width, to.height) / from.width
+    const label = hint.querySelector('.next-hint-label')
+    const steps = [
+      () => hint.animate(
+        [{ opacity: 0, transform: 'scale(0.5)' }, { opacity: 1, transform: 'scale(1.08)', offset: 0.7 }, { opacity: 1, transform: 'scale(1)' }],
+        { duration: 450, easing: 'ease-out' }),
+      () => hint.animate(
+        [{ transform: 'translateX(0)' }, { transform: 'translateX(14px)' }, { transform: 'translateX(0)' }, { transform: 'translateX(14px)' }, { transform: 'translateX(0)' }],
+        { duration: 1300, easing: 'ease-in-out' }),
+      () => {
+        label.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200, fill: 'forwards' })
+        return hint.animate(
+          [{ transform: 'translate(0, 0) scale(1)', opacity: 1 }, { transform: `translate(${dx}px, ${dy}px) scale(${scale})`, opacity: 0.9, offset: 0.9 }, { transform: `translate(${dx}px, ${dy}px) scale(${scale})`, opacity: 0 }],
+          { duration: 750, easing: 'cubic-bezier(0.55, 0, 0.3, 1)', fill: 'forwards' })
+      },
+    ]
+    try {
+      for (const step of steps) {
+        const anim = step()
+        running = [anim]
+        await anim.finished
+      }
+    } catch { return } // cancelled by stop()
+    label.getAnimations().forEach((a) => a.cancel())
+    stop()
+    ring(target)
+    schedule()
+  }
+  function schedule() {
+    clearTimeout(idle)
+    if (!moved) idle = setTimeout(play, IDLE_MS)
+  }
+
+  const start = () => setTimeout(play, 900)
+  if (Reveal.isReady()) start(); else Reveal.on('ready', start)
+  Reveal.on('slidechanged', () => {
+    moved = true
+    clearTimeout(idle)
+    stop()
+  })
+  addEventListener('resize', stop)
 })()

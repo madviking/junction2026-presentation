@@ -60,6 +60,8 @@ screenshots:
 
 **One integration point.** All model calls go through one internal service, `backend/llm/`. Each feature names its provider and model in `backend/llm/integrations.ts`, every call writes a usage row with tokens and cost, and a spend cap refuses calls rather than faking an answer. The same service also wraps Gemini `generateContent` for text tasks.
 
+**Outside the app: our videos.** We also used the new video generation in Google AI Studio for footage in our videos, including footage with a person in it. That person is generated, not a real resident or clinician; Hodan, whose story the video tells, is a composite. The app screens, letter and data animations in the video are real captures and code, not generated (`content/materials/video-assets/README.md`).
+
 ## Architecture
 
 | Step | Component | File |
@@ -78,6 +80,7 @@ screenshots:
 - A live evaluation on a labelled set of 48 synthetic English and Finnish inputs: every confident answer was correct, all 5 questions about health care words got the right answer card, and every vague or off-topic input fell back to the cards, for $0.005 (`docs/proof/2026-11-14/classifier-eval.md`). The set was written by the builder, so it shows the wiring and the guard rails, not an independent accuracy figure.
 - The direct Gemini API adapter for both Decisions and `generateContent`, each proven with a live smoke call (`backend/llm/README.md`).
 - "I got a letter": the person photographs a letter they cannot read; Gemini 3.1 Flash-Lite reads the photo and answers as one JSON object that follows our schema: a letter type from a closed set, the date, place and phone number copied as printed, and a short explanation with steps in the person's language (`backend/letters/`, `backend/llm/service.ts` `extract`). Checked in the running local app on 14 Nov with the app's own Finnish example invitation, in Somali and Arabic (`docs/proof/2026-11-14/letter-result-so.png`, `letter-result-ar.png`). This is generated text, so the screen labels it machine-made and tells the person to check date, time and place against the paper. The photo is sent once and never stored or logged; the model makes no urgency decision. Tried on one example letter only, not evaluated on real letters.
+- Video footage generated in Google AI Studio, including a generated person, used in our videos (`content/materials/video-assets/README.md`). Separate from the product: no resident data goes into it.
 
 ## Why it matters for the people we serve
 

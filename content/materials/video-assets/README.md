@@ -28,6 +28,18 @@ The clips add up to about 110 s; trim them in Descript to fit the voice-over. Ea
 then holds its last frame for a moment, so cutting the tail is safe. `stills/` has the last frame
 of every clip as a PNG, for freeze-frames, thumbnails or a slower cut.
 
+## Generated with Google AI Studio
+
+Some of the video footage, including footage with a person in it, was generated with the video
+generation in Google AI Studio (team, 14 Nov). The person is generated, not a real resident or
+clinician; Hodan is a composite. Those clips are not in this folder.
+
+- Add here which shots they are and the prompts used, so the Gemini partner page
+  (`content/tech-challenges/gemini.md`) can point to them.
+- `../video-storylines.md` ("Generative AI: where it helps and where it doesn't") rules out generated faces of patients or nurses and
+  a synthetic speaker presented as a person. If a generated person stays in the cut, say on screen
+  or on the end card that the footage is AI-generated.
+
 ## Other folders
 
 - **`screens/`**: real app screens from the live Silta app, 390×844 CSS px at 3×.
