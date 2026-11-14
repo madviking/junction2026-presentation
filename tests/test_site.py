@@ -23,7 +23,7 @@ def basic(password: str) -> dict:
     [
         ("/healthz", "ok"),
         ("/", "Silta"),
-        ("/dashboard", "The gap opens at the first step"),
+        ("/dashboard", "Where in the screening pathway the gap appears"),
         ("/presentation", 'class="reveal"'),
         ("/video", "The video is not up yet"),
         ("/try", "Demo path"),
@@ -108,23 +108,24 @@ def test_every_chart_renders_both_themes_and_a_table():
 
 
 def test_dashboard_story_is_complete():
-    story = content.dashboard()
-    blocks = story["blocks"]
-    assert len(blocks) == 9  # context + 8 findings
+    sections = content.dashboard()["sections"]
+    assert len(sections) == 8  # summary + 7 numbered sections
     available = charts.by_id()
-    for block in blocks:
-        assert block.get("headline"), block["id"]
-        if block.get("chart"):
-            assert block["chart"] in available, block["chart"]
-        if not block.get("placeholder"):
-            assert block.get("source"), f"{block['id']} has no source"
+    for section in sections:
+        assert section.get("title"), section["id"]
+        if section.get("figure"):
+            assert section["figure"]["chart"] in available, section["figure"]["chart"]
+            assert section["figure"].get("caption"), section["id"]
+        if not section.get("placeholder"):
+            assert section.get("source"), f"{section['id']} has no source"
 
 
-def test_dashboard_shows_every_story_chart(client):
+def test_dashboard_shows_every_figure_and_response(client):
     html = client.get("/dashboard").text
-    for block in content.dashboard()["blocks"]:
-        if block.get("chart"):
-            assert f'data-chart="{block["chart"]}"' in html
+    for section in content.dashboard()["sections"]:
+        if section.get("figure"):
+            assert f'data-chart="{section["figure"]["chart"]}"' in html
+    assert html.count('class="silta-report-aside"') >= 6
 
 
 def test_tech_challenge_pages(client, tmp_path, monkeypatch):

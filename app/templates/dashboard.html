@@ -1,68 +1,71 @@
 {% extends "base.html" %}
 {% block title %}Data — {{ site.name }}{% endblock %}
 {% block body %}
-<main class="page-body">
-  <div class="container-xl silta-narrow">
-    <div class="silta-page-head">
+<main class="page-body silta-report">
+  <div class="container-xl">
+    <header class="silta-report-head">
       <p class="silta-eyebrow">Data</p>
-      <h1 class="page-title">{{ story.title }}</h1>
-      <p class="text-secondary silta-lede">{{ story.lede }}</p>
-    </div>
+      <h1 class="silta-report-title">{{ story.title }}</h1>
+      <p class="silta-report-lede">{{ story.lede }}</p>
+    </header>
 
-    <div class="silta-story">
-      {% for b in story.blocks %}
-      {% set item = charts.get(b.chart) if b.chart else none %}
-      <section class="card silta-story-block{% if b.placeholder %} silta-story-placeholder{% endif %}" id="{{ b.id }}" aria-labelledby="h-{{ b.id }}">
-        <div class="card-body">
-          <h2 class="silta-story-headline" id="h-{{ b.id }}">{{ b.headline }}</h2>
+    {% for s in story.sections %}
+    {% set item = charts.get(s.figure.chart) if s.figure else none %}
+    <section class="silta-report-section" id="{{ s.id }}" aria-labelledby="h-{{ s.id }}">
+      <div class="silta-report-main">
+        <h2 class="silta-report-h2" id="h-{{ s.id }}">{{ s.title }}</h2>
+        {% if s.intro %}<p>{{ s.intro }}</p>{% endif %}
 
-          {% if b.text %}<p class="silta-story-text">{{ b.text }}</p>{% endif %}
-
-          {% if item %}
-          <div class="silta-chart" data-chart="{{ item.chart.id }}" style="min-height: {{ item.chart.height }}px" role="img" aria-label="{{ item.chart.title }}. {{ item.chart.subtitle }}"></div>
+        {% if item %}
+        <figure class="silta-figure">
+          <figcaption>{{ s.figure.caption }}</figcaption>
+          <div class="silta-chart" data-chart="{{ item.chart.id }}" style="min-height: {{ item.chart.height }}px" role="img" aria-label="{{ s.figure.caption }} {{ item.chart.subtitle }}"></div>
           <script type="application/json" id="fig-{{ item.chart.id }}">{"light": {{ item.figures.light | safe }}, "dark": {{ item.figures.dark | safe }}}</script>
-          {% endif %}
+        </figure>
+        {% endif %}
 
-          {% if b.rows %}
-          <div class="table-responsive">
-            <table class="table table-vcenter silta-story-table">
-              <thead><tr>{% for col in b.rows.columns %}<th>{{ col }}</th>{% endfor %}</tr></thead>
-              <tbody>{% for row in b.rows.body %}<tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>{% endfor %}</tbody>
-            </table>
-          </div>
-          {% endif %}
+        {% if s.list_html %}<ul class="silta-report-list">{% for li in s.list_html %}<li>{{ li | safe }}</li>{% endfor %}</ul>{% endif %}
 
-          {% if b.list_html %}
-          <ul class="silta-story-list">{% for li in b.list_html %}<li>{{ li | safe }}</li>{% endfor %}</ul>
-          {% endif %}
-
-          {% if b.placeholder %}<p class="silta-story-text text-secondary">{{ b.placeholder }}</p>{% endif %}
-
-          {% if b.takeaway %}<p class="silta-story-text">{{ b.takeaway }}</p>{% endif %}
-
-          {% if b.callout %}<p class="silta-callout">{{ b.callout }}</p>{% endif %}
-
-          {% if b.details_html or b.source or item %}
-          <details class="silta-details">
-            <summary>Details and sources</summary>
-            <div class="silta-details-body">
-              {{ b.details_html | safe if b.details_html }}
-              {% if item %}
-              <div class="table-responsive">
-                <table class="table table-sm table-vcenter">
-                  <thead><tr>{% for col in item.table.columns %}<th>{{ col }}</th>{% endfor %}</tr></thead>
-                  <tbody>{% for row in item.table.rows %}<tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>{% endfor %}</tbody>
-                </table>
-              </div>
-              {% endif %}
-              {% if b.source %}<p class="silta-details-src">Source: {{ b.source }}</p>{% endif %}
-            </div>
-          </details>
-          {% endif %}
+        {% if s.rows %}
+        <div class="table-responsive silta-figure">
+          <table class="table table-vcenter mb-0">
+            <thead><tr>{% for col in s.rows.columns %}<th>{{ col }}</th>{% endfor %}</tr></thead>
+            <tbody>{% for row in s.rows.body %}<tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>{% endfor %}</tbody>
+          </table>
         </div>
-      </section>
-      {% endfor %}
-    </div>
+        {% endif %}
+
+        {% if s.finding %}<p>{{ s.finding }}</p>{% endif %}
+        {% if s.callout %}<p class="silta-report-note">{{ s.callout }}</p>{% endif %}
+        {% if s.placeholder %}<p class="text-secondary">{{ s.placeholder }}</p>{% endif %}
+
+        {% if s.details_html or s.source or item %}
+        <details class="silta-details">
+          <summary>Details and sources</summary>
+          <div class="silta-details-body">
+            {{ s.details_html | safe if s.details_html }}
+            {% if item %}
+            <div class="table-responsive">
+              <table class="table table-sm table-vcenter">
+                <thead><tr>{% for col in item.table.columns %}<th>{{ col }}</th>{% endfor %}</tr></thead>
+                <tbody>{% for row in item.table.rows %}<tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>{% endfor %}</tbody>
+              </table>
+            </div>
+            {% endif %}
+            {% if s.source %}<p>Source: {{ s.source }}</p>{% endif %}
+          </div>
+        </details>
+        {% endif %}
+      </div>
+
+      {% if s.aside %}
+      <aside class="silta-report-aside" aria-label="{{ s.aside.title }}">
+        <p class="silta-aside-title">{{ s.aside.title }}</p>
+        {{ s.aside.body_html | safe }}
+      </aside>
+      {% endif %}
+    </section>
+    {% endfor %}
   </div>
 </main>
 {% endblock %}

@@ -291,14 +291,20 @@ def tech_challenge(slug: str) -> dict | None:
     return next((p for p in tech_challenges() if p["slug"] == slug), None)
 
 
+def _inline_markdown(text: str) -> str:
+    return render_markdown(text).removeprefix("<p>").removesuffix("</p>")
+
+
 def dashboard() -> dict:
-    """The /dashboard story (content/dashboard.yaml) with each block's details rendered from Markdown."""
+    """The /dashboard report (content/dashboard.yaml), with Markdown fields rendered to HTML."""
     data = yaml.safe_load(_read(settings.content_dir() / "dashboard.yaml")) or {}
-    for block in data.get("blocks", []):
-        if block.get("details"):
-            block["details_html"] = render_markdown(block["details"])
-        if block.get("list"):
-            block["list_html"] = [render_markdown(item).removeprefix("<p>").removesuffix("</p>") for item in block["list"]]
+    for section in data.get("sections", []):
+        if section.get("details"):
+            section["details_html"] = render_markdown(section["details"])
+        if section.get("list"):
+            section["list_html"] = [_inline_markdown(item) for item in section["list"]]
+        if section.get("aside", {}).get("body"):
+            section["aside"]["body_html"] = render_markdown(section["aside"]["body"])
     return data
 
 

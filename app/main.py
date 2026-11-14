@@ -54,7 +54,8 @@ def landing(request: Request):
 def dashboard(request: Request):
     story = content.dashboard()
     available = charts.by_id()
-    rendered = {b["chart"]: available[b["chart"]].render() for b in story.get("blocks", []) if b.get("chart") in available}
+    wanted = [s["figure"]["chart"] for s in story.get("sections", []) if s.get("figure")]
+    rendered = {name: available[name].render() for name in wanted if name in available}
     return render(request, "dashboard.html", "dashboard", story=story, charts=rendered)
 
 
