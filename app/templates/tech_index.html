@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_journey.html" import mini %}
 {% block title %}Tech partners — {{ site.name }}{% endblock %}
 {% block body %}
 <main class="page-body">
@@ -6,7 +7,12 @@
     <div class="silta-page-head">
       <p class="silta-eyebrow">Tech challenges</p>
       <h1 class="page-title">How Silta uses our tech partners</h1>
-      <p class="text-secondary silta-lede">One page per tech challenge we enter: what it asks, what we built with it, and what is live versus planned.</p>
+      <p class="text-secondary silta-lede">One page per tech challenge we enter. Each icon row is Silta's journey; filled icons are the steps where that partner's technology does the work.</p>
+      {% if site.journey %}
+      <ol class="silta-mini-legend">
+        {% for s in site.journey %}<li><i class="ti ti-{{ s.icon }}" aria-hidden="true"></i> {{ s.label }}</li>{% endfor %}
+      </ol>
+      {% endif %}
     </div>
     <div class="row row-cards">
       {% for p in pages %}
@@ -18,7 +24,8 @@
               <p class="silta-eyebrow m-0">{{ p.meta.organiser or p.meta.partner }}</p>
             </div>
             <h2 class="card-title mt-3 mb-2">{{ p.meta.title }}</h2>
-            <p class="text-secondary mb-0">{{ p.meta.summary }}</p>
+            <p class="text-secondary mb-3">{{ p.meta.summary }}</p>
+            {% if site.journey %}{{ mini(site.journey, p.meta.fit, p.meta.partner) }}{% endif %}
           </div>
         </a>
       </div>

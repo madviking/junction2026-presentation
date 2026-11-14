@@ -4,26 +4,48 @@ partner: ElevenLabs
 organiser: MLH
 logo: /media/logos/mlh.png
 logo_alt: MLH logo
-summary: ElevenLabs reads every card and instruction aloud in four languages and turns spoken answers into text where speech recognition is good enough.
+summary: ElevenLabs reads every card and instruction aloud in 13 languages and turns spoken answers into text where speech recognition is good enough.
 order: 20
 criteria_source: brain/challenges/tech/mlh-elevenlabs.md
+# Glance: rendered as visuals at the top of the page (see AGENTS.md, Tech-partner pages).
+fit:
+  steps:
+    describe: Cards read aloud; spoken answers turned into text
+    route: Route cards read aloud
+    visit: Visit-card next steps read aloud
+    after: Outcome cards read aloud
+    admin: A native speaker's recording replaces generated audio
+numbers:
+- value: '13'
+  label: 'languages read aloud, from Finnish and Swedish to Russian, Arabic, Somali, Persian, Chinese, Cantonese, Vietnamese and Thai'
+- value: '12'
+  label: languages built for voice input; Somali answers by cards on purpose
+- value: 1×
+  label: each clip generated once and cached; an edited text never plays old audio
+live:
+- Text-to-speech in all 13 languages, cached, one real clip per language
+- Speech-to-text for English and Finnish, real calls
+- Spoken answer to read-back, in browser tests
+- Admin upload and approval of human recordings
+planned:
+- Running on the deployed app
+- Native-speaker review of the 11 placeholder languages' texts and audio
+- Speech-to-text tried for real in the nine added languages
+- Human Somali recordings
+- Kurdish, cards-first with human recordings
+screenshot: /media/screens/04-symptom-picker.png
+screenshot_alt: 'Silta''s ''What worries you?'' screen: a speaker button on every card, a Tap to speak microphone and a free-text box.'
+screenshot_caption: Every speaker button plays ElevenLabs audio. Tap to speak sends the answer to ElevenLabs Scribe.
 ---
-
-## What the challenge asks
-
-- Give the hack a voice with ElevenLabs: natural, human-sounding, expressive AI audio.
-- The organiser's text asks for "fully autonomous audio experiences" in the project, from voice apps to narration.
-- Prize: wireless earbuds, one overall winner (`brain/challenges/tech/mlh-elevenlabs.md`).
-
 ## How Silta uses ElevenLabs
 
 Many people Silta is for read Finnish poorly, and some read their own language poorly too. So every line in the resident app has a play button, and residents can answer by speaking. The backend module `backend/voice/` is the only place that calls ElevenLabs.
 
-- **Text-to-speech for every card and instruction.** Symptom cards, route cards, outcome cards and visit-card next steps play aloud in English, Finnish, Somali and Arabic. One model (`eleven_v4`) and one multilingual voice cover all four languages (`backend/voice/capabilities.ts`).
+- **Text-to-speech for every card and instruction.** Symptom cards, route cards, outcome cards and visit-card next steps play aloud in 13 languages: English, Finnish, Swedish, Russian, Estonian, Ukrainian, Arabic, Somali, Persian, Mandarin, Cantonese, Vietnamese and Thai. One model (`eleven_v4`) and one multilingual voice cover them all (`backend/voice/capabilities.ts`).
 - **Generated once, then cached.** A clip is made the first time a text is played, stored in the database and keyed by a hash of the exact text. When an admin edits a text, the old clip is never played again (`backend/voice/service.ts`, `backend/voice/README.md`).
 - **Speech-to-text for answers.** A resident taps "Tap to speak", says what they noticed ("I found a lump in my breast"), and ElevenLabs Scribe turns it into text. The text goes through the same read-back as typed text: Silta asks "Did you mean: a new lump or swelling?" and nothing is chosen until the person taps Yes (`backend/voice/stt.ts`, `frontend/src/features/voice/`).
-- **Language by language, based on measured quality.** We checked ElevenLabs' published coverage before building. Scribe is rated excellent for Finnish and English and good for Arabic, but only moderate for Somali (25–50% word error rate) (`brain/sources/2026-11-13-elevenlabs-language-coverage.md`). So:
-  - English, Finnish and Arabic: voice in and voice out.
+- **Language by language, based on measured quality.** We checked ElevenLabs' published coverage before building. Scribe is rated excellent for Finnish, English, Swedish, Russian, Estonian, Ukrainian and Vietnamese, high for Persian, Mandarin and Cantonese, good for Arabic and Thai, but only moderate for Somali (25–50% word error rate) (`brain/sources/2026-11-13-elevenlabs-language-coverage.md`, `backend/voice/capabilities.ts`). So:
+  - Every language except Somali: voice in and voice out.
   - Somali: audio out only. Voice input is refused on purpose, and Somali speakers use the cards.
 - **Human recordings win.** In the admin, a native speaker's recording can be uploaded for any text. Once approved it replaces the generated clip. Generated Somali audio can never be marked approved; only a human recording can (`backend/voice/admin.ts`).
 - **Spend under control.** Every call writes a usage row with characters, seconds and cost. A spend cap stops new calls; stored audio keeps playing (`backend/voice/providers.config.ts`). After the overnight build, the usage page showed about $0.016 of ElevenLabs spend in the development database (`brain/notes/2026-11-14-0735-silta-app-walkthrough.md`).
@@ -37,13 +59,13 @@ Many people Silta is for read Finnish poorly, and some read their own language p
 | Language | Voice input | Audio output | Generated audio starts as |
 | --- | --- | --- | --- |
 | English, Finnish | yes | yes | approved |
-| Arabic | yes | yes | unchecked |
+| Swedish, Russian, Estonian, Ukrainian, Arabic, Persian, Mandarin, Cantonese, Vietnamese, Thai | yes | yes | unchecked |
 | Somali | no, cards instead | yes | unchecked, never approvable |
 
 ## What is live vs planned
 
 Live (local app and tests):
-- Text-to-speech in all four languages, one real round trip per language, with caching (`docs/proof/2026-11-14/voice.md`).
+- Text-to-speech in all 13 languages, one real round trip per language, with caching (`docs/proof/2026-11-14/voice.md`).
 - Speech-to-text for English and Finnish with real calls; the Somali request is refused as designed (same file).
 - Spoken input through to the read-back in the browser tests, using a test clip made with ElevenLabs text-to-speech (`frontend/e2e/`, `brain/notes/2026-11-14-0735-silta-app-walkthrough.md`).
 - Admin upload, approval and the rule that an approved human recording wins.
@@ -51,9 +73,15 @@ Live (local app and tests):
 Planned or not yet done:
 - Running on the deployed app; today this runs locally.
 - Audio for texts built from several pieces (the door title with the place, time limits, the code line).
-- Native-speaker review of the Somali and Arabic texts and audio, and human Somali recordings. Nobody has yet listened to the generated clips to check pronunciation.
+- Native-speaker review of the texts and audio in the 11 placeholder languages (all but English and Finnish; the nine added languages are machine-translated), and human Somali recordings. Speech-to-text has not yet been tried for real in the nine added languages. Nobody has yet listened to the generated clips to check pronunciation.
 - Kurdish, which ElevenLabs does not offer as voice output (`brain/sources/2026-11-13-elevenlabs-language-coverage.md`); planned cards-first with human recordings.
 - Zero-retention processing. It is enterprise-only, so ElevenLabs may keep request logs (`backend/voice/README.md`).
+
+## What the challenge asks
+
+- Give the hack a voice with ElevenLabs: natural, human-sounding, expressive AI audio.
+- The organiser's text asks for "fully autonomous audio experiences" in the project, from voice apps to narration.
+- Prize: wireless earbuds, one overall winner (`brain/challenges/tech/mlh-elevenlabs.md`).
 
 ## Why it matters for the people we serve
 
