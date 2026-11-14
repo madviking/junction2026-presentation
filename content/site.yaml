@@ -9,15 +9,15 @@ meaning: Finnish for “bridge”
 # ("Equal Care Across Finland"); the audience is minorities in general, not only language.
 punchline: Equal cancer care for minorities in Finland starts before the first appointment.
 # One line under the punchline: what Silta does.
-lede: Silta takes a person from a symptom or a screening letter to the right door and a visit both sides understand, in their own language and without logging in.
-event: Junction 2026 · AstraZeneca — Equal Care Across Finland
+lede: Silta takes a person from a symptom or a screening letter to the right service and a visit both sides understand, in their own language and without logging in.
+event: Junction 2026 — AstraZeneca — Equal Care Across Finland
 
 # Landing-page phone slider, in journey order. Recapture with `node scripts/capture_screens.mjs`
 # (needs the app running; see the script header).
 hero_screens:
   - src: /media/screens/slider-01-language.png
-    alt: "Silta's first screen: 'Choose your language' with a red 112 call button and a grid of 14 languages."
-    caption: Pick your language. The 112 button stays on every screen.
+    alt: "Silta's first screen: 'Choose your language' with a red Urgent help button and a grid of 14 languages."
+    caption: Pick your language. The Urgent help button, which leads to 112, stays on every screen.
   - src: /media/screens/slider-02-body-map.png
     alt: "'What worries you?' with a body figure, body-part buttons and picture cards with speaker buttons."
     caption: Hard to read? Tap where it is on the body. Every card has a picture and a speaker button.
@@ -29,7 +29,7 @@ hero_screens:
     caption: Where do you get care? Answer by card, by typing or by speaking.
   - src: /media/screens/slider-05-door.png
     alt: "'Contact the county health station and ask for an assessment today', then the call script in Finnish with English meanings."
-    caption: The right door, and the words to say in Finnish, with their meaning and audio.
+    caption: The right service, and the words to say in Finnish, with their meaning and audio.
   - src: /media/screens/slider-06-body-map-ar.png
     alt: "The same symptom screen in Arabic, laid out right to left."
     caption: The same screen in Arabic, right to left.
@@ -58,7 +58,7 @@ goal3:
   lede: Goal 3 is measured by treatment starting on time, cancer mortality and survival. For people with another native language, the gap opens before the first contact, where no register looks. That is where Silta works.
   points:
     - indicator: Treatment within target times
-      text: In lung cancer, over 50 of about 155 days pass before the first contact. Silta shortens that part with the right door, the words to say in Finnish and a reminder to call if nothing arrives.
+      text: In lung cancer, over 50 of about 155 days pass before the first contact. Silta shortens that part with the right service, the words to say in Finnish and a reminder to call if nothing arrives.
       src: UEF study (unpublished), reported by Yle MOT
       src_url: https://yle.fi/a/74-20251023
     - indicator: Mortality and survival
@@ -117,7 +117,7 @@ paths_fit:
   steps:
     - title: Understand
       text: The screening letter or the symptom, explained in your own language.
-    - title: Find the right door
+    - title: Find the right service
       text: Who to contact in your county, and the words to say in Finnish.
     - title: At the visit
       text: A visit card. The clinician reads a one-screen Finnish summary.
@@ -169,7 +169,7 @@ links:
   consumer:
     label: Silta for residents
     url: https://fond-useful-corgi.eur-1.aiven.app/
-    description: The mobile web app. Pick a language, describe what you noticed, find the right door.
+    description: The mobile web app. Pick a language, describe what you noticed, find the right service.
     icon: device-mobile
   screening_guide:
     label: Screening guide (cervical)
@@ -206,7 +206,7 @@ links:
     display: +1 878 425 5777
     action: Call
     short: Speak instead of reading
-    description: Talk to Silta in your language. Press a key or just speak; the agent finds the right door for your area. US number; calls from Finland are international.
+    description: Talk to Silta in your language. Press a key or just speak; the agent finds the right service for your area. US number; calls from Finland are international.
     icon: phone-call
     # The greeting's keypad menu (tech/scripts/phone_agent.py, MENU and MORE).
     menu:
@@ -282,7 +282,7 @@ journey:
     icon: message-dots
     side: resident
   - id: route
-    label: Find the right door
+    label: Find the right service
     icon: door
     side: resident
   - id: visit

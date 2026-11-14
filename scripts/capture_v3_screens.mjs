@@ -69,7 +69,9 @@ await shot(page, 'path-route')
 await tap('I live in Finland and have a home municipality')
 await page.waitForTimeout(800)
 await shot(page, 'path-door')
-await page.getByText('SAY THIS IN FINNISH', { exact: false }).first().evaluate((el) => el.scrollIntoView({ block: 'start' }))
+// "Your card in Finnish": scroll past the code box to the first Finnish sentence, leaving room
+// for the sticky header.
+await page.locator('[lang="fi"]').first().evaluate((el) => window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY - 150))
 await page.waitForTimeout(300)
 await page.screenshot({ path: path.join(out, 'path-script.png') })
 console.log('path-script')

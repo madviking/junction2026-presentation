@@ -5,19 +5,22 @@
 <figure class="silta-pathway" aria-label="Three routes into cancer care">
   <div class="pw-map">
     <svg class="pw-routes" viewBox="0 0 1000 420" role="group" aria-label="Three routes into cancer care merging at the diagnostic exam">
-      <text class="pw-route" x="34" y="34">Screening letter</text>
-      <text class="pw-route" x="34" y="156">Symptom</text>
-      <text class="pw-route" x="34" y="312">Doctor's suggestion</text>
-      <path class="pw-seg pw-lang" d="M70 70 L430 70"/>
-      <path class="pw-seg pw-other" d="M430 70 L560 70 C 640 70, 640 200, 700 200"/>
-      <path class="pw-seg pw-none" d="M70 200 L200 200"/>
-      <path class="pw-seg pw-other" d="M200 200 C 250 200, 260 162, 320 162 L480 162 C 600 162, 600 200, 700 200"/>
-      <path class="pw-seg pw-other" d="M200 200 C 250 200, 260 238, 320 238 L480 238 C 600 238, 600 200, 700 200"/>
-      <text class="pw-sub" x="330" y="144">Public health centre</text>
-      <text class="pw-sub" x="330" y="266">Private or occupational care</text>
-      <path class="pw-seg pw-none" d="M70 340 L250 340 C 560 340, 580 200, 700 200"/>
-      <path class="pw-seg pw-none" d="M700 200 L930 200"/>
-      <path class="pw-arrow" d="M930 193 L944 200 L930 207 Z"/>
+      {# Routes, labels and (from the script) the step nodes: drawn in as one group when the slide is shown. #}
+      <g class="pw-paths">
+        <text class="pw-route" x="34" y="34">Screening letter</text>
+        <text class="pw-route" x="34" y="156">Symptom</text>
+        <text class="pw-route" x="34" y="312">Doctor's suggestion</text>
+        <path class="pw-seg pw-lang" d="M70 70 L430 70"/>
+        <path class="pw-seg pw-other" d="M430 70 L560 70 C 640 70, 640 200, 700 200"/>
+        <path class="pw-seg pw-none" d="M70 200 L200 200"/>
+        <path class="pw-seg pw-other" d="M200 200 C 250 200, 260 162, 320 162 L480 162 C 600 162, 600 200, 700 200"/>
+        <path class="pw-seg pw-other" d="M200 200 C 250 200, 260 238, 320 238 L480 238 C 600 238, 600 200, 700 200"/>
+        <text class="pw-sub" x="330" y="144">Public health centre</text>
+        <text class="pw-sub" x="330" y="266">Private or occupational care</text>
+        <path class="pw-seg pw-none" d="M70 340 L250 340 C 560 340, 580 200, 700 200"/>
+        <path class="pw-seg pw-none" d="M700 200 L930 200"/>
+        <path class="pw-arrow" d="M930 193 L944 200 L930 207 Z"/>
+      </g>
       <g class="pw-for-analysis">
         <g class="pw-pill" transform="translate(252 32)"><rect x="-82" y="-17" width="164" height="34" rx="9"/><text text-anchor="middle" y="-2">57% attend</text><text class="pw-pill-sub" text-anchor="middle" y="11">vs 78% Finnish, Swedish</text></g>
         <g class="pw-pill" transform="translate(436 32)"><rect x="-70" y="-17" width="140" height="34" rx="9"/><text text-anchor="middle" y="-2">68% followed up</text><text class="pw-pill-sub" text-anchor="middle" y="11">vs 77%</text></g>

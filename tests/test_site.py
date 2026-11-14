@@ -366,7 +366,7 @@ def test_deck_v3_uses_one_layout_system(client):
     html = client.get("/presentation").text
     assert "/static/deck-v3.css" in html and "/static/deck-v3.js" in html
     assert html.count("<section") == len(deck["slides"])
-    allowed = {"opener", "number", "stages", "embed", "morph", "screens", "cards", "facts", "close", "team"}
+    allowed = {"opener", "number", "stages", "embed", "intro", "morph", "screens", "cards", "facts", "close", "team"}
     for slide in deck["slides"]:
         assert slide["layout"] in allowed, slide["id"]
         assert f'id="{slide["id"]}"' in html
@@ -391,3 +391,59 @@ def test_v3_is_the_default_deck_and_old_decks_stay(client):
     assert "/static/deck-v3.css" in client.get("/presentation").text
     assert "/static/deck.css" in client.get("/presentation/v1").text
     assert "/static/deck.css" in client.get("/presentation/v2").text
+
+
+def test_record_cut_covers_every_deck_slide_once():
+    """presentation-video.yaml: every `use` names a deck slide; unlisted deck slides follow, unticked."""
+    main_ids = [s["id"] for s in content.deck_v3()["slides"]]
+    cut = content.deck_video()["slides"]
+    ids = [s["id"] for s in cut]
+    assert len(ids) == len(set(ids))
+    assert set(main_ids) <= set(ids)
+    for slide in cut:
+        info = slide["video"]
+        assert info["label"], slide["id"]
+        if info["origin"] == "video":
+            assert slide["id"] not in main_ids
+        if info.get("unlisted"):
+            assert info["on"] is False
+
+
+def test_record_page_has_picker_and_no_chrome(client):
+    deck = content.deck_video()
+    html = client.get("/presentation/record").text
+    assert 'id="record-picker"' in html and "/static/deck-record.js" in html and "data-record" in html
+    assert 'class="deck-home"' not in html
+    assert html.count('class="rp-row"') == len(deck["slides"])
+    for slide in deck["slides"]:
+        assert f'id="{slide["id"]}"' in html and f'data-id="{slide["id"]}"' in html
+        if slide["layout"] == "film":
+            src = slide["src"]
+            folder = "materials" if src.startswith("/team/m/") else "media"
+            rel = src.removeprefix("/team/m/").removeprefix("/media/")
+            assert content.safe_file(folder, rel) is not None, src
+    # The simple routes map plays by default; the data-heavy pathway stays available, unticked.
+    on = {s["id"]: s["video"]["on"] for s in deck["slides"]}
+    assert on["pathway-simple"] is True and on["pathway"] is False
+    assert 'class="fit-map"' in html and 'pathLength="1"' in html
+    # The main deck keeps its chrome and has no picker.
+    main = client.get("/presentation").text
+    assert 'class="deck-home"' in main and "record-picker" not in main
+
+
+def test_record_film_clip_is_served_with_ranges(client):
+    slide = next(s for s in content.deck_video()["slides"] if s["layout"] == "film")
+    response = client.get(slide["src"], headers={"Range": "bytes=0-99"})
+    assert response.status_code == 206 and len(response.content) == 100
+
+
+def test_both_decks_carry_the_event_line_in_the_foot(client):
+    event = content.site()["event"]
+    for path in ("/presentation", "/presentation/record"):
+        html = client.get(path).text
+        assert html.count(f'<p class="event">{escape(event)}</p>') == html.count('<footer class="foot">') > 0, path
+
+
+def test_landing_keeps_the_routes_map(client):
+    html = client.get("/").text
+    assert 'class="silta-fit-map"' in html and "pathLength" not in html

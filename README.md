@@ -7,6 +7,7 @@ landing page, deck (with the pathway data slide), video, printouts, app links an
 | --- | --- |
 | Landing page | `/` |
 | Presentation (PDF export: `?print-pdf`) | `/presentation` |
+| Video cut of the deck: slide picker, then full screen without arrows or page numbers (`content/presentation-video.yaml`) | `/presentation/record` |
 | Pathway (data), a slide in the deck | `/presentation#/pathway` (bare page: `/presentation/pathway`; archive: `/pathway/archive`) |
 | Video | `/video` |
 | Printouts | `/printouts` |

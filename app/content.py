@@ -130,9 +130,69 @@ def deck_v3() -> dict:
     A `number` slide without its own `bars` uses the shared `screening_bars`.
     """
     deck = yaml.safe_load(_read(settings.content_dir() / "presentation-v3.yaml")) or {}
+    _default_bars(deck)
+    return deck
+
+
+def _default_bars(deck: dict) -> None:
     for slide in deck.get("slides", []):
         if slide.get("layout") == "number" and not slide.get("bars"):
             slide["bars"] = deck.get("screening_bars", [])
+
+
+TAG = re.compile(r"<[^>]+>")
+
+
+def _label(slide: dict, site_name: str) -> str:
+    """A plain-text name for a slide in the recording picker."""
+    if slide.get("label"):
+        return str(slide["label"])
+    title = slide.get("title") or slide.get("line") or ""
+    if slide.get("layout") == "intro" and not (slide.get("kicker") or title):
+        return f"{site_name}: name and punchline"
+    text = re.sub(r"\s+", " ", TAG.sub(" ", str(title))).strip()
+    return text or slide.get("kicker") or slide.get("id", "")
+
+
+def deck_video(site_name: str = "Silta") -> dict:
+    """content/presentation-video.yaml: the cut of the deck used for the recorded video.
+
+    Each entry in `slides` is either `use: <id>` (a slide of presentation-v3.yaml, with any other
+    keys overriding the original, e.g. different `notes` for the voice-over) or a full slide in the
+    deck v3 format with its own unique `id`. `skip: true` leaves a slide unticked in the picker.
+    Deck slides the file does not mention are added at the end, unticked, so every slide can be
+    picked. Each slide gets `video` (picker info: on, origin, label).
+    """
+    main = deck_v3()
+    by_id = {s["id"]: s for s in main.get("slides", [])}
+    cut = yaml.safe_load(_read(settings.content_dir() / "presentation-video.yaml")) or {}
+    slides, seen = [], set()
+    for entry in cut.get("slides") or []:
+        entry = dict(entry)
+        skip = bool(entry.pop("skip", False))
+        if "use" in entry:
+            ref = entry.pop("use")
+            if ref not in by_id:
+                raise ValueError(f"presentation-video.yaml: no slide with id {ref!r} in presentation-v3.yaml")
+            slide, origin = {**by_id[ref], **entry, "id": ref}, "deck"
+        else:
+            if not entry.get("id") or not entry.get("layout"):
+                raise ValueError("presentation-video.yaml: a new slide needs an id and a layout")
+            if entry["id"] in by_id:
+                raise ValueError(f"presentation-video.yaml: id {entry['id']!r} is a deck slide; use `use: {entry['id']}`")
+            slide, origin = entry, "video"
+        if slide["id"] in seen:
+            raise ValueError(f"presentation-video.yaml: slide {slide['id']!r} appears twice")
+        seen.add(slide["id"])
+        slide["video"] = {"on": not skip, "origin": origin}
+        slides.append(slide)
+    for slide in main.get("slides", []):
+        if slide["id"] not in seen:
+            slides.append({**slide, "video": {"on": False, "origin": "deck", "unlisted": True}})
+    for slide in slides:
+        slide["video"]["label"] = _label(slide, site_name)
+    deck = {**main, "title": cut.get("title") or main.get("title"), "slides": slides}
+    _default_bars(deck)
     return deck
 
 

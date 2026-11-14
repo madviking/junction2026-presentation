@@ -8,34 +8,47 @@ updated: 2026-11-14
 
 # Pitch video assets
 
-Everything here is built from Silta's real screens and the site's palette and fonts. The storyline
-is `../video-strategy.html` ("The letter in the drawer"). All clips are 1920×1080, 30 fps, H.264
-MP4, without sound; the voice-over and music are added in Descript.
+Everything here follows the Silta design system (`../silta-design-system.html`, deck v3): the deck's
+frame (rail with kicker and Hodan's path, head and stage, foot with source) at 1920×1080, every deck
+size × 1.5, colour by meaning (coral = Hodan and the gap, lake = Silta and facts, moss = money),
+300 ms fades and one designed moment per scene. The storyline is `../video-strategy.html`. All clips
+are 1920×1080, 30 fps, H.264 MP4, without sound; the voice-over and music are added in Descript.
 
 ## Timeline: which clip goes where
 
-| Video time | Clip (`clips/`) | Length | Voice-over over it |
+| Video time | Clip (`clips/`) | Length | Designed moment |
 | --- | --- | --- | --- |
-| 0:00–0:15 | *Table top: letter lands, drawer* (film) → `01-questions.mp4` | 11 s | none; room tone |
-| 0:15–0:40 | `02-one-in-nine.mp4` → `03-bars.mp4` → `04-cervical-gap.mp4` → `05-somali.mp4` | 5.5 + 8.5 + 5.5 + 6 s | "One in nine people …" |
-| | `06-pathway.mp4` | 9 s | "The gap opens at the door …" |
-| 0:40–0:55 | `07-two-paths.mp4` | 13 s | "We could have built for the county …" |
-| 0:55–1:33 | *Table top: photographing the letter* (film) → `08-phone-letter.mp4` → `09-phone-visit.mp4` → `10-phone-rights.mp4` | 8.5 + 10 + 11 s | "Hodan photographs her letter …" |
-| 1:33–1:50 | `11-ladder.mp4` | 14 s | "Every step the health system takes …" |
-| 1:50–2:00 | *Table top: letter out, empty drawer* (film) → `12-end.mp4` | 8 s | "Silta stores no names …" |
+| 0:00–0:18 | *Table top: letter lands* (film) → `01-questions` → `02-drawer` | 10 + 8 s | the letter lands; the letter slides into the drawer |
+| 0:18–0:45 | `03-gap-number` → `04-gap-bars` → `05-trend` → `06-somali` | 6 + 8 + 7.5 + 6 s | 27% counts up; bars grow; lines draw |
+| 0:45–1:02 | `07-door` → `08-why` | 8.5 + 11 s | the first step turns coral; one path crawls, the other is there at once |
+| 1:02–1:35 | *Table top: photographing the letter* (film) → `09-letter-photo` → `10-visit` → `11-rights` | 9 + 10 + 11 s | paper turns into the phone; coral questions turn lake as they are answered |
+| 1:35–2:00 | `12-county` → `13-close` | 12 + 9 s | the clinic screen slides in; the letter with its QR strip rises out of the drawer |
 
-The clips add up to about 110 s; trim them in Descript to fit the voice-over. Each scene builds,
-then holds its last frame for a moment, so cutting the tail is safe. `stills/` has the last frame
-of every clip as a PNG, for freeze-frames, thumbnails or a slower cut.
+The clips add up to about 116 s; trim the holds to fit the voice-over. `stills/` has the last
+frame of every clip.
+
+**The headline number is now "27% fewer come"** (a relative drop, as in deck v3), not "about 20
+points". Update the voice-over in `../video-strategy.html` to match.
 
 ## Generated with Google AI Studio
 
 Some of the video footage, including footage with a person in it, was generated with the video
 generation in Google AI Studio (team, 14 Nov). The person is generated, not a real resident or
-clinician; Hodan is a composite. Those clips are not in this folder.
+clinician; Hodan is a composite. The clips are in `generated/` (1280×720, 24 fps, sound muted in
+the edit; Olga's clips are 1920×1080):
 
-- Add here which shots they are and the prompts used, so the Gemini partner page
-  (`content/tech-challenges/gemini.md`) can point to them.
+| File | Shot | Length | Place in the cut |
+| --- | --- | --- | --- |
+| `generated/hodan-01-opening-the-letter.mp4` | Hodan in her kitchen opens the envelope | 15 s | 0:00, before `01-questions` |
+| `generated/hodan-02-reading-the-letter.mp4` | She reads the Finnish letter, unsure | 10 s | right after, before `01-questions` |
+| `generated/olga-01-she-notices.mp4` | Olga at the wardrobe mirror, her hand over her chest (prompt shot 1) | 8 s | 1:15, opens the Olga beat (optional) |
+| `generated/olga-02-who-to-call.mp4` | At the kitchen table with her phone, unsure (shot 2) | 8 s | 1:15 |
+| `generated/olga-03-the-call.mp4` | On the phone by the window, reading from the tablet (shot 4) | 8 s | 1:20 (optional) |
+| `generated/olga-04-at-the-visit.mp4` | She shows her phone to a female doctor (shot 5) | 8 s | 1:25; lay `olga-summary-fi.png` over the phone if its screen shows |
+
+Both show brand packaging in the background (a coffee packet and mugs); crop or blur them if they
+draw the eye. Still to add: the prompts used, so the Gemini partner page
+(`content/tech-challenges/gemini.md`) can point to them. Olga's prompts are in `../video-prompts-olga.md`; shot 3 (she taps the phone) is not generated yet.
 - `../video-storylines.md` ("Generative AI: where it helps and where it doesn't") rules out generated faces of patients or nurses and
   a synthetic speaker presented as a person. If a generated person stays in the cut, say on screen
   or on the end card that the footage is AI-generated.
@@ -48,9 +61,10 @@ clinician; Hodan is a composite. Those clips are not in this folder.
   `so-03-letter-result*.png` is a real Gemini reading of the example letter, captured on 14 Nov.
   `letter-fi-no-qr.png` / `letter-fi-with-qr.png` are the example letter, to print as the prop
   or to use full screen.
-- **`overlays/`**: transparent PNGs at 2× to lay over filmed shots. They are the five questions
-  (`q1` … `q5`, plus `-answered` versions with a tick), `name-hodan`, the partner chips, the
-  composite-persona note and the source lines.
+- **`overlays/`**: transparent PNGs at 2× to lay over filmed shots: the five question plates
+  (`q1` … `q5`, plus `-answered` with the lake bar and tick), the lower thirds `lower-third-hodan`
+  and `lower-third-silta`, a caption plate, partner tags and source lines.
+- **`deck/`**: the deck's own letter, QR strip, clinic screen and partner logos, used by the scenes.
 - **`audio/`**: audio the app itself plays, downloaded from the live app. `fi-desk-*` is the
   Finnish sentences for the desk; `so-*` is Somali guide audio. Put `fi-desk-woman-takes-sample.mp3`
   under the end of `10-phone-rights.mp4`, where the play button is visible.
@@ -68,8 +82,8 @@ clinician; Hodan is a composite. Those clips are not in this folder.
 - `so-03-letter-result` is machine-made text from a live Gemini call. Re-read it against the
   letter before export; each capture run makes a new reading. `so-03a-letter-reading.png` is the
   "reading your letter…" screen that comes before it.
-- Ask Timo whether the Somali guide audio is human-recorded or ElevenLabs, and keep the
-  "ElevenLabs reads it aloud" chip only on the Finnish desk sentences if it's human.
+- The Somali guide audio is human-recorded (deck v3), so the ElevenLabs tag sits only on the
+  Finnish desk sentences.
 - The ladder shows QR, visit code and kit offer as BUILT, not live in any county.
 
 ## Rebuild

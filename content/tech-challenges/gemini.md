@@ -54,7 +54,7 @@ screenshots:
 3. Outcomes: "they gave me a time for next Tuesday" → the outcome card that moves the journey on.
 
 **Safety by design.**
-- Gemini only ever picks a card. It never chooses the door, never sets urgency and never sees the emergency options. The emergency screen is the same for everyone and is never decided by the model (`backend/cards/README.md`).
+- Gemini only ever picks a card. It never chooses the service, never sets urgency and never sees the emergency options. The emergency screen is the same for everyone and is never decided by the model (`backend/cards/README.md`).
 - The options come only from the published, versioned content, in English and in the person's language.
 - Before text leaves our backend, `backend/cards/redact.ts` removes visit codes, Finnish personal identity codes, emails, phone numbers, long numbers, self-introduced names and street addresses. The text is never logged or stored.
 
@@ -75,7 +75,7 @@ screenshots:
 
 ## What is live
 
-- The phone line. Gemini 2.5 Flash is the brain of the ElevenLabs phone agent: it talks with the caller, picks the lane and route, and calls the deployed Silta API to compose the care path. A real 108 s call in English on 14 Nov went from symptom to the right door and a follow-up about cost (ElevenLabs conversation `conv_2001m7d35dngfm4a2h32nbwwnfdx`, `scripts/phone_agent.py`, `docs/proof/2026-11-14/phone-agent.md`).
+- The phone line. Gemini 2.5 Flash is the brain of the ElevenLabs phone agent: it talks with the caller, picks the lane and route, and calls the deployed Silta API to compose the care path. A real 108 s call in English on 14 Nov went from symptom to the right service and a follow-up about cost (ElevenLabs conversation `conv_2001m7d35dngfm4a2h32nbwwnfdx`, `scripts/phone_agent.py`, `docs/proof/2026-11-14/phone-agent.md`).
 - Card matching with Gemini Decision 1 in the running app, for symptoms, routes and outcomes, with the read-back and the fallback to cards (`brain/notes/2026-11-14-0735-silta-app-walkthrough.md`).
 - A live evaluation on a labelled set of 48 synthetic English and Finnish inputs: every confident answer was correct, all 5 questions about health care words got the right answer card, and every vague or off-topic input fell back to the cards, for $0.005 (`docs/proof/2026-11-14/classifier-eval.md`). The set was written by the builder, so it shows the wiring and the guard rails, not an independent accuracy figure.
 - The direct Gemini API adapter for both Decisions and `generateContent`, each proven with a live smoke call (`backend/llm/README.md`).

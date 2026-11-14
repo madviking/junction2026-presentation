@@ -1,0 +1,70 @@
+# The deck cut for the recorded video: /presentation/record. Opens a slide picker (tick, untick,
+# drag to reorder), then plays the chosen slides full screen with no arrows, page numbers or
+# progress bar. The choice is kept in the address (?slides=a,b,c), so a retake reopens the same cut.
+#
+# Each entry is one of:
+#   - use: <id>              a slide of content/presentation-v3.yaml, by its id. Any other keys
+#                            override that slide for the video only (e.g. notes: the voice-over).
+#   - layout: ..., id: ...   a video-only slide, same format as presentation-v3.yaml, own unique id.
+# Add `skip: true` to leave an entry unticked in the picker. Deck slides not listed here appear at
+# the end of the picker, unticked. Speaker notes (press S while playing) show the `notes`.
+#
+# Example video-only slide:
+#   - layout: intro
+#     id: video-title
+#     kicker: Junction 2026 · AstraZeneca
+#     title: Equal care across Finland
+#     line: "One sentence for the voice-over to start on."
+#
+# Layout `film` (video only): one clip fills the slide and plays from the start each time the slide
+# is shown, muted unless `sound: true`. When it ends the deck fades on to the next slide by itself
+# (or press → to move on earlier). Keys: src, label (picker name), source (optional small line in the
+# corner), overlay (lines of a lower third that fades in about 1 s after the clip starts, holds
+# about 6 s and fades out; the first line small, the rest large), notes. The AI-footage disclaimer
+# lives elsewhere in the video, not on these slides.
+#
+# Layout `fit` (deck v3 layout): the front page's simplified map of the routes into care, with the
+# steps where Silta helps (text from site.yaml `paths_fit`).
+
+title: Silta — Junction 2026 video
+
+slides:
+  - layout: film
+    id: hodan-film
+    label: "Film: Hodan opens the letter (15 s)"
+    src: /team/m/video-assets/generated/hodan-01-opening-the-letter.mp4
+    overlay:
+      - "Junction 2026 — AstraZeneca — Equal Care Across Finland"
+      - "3rdGen team Railo"
+    notes: "15 s, no sound. Start the voice-over as she opens the envelope; the deck moves on when the clip ends."
+  - use: hodan
+  - use: gap
+  - use: earlier
+  - use: routes
+  # The simpler pathway slide plays by default; the data-heavy one stays in the picker, unticked.
+  - layout: fit
+    id: pathway-simple
+    label: "Where Silta fits: the routes into care, simplified"
+    kicker: Where Silta fits
+    title: Three ways into cancer care.
+    line: "Silta helps on each one, until the <b>diagnostic exam</b>."
+    notes: "The front page's map. A screening letter, a symptom, or a test a doctor orders: all three meet at the diagnostic exam. Silta works before it; specialist care is planned next."
+  - use: pathway
+    skip: true
+  - use: silta
+  - use: letter
+  - layout: film
+    id: olga-film
+    label: "Film: Olga notices something (8 s)"
+    src: /team/m/video-assets/generated/olga-01-she-notices.mp4
+    notes: "8 s, no sound. Olga at the mirror, her hand over her chest. The deck moves on to her symptom screens when the clip ends."
+  - use: noticed
+  - use: door
+  - use: visit
+  - use: county
+  - use: safe
+  - use: reach
+  - use: ways-in
+  - use: running
+  - use: close
+  - use: team
