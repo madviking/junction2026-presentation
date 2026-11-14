@@ -24,6 +24,7 @@ NAV = (
     ("presentation", "/presentation", "Presentation", "presentation"),
     ("video", "/video", "Video", "movie"),
     ("printouts", "/printouts", "Printouts", "printer"),
+    ("tech", "/tech", "Tech partners", "cpu"),
     ("try", "/try", "Try the app", "device-mobile"),
     ("team", "/team", "Team", "lock"),
 )
@@ -65,6 +66,19 @@ def presentation(request: Request):
 @app.get("/video", response_class=HTMLResponse)
 def video(request: Request):
     return render(request, "video.html", "video")
+
+
+@app.get("/tech", response_class=HTMLResponse)
+def tech_index(request: Request):
+    return render(request, "tech_index.html", "tech", pages=content.tech_challenges())
+
+
+@app.get("/tech/{slug}", response_class=HTMLResponse)
+def tech_page(request: Request, slug: str):
+    page = content.tech_challenge(slug)
+    if page is None:
+        raise HTTPException(404)
+    return render(request, "tech_page.html", "tech", page=page, pages=content.tech_challenges())
 
 
 @app.get("/try", response_class=HTMLResponse)

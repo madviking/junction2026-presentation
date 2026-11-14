@@ -33,6 +33,7 @@ one-pagers, charts, mock-ups, exports, PDFs.
 | `content/landing.md` | One-page project description | `/` |
 | `content/presentation.md` | Slides (`---` between slides, `Note:` for speaker notes) | `/presentation` (PDF: `/presentation?print-pdf`) |
 | `content/printouts/*.md` | A4 pages; frontmatter `qr: consumer` adds a QR code, `layout: sign` for a big sign | `/printouts` |
+| `content/tech-challenges/<slug>.md` | One page per tech challenge we enter (frontmatter: `title`, `partner`, `organiser`, `logo`, `summary`, `order`) | `/tech`, `/tech/<slug>` |
 | `content/materials/` | Team-internal artefacts + `_links.yaml` for external ones | `/team` (password) |
 | `content/media/` | Public images and video used by pages and slides | `/media/...` |
 | `content/data/*.csv` | Dashboard data, each traced to a brain source (`content/data/README.md`) | — |

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}{{ page.meta.title }} — {{ site.name }}{% endblock %}
+{% block body %}
+<main class="page-body">
+  <div class="container-xl">
+    <p class="silta-eyebrow"><a href="/tech"><i class="ti ti-arrow-left"></i> Tech partners</a></p>
+    <div class="silta-tech-layout">
+      <article>
+        <div class="silta-page-head">
+          <div class="silta-partner-head">
+            {% if page.meta.logo %}<img class="silta-partner-logo" src="{{ page.meta.logo }}" alt="{{ page.meta.logo_alt or (page.meta.partner ~ ' logo') }}">{% endif %}
+            <p class="silta-eyebrow m-0">{{ page.meta.organiser or page.meta.partner }}</p>
+          </div>
+          <h1 class="page-title">{{ page.meta.title }}</h1>
+          {% if page.meta.summary %}<p class="text-secondary silta-lede">{{ page.meta.summary }}</p>{% endif %}
+        </div>
+        <div class="silta-prose pt-0">{{ page.html | safe }}</div>
+      </article>
+      <nav class="silta-tech-nav" aria-label="Other tech challenges">
+        <p class="silta-eyebrow">All tech challenges</p>
+        <ul>
+          {% for p in pages %}
+          <li><a href="/tech/{{ p.slug }}"{% if p.slug == page.slug %} aria-current="page"{% endif %}>{{ p.meta.partner or p.meta.title }}</a></li>
+          {% endfor %}
+        </ul>
+        {% if site.links.source %}<p><a href="{{ site.links.source.url }}"><i class="ti ti-brand-github me-1"></i>Source code</a></p>{% endif %}
+      </nav>
+    </div>
+  </div>
+</main>
+{% endblock %}

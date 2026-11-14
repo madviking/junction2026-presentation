@@ -126,3 +126,18 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .silta-page-head { display: grid; gap: 6px; margin: 8px 0 24px; }
 .silta-page-head .page-title { margin: 0; line-height: 1.1; }
 .silta-page-head .silta-eyebrow, .silta-page-head p { margin: 0; }
+
+/* tech-challenge pages */
+.silta-partner-head { display: flex; align-items: center; gap: 12px; }
+.silta-partner-logo { height: 32px; width: auto; max-width: 120px; object-fit: contain; background: #142028; border-radius: 6px; padding: 6px 8px; } /* partner logos are white-on-transparent */
+.silta-tech-layout { display: grid; grid-template-columns: minmax(0, 1fr) 220px; gap: 48px; align-items: start; }
+.silta-tech-nav { position: sticky; top: 24px; border-left: 1px solid var(--silta-line); padding-left: 20px; }
+.silta-tech-nav ul { list-style: none; padding: 0; display: grid; gap: 6px; }
+.silta-tech-nav a[aria-current="page"] { font-weight: 700; color: var(--silta-ink); }
+.silta-prose table { width: 100%; border-collapse: collapse; margin: 8px 0 16px; font-size: 15px; }
+.silta-prose th, .silta-prose td { border-bottom: 1px solid var(--silta-line); padding: 6px 8px; text-align: left; vertical-align: top; }
+.silta-prose code { word-break: break-word; }
+@media (max-width: 991.98px) {
+  .silta-tech-layout { grid-template-columns: 1fr; gap: 24px; }
+  .silta-tech-nav { position: static; border-left: 0; padding-left: 0; border-top: 1px solid var(--silta-line); padding-top: 16px; }
+}

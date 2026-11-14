@@ -27,6 +27,6 @@ Junction 2026 · AstraZeneca — Equal Care Across Finland
 
 ## Safe by design
 
-No diagnosis or urgency scores · emergency signs point to 112 / 116117 · a random code instead of identity · data deleted automatically.
+No diagnosis or urgency scores · emergency signs point to 112 / 116117 · a random code instead of identity, valid for 90 days · delete your data any time.
 
 **Team:** Timo Railo · Mea Railo · Milla Railo

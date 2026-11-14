@@ -272,5 +272,24 @@ def page_body(path: Path) -> str:
     return render_markdown(body)
 
 
+SLUG = re.compile(r"^[a-z0-9][a-z0-9-]*$")
+
+
+def tech_challenges() -> list[dict]:
+    """content/tech-challenges/<slug>.md, one per tech challenge we enter, sorted by `order`."""
+    root = settings.content_dir() / "tech-challenges"
+    pages = []
+    for path in sorted(root.glob("*.md")) if root.is_dir() else []:
+        if path.name == "README.md" or not SLUG.match(path.stem):
+            continue
+        meta, body = split_frontmatter(_read(path))
+        pages.append({"slug": path.stem, "meta": meta, "html": render_markdown(body)})
+    return sorted(pages, key=lambda p: (int(p["meta"].get("order", 100)), p["slug"]))
+
+
+def tech_challenge(slug: str) -> dict | None:
+    return next((p for p in tech_challenges() if p["slug"] == slug), None)
+
+
 def data_path(name: str) -> Path:
     return settings.content_dir() / "data" / name

@@ -20,7 +20,7 @@ Silta is a multilingual, mobile-first web app that follows one person from "I no
 5. **After the visit.** What happens next, when, and when to call if nothing arrives.
 6. **For the clinician.** A one-screen Finnish summary, preferences known in advance, and a prompt to offer a home self-sampling kit when cervical screening is overdue.
 
-Somali and Kurdish run cards-first with phrases checked by native speakers and human-recorded audio, because speech AI is weak in these languages. Languages with good support get voice.
+Voice depends on how well speech AI works in each language. English, Finnish and Arabic get voice in and out. Somali gets audio out but answers by cards, because speech recognition is weak in Somali; a native speaker's recording replaces the generated audio once approved.
 
 ## Why it matters for the National Cancer Strategy
 
@@ -29,5 +29,5 @@ Goal 3 asks that patients start treatment within target times. The time from fir
 ## Privacy and safety
 
 - **Not a diagnostic tool.** No urgency rating of your symptoms; emergency signs always point to 112 and 116117.
-- **A random code instead of identity.** No names, ID numbers, phone numbers or emails. Data is deleted automatically; analytics are anonymous.
+- **A random code instead of identity.** No names, ID numbers, phone numbers or emails. A visit code stops working after 90 days, you can delete your data at any time, and analytics are anonymous.
 - **Prepares the visit, does not replace an interpreter.** Silta reminds people of their right to a professional one.

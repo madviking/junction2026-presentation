@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Tech partners — {{ site.name }}{% endblock %}
+{% block body %}
+<main class="page-body">
+  <div class="container-xl">
+    <div class="silta-page-head">
+      <p class="silta-eyebrow">Tech challenges</p>
+      <h1 class="page-title">How Silta uses our tech partners</h1>
+      <p class="text-secondary silta-lede">One page per tech challenge we enter: what it asks, what we built with it, and what is live versus planned.</p>
+    </div>
+    <div class="row row-cards">
+      {% for p in pages %}
+      <div class="col-md-6 col-lg-4">
+        <a class="card card-link card-link-pop h-100" href="/tech/{{ p.slug }}">
+          <div class="card-body">
+            <div class="silta-partner-head">
+              {% if p.meta.logo %}<img class="silta-partner-logo" src="{{ p.meta.logo }}" alt="{{ p.meta.logo_alt or (p.meta.partner ~ ' logo') }}">{% endif %}
+              <p class="silta-eyebrow m-0">{{ p.meta.organiser or p.meta.partner }}</p>
+            </div>
+            <h2 class="card-title mt-3 mb-2">{{ p.meta.title }}</h2>
+            <p class="text-secondary mb-0">{{ p.meta.summary }}</p>
+          </div>
+        </a>
+      </div>
+      {% else %}
+      <p class="text-secondary">No tech-challenge pages yet. Add one Markdown file per challenge to <code>content/tech-challenges/</code>.</p>
+      {% endfor %}
+    </div>
+  </div>
+</main>
+{% endblock %}

@@ -55,8 +55,8 @@ Open with one person: she noticed a lump three weeks ago and does not know whom 
 ## Safe by design
 
 - Not a diagnosis: no urgency scores; emergency signs point to 112 and 116117.
-- A random code instead of identity; data deleted automatically.
-- Somali and Kurdish run cards-first with human-recorded audio.
+- A random code instead of identity; it stops working after 90 days, and you can delete your data.
+- Voice only where it works: Somali answers by cards, and human recordings replace generated audio.
 
 ---
 

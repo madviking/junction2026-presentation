@@ -105,3 +105,23 @@ def test_every_chart_renders_both_themes_and_a_table():
         rendered = chart.render()
         assert set(rendered["figures"]) == {"light", "dark"}
         assert rendered["table"]["columns"] and rendered["table"]["rows"]
+
+
+def test_tech_challenge_pages(client, tmp_path, monkeypatch):
+    import shutil
+
+    from app import settings
+
+    shutil.copytree(settings.content_dir(), tmp_path / "content")
+    folder = tmp_path / "content" / "tech-challenges"
+    folder.mkdir(exist_ok=True)
+    (folder / "zz-test-partner.md").write_text(
+        "---\ntitle: Best use of Testpartner\npartner: Testpartner\nsummary: We test.\norder: 999\n---\n\n## How Silta uses Testpartner\n\nBody.\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("CONTENT_DIR", str(tmp_path / "content"))
+    assert "Best use of Testpartner" in client.get("/tech").text
+    page = client.get("/tech/zz-test-partner")
+    assert page.status_code == 200 and "How Silta uses Testpartner" in page.text
+    assert client.get("/tech/does-not-exist").status_code == 404
+    assert client.get("/tech/..%2Fsite").status_code == 404
