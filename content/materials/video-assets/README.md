@@ -34,10 +34,17 @@ points". Update the voice-over in `../video-strategy.html` to match.
 
 Some of the video footage, including footage with a person in it, was generated with the video
 generation in Google AI Studio (team, 14 Nov). The person is generated, not a real resident or
-clinician; Hodan is a composite. Those clips are not in this folder.
+clinician; Hodan is a composite. The clips are in `generated/` (1280×720, 24 fps, sound muted in
+the edit):
 
-- Add here which shots they are and the prompts used, so the Gemini partner page
-  (`content/tech-challenges/gemini.md`) can point to them.
+| File | Shot | Length | Place in the cut |
+| --- | --- | --- | --- |
+| `generated/hodan-01-opening-the-letter.mp4` | Hodan in her kitchen opens the envelope | 15 s | 0:00, before `01-questions` |
+| `generated/hodan-02-reading-the-letter.mp4` | She reads the Finnish letter, unsure | 10 s | right after, before `01-questions` |
+
+Both show brand packaging in the background (a coffee packet and mugs); crop or blur them if they
+draw the eye. Still to add: the prompts used, so the Gemini partner page
+(`content/tech-challenges/gemini.md`) can point to them. Olga's prompts are in `../video-prompts-olga.md`.
 - `../video-storylines.md` ("Generative AI: where it helps and where it doesn't") rules out generated faces of patients or nurses and
   a synthetic speaker presented as a person. If a generated person stays in the cut, say on screen
   or on the end card that the footage is AI-generated.
