@@ -1,0 +1,17 @@
+# Manifest for Aiven Runtime only. Pick this file when creating the application
+# (repository junction2026-presentation, branch main). See docs in README.md "Host on Aiven Runtime".
+#
+# - Runtime builds the Dockerfile itself (it cannot deploy from `image:`).
+# - The container listens on 8400 (Dockerfile EXPOSE); Aiven serves it on HTTPS 443.
+# - Secrets and per-deployment URLs are NOT set here: put TEAM_PASSWORD and the
+#   SILTA_*_URL values in the application's environment variables in the Aiven Console.
+services:
+  site:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8400:8400"
+    environment:
+      APP_ENV: production
+      PORT: "8400"

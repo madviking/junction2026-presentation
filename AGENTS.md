@@ -38,6 +38,7 @@ one-pagers, charts, mock-ups, exports, PDFs.
 | `content/data/*.csv` | Dashboard data, each traced to a brain source (`content/data/README.md`) | — |
 | `app/charts/*.py` | One module per dashboard chart, auto-discovered | `/dashboard` |
 | `app/main.py` | Routes. `app/content.py` loads content, `app/auth.py` guards `/team` | — |
+| `compose.aiven.yaml` | Aiven Runtime manifest (hosting); `compose.yaml` = plain Docker host; `local.compose.yaml` = live-edit overlay | — |
 | `app/templates/`, `app/static/` | Jinja templates, Silta CSS on top of Tabler, deck and print CSS | — |
 
 ## Adding a dashboard chart
@@ -64,6 +65,10 @@ make prod      # Docker, production mode: content baked in, /team needs TEAM_PAS
 Port 8400. `APP_ENV=local` leaves `/team` open without a password; any other value
 fails closed (503) until `TEAM_PASSWORD` is set. Link URLs in `site.yaml` can be
 overridden per deployment with `SILTA_<KEY>_URL` (e.g. `SILTA_CONSUMER_URL`).
+
+Hosted on Aiven Runtime from `compose.aiven.yaml` (steps in `README.md`). Pushing to
+`main` does not redeploy; redeploy by hand in the Aiven Console. Changing the Runtime
+application, its variables or any Aiven service needs the user's approval.
 
 ## Rules
 

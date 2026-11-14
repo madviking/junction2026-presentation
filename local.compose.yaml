@@ -1,5 +1,5 @@
 # Local overlay: live-edit content/ and app/ without rebuilding.
-#   docker compose -f compose.yaml -f compose.dev.yaml up -d --build   (or: make up)
+#   docker compose -f compose.yaml -f local.compose.yaml up -d --build   (or: make up)
 services:
   site:
     environment:

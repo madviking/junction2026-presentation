@@ -1,6 +1,7 @@
-# Production-like: the image with content baked in. Hosting uses this file.
+# Production-like: the image with content baked in, for a plain Docker host.
+# Aiven Runtime uses compose.aiven.yaml instead.
 #   docker compose up -d --build
-# Local editing (content/ and app/ mounted, auto-reload): `make up` adds compose.dev.yaml.
+# Local editing (content/ and app/ mounted, auto-reload): `make up` adds local.compose.yaml.
 name: silta-site
 
 services:

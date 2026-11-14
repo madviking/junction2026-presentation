@@ -1,7 +1,7 @@
 .PHONY: install dev test up down logs build prod
 
 PY := .venv/bin/python
-DEV_COMPOSE := docker compose -f compose.yaml -f compose.dev.yaml
+DEV_COMPOSE := docker compose -f compose.yaml -f local.compose.yaml
 
 install:          ## local venv with runtime + test dependencies
 	uv venv -q .venv --python 3.12
