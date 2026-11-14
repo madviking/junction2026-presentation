@@ -32,8 +32,10 @@ One-time setup (Aiven project `appzio-d111`, the same as the app backend):
 
 1. Push this repository's `main` to GitHub (`madviking/junction2026-presentation`).
 2. Aiven Console → Runtime → Deploy application → GitHub account `madviking`,
-   repository `junction2026-presentation`, branch `main`, manifest **`compose.aiven.yaml`**,
-   cloud `google-europe-north1`.
+   repository `junction2026-presentation`, branch `main`, manifest **`compose.aiven.yaml`**.
+   Live since 2026-11-14: application `site`, Google Cloud `europe-west4` (Netherlands; Runtime
+   offered no Finland region), plan Startup-20-512 (~$12/month),
+   https://mostly-awaited-flounder.eur-1.aiven.app
 3. Application → environment variables:
 
    | Variable | Value |
