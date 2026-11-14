@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Printable mindmap of the 5-minute AstraZeneca pitch: page 1 is the talk clockwise from Hodan's letter back to it (cue words, timings, keys); page 2 is the ammunition (numbers, never-say, Q&A, fallbacks, setup). Print A4 landscape. Full script in pitch-5min-speaker-notes.md.">
+<meta name="tags" content="pitch, mindmap, printable, demo, astrazeneca">
+<meta name="author" content="Claude with the Silta team">
+<meta name="updated" content="2026-11-15">
+<title>Silta Pitch Mindmap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root {
+    --paper: #f6f7f5; --white: #ffffff; --ink: #142028; --muted: #56636b; --line: #d9dfdc;
+    --lake: #1d5f8a; --lake-soft: #dcebf5; --coral: #c2512f; --coral-soft: #f7e3db;
+    --moss: #2f6f4f; --moss-soft: #dfeee5;
+    --f-display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+    --f-body: "Atkinson Hyperlegible", Verdana, system-ui, sans-serif;
+    --f-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  }
+  @page { size: A4 landscape; margin: 0; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #c9cfcc; color: var(--ink); font-family: var(--f-body); }
+  body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .toolbar { position: sticky; top: 0; z-index: 10; display: flex; gap: 12px; align-items: center; justify-content: center;
+    padding: 10px 16px; background: var(--ink); color: #fff; font: 500 13px var(--f-mono); }
+  .toolbar button { font: 600 13px var(--f-mono); padding: 6px 14px; border: 0; border-radius: 6px; background: #fff; color: var(--ink); cursor: pointer; }
+  .sheet-wrap { padding: 20px 0; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+  .page { position: relative; width: 297mm; height: 210mm; background: var(--white); overflow: hidden;
+    box-shadow: 0 10px 30px rgba(20, 32, 40, .18); }
+  @media print {
+    html, body { background: var(--white); }
+    .toolbar { display: none; }
+    .sheet-wrap { padding: 0; gap: 0; }
+    .page { box-shadow: none; break-after: page; }
+    .page:last-child { break-after: auto; }
+  }
+  svg.links { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  svg.links path { fill: none; }
+  .pagehead { position: absolute; left: 8mm; right: 8mm; bottom: 4mm; display: flex; justify-content: space-between;
+    font: 500 7pt var(--f-mono); color: var(--muted); letter-spacing: .02em; }
+
+  .center { position: absolute; background: var(--ink); color: #fff; border-radius: 4mm; padding: 4mm 5mm; text-align: center; }
+  .center .k { font: 600 7pt var(--f-mono); text-transform: uppercase; letter-spacing: .12em; color: #a9c7dc; }
+  .center h1 { font: 800 22pt/1 var(--f-display); margin: 1.5mm 0 2mm; letter-spacing: -.01em; }
+  .center p { margin: 0 0 1.6mm; font-size: 9pt; line-height: 1.3; }
+  .center .roles { margin-top: 2mm; padding-top: 2mm; border-top: 1px solid rgba(255,255,255,.25); font-size: 7.6pt; color: #d6e2ea; }
+  .center b { color: #fff; }
+
+  .node { position: absolute; background: var(--white); border: 1px solid var(--line); border-top: 2.2mm solid var(--tone);
+    border-radius: 2.5mm; padding: 2.2mm 3mm 2.4mm; font-size: 8.2pt; line-height: 1.28; }
+  .node header { display: flex; align-items: baseline; gap: 2mm; margin-bottom: 1.2mm; }
+  .node .t { font: 600 7.4pt var(--f-mono); color: var(--tone); }
+  .node h2 { font: 800 12pt/1.05 var(--f-display); margin: 0; flex: 1; }
+  .node .key { font: 600 6.6pt var(--f-mono); background: var(--tone-soft); color: var(--tone); padding: .5mm 1.4mm; border-radius: 1mm; white-space: nowrap; }
+  .node ul { margin: 0; padding: 0; list-style: none; }
+  .node li { position: relative; padding-left: 3mm; margin: .55mm 0; }
+  .node li::before { content: ""; position: absolute; left: 0; top: 1.6mm; width: 1.3mm; height: 1.3mm; border-radius: 50%; background: var(--tone); opacity: .55; }
+  .node li.say::before { display: none; }
+  .node li.say { padding-left: 0; font-style: italic; }
+  .node .num { font-weight: 700; color: var(--coral); }
+  .node .act { font: 600 6.8pt var(--f-mono); color: var(--muted); }
+  .node .warn { font-weight: 700; color: var(--coral); }
+  .node .wow { background: var(--coral-soft); border-radius: 1.5mm; padding: 1.2mm 2mm; margin: 1mm 0; font-style: italic; font-weight: 700; }
+  .node .ask { background: var(--ink); color: #fff; font: 600 6.6pt var(--f-mono); padding: .5mm 1.4mm; border-radius: 1mm; }
+  .node .sub { font: 600 6.8pt var(--f-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--tone); margin: 1.4mm 0 .4mm; }
+
+  .tone-coral { --tone: var(--coral); --tone-soft: var(--coral-soft); }
+  .tone-lake  { --tone: var(--lake);  --tone-soft: var(--lake-soft); }
+  .tone-moss  { --tone: var(--moss);  --tone-soft: var(--moss-soft); }
+  .tone-ink   { --tone: var(--ink);   --tone-soft: #e3e7e9; }
+
+  .node.small { font-size: 7.6pt; }
+  .node table { border-collapse: collapse; width: 100%; font-size: 7.4pt; }
+  .node td { padding: .5mm 1mm .5mm 0; vertical-align: top; border-bottom: 1px solid #eef1ef; }
+  .node td:first-child { font-weight: 700; white-space: nowrap; }
+  .node tr:last-child td { border-bottom: 0; }
+  .node .src { font: 500 6.2pt var(--f-mono); color: var(--muted); }
+  .node ol { margin: 0; padding-left: 3.6mm; }
+  .node ol li { padding-left: .5mm; margin: .7mm 0; }
+  .node ol li::before { display: none; }
+  .who { font: 600 6.4pt var(--f-mono); color: var(--lake); }
+  .check li::before { border-radius: .3mm; background: none; border: 1px solid var(--tone); opacity: 1; width: 1.6mm; height: 1.6mm; top: 1.2mm; }
+</style>
+</head>
+<body>
+<div class="toolbar">Print: A4, landscape, margins none, background graphics on · 2 pages <button onclick="window.print()">Print</button></div>
+<div class="sheet-wrap">
+
+<!-- ============ PAGE 1: THE TALK ============ -->
+<section class="page" id="p1">
+  <svg class="links"></svg>
+
+  <div class="center" data-center style="left:104mm; top:83mm; width:88mm;">
+    <div class="k">Silta · AstraZeneca judging · 14:00 · 4:30</div>
+    <h1>The gap opens at the letter.</h1>
+    <p>One code on that letter closes that step,<br>and the county measures it with a table it already gets.</p>
+    <p><b>The ask, said twice (1:35 and the close):</b> a Helsinki pilot</p>
+    <div class="roles"><b>Timo</b> speaks · <b>Mea</b> drives (Ctrl+Tab = next scene) · <b>Milla</b> letters + backup phone</div>
+  </div>
+
+  <!-- clockwise: A B C D across the top, E F down the right, G H along the bottom, I up the left -->
+  <div class="node tone-coral" style="left:8mm; top:8mm; width:64mm;">
+    <header><span class="t">A · 0:00</span><h2>Meet Hodan</h2><span class="key">Cmd+R</span></header>
+    <ul>
+      <li>54 · Helsinki for years · Somali</li>
+      <li>2nd cervical invitation: <b>"the letter in your hands"</b></li>
+      <li>opens it / drawer / <b>doesn't go</b></li>
+    </ul>
+  </div>
+
+  <div class="node tone-coral" style="left:78mm; top:8mm; width:66mm;">
+    <header><span class="t">B · 0:20</span><h2>She is not alone</h2><span class="key">→</span></header>
+    <ul>
+      <li>Cancer Registry's <b>own</b> data</li>
+      <li>same letter → <span class="num">27% fewer</span> come</li>
+      <li>breast · cervical · colorectal: every programme</li>
+      <li><span class="num">≈16,500</span> screenings missed a year</li>
+      <li>breast + cervical gap grown since 2020</li>
+    </ul>
+  </div>
+
+  <div class="node tone-coral" style="left:150mm; top:8mm; width:76mm;">
+    <header><span class="t">C · 0:45</span><h2>Where it opens</h2><span class="key">Tab → T2</span></header>
+    <ul>
+      <li>3 routes: letter · symptom · test <span class="act">(talk while the map draws)</span></li>
+      <li>11 steps, only <span class="num">3</span> measured by language</li>
+      <li>biggest gap = <b>coming at all</b></li>
+      <li>cervical follow-up: no significant difference</li>
+      <li>bowel test: 2nd, smaller gap <span class="act">(cut first if long)</span></li>
+    </ul>
+    <div class="sub">Turn to judges: what we don't claim</div>
+    <ul>
+      <li>language causes it · lives saved · Hodan = composite</li>
+    </ul>
+    <div class="act" style="margin-top:1mm"><span class="warn">Don't click the map</span></div>
+  </div>
+
+  <div class="node tone-lake" style="left:232mm; top:8mm; width:57mm;">
+    <header><span class="t">D · 1:30</span><h2>Silta</h2><span class="ask">ASK 1</span></header>
+    <ul>
+      <li>"bridge"</li>
+      <li class="say">"Print one code on the letter Helsinki already sends, and measure who comes."</li>
+    </ul>
+  </div>
+
+  <div class="node tone-lake" style="left:232mm; top:52mm; width:57mm;">
+    <header><span class="t">E · 1:45</span><h2>The letter</h2><span class="key">→ 2s →</span></header>
+    <ul>
+      <li>one code at the bottom</li>
+      <li>"Why not just translate?"</li>
+      <li>Norway RCT: <span class="num">46.5</span> vs <span class="num">47.4</span>: did nothing</li>
+      <li class="say">"So Silta explains. Let me show you. Live."</li>
+    </ul>
+  </div>
+
+  <div class="node tone-lake" style="left:200mm; top:112mm; width:89mm;">
+    <header><span class="t">F · 2:10</span><h2>Live demo</h2><span class="key">Tab T3 · Tab T4</span></header>
+    <div class="sub">T3 · guide in Somali</div>
+    <ul>
+      <li>no app · no login · no name</li>
+      <li>5 parts: why · visit · rights · after · questions</li>
+      <li>▶ Somali about 4 s → "every part is read aloud"</li>
+    </ul>
+    <div class="sub">T4 · her rights</div>
+    <ul>
+      <li>interpreter · <b>a woman takes the sample</b></li>
+      <li>"And here is the bridge." ▶ then <b>silence</b></li>
+    </ul>
+    <div class="wow">"Toivoisin, että näytteen ottaa nainen."</div>
+    <ul><li class="say">"You understood it. So will the nurse."</li></ul>
+    <div class="act">Silent clip → Milla's phone → Timo says it himself</div>
+  </div>
+
+  <div class="node tone-lake" style="left:134mm; top:150mm; width:60mm;">
+    <header><span class="t">G · 3:05</span><h2>Olga</h2><span class="key">Tab → T5</span></header>
+    <ul>
+      <li>the 2nd way in: a lump · Russian · pictures</li>
+      <li>doctor reads one screen in Finnish, asks for an interpreter</li>
+      <li>never rates, never diagnoses</li>
+    </ul>
+    <div class="act"><span class="warn">Demo ends ≥ 3:15 → skip</span></div>
+  </div>
+
+  <div class="node tone-moss" style="left:58mm; top:144mm; width:70mm;">
+    <header><span class="t">H · 3:25</span><h2>The county</h2><span class="key">→ · chip · Esc</span></header>
+    <ul>
+      <li>"Almost nothing. That's the point."</li>
+      <li><b>0</b> works today, on its own</li>
+      <li><b>1</b> code on the invitation letters</li>
+      <li><b>2</b> posters + visit-prep cards</li>
+      <li>no IT · no integration · no personal data</li>
+      <li>measured: the registry table it already gets</li>
+      <li><span class="num">€400k</span>, roadmap action 1.3.1</li>
+    </ul>
+  </div>
+
+  <div class="node tone-ink" style="left:8mm; top:66mm; width:62mm;">
+    <header><span class="t">I · 4:05</span><h2>The ask</h2><span class="ask">ASK 2</span></header>
+    <div class="act" style="margin-bottom:1mm">Tab → T6, then → (the letter rises)</div>
+    <ul>
+      <li>pilot in <b>Helsinki</b></li>
+      <li>code on one cervical invitation batch</li>
+      <li>Silta at the health stations</li>
+      <li>per 100 invited, by language, vs a batch without it</li>
+      <li class="say">"AstraZeneca: help us open that door."</li>
+      <li class="say">[letter out] "Hodan's next letter carries a code. This time, she knows what it says."</li>
+    </ul>
+  </div>
+
+  <div class="pagehead"><span>SILTA · 5-MIN PITCH · PAGE 1 / 2: THE TALK, CLOCKWISE FROM THE LETTER BACK TO THE LETTER</span><span>Off the pathway by 1:30 · demo over by 3:05 · county by 3:25 · end 4:30</span></div>
+</section>
+
+<!-- ============ PAGE 2: AMMUNITION ============ -->
+<section class="page" id="p2">
+  <svg class="links"></svg>
+
+  <div class="center" data-center style="left:112mm; top:88mm; width:72mm;">
+    <div class="k">Page 2 · if…</div>
+    <h1>Ammunition</h1>
+    <p>Numbers, words to avoid, answers, fallbacks.</p>
+    <div class="roles">Q&A: <b>Timo</b> 2 3 7 + bonus · <b>Mea</b> 1 4 · <b>Milla</b> 5 · anyone 6</div>
+  </div>
+
+  <div class="node tone-coral small" style="left:8mm; top:8mm; width:96mm;">
+    <header><h2>Say only these 5 numbers</h2></header>
+    <table>
+      <tr><td>27% fewer</td><td>relative, e.g. breast 60.8 ÷ 83.2 <span class="src">Cancer Registry 2024</span></td></tr>
+      <tr><td>≈16,500 / yr</td><td>breast 5,556 + cervical 6,844 + colorectal 4,161 <span class="src">our calc., Registry 2024</span></td></tr>
+      <tr><td>3 of 11</td><td>steps measured by language, all in screening <span class="src">pathway → limitations</span></td></tr>
+      <tr><td>46.5 vs 47.4</td><td>translated vs standard letter, n = 11,347 <span class="src">RCT, Norway</span></td></tr>
+      <tr><td>€400k</td><td>counties, HUS, NGOs, 2026–28 <span class="src">roadmap action 1.3.1</span></td></tr>
+    </table>
+  </div>
+
+  <div class="node tone-coral small" style="left:8mm; top:66mm; width:96mm;">
+    <header><h2>Never say</h2></header>
+    <ul>
+      <li><b>57 vs 78 next to 27%</b>: 78 − 57 = 21, which looks like sloppy data</li>
+      <li><b>"all three gaps growing"</b>: colorectal is flat</li>
+      <li><b>"breast follow-up is equal"</b>: only a referral rate exists</li>
+      <li><b>"human-recorded Somali audio"</b>: it is generated and unchecked</li>
+      <li>lives saved · net savings · language <i>causes</i> it</li>
+    </ul>
+  </div>
+
+  <div class="node tone-lake small" style="left:110mm; top:8mm; width:179mm;">
+    <header><h2>Q&amp;A in 20 seconds</h2></header>
+    <ol>
+      <li><b>Language, not education?</b> Not claimed as the cause. After controls, language still predicts lower breast and colorectal attendance; cervical tracks unemployment. Africa-born women: −26% after adjustment. <span class="who">Mea</span></li>
+      <li><b>Letters are already translated.</b> Norway 46.5 vs 47.4. Silta adds the room, her rights, rebooking and the Finnish words. The pilot measures the effect. <span class="who">Timo</span></li>
+      <li><b>What does it cost the county?</b> One printed block plus posters; no IT. A pilot isn't priced, and we won't guess. €400k (1.3.1); €121M a year reaches Helsinki via the foreign-language criterion. <span class="who">Timo</span></li>
+      <li><b>Goal 3?</b> Not split by language anywhere. Screening = sub-goal 1.3, upstream. 2nd gap: colonoscopy after a positive test <b>68% vs 77%</b> (2022–24), the primary-to-specialist step. <span class="who">Mea</span></li>
+      <li><b>Who checked the Somali?</b> Machine-translated, marked unchecked. Native-speaker + clinical review = pilot task 1. Sources + checked dates; changes logged, can be rolled back. <span class="who">Milla</span></li>
+      <li><b>Medical device? GDPR? AI?</b> No diagnosis or urgency rating (MDR Rule 11); 112 on every screen. No names or IDs; hashed code, 90 days. AI suggests, the person confirms; the route never comes from the model.</li>
+      <li><b>Helsinki isn't a wellbeing services county.</b> Right: it organises its own services. 147,482 foreign-language residents (21.2%). Länsi-Uusimaa works the same and is already mapped. <span class="who">Timo</span></li>
+    </ol>
+    <div class="sub">Bonus: "What do you need from us?"</div>
+    <ul><li>An introduction to the screening lead in Helsinki / HUS, and a medical-affairs reviewer. We bring the working product.</li></ul>
+  </div>
+
+  <div class="node tone-moss small" style="left:8mm; top:128mm; width:96mm;">
+    <header><h2>Fallbacks</h2></header>
+    <table>
+      <tr><td>Tab blank &gt; 2 s</td><td>back to T2: the letter slide's guide screenshots; same script</td></tr>
+      <tr><td>Somali silent</td><td>don't retry: "every part is read aloud"</td></tr>
+      <tr><td>Finnish silent</td><td>Milla's phone at the mic → Timo says it</td></tr>
+      <tr><td>Map blank</td><td>say C anyway; the words carry it</td></tr>
+      <tr><td>Arrows dead</td><td>someone clicked the map: click the margin or the ↘ arrow</td></tr>
+      <tr><td>Site down</td><td>local deck (make up) or PDF; "the link is on the letter in your hands"</td></tr>
+      <tr><td>Interruption</td><td>"Good question, right after this."</td></tr>
+    </table>
+  </div>
+
+  <div class="node tone-ink small check" style="left:194mm; top:124mm; width:95mm;">
+    <header><h2>Setup by 13:45</h2></header>
+    <ul>
+      <li>phone hotspot + a backup hotspot</li>
+      <li>T1 hodan · T2 pathway · T3 guide so · T4 ?part=rights · T5 visit · T6 running</li>
+      <li>guide tabs at 150%; both clips played once, then stopped</li>
+      <li>each deck tab: → then ← (stops the arrow hint)</li>
+      <li>sound tested at room volume; Milla's phone on T4</li>
+      <li>4 printed letters, <b>QR scanned on paper</b></li>
+      <li>PDF of the deck + local <code>make up</code> spare</li>
+      <li>two timed rehearsals: target 4:30</li>
+    </ul>
+  </div>
+
+  <div class="node tone-lake small" style="left:110mm; top:150mm; width:78mm;">
+    <header><h2>3-min cut (top-5 jury)</h2></header>
+    <ul>
+      <li>A 15 s · B 25 s · C one line 10 s · D 10 s · E 20 s</li>
+      <li>F2 only, rights + Finnish phrase, 40 s</li>
+      <li>H without the drill 30 s · I 25 s ≈ 2:55</li>
+    </ul>
+  </div>
+
+  <div class="pagehead"><span>SILTA · 5-MIN PITCH · PAGE 2 / 2: AMMUNITION</span><span>Full script: content/materials/pitch-5min-speaker-notes.md</span></div>
+</section>
+
+</div>
+<script>
+// Curved connectors from each page's centre node to every other node, drawn in mm so print matches screen.
+(function () {
+  const tones = { 'tone-coral': '#c2512f', 'tone-lake': '#1d5f8a', 'tone-moss': '#2f6f4f', 'tone-ink': '#142028' };
+  function edgePoint(r, tx, ty) {
+    const cx = r.x + r.w / 2, cy = r.y + r.h / 2, dx = tx - cx, dy = ty - cy;
+    const s = Math.min(Math.abs((r.w / 2) / (dx || 1e-6)), Math.abs((r.h / 2) / (dy || 1e-6)));
+    return [cx + dx * s, cy + dy * s];
+  }
+  function draw() {
+    document.querySelectorAll('.page').forEach((page) => {
+      const svg = page.querySelector('svg.links');
+      const pr = page.getBoundingClientRect();
+      const k = 297 / pr.width; // px → mm
+      const box = (el) => { const b = el.getBoundingClientRect(); return { x: (b.left - pr.left) * k, y: (b.top - pr.top) * k, w: b.width * k, h: b.height * k }; };
+      svg.setAttribute('viewBox', '0 0 297 210');
+      svg.innerHTML = '';
+      const c = box(page.querySelector('[data-center]'));
+      const ccx = c.x + c.w / 2, ccy = c.y + c.h / 2;
+      page.querySelectorAll('.node').forEach((n) => {
+        const r = box(n), ncx = r.x + r.w / 2, ncy = r.y + r.h / 2;
+        const [x1, y1] = edgePoint(c, ncx, ncy), [x2, y2] = edgePoint(r, ccx, ccy);
+        const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+        const tone = Object.keys(tones).find((t) => n.classList.contains(t));
+        const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        p.setAttribute('d', `M${x1},${y1} Q${mx},${y1} ${mx},${my} T${x2},${y2}`);
+        p.setAttribute('stroke', tones[tone] || '#56636b');
+        p.setAttribute('stroke-width', '0.55');
+        p.setAttribute('stroke-opacity', '0.7');
+        svg.appendChild(p);
+        const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        dot.setAttribute('cx', x2); dot.setAttribute('cy', y2); dot.setAttribute('r', '1.1');
+        dot.setAttribute('fill', tones[tone] || '#56636b');
+        svg.appendChild(dot);
+      });
+    });
+  }
+  window.addEventListener('load', draw);
+  window.addEventListener('resize', draw);
+  window.addEventListener('beforeprint', draw);
+  if (document.fonts) document.fonts.ready.then(draw);
+})();
+</script>
+</body>
+</html>

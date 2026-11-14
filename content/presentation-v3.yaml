@@ -189,7 +189,7 @@ slides:
         label: For Olga
         title: Works for people who don't read well
         items:
-          - text: "Every card has a picture and a speaker button. In her own words, Gemini finds the matching card and asks before using it. Somali answers by cards with human-recorded audio; Arabic and Persian run right to left. An Urgent help button on every screen leads to 112."
+          - text: "Every card has a picture and a speaker button. In her own words, Gemini finds the matching card and asks before using it. Somali answers by tapping cards instead of speaking; once a native speaker's recording is approved, it replaces the generated audio. Arabic and Persian run right to left. An Urgent help button on every screen leads to 112."
             source: "Silta app"
           - text: "She can ask for a female professional; Silta words it as a request, not a guarantee."
             source: "Silta app"
@@ -400,7 +400,7 @@ slides:
         label: ElevenLabs
         title: Voice for people who don't read
         items:
-          - text: "Reads Silta aloud in 14 languages, listens in 13, and answers a phone line in the caller's language. Somali uses cards and human audio on purpose. Each clip is generated once and cached."
+          - text: "Reads Silta aloud in 14 languages, listens in 13, and answers a phone line in the caller's language. Somali uses cards instead of voice input on purpose, and its generated audio stays unchecked until a native speaker's recording is approved. Each clip is generated once and cached."
             source: "Silta app"
       - kind: data
         label: Aiven
