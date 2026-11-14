@@ -42,6 +42,6 @@
   updated: 2026-11-14
 - title: Silta ways in, presentation screen (claude.ai)
   url: https://claude.ai/artifact/N4W1ydNFiU9T6PaGavCz2k
-  description: One screen for the acquisition and findability part of the pitch. 15 channels flow through three ways in to Silta; click a channel, a way in or a phase for evidence, plan and measurement. Same page as ways-in.html. Private until shared.
+  description: One screen for the acquisition and findability part of the pitch. 15 channels flow through three ways in to Silta; click a channel, a way in or a phase for evidence, plan and measurement. Same page as content/media/ways-in.html, which the deck embeds as a slide. Private until shared.
   tags: [acquisition, presentation]
   updated: 2026-11-14

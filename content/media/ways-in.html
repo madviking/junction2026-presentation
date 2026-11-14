@@ -1,0 +1,878 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="One presentation screen for acquisition and findability: Silta is built to be discovered and introduced by people residents trust. 15 channels lead to Silta; click one for evidence, plan and measurement. Condensed from materials/acquisition-paths.html; shown in the deck.">
+<meta name="tags" content="acquisition, presentation, channels, interactive">
+<meta name="author" content="Claude with the Silta team">
+<meta name="updated" content="2026-11-14">
+<title>Silta Ways In</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: one screen, the deck's plain look. Left: 15 channels in two groups run into Silta.
+   Right: the two ideas at rest, the drill-down on click. Two colours carry the two ideas:
+   lake = built to be discovered, coral = introduced by someone they trust. Tokens from app/static/deck.css. */
+:root {
+  --bg: #f6f7f5;
+  --ink: #142028;
+  --muted: #56636b;
+  --line: #d6ddd8;
+  --lake: #1d5f8a;
+  --lake-soft: #dcebf5;
+  --coral: #c2512f;
+  --coral-soft: #f8e4dc;
+  --soft: #eaede9;
+  --on-lake: #ffffff;
+  --font-display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Atkinson Hyperlegible", Verdana, system-ui, sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1619; --ink: #e5ecef; --muted: #98a7ae; --line: #27363d;
+    --lake: #7cbbe6; --lake-soft: #18323f; --coral: #f08f6c; --coral-soft: #3a231b; --soft: #1a262c; --on-lake: #0f1619;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1619; --ink: #e5ecef; --muted: #98a7ae; --line: #27363d;
+  --lake: #7cbbe6; --lake-soft: #18323f; --coral: #f08f6c; --coral-soft: #3a231b; --soft: #1a262c; --on-lake: #0f1619;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body);
+  font-size: clamp(16px, 1.15vw, 22px); line-height: 1.45;
+  display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 1.2rem;
+  padding-block: 1.6rem 1.2rem;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+h1, h2 { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.015em; line-height: 1.05; margin: 0; text-wrap: balance; }
+h3 { margin: 0; font: 600 0.68em var(--font-data); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+p { margin: 0; }
+a { color: var(--lake); text-underline-offset: 2px; }
+button { font: inherit; color: inherit; }
+button:focus-visible, a:focus-visible { outline: 3px solid var(--lake); outline-offset: 2px; border-radius: 4px; }
+.discover { --c: var(--lake); --c-soft: var(--lake-soft); }
+.trust { --c: var(--coral); --c-soft: var(--coral-soft); }
+
+.top { padding-inline: clamp(0px, 2vw, 2.4rem); display: flex; flex-wrap: wrap; gap: 0.6rem 2rem; align-items: end; justify-content: space-between; }
+.views { display: flex; gap: 1.3rem; }
+.view { border: 0; background: none; padding: 0.3em 0; cursor: pointer; font-weight: 700; font-size: 0.9em; color: var(--muted); border-bottom: 3px solid transparent; white-space: nowrap; }
+.view[aria-pressed="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+h1 { font-size: clamp(1.7rem, 3.3vw, 3.4rem); }
+h1 .discover, h1 .trust { color: var(--c); }
+
+.stage { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(300px, 1fr); gap: clamp(1rem, 3vw, 3rem); min-height: 0; padding-inline: clamp(0px, 2vw, 2.4rem); }
+.map { display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 0.5rem; min-height: 0; min-width: 0; }
+.map-scroll { min-height: 0; min-width: 0; }
+.map svg { width: 100%; height: 100%; display: block; }
+.hint { display: inline-flex; gap: 0.6em; align-items: center; font-size: 0.82em; color: var(--muted); }
+.hint i { width: 9px; height: 9px; border-radius: 50%; background: var(--coral); display: inline-block; }
+.hint.done { visibility: hidden; }
+
+/* Who-has-to-say-yes table: the same 15 channels, one column per party */
+.matrix { min-height: 0; min-width: 0; overflow: auto; display: grid; gap: 0.6rem; align-content: start; }
+table { border-collapse: collapse; width: 100%; font-size: 0.88em; }
+th, td { padding: 0.26em 0.4em; text-align: center; border-bottom: 1px solid var(--line); }
+th.name, td.name { text-align: left; white-space: nowrap; }
+thead th { vertical-align: bottom; }
+.colbtn { border: 0; background: none; cursor: pointer; padding: 0.3em 0.2em; font: 600 0.68em var(--font-data); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.colbtn:hover, th.active .colbtn { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+th.active, td.active { background: var(--soft); }
+tr.grp td { font: 600 0.68em var(--font-data); letter-spacing: 0.08em; color: var(--c); text-align: left; border-bottom: 0; padding-top: 0.8em; }
+tr.row { cursor: pointer; }
+.rowbtn { border: 0; background: none; padding: 0; cursor: pointer; text-align: left; }
+tr.row:hover .rowbtn { text-decoration: underline; text-underline-offset: 3px; }
+tr.row.sel .rowbtn { font-weight: 700; }
+tr.row.dim td { opacity: 0.3; }
+td.starts { font-size: 0.86em; color: var(--muted); white-space: nowrap; }
+td.starts .rowbtn { color: inherit; }
+.m { width: 12px; height: 12px; border-radius: 50%; display: inline-block; border: 2px solid var(--ink); vertical-align: middle; }
+.m.v2 { background: var(--ink); }
+.m.v0 { border: 0; width: 4px; height: 4px; background: var(--line); }
+.matrix .key { font-size: 0.8em; color: var(--muted); display: flex; flex-wrap: wrap; gap: 0.3rem 1.2rem; align-items: center; }
+.matrix .key span { display: inline-flex; gap: 0.45em; align-items: center; }
+
+/* SVG map */
+svg text { font-family: var(--font-body); fill: var(--ink); }
+svg .ghead { font-size: 13.5px; font-weight: 700; fill: var(--c); }
+.link { fill: none; stroke: var(--c); stroke-width: 1.5; opacity: 0.38; transition: opacity .25s, stroke-width .25s; }
+.has-focus .link { opacity: 0.08; }
+.has-focus .link.on { opacity: 1; stroke-width: 2.6; }
+.ch { cursor: pointer; outline: none; transition: opacity .25s; }
+.ch text { font-size: 16px; }
+.ch .hit { fill: transparent; }
+.ch .dot { fill: var(--c); }
+.ch .halo { fill: var(--c-soft); opacity: 0; transition: opacity .2s; }
+.ch:hover .halo, .ch.sel .halo, .ch:focus-visible .halo { opacity: 1; }
+.ch.sel text { font-weight: 700; }
+.ch:focus-visible .hit { stroke: var(--c); stroke-width: 2; }
+.has-focus .ch { opacity: 0.3; }
+.has-focus .ch.on { opacity: 1; }
+/* the idle demo dims less than a real selection, so the map stays readable at rest */
+.soft.has-focus .ch { opacity: 0.7; }
+.soft.has-focus .ch.on { opacity: 1; }
+.soft.has-focus .link { opacity: 0.22; }
+.soft.has-focus .link.on { opacity: 1; }
+.silta circle { fill: var(--lake); }
+.silta text { fill: var(--on-lake); font-family: var(--font-display); font-weight: 800; font-size: 24px; }
+.pulse { fill: none; stroke: var(--coral); stroke-width: 2; opacity: 0; pointer-events: none; }
+
+/* Panel: no card, one hairline rule, like a slide */
+.panel { border-left: 1px solid var(--line); padding: 0.2rem 0 0.2rem clamp(1rem, 2.4vw, 2.4rem); overflow-y: auto; min-height: 0; min-width: 0; display: grid; gap: 1.1rem; align-content: start; }
+.panel.opening { align-content: center; }
+.panel h2 { font-size: 1.6em; }
+.muted { color: var(--muted); }
+.src { font: 500 0.66em var(--font-data); color: var(--muted); }
+.src a { color: var(--muted); }
+.idea { display: grid; gap: 0.6rem; padding: 0 0 1.5rem; border-bottom: 1px solid var(--line); max-width: 34em; }
+.idea:last-of-type { border-bottom: 0; padding-bottom: 0; }
+.idea h2 { color: var(--c); font-size: 1.75em; }
+.small { font-size: 0.82em; color: var(--muted); }
+.small a, .small .textbtn { color: inherit; }
+.order { font-size: 0.86em; color: var(--muted); display: flex; flex-wrap: wrap; gap: 0.2rem 0.5rem; align-items: baseline; }
+.textbtn { border: 0; background: none; padding: 0; cursor: pointer; color: var(--lake); text-decoration: underline; text-underline-offset: 2px; }
+.back { border: 0; background: none; padding: 0; cursor: pointer; color: var(--lake); font: 600 0.72em var(--font-data); justify-self: start; }
+.stats { display: grid; gap: 0.9rem; }
+.stat { display: grid; grid-template-columns: 7.6em minmax(0, 1fr); gap: 1rem; align-items: start; }
+.stat .n { font-family: var(--font-display); font-weight: 800; font-size: 1.25em; line-height: 1.15; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.stat .t { font-size: 0.9em; display: grid; gap: 0.2rem; min-width: 0; }
+.unlock { display: flex; flex-wrap: wrap; gap: 0.3rem 1.1rem; font-size: 0.86em; }
+.unlock span { display: inline-flex; gap: 0.4em; align-items: center; color: var(--muted); }
+.unlock span.key { color: var(--ink); font-weight: 700; }
+.u { width: 11px; height: 11px; border-radius: 50%; display: inline-block; border: 2px solid var(--line); }
+.u.v2 { background: var(--ink); border-color: var(--ink); }
+.u.v1 { border-color: var(--ink); }
+.tabs { display: flex; gap: 1.2rem; border-bottom: 1px solid var(--line); }
+.tab { border: 0; background: none; padding: 0.4em 0; cursor: pointer; color: var(--muted); border-bottom: 3px solid transparent; margin-bottom: -1px; font-weight: 700; font-size: 0.9em; }
+.tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+.block { display: grid; gap: 0.35rem; }
+.block.empty { opacity: 0.55; }
+.panel ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.3rem; font-size: 0.92em; }
+code { font: 500 0.82em var(--font-data); overflow-wrap: anywhere; }
+blockquote { margin: 0; font-family: var(--font-display); font-size: 1.4em; font-weight: 600; line-height: 1.2; }
+dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0.35rem 1rem; margin: 0; font-size: 0.92em; }
+dt { color: var(--muted); } dd { margin: 0; }
+.chlist { display: flex; flex-wrap: wrap; gap: 0.25rem 1.1rem; font-size: 0.92em; }
+
+@media (min-width: 901px) { body { overflow: hidden; } }
+@media (max-width: 900px) {
+  html, body { height: auto; }
+  .stage { grid-template-columns: minmax(0, 1fr); }
+  .map-scroll { overflow-x: auto; }
+  .map svg { height: auto; min-width: 560px; }
+  .matrix table { min-width: 560px; }
+  .panel { overflow: visible; border-left: 0; padding-left: 0; }
+}
+@media (max-width: 480px) { .stat { grid-template-columns: minmax(0, 1fr); gap: 0.15rem; } }
+@media (prefers-reduced-motion: no-preference) {
+  .intro .link { stroke-dasharray: 640; stroke-dashoffset: 640; animation: draw .8s ease-out forwards; animation-delay: calc(var(--i, 0) * 40ms); }
+  .flowing .link.on { stroke-dasharray: 9 7; animation: flow .7s linear infinite; }
+  .pulse.live { animation: pulse 1.3s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+  .hint i { animation: blink 1.3s ease-in-out infinite; }
+}
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes flow { to { stroke-dashoffset: -16; } }
+@keyframes pulse { 0% { transform: scale(1); opacity: .9; } 100% { transform: scale(3.4); opacity: 0; } }
+@keyframes blink { 50% { transform: scale(1.7); opacity: .45; } }
+</style>
+
+<header class="top">
+  <h1>Built to be <span class="discover">discovered</span>. And <span class="trust">trusted</span> from the first screen.</h1>
+  <div class="views" role="group" aria-label="View">
+    <button type="button" class="view" id="view-map" data-view="map" aria-pressed="true">Paths to Silta</button>
+    <button type="button" class="view" id="view-table" data-view="table" aria-pressed="false">Who has to say yes</button>
+  </div>
+</header>
+
+<main class="stage">
+  <div class="map">
+    <div class="map-scroll"><svg id="map" role="group" aria-label="Fifteen channels lead to Silta, in two groups"></svg></div>
+    <div class="matrix" id="matrix" hidden></div>
+    <span class="hint" id="hint"><i></i><span>Click any channel</span></span>
+  </div>
+  <aside class="panel" id="panel" aria-live="polite"></aside>
+</main>
+
+<script>
+const UNLOCKS = [
+  { key: 'now', label: 'Now' },
+  { key: 'county', label: 'County' },
+  { key: 'doctor', label: 'Doctor' },
+  { key: 'nurse', label: 'Nurse' },
+  { key: 'national', label: 'National' },
+];
+const CLUSTERS = {
+  self: 'Finds it themselves',
+  community: 'Through the community',
+  care: 'Through the care team',
+};
+const DOORS = { noticed: 'Noticed something', letter: 'Got a letter', prepare: 'Nurse asked me to prepare' };
+
+// unlock values: 2 = key, 1 = helps, 0 = not needed
+const CHANNELS = [
+  {
+    id: 'ai-assistants', cluster: 'self', title: 'AI assistants (LLM optimisation)', phase: 0,
+    doors: ['noticed', 'letter'],
+    unlock: { now: 2, county: 1, doctor: 0, nurse: 0, national: 1 },
+    summary: 'Be the source ChatGPT, Gemini and Claude cite when someone asks, in Somali or Arabic, where to go with a breast lump in Vantaa.',
+    why: [
+      { n: '41%', t: 'of people in Finland aged 16–89 used generative AI in 2025, up from 23% in 2024; 67% at ages 16–24. Searching for information is the most common use.', src: 'stat-ai', strength: 'moderate' },
+      { n: '32%', t: 'of US adults used AI chatbots for health information in the past year; 69% of them trust the answers (KFF, 2026)', src: 'kff-ai', strength: 'indicative' },
+      { n: '8% vs 15%', t: 'click a search result when a Google AI summary appears vs when none does; links inside the summary get 1%. Being the cited source is what counts.', src: 'pew-ai', strength: 'moderate' },
+    ],
+    plan: {
+      now: ['Prerender one answer page per language × symptom × county (the Vite app is invisible to crawlers today)', 'Short factual answers with source links and a named clinical reviewer; schema.org MedicalWebPage + FAQ', 'Allow AI crawlers in robots.txt; publish llms.txt', 'Monthly test: fixed question set in each assistant and language, log whether Silta is cited'],
+      pilot: ['County website links to Silta pages for its region (a trusted domain AI assistants already read)'],
+      national: ['Listed in InfoFinland, Terveyskylä and the national service register (PTV / Suomi.fi)'],
+    },
+    measure: { code: 'via=ai', kpi: 'Share of test questions where Silta is cited, by assistant and language' },
+    risk: 'Assistants may paraphrase our page wrongly. Pages must say what the official sources say, nothing more.',
+  },
+  {
+    id: 'search', cluster: 'self', title: 'Search (SEO)', phase: 0,
+    doors: ['noticed', 'letter'],
+    unlock: { now: 2, county: 1, doctor: 0, nurse: 0, national: 1 },
+    summary: 'Health searches in Somali, Arabic, Dari or Kurdish about Finnish care have almost no competition. Long-tail pages win them cheaply.',
+    why: [
+      { n: '76%', t: 'of people in Finland aged 16–89 searched online for health, disease or nutrition information in the last 3 months (2024)', src: 'stat-health-search', strength: 'moderate' },
+      { n: '26.8%', t: 'of Russian speakers aged 50–64 in Finland use Russian-language websites as their main health information source', src: 'charm', strength: 'moderate' },
+      { n: '76%', t: 'of consumers in 29 countries choose the option with information in their own language; 65% prefer it even if the quality is poor', src: 'csa', strength: 'indicative' },
+    ],
+    plan: {
+      now: ['Same prerendered pages as for AI assistants, with hreflang between languages', 'Page titles in the words people search: "lump in breast Helsinki where to go" in each language', 'Pages for screening letters: "what is this letter" per programme and county'],
+      pilot: ['Backlinks from the county site and its screening pages'],
+      national: ['Links from InfoFinland and Terveyskylä topic pages'],
+    },
+    measure: { code: 'Search Console + via=seo', kpi: 'Impressions and clicks per language; journeys started from search' },
+    risk: 'Health content is held to a higher quality bar by Google ("your money or your life"). Named reviewers and sources are required.',
+  },
+  {
+    id: 'ads', cluster: 'self', title: 'Paid search and social ads', phase: 0,
+    doors: ['noticed', 'letter'],
+    unlock: { now: 2, county: 1, doctor: 0, nurse: 0, national: 0 },
+    summary: 'A small, language-targeted budget timed to the weeks a county mails screening invitations.',
+    why: [
+      { n: 'OR 1.49', t: 'screening participation with digital interventions (39 studies, mostly mHealth, 4 social media)', src: 'ruco', strength: 'moderate' },
+      { n: '$0.40', t: 'per click and $19.46 per enrolled participant in US Facebook ads for lung-cancer screening (1.05 million people reached)', src: 'fb-lung', strength: 'indicative' },
+      { n: '$10k / mo', t: 'Google Ad Grants search ads. Eligible in Finland for a registered association (ry) or foundation, not for a county or hospital. 5% click-through rate required.', src: 'ad-grants', strength: 'moderate' },
+    ],
+    plan: {
+      now: ['Google search ads on symptom and letter keywords in each language', 'Meta ads targeted by language only (health and ethnicity targeting is restricted)', 'Test budget, then keep only what starts journeys'],
+      pilot: ['Joint campaign with the county in letter weeks; county logo builds trust'],
+      national: [],
+    },
+    measure: { code: 'via=ads-google / via=ads-meta', kpi: 'Cost per started journey, per language' },
+    risk: 'No European trial yet shows ads raising cancer screening. Follow health-ad rules; never target by ethnicity or health condition. Ad Grants needs an ry or foundation as host.',
+  },
+  {
+    id: 'peers', cluster: 'self', title: 'Family and peer sharing', phase: 0,
+    doors: ['noticed', 'letter'],
+    unlock: { now: 2, county: 0, doctor: 0, nurse: 0, national: 0 },
+    summary: 'Many people will arrive through a daughter, son or friend who reads Finnish better. Make helping someone easy to pass on.',
+    why: [
+      { n: '78% / 68%', t: 'of Ukrainian refugees in Germany use Telegram / WhatsApp for information; 63% YouTube (n = 508, 2023)', src: 'ecpmf', strength: 'moderate' },
+      { n: 'Family first', t: 'immigrant parents use digital information but prefer family, friends and clinicians as sources (scoping review, 2023)', src: 'parents-review', strength: 'indicative' },
+    ],
+    plan: {
+      now: ['"Help someone else" share link that opens in the right language', 'Share previews that look right in WhatsApp, Viber and Telegram', 'Helper mode steers toward a professional interpreter, never children interpreting a diagnosis'],
+      pilot: [],
+      national: [],
+    },
+    measure: { code: 'via=share', kpi: 'Journeys started from shared links; share rate per finished journey' },
+    risk: 'A relative helping must not become the interpreter at the visit. Silta says this every time.',
+  },
+  {
+    id: 'community-orgs', cluster: 'community', title: 'Community organisations and peer ambassadors', phase: 0,
+    doors: ['noticed', 'letter'],
+    unlock: { now: 2, county: 1, doctor: 0, nurse: 0, national: 1 },
+    summary: 'Trusted people from the community introduce Silta in their own language. The channel with the strongest evidence.',
+    why: [
+      { n: 'OR 1.90', t: 'breast, cervical and bowel screening with community-based health workers; people never screened before gained most', src: 'cdc-chw', strength: 'strong' },
+      { n: 'OR 2.25', t: 'colorectal screening with community health worker programmes in ethnic-minority populations (10 studies); multicomponent programmes worked best', src: 'chw-crc', strength: 'strong' },
+      { n: '27.4% vs 11.9%', t: 'colorectal screening with a language-concordant navigator (US community health centres)', src: 'navigator', strength: 'strong' },
+      { n: '42%', t: 'had a mammogram within 6 months after mosque-based peer education (Chicago pilot, n = 58, no control group)', src: 'mosque', strength: 'indicative' },
+    ],
+    plan: {
+      now: ['Co-test the app with 2–3 associations (for example Somali, Arabic-speaking and Russian-speaking women\'s groups)', 'Peer ambassadors: cancer survivors or health workers from the community, with a short Silta session they can run', 'Partner materials: printouts, a 2-minute demo video per language'],
+      pilot: ['County co-funds ambassadors through roadmap action 1.3.1 (€400k, counties + HUS + NGOs, 2026–2028)'],
+      national: ['Cancer Society of Finland and its regional associations carry it into their multilingual work'],
+    },
+    measure: { code: 'via=org-<name>', kpi: 'Journeys per partner; sessions held; partner feedback' },
+    risk: 'Trust is lost fast. Co-design with the communities and pay partners for their time.',
+  },
+  {
+    id: 'integration', cluster: 'community', title: 'Integration services, Finnish courses and libraries', phase: 0,
+    doors: ['noticed', 'letter'],
+    unlock: { now: 2, county: 0, doctor: 0, nurse: 0, national: 1 },
+    summary: 'Newcomers already attend Finnish courses and integration training, where "how Finnish healthcare works" is part of the content.',
+    why: [
+      { n: '~40%', t: 'of people born abroad say their Finnish or Swedish skills have kept them from getting care (MoniSuomi, THL)', src: 'monisuomi', strength: 'moderate' },
+      { n: '33% vs 25%', t: 'of those who needed a doctor did not get enough doctor services: people born abroad vs whole population (MoniSuomi)', src: 'monisuomi', strength: 'moderate' },
+      { n: '57 studies', t: 'European review: many migrants do not know which health information services exist. Somebody has to show them.', src: 'migrant-review', strength: 'indicative' },
+    ],
+    plan: {
+      now: ['Lesson kit for Finnish teachers: the visit-card phrases double as language practice', 'Libraries (Oodi, Sello, Tikkurila) and International House: posters and a help desk session', 'Municipal integration and employment services hand out the community printout'],
+      pilot: [],
+      national: ['Health-system lesson with Silta in integration training curricula'],
+    },
+    measure: { code: 'via=course-<city> / via=library-<name>', kpi: 'Journeys per site; teacher uptake' },
+    risk: 'Reaches newcomers well, older long-term residents less. Combine with community channels.',
+  },
+  {
+    id: 'printouts', cluster: 'community', title: 'Printouts in community and care places', phase: 0,
+    doors: ['noticed', 'letter', 'prepare'],
+    unlock: { now: 2, county: 1, doctor: 0, nurse: 1, national: 0 },
+    summary: 'Multilingual posters and cards with a QR code, where people wait or gather. Passive posters are weak on their own; a card handed over by a person is the strong form.',
+    why: [
+      { n: '22% / <10%', t: 'of waiting-room visitors recalled any notice-board topic / read or took a leaflet (UK, older study)', src: 'noticeboard', strength: 'indicative' },
+      { n: '351 people', t: 'scanned a flu-vaccine QR poster 529 times; 32% went on to engage. No reliable scan-rate benchmark exists.', src: 'qr-poster', strength: 'indicative' },
+      { n: 'No change', t: 'in how many people consulted after a mailed cancer-symptom leaflet (436 vs 335 consultations, same number of patients)', src: 'welcome-gp', strength: 'strong' },
+    ],
+    plan: {
+      now: ['Drafted: 5 printouts in the app\'s 13 languages (en, fi, sv, ru, et, uk, ar, so, fa, zh, yue, vi, th), QR codes open the live app in the card\'s language, texts in brain content/printouts, PDFs on the project site at /printouts', 'Community poster with tear-off QR tabs: places of worship, ethnic shops, community centres, libraries', 'Every printout carries its own channel code'],
+      pilot: ['A4 waiting-room poster at health stations, maternity and child clinics, mammography units, dental clinics', 'A6 "prepare for your visit" card for nurses', 'QR block for the screening letter'],
+      national: ['Shared material bank so any county can print the same set'],
+    },
+    measure: { code: 'via=poster-<place>', kpi: 'Journeys per printout type and place' },
+    risk: 'Every non-Finnish text needs a native-speaker check before printing, the same rule as the app.',
+  },
+  {
+    id: 'pharmacies', cluster: 'community', title: 'Pharmacies', phase: 0,
+    doors: ['noticed'],
+    unlock: { now: 2, county: 0, doctor: 0, nurse: 0, national: 1 },
+    summary: 'People often ask a pharmacist first about a symptom. A pharmacist can hand over the card instead of a guess.',
+    why: [
+      { n: '49%', t: 'of European consumers went to a pharmacist instead of a doctor in the past year when they thought they needed a consultation (industry survey)', src: 'kenvue', strength: 'indicative' },
+      { n: '65%', t: 'of UK adults see a pharmacist instead of a GP for minor ailments at least some of the time', src: 'pj-pharmacist', strength: 'indicative' },
+      { n: '12 users', t: 'in a 17-pharmacy chest X-ray referral pilot in Wales: feasible, but direct referral alone draws few people', src: 'wales-pharmacy', strength: 'indicative' },
+    ],
+    plan: {
+      now: ['Card at the counter and a QR sticker on pharmacy bags, agreed with one chain or the Finnish Pharmacists\' Association', 'One-page brief for pharmacists: when to hand over the card'],
+      pilot: [],
+      national: ['Pharmacies in the national symptom-awareness plan (roadmap 1.3.2)'],
+    },
+    measure: { code: 'via=pharmacy-<chain>', kpi: 'Journeys per pharmacy; cards handed out' },
+    risk: 'Pharmacy staff are busy. The ask must be one sentence and one card.',
+  },
+  {
+    id: 'employers', cluster: 'community', title: 'Employers and occupational health', phase: 1,
+    doors: ['noticed', 'letter', 'prepare'],
+    unlock: { now: 1, county: 0, doctor: 1, nurse: 2, national: 0 },
+    summary: 'Many migrants work in cleaning, logistics, care and transport. Occupational health nurses see them regularly.',
+    why: [
+      { n: '92%', t: 'of employees in Finland (2.09 million) were covered by occupational health care in 2024. Coverage among migrants is not known; small firms are lower.', src: 'kela-occ', strength: 'moderate' },
+      { n: '#1', t: 'cleaning of buildings has been the most common industry for employed people of foreign background since 2010', src: 'stat-sectors', strength: 'moderate' },
+    ],
+    plan: {
+      now: ['Talk to 1–2 large employers in cleaning or logistics about a health-week session'],
+      pilot: ['Occupational health nurses use the same "prepare for your visit" link'],
+      national: [],
+    },
+    measure: { code: 'via=work-<employer>', kpi: 'Journeys per employer or occupational health provider' },
+    risk: 'Workers may fear the employer sees their health data. Silta stores no identity; say so on the card.',
+  },
+  {
+    id: 'media', cluster: 'community', title: 'Diaspora media and awareness months', phase: 0,
+    doors: ['noticed', 'letter'],
+    unlock: { now: 2, county: 1, doctor: 0, nurse: 0, national: 1 },
+    summary: 'Community radio, Facebook groups, YouTube channels and Telegram channels in each language, timed to awareness months.',
+    why: [
+      { n: '9 of 11', t: 'England "Be Clear on Cancer" symptom campaigns raised urgent referrals above trend; 7 of 11 raised diagnoses; no clear survival effect', src: 'bcoc', strength: 'moderate' },
+      { n: '+24%', t: 'cough visits to GPs after a Welsh lung-cancer campaign, without a significant change in referrals or stage', src: 'wales-cough', strength: 'moderate' },
+    ],
+    plan: {
+      now: ['Calendar: cervical cancer month (January), colorectal (March), breast / Pink October', 'Short audio and video explainers in each language for community channels'],
+      pilot: ['County press release in plain language plus each pilot language'],
+      national: ['Cancer Society campaigns include the Silta link'],
+    },
+    measure: { code: 'via=media-<outlet>', kpi: 'Journeys in campaign weeks vs baseline' },
+    risk: 'Campaigns raise awareness more reliably than diagnoses. Pair them with a clear next step.',
+  },
+  {
+    id: 'nurse-prepare', cluster: 'care', title: 'Nurse asks the person to prepare for the doctor visit', phase: 1, featured: true,
+    doors: ['prepare'],
+    unlock: { now: 1, county: 1, doctor: 1, nurse: 2, national: 1 },
+    summary: 'When a doctor\'s appointment is booked for someone with limited Finnish, the nurse sends a Silta link. The person fills in the checklist in their language; the doctor gets a Finnish summary.',
+    why: [
+      { n: '+13.8 pp', t: 'breast screening with patient navigation (RR 1.50, 42 RCTs, about 39,000 people); cervical about +15.6 pp. Navigation is often nurse-delivered: the closest evidence we have.', src: 'nav-jama', strength: 'strong' },
+      { n: 'Same length', t: 'consultations when patients prepare questions in advance: they ask more without the visit getting longer (overview of 11 systematic reviews)', src: 'qpl', strength: 'strong' },
+      { n: '32 vs 28 min', t: 'provider time for interpreted vs non-interpreted visits (US). This is the time a prepared summary can win back.', src: 'interp-time', strength: 'moderate' },
+      { n: 'Gap', t: 'No study found on nurse-sent pre-visit links. The pilot would produce the first evidence.', src: null, strength: 'gap' },
+    ],
+    plan: {
+      now: ['Individual nurses we know hand out the A6 card; prove the flow end to end'],
+      pilot: ['"Create pre-visit link" (Luo esitietolinkki) in the clinician view: makes a code, sends or prints the link; the nurse writes the code in the patient record', 'Trigger: every booked visit with an interpreter (the language is already known)', 'Link in the appointment-confirmation SMS'],
+      national: ['Recommended step for interpreted visits; link from Omaolo'],
+    },
+    measure: { code: 'via=nurse-prep-<station>', kpi: 'Share of interpreted visits prepared; doctor-rated usefulness; visit length' },
+    risk: 'Call it preparation (esitiedot), never "screening": it is a checklist, not an assessment.',
+  },
+  {
+    id: 'letter-qr', cluster: 'care', title: 'QR code and link in the screening invitation', phase: 1,
+    doors: ['letter'],
+    unlock: { now: 0, county: 2, doctor: 0, nurse: 0, national: 1 },
+    summary: 'A QR code and short link in the invitation and SMS reminder, landing on "what is this letter" in the person\'s language with a booking step.',
+    why: [
+      { n: '46.5% vs 47.4%', t: 'translated invitation vs standard: no effect. The QR must lead to an action (book, rebook, kit), not only an explanation.', src: 'norway-letter', strength: 'strong' },
+      { n: '64.4% vs 59.1%', t: 'first breast-screening attendance with an SMS reminder 48 h before (London RCT, n = 2,240); women in the most deprived areas gained most', src: 'sms-london', strength: 'strong' },
+      { n: '+17%', t: 'total attendance when a self-sampling kit was the first reminder (31 Finnish municipalities)', src: 'fi-selfsample', strength: 'strong' },
+      { n: 'Gap', t: 'No study found on QR codes in screening invitations. Measuring scans per 1,000 letters in the pilot would be new evidence.', src: null, strength: 'gap' },
+    ],
+    plan: {
+      now: ['Mock-up of the QR block for the pitch'],
+      pilot: ['County or its contracted provider adds the QR block to cervical, breast and colorectal invitations', 'Same link in SMS reminders', 'Landing page per programme with book/rebook and the kit option'],
+      national: ['QR block in THL\'s model invitation text'],
+    },
+    measure: { code: 'via=letter-<programme>-<county>', kpi: 'Scans per 1,000 letters by language area; attendance in pilot vs comparison areas' },
+    risk: 'Electronic-first invitations (Fimlab since Sept 2025) can exclude people. Keep paper and SMS.',
+  },
+  {
+    id: 'doctor-visit', cluster: 'care', title: 'Doctor at a visit for something else', phase: 1,
+    doors: ['letter', 'prepare'],
+    unlock: { now: 0, county: 1, doctor: 2, nurse: 1, national: 1 },
+    summary: '"Every contact counts": when someone overdue for screening is in the room, the doctor offers a kit or booking and hands over a QR card in their language.',
+    why: [
+      { n: '56% vs ~13%', t: 'took an HPV self-sampling kit offered during a GP visit, vs response to postal kits; 65% returned it', src: 'youscreen', strength: 'strong' },
+      { n: '+7.2 pp', t: 'median screening gain from provider reminders, the same prompt the clinician view gives', src: 'provider-reminder', strength: 'strong' },
+      { n: 'OR 1.07', t: 'bowel screening uptake with a GP-endorsed invitation in England (57.5% → 58.2%, ~265,000 people): small per person, real at national scale', src: 'ascend', strength: 'strong' },
+      { n: '60% vs 18%', t: 'would use an app their doctor recommended vs one recommended by family (US survey, 2012)', src: 'app-rec', strength: 'indicative' },
+      { n: 'More visits', t: 'foreign-background residents in big Finnish cities make more primary-care doctor visits than others: many chances to offer', src: 'thl-visits', strength: 'moderate' },
+    ],
+    plan: {
+      now: [],
+      pilot: ['Clinician view: interpreter need, summary, screening status and the kit prompt in 30 seconds, no login or EHR integration', 'A6 QR card at every consultation room'],
+      national: ['FICAN / THL recommendation for opportunistic offers to overdue patients'],
+    },
+    measure: { code: 'via=clinic-<station>', kpi: 'Kits offered and returned; QR cards handed out' },
+    risk: 'Doctors adopt only what saves time. If the summary does not shorten the visit, this channel stalls.',
+  },
+  {
+    id: 'interpreters', cluster: 'care', title: 'Interpreting services', phase: 1,
+    doors: ['prepare', 'letter'],
+    unlock: { now: 0, county: 2, doctor: 0, nurse: 1, national: 0 },
+    summary: 'Interpreters meet exactly our users, before and after visits. The interpreter booking also tells us the language.',
+    why: [
+      { n: '40.2%', t: 'of Russian speakers aged 50+ in Finland say they need an interpreter (46.5% at 65+)', src: 'charm', strength: 'moderate' },
+      { n: '12% vs 22%', t: 'clinically consequential interpreting errors, professional vs ad-hoc interpreter. A prepared summary plus a professional interpreter is the safe pair.', src: 'interp-errors', strength: 'moderate' },
+      { n: '>1,200', t: 'real-time AI interpreting sessions in Länsi-Uusimaa maternity, child and social services: counties are already looking for language tools', src: 'luvn-ai', strength: 'indicative' },
+    ],
+    plan: {
+      now: [],
+      pilot: ['Booking an interpreter triggers the prepare-for-your-visit link', 'Interpreters hand over the A6 card after the visit for next steps'],
+      national: [],
+    },
+    measure: { code: 'via=interp-<provider>', kpi: 'Prepared visits among interpreted visits' },
+    risk: 'Must never look like Silta replaces the interpreter. It prepares the visit; the interpreter stays.',
+  },
+  {
+    id: 'front-doors', cluster: 'care', title: 'National digital front doors', phase: 2,
+    doors: ['noticed', 'letter'],
+    unlock: { now: 0, county: 1, doctor: 0, nurse: 0, national: 2 },
+    summary: 'Omaolo, Maisa, 116117, Terveyskylä and InfoFinland work in Finnish, Swedish and partly English. A "help in your language" link sends the rest to Silta.',
+    why: [
+      { n: 'FI · SV · (EN)', t: 'languages of Omaolo and Helsinki\'s 116117 line. Nobody serves Somali, Arabic or Russian speakers with symptoms today.', src: 'omaolo', strength: 'moderate' },
+      { n: '67.9% vs 98%', t: 'have an electronic ID: Russian speakers aged 50+ vs working-age population. Bank-ID front doors shut many out.', src: 'charm', strength: 'moderate' },
+      { n: '12 languages', t: 'on InfoFinland, but no Somali, Kurdish or Dari. Silta can fill that gap and get the link.', src: 'infofinland', strength: 'moderate' },
+    ],
+    plan: {
+      now: ['Ask InfoFinland to link the Silta pages from its health topics'],
+      pilot: ['County 116117 recorded message: "for help in your language, see…"', 'County site and Maisa or Lunna link'],
+      national: ['Omaolo and Terveyskylä link to Silta for unsupported languages'],
+    },
+    measure: { code: 'via=omaolo / via=116117 / via=infofinland', kpi: 'Journeys per front door' },
+    risk: 'National listings move slowly. Treat this as the P2 goal, not a launch channel.',
+  },
+];
+
+const SOURCES = {
+  'cdc-chw': { label: 'Community health workers and cancer screening, meta-analysis of 30 studies', url: 'https://www.pubmed.gov/29080378/' },
+  'guide-chw': { label: 'Community Preventive Services Task Force, CHW interventions, 76 studies', url: 'https://pubmed.ncbi.nlm.nih.gov/36543699/' },
+  'navigator': { label: 'Language-concordant patient navigation RCT, colorectal screening', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC2628981' },
+  'kela-occ': { label: 'Kela, occupational health care costs and coverage 2024', url: 'https://www.kela.fi/tietotarjotin/1434746-tyoterveyshuollon-kustannukset-olivat-vuonna-2024-noin-600-euroa-tyontekijaa-kohti' },
+  'stat-sectors': { label: 'Statistics Finland, employment of people with foreign background', url: 'https://stat.fi/en/publication/cm6uhzyb4edzf07uqd79p16ku' },
+  'chw-crc': { label: 'Rana et al., CHW-led colorectal screening in ethnic minorities, meta-analysis', url: 'https://chwcentral.org/resources/effectiveness-of-community-health-worker-led-interventions-in-enhancing-colorectal-cancer-screening-uptake-in-racial-and-ethnic-minority-populations-a-systematic-review-and-meta-analysis/' },
+  'mosque': { label: 'UChicago Medicine, mosque-based peer education pilot', url: 'https://www.uchicagomedicine.org/forefront/cancer-articles/faith-based-messaging-leads-to-more-mammograms-for-muslim-women' },
+  'noticeboard': { label: 'Waiting-room notice boards and leaflets, UK general practice', url: 'https://pubmed.ncbi.nlm.nih.gov/7843520/' },
+  'qr-poster': { label: 'QR-code poster for influenza vaccination, 2022', url: 'https://doaj.org/article/0b4f9681f3614a8c97d2b8c4ee91057e' },
+  'welcome-gp': { label: 'WELCOME-GP RCT, mailed cancer-symptom leaflet, BJGP 2021', url: 'https://bjgp.org/content/71/706/e339' },
+  'kenvue': { label: 'Kenvue European self-care survey (industry-funded)', url: 'https://hbw.citeline.com/RS154422/' },
+  'pj-pharmacist': { label: 'Pharmaceutical Journal, pharmacist vs GP for minor ailments (UK, 2018)', url: 'https://pharmaceutical-journal.com/article/news/two-thirds-of-people-will-visit-pharmacist-for-advice-rather-than-gp' },
+  'wales-pharmacy': { label: 'Pharmacy chest X-ray referral pilot, Wales, BMJ Open Resp Res 2021', url: 'https://bmjopenrespres.bmj.com/content/8/1/e000772.full' },
+  'bcoc': { label: 'Synthesis of 11 Be Clear on Cancer campaigns, Int J Cancer', url: 'https://discovery-pp.ucl.ac.uk/10110679/1/Lyratzopoulos_ijc.33277.pdf' },
+  'wales-cough': { label: 'Evaluation of a national lung cancer awareness campaign in Wales (ENCR 2018)', url: 'https://www.encr.eu/sites/default/files/2018-ENCR-Conference/Slyne_Evaluation%20of%20a%20national%20lung%20cancer%20awareness%20campaign%20in%20Wales.pdf' },
+  'nav-jama': { label: 'Patient navigation and cancer screening, 42 RCTs, JAMA Intern Med 2025', url: 'https://researchexchange.ocrahope.org/papers/jamainternmed-2025-1590' },
+  'qpl': { label: 'Question prompt lists: overview of reviews (2019) and meta-analysis (2024)', url: 'https://www.pubmed.gov/38492095/' },
+  'interp-time': { label: 'Interpreter use and visit length, US primary care', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC1494905' },
+  'sms-london': { label: 'SMS reminder before first breast screening, London RCT, Br J Cancer 2015', url: 'https://news.cancerresearchuk.org/2015/03/19/text-message-reminders-boost-breast-cancer-screening-attendance/' },
+  'ascend': { label: 'ASCEND trial, GP-endorsed bowel screening invitation, Br J Cancer 2016', url: 'https://www.imperial.ac.uk/department-surgery-cancer/csprg/about-our-studies/ascend/ascend-research-summary/' },
+  'stat-ai': { label: 'Statistics Finland, use of generative AI 2025 (12 Nov 2025)', url: 'https://stat.fi/julkaisu/cmh32zpp67l1z07w6yfukiiqd' },
+  'kff-ai': { label: 'KFF tracking poll on health information and trust, 2026 (US)', url: 'https://www.kff.org/health-information-trust/new-kff-tracking-poll-on-health-information-and-trust-finds-one-in-three-adults-have-used-ai-chatbots-for-health-advice/' },
+  'pew-ai': { label: 'Pew Research, Google users click less when an AI summary appears (2025)', url: 'https://www.pewresearch.org/short-reads/2025/07/22/google-users-are-less-likely-to-click-on-links-when-an-ai-summary-appears-in-the-results/' },
+  'stat-health-search': { label: 'Statistics Finland, internet use 2024: health information searches', url: 'https://stat.fi/fi/julkaisu/cm46zt2kj04sa07vy06eodiku' },
+  'charm': { label: 'CHARM survey of Russian speakers aged 50+ in Finland, BMC Health Serv Res 2024', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10900858' },
+  'csa': { label: 'CSA Research, "Can\'t Read, Won\'t Buy" 2020', url: 'https://csa-research.com/Blogs-Events/CSA-in-the-Media/Press-Releases/Consumers-Prefer-their-Own-Language' },
+  'ruco': { label: 'Ruco et al., digital interventions and cancer screening, JMIR 2021', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8367160/' },
+  'fb-lung': { label: 'Facebook ads for lung screening recruitment, INSPIRE-Lung, JMIR 2026', url: 'https://jmir.org/2026/1/e80281' },
+  'ad-grants': { label: 'Google for Nonprofits, Ad Grants eligibility (Finland)', url: 'https://support.google.com/nonprofits/answer/3215869' },
+  'ecpmf': { label: 'ECPMF / forsa, information sources of Ukrainian refugees in Germany', url: 'https://www.ecpmf.eu/social-media-is-the-main-source-of-information-for-ukrainian-refugees-in-germany/' },
+  'parents-review': { label: 'Scoping review, immigrant parents\' health information sources (2023)', url: 'https://mdpi.com/1660-4601/20/19/6804' },
+  'monisuomi': { label: 'Academy of Finland summary of MoniSuomi (THL) findings, 2024', url: 'https://acadsci.fi/wp-content/uploads/2024/04/Tiedetta-tiiviisti_ulkomaalaistaustaiset_suomessa_paivitetty.pdf' },
+  'migrant-review': { label: 'Systematic review of migrants\' health information in Europe, J Documentation 2022', url: 'https://emerald.com/insight/content/doi/10.1108/JD-10-2020-0168/full/pdf' },
+  'infofinland': { label: 'InfoFinland, about the service (languages)', url: 'https://www.infofinland.fi/about-the-service' },
+  'app-rec': { label: 'Survey: patients prefer apps their physician recommends (US, 2012)', url: 'https://www.healthworkscollective.com/gary-levin-md/53186/patients-prefer-physicians-recommendations-health-apps' },
+  'interp-errors': { label: 'Flores et al., interpreter errors in paediatric emergency care', url: 'https://pubmed.ncbi.nlm.nih.gov/22424655/' },
+  'provider-reminder': { label: 'CDC / Community Guide, provider reminder interventions', url: 'https://cdc.gov/cancer/php/ebi-planning-guides/provider-reminder-planning-guide.html' },
+  'norway-letter': { label: 'Norway RCT, invitation in language of origin, n = 11,347', url: 'https://portal.research.lu.se/en/publications/effect-of-invitation-letter-in-language-of-origin-on-screening-at/' },
+  'fit-reminders': { label: 'Reminder interventions for FIT colorectal screening, reviews', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9285860' },
+  'fi-selfsample': { label: 'HPV self-sampling as reminder, 31 Finnish municipalities', url: 'https://link.springer.com/content/pdf/10.1186/s12885-016-2246-9.pdf' },
+  'youscreen': { label: 'YouScreen, HPV self-sampling offered in 133 London GP practices', url: 'https://oldweb.eveappeal.org.uk/blog/piloting-hpv-self-sampling-tests-in-primary-care-shown-to-be-a-game-changer-for-people-who-have-not-attended-cervical-screening/' },
+  'thl-visits': { label: 'THL 17/2018, health service use of foreign-background residents', url: 'https://core.ac.uk/download/158573636.pdf' },
+  'luvn-ai': { label: 'Länsi-Uusimaa wellbeing services county, AI interpreting', url: 'https://www.luvn.fi/en/news/2025/11/easy-use-ai-interpreting-promotes-equality-while-saving-time-and-money' },
+  'omaolo': { label: 'Suomi.fi service listing, Helsinki medical helpline 116117 languages', url: 'https://www.suomi.fi/services/phoneservice/medical-helpline-medical-helpline-city-of-helsinki-the-social-services-health-care-and-rescue-services-division/a41291d7-9c32-4797-ba08-389762' },
+};
+
+// ---- One-screen map. The data above is copied unchanged from acquisition-paths.html. ----
+const SHORT = {
+  'ai-assistants': 'AI assistants', 'search': 'Search', 'ads': 'Paid ads', 'peers': 'Family and friends',
+  'community-orgs': 'Community organisations', 'integration': 'Finnish courses, libraries',
+  'printouts': 'Posters and cards', 'pharmacies': 'Pharmacies', 'employers': 'Employers, occupational health',
+  'media': 'Diaspora media', 'nurse-prepare': 'Nurse before the visit', 'letter-qr': 'QR in the screening letter',
+  'doctor-visit': 'Doctor at another visit', 'interpreters': 'Interpreters', 'front-doors': 'Omaolo, 116117, InfoFinland',
+};
+// Two groups for the two ideas on this screen (a regrouping of the source page's three clusters).
+const GROUPS = {
+  discover: {
+    head: 'Where people come across it', title: 'Built to be discovered',
+    text: 'Silta has to be where people already look when they notice a symptom or open a letter they cannot read. Every answer is its own page per language, symptom and county, so search engines and AI assistants can read it and cite it.',
+    ids: ['ai-assistants', 'search', 'ads', 'printouts', 'front-doors'],
+  },
+  trust: {
+    head: 'Handed over by someone they know', title: 'Trusted from the first screen',
+    text: 'Most people will come across Silta by chance, and a service nobody has heard of has a few seconds to earn trust. So it opens in their own language, asks for no name or ID, and shows only official guidance. A handover from someone they already know adds to that.',
+    ids: ['peers', 'community-orgs', 'integration', 'media', 'pharmacies', 'employers', 'nurse-prepare', 'doctor-visit', 'interpreters', 'letter-qr'],
+  },
+};
+// Why own-language guidance earns trust. Figures from the abstracts; check full text before slides.
+const LANG_EVIDENCE = [
+  { n: '25 of 33', t: "studies found at least one outcome better when care was given in the patient's own language (quality of care, satisfaction, understanding); 5 found no difference, 3 worse. Mostly cross-sectional.",
+    strength: 'moderate', short: 'Diamond et al. 2019', label: 'Diamond et al., systematic review, J Gen Intern Med 2019', url: 'https://pubmed.ncbi.nlm.nih.gov/31147980/' },
+  { n: '48.7 vs 45.5', t: "trust score with a physician who speaks the patient's language vs a relative or other untrained interpreter; a professional interpreter scored 48.3 (176 Spanish-speaking patients, US).",
+    strength: 'indicative', label: 'Daggett et al., Cureus 2023', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10290885' },
+  { n: '26.8%', t: 'of Russian speakers aged 50–64 in Finland use Russian-language websites as their main health information source.',
+    strength: 'moderate', label: SOURCES.charm.label, url: SOURCES.charm.url },
+  { n: '76%', t: 'of consumers in 29 countries choose the option with information in their own language (commercial survey, not health-specific).',
+    strength: 'indicative', label: SOURCES.csa.label, url: SOURCES.csa.url },
+];
+const UNLOCK_INFO = {
+  now: { th: 'Can start today', title: 'What can start today', full: "Fully, with nobody's approval", part: 'A first step today' },
+  county: { th: 'County', title: 'What needs a wellbeing services county', full: 'Cannot happen without the county', part: 'The county helps it scale' },
+  doctor: { th: 'Doctors', title: 'What needs doctors', full: 'Cannot happen without doctors', part: 'Doctors help it scale' },
+  nurse: { th: 'Nurses', title: 'What needs nurses', full: 'Cannot happen without nurses', part: 'Nurses help it scale' },
+  national: { th: 'National', title: 'What needs a national body', full: 'Cannot happen without a national body', part: 'A national body helps it scale' },
+};
+const DOOR_INFO = {
+  noticed: { name: 'Noticed something', quote: 'I found a lump. Should I worry, and where do I go?',
+    rows: [['Owner', 'The person. Nobody else knows yet.'], ['Trigger', 'A symptom; days or weeks of doubt.'],
+      ['Why', 'Lung cancer: over 50 of about 155 days of delay pass before the first contact (provisional Finnish study).']] },
+  letter: { name: 'Got a letter', quote: "I got a letter I don't understand.",
+    rows: [['Owner', 'The hyvinvointialue or its screening provider.'], ['Trigger', 'Screening invitation, SMS reminder, kit in the post.'],
+      ['Why', 'The gap is largest here: Somali-origin women 19% cervical attendance vs 67% for Finnish-origin women.']] },
+  prepare: { name: 'Asked to prepare', quote: 'The nurse asked me to fill this in before I see the doctor.',
+    rows: [['Owner', 'The care team: phone-triage, reception and clinic nurses.'], ['Trigger', "A doctor's appointment is booked, especially one with an interpreter."],
+      ['Why', 'Fastest route into a county pilot: needs one health station and its nurses, no letter redesign, no IT project.']] },
+};
+const PHASES = [
+  { label: 'Start now', short: 'start now', title: "Usage without anyone's permission",
+    items: ['Two or three community organisations co-test the app and hand out printouts.',
+      'Prerendered answer pages per language × symptom × county, so search and AI assistants can read Silta.',
+      'Share link for helping a relative.', 'Small language-targeted ads test timed with screening-letter weeks.',
+      'Printouts in libraries, Finnish courses, places of worship, community centres.'],
+    gate: ['Proposed gate', 'first 100 real journeys, at least 3 languages, a visit card shown at a real appointment, community partner quotes.'] },
+  { label: 'County pilot', short: 'with one county', title: 'One hyvinvointialue: Helsinki or Vantaa–Kerava',
+    items: ['First move: nurses at 2–3 health stations send the prepare-for-your-visit link.',
+      'Clinician view used at those stations; doctors judge whether it saves time.',
+      "Waiting-room posters and A6 cards in the county's top languages.",
+      'QR and short link in screening invitations and SMS reminders.',
+      'Funding through roadmap action 1.3.1 (€400k, counties + HUS + NGOs, 2026–2028).'],
+    gate: ['Proposed gate', 'share of interpreted visits prepared in Silta, nurse and doctor feedback, screening attendance in pilot areas vs comparison areas.'] },
+  { label: 'National', short: 'national', title: 'Recommended national practice',
+    items: ["QR block in THL's model screening invitation.", 'Links from Omaolo, Terveyskylä, InfoFinland and the 116117 phone line.',
+      'Pre-visit preparation as a recommended step for interpreted visits.', 'Part of the national symptom-awareness plan (roadmap 1.3.2).',
+      'Health-system lesson in integration training.'],
+    gate: ['Goal it serves', 'National Cancer Strategy sub-goal 1.3: screening participation of non-Finnish/Swedish speakers reaches the level of Finnish and Swedish speakers.'] },
+];
+const UNLOCK_LABEL = { now: 'Possible now', county: 'County', doctor: 'Doctors', nurse: 'Nurses', national: 'National' };
+const DEMO = ['ai-assistants', 'community-orgs', 'search', 'nurse-prepare', 'pharmacies'];
+
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const byId = Object.fromEntries(CHANNELS.map((c) => [c.id, c]));
+const ORDER = [];
+Object.entries(GROUPS).forEach(([g, info]) => info.ids.forEach((id) => { byId[id].group = g; ORDER.push(byId[id]); }));
+const phaseCount = [0, 1, 2].map((p) => CHANNELS.filter((c) => c.phase === p).length);
+const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const state = { sel: null, hover: null, demo: null, tab: 'evidence', touched: false, view: 'map' };
+const matrix = document.getElementById('matrix');
+const svg = document.getElementById('map');
+const panel = document.getElementById('panel');
+
+// ---- Map geometry ----
+const G = { labelX: 276, dotX: 294, linkX: 304, siltaX: 548, siltaR: 50, row: 34, head: 34, gap: 16, top: 6 };
+let y = G.top;
+Object.values(GROUPS).forEach((g, gi) => {
+  if (gi) y += G.gap;
+  g.y = y + G.head / 2;
+  y += G.head;
+  g.ids.forEach((id) => { byId[id]._y = y + G.row / 2; y += G.row; });
+});
+const H = y + 8, W = 610, mid = H / 2;
+svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+
+function buildMap() {
+  let links = '', nodes = '';
+  ORDER.forEach((c, i) => {
+    const mx = G.linkX + (G.siltaX - G.linkX) * 0.55;
+    links += `<path class="link ${c.group}" data-ch="${c.id}" style="--i:${i}" d="M${G.linkX} ${c._y} C${mx} ${c._y}, ${mx} ${mid}, ${G.siltaX} ${mid}"/>`;
+    nodes += `<g class="ch ${c.group}" data-ch="${c.id}" tabindex="0" role="button" aria-label="${esc(c.title)}">
+      <rect class="hit" x="6" y="${c._y - G.row / 2 + 1}" width="${G.linkX - 2}" height="${G.row - 2}" rx="6"/>
+      <circle class="halo" cx="${G.dotX}" cy="${c._y}" r="11"/>
+      <text x="${G.labelX}" y="${c._y + 5.5}" text-anchor="end">${esc(SHORT[c.id])}</text>
+      <circle class="dot" cx="${G.dotX}" cy="${c._y}" r="5"/></g>`;
+  });
+  Object.entries(GROUPS).forEach(([k, g]) => { nodes += `<text class="ghead ${k}" x="${G.dotX + 5}" y="${g.y + 6}" text-anchor="end">${esc(g.head)}</text>`; });
+  nodes += `<g class="silta"><circle cx="${G.siltaX}" cy="${mid}" r="${G.siltaR}"/><text x="${G.siltaX}" y="${mid + 8}" text-anchor="middle">Silta</text></g>`;
+  nodes += `<circle class="pulse" id="pulse" cx="${G.dotX}" cy="0" r="6"/>`;
+  svg.innerHTML = links + nodes;
+}
+
+// ---- Highlighting ----
+function focusIds(f) {
+  if (!f) return null;
+  if (f.type === 'channel') return [f.id];
+  if (f.type === 'group') return GROUPS[f.id].ids;
+  if (f.type === 'unlock') return CHANNELS.filter((c) => c.unlock[f.id] > 0).map((c) => c.id);
+  if (f.type === 'door') return CHANNELS.filter((c) => c.doors.includes(f.id)).map((c) => c.id);
+  return CHANNELS.filter((c) => c.phase === f.id).map((c) => c.id);
+}
+function paint() {
+  const f = state.hover || state.sel || state.demo;
+  const ids = focusIds(f);
+  svg.classList.toggle('has-focus', !!ids);
+  svg.classList.toggle('flowing', !!f && f.type === 'channel');
+  svg.classList.toggle('soft', !!f && f === state.demo);
+  svg.querySelectorAll('.link').forEach((el) => el.classList.toggle('on', !!ids && ids.includes(el.dataset.ch)));
+  svg.querySelectorAll('.ch').forEach((el) => {
+    el.classList.toggle('on', !!ids && ids.includes(el.dataset.ch));
+    el.classList.toggle('sel', !!state.sel && state.sel.type === 'channel' && state.sel.id === el.dataset.ch);
+  });
+  const pulse = document.getElementById('pulse');
+  const live = state.demo && !state.hover && !state.sel;
+  pulse.classList.toggle('live', !!live);
+  if (live) pulse.setAttribute('cy', byId[state.demo.id]._y);
+  if (state.view === 'table') renderTable();
+}
+
+// ---- Table view ----
+function renderTable() {
+  const s = state.sel;
+  const col = s && s.type === 'unlock' ? s.id : null;
+  const ids = s && s.type !== 'channel' ? focusIds(s) : null;
+  const mark = (v) => `<i class="m v${v}"></i>`;
+  let rows = '';
+  Object.entries(GROUPS).forEach(([k, g]) => {
+    rows += `<tr class="grp ${k}"><td colspan="7">${esc(g.head.toUpperCase())}</td></tr>`;
+    g.ids.forEach((id) => {
+      const c = byId[id];
+      const cls = ['row', s && s.type === 'channel' && s.id === id ? 'sel' : '', ids && !ids.includes(id) ? 'dim' : ''].join(' ');
+      rows += `<tr class="${cls}" data-go="channel:${id}"><td class="name"><button type="button" class="rowbtn" id="row-${id}">${esc(SHORT[id])}</button></td>` +
+        UNLOCKS.map((u) => `<td class="${col === u.key ? 'active' : ''}">${mark(c.unlock[u.key])}</td>`).join('') +
+        `<td class="starts"><button type="button" class="rowbtn" data-go="phase:${c.phase}">${esc(PHASES[c.phase].label)}</button></td></tr>`;
+    });
+  });
+  matrix.innerHTML = `<table>
+    <thead><tr><th class="name"></th>${UNLOCKS.map((u) => `<th class="${col === u.key ? 'active' : ''}"><button type="button" class="colbtn" id="col-${u.key}" data-go="unlock:${u.key}">${esc(UNLOCK_INFO[u.key].th)}</button></th>`).join('')}<th><span class="colbtn" style="cursor: default; text-decoration: none">Starts</span></th></tr></thead>
+    <tbody>${rows}</tbody></table>
+    <p class="key"><span>${mark(2)} cannot happen without them</span><span>${mark(1)} helps it scale</span><span>First column: ${mark(2)} fully today, ${mark(1)} a first step</span></p>`;
+}
+function setView(v) {
+  touch();
+  state.view = v;
+  document.querySelector('.map-scroll').hidden = v !== 'map';
+  matrix.hidden = v !== 'table';
+  document.querySelectorAll('.view').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === v)));
+  if (v === 'table') renderTable();
+}
+
+// ---- Panel ----
+const srcLink = (key) => (key && SOURCES[key]) ? ` · <a href="${esc(SOURCES[key].url)}" target="_blank" rel="noopener">${esc(SOURCES[key].label)}</a>` : '';
+const chButtons = (list) => `<div class="chlist">${list.map((c) => `<button type="button" class="textbtn" data-go="channel:${c.id}">${esc(SHORT[c.id])}</button>`).join('')}</div>`;
+const back = '<button type="button" class="back" data-go="none">← Back</button>';
+
+const statList = (list) => `<div class="stats">${list.map((w) => `<div class="stat"><span class="n">${esc(w.n)}</span><span class="t"><span>${esc(w.t)}</span><span class="src">${w.strength.toUpperCase()} · <a href="${esc(w.url)}" target="_blank" rel="noopener">${esc(w.label)}</a></span></span></div>`).join('')}</div>`;
+
+function overview() {
+  const lang = LANG_EVIDENCE[0];
+  const extra = { discover: '', trust: `Care in the patient's own language improved outcomes in ${esc(lang.n)} studies (<a href="${esc(lang.url)}" target="_blank" rel="noopener">${esc(lang.short)}</a>). ` };
+  const idea = (k) => `<section class="idea ${k}">
+      <h2>${esc(GROUPS[k].title)}</h2><p>${esc(GROUPS[k].text)}</p>
+      <p class="small">${extra[k]}<button type="button" class="textbtn" data-go="group:${k}">See the ${GROUPS[k].ids.length} channels</button></p></section>`;
+  return idea('discover') + idea('trust');
+}
+
+function groupPanel(k) {
+  const g = GROUPS[k];
+  return `${back}
+    <h2 class="${k}" style="color: var(--c)">${esc(g.title)}</h2>
+    <p>${esc(g.text)}</p>
+    ${k === 'trust' ? `<div class="block"><h3>Why their own language</h3>${statList(LANG_EVIDENCE)}</div>` : ''}
+    <div class="block"><h3>${g.ids.length} channels</h3>${chButtons(g.ids.map((id) => byId[id]))}</div>`;
+}
+
+function unlockPanel(k) {
+  const info = UNLOCK_INFO[k];
+  const full = ORDER.filter((c) => c.unlock[k] === 2), part = ORDER.filter((c) => c.unlock[k] === 1);
+  const block = (t, list) => list.length ? `<div class="block"><h3>${esc(t)} · ${list.length}</h3>${chButtons(list)}</div>` : '';
+  return `${back}
+    <h2>${esc(info.title)}</h2>
+    <p class="muted">${full.length + part.length} of ${CHANNELS.length} channels ${k === 'now' ? 'can move today, fully or with a first step.' : 'involve this. The rest work without it.'}</p>
+    ${block(info.full, full)}${block(info.part, part)}`;
+}
+
+function channelPanel(c) {
+  const tabs = [['evidence', 'Evidence'], ['plan', 'Plan'], ['measure', 'Measure and risk']];
+  let body = '';
+  if (state.tab === 'evidence') {
+    body = `<div class="stats">${c.why.map((w) => `<div class="stat"><span class="n">${esc(w.n)}</span><span class="t"><span>${esc(w.t)}</span><span class="src">${w.strength === 'gap' ? 'EVIDENCE GAP' : w.strength.toUpperCase()}${srcLink(w.src)}</span></span></div>`).join('')}</div>`;
+  } else if (state.tab === 'plan') {
+    const col = (t, items) => `<div class="block ${items.length ? '' : 'empty'}"><h3>${t}</h3>${items.length ? `<ul>${items.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` : '<span class="src">Nothing needed in this phase</span>'}</div>`;
+    body = `${col('Start now', c.plan.now)}${col('County pilot', c.plan.pilot)}${col('National', c.plan.national)}`;
+  } else {
+    body = `<div class="block"><h3>How we count it</h3><span><code>${esc(c.measure.code)}</code></span><span>${esc(c.measure.kpi)}</span></div>
+      <div class="block"><h3>Watch out</h3><span>${esc(c.risk)}</span></div>`;
+  }
+  return `${back}
+    <h2>${esc(c.title)}</h2>
+    <p>${esc(c.summary)}</p>
+    <div class="block"><h3>Who has to say yes · starts: ${esc(PHASES[c.phase].label.toLowerCase())}</h3>
+      <div class="unlock">${UNLOCKS.map((u) => `<span class="${c.unlock[u.key] === 2 ? 'key' : ''}"><i class="u v${c.unlock[u.key]}"></i>${UNLOCK_LABEL[u.key]}</span>`).join('')}</div>
+    </div>
+    <div class="tabs" role="tablist">${tabs.map(([k, l]) => `<button type="button" class="tab" role="tab" id="tab-${k}" aria-selected="${state.tab === k}" data-tab="${k}">${l}</button>`).join('')}</div>
+    ${body}
+    <p class="order"><span>Reaches the moment:</span>${c.doors.map((d) => `<button type="button" class="textbtn" data-go="door:${d}">${esc(DOOR_INFO[d].name)}</button>`).join('<span>·</span>')}</p>`;
+}
+
+function doorPanel(d) {
+  const info = DOOR_INFO[d];
+  return `${back}
+    <h3>The moment · ${esc(info.name)}</h3>
+    <blockquote>“${esc(info.quote)}”</blockquote>
+    <dl>${info.rows.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}</dl>
+    <div class="block"><h3>Channels that reach this moment</h3>${chButtons(CHANNELS.filter((c) => c.doors.includes(d)))}</div>`;
+}
+
+function phasePanel(i) {
+  const p = PHASES[i];
+  return `${back}
+    <h3>Step ${i + 1} of 3 · ${esc(p.label)} · ${phaseCount[i]} channels</h3>
+    <h2>${esc(p.title)}</h2>
+    <ul>${p.items.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
+    <p class="muted"><strong>${p.gate[0]}:</strong> ${esc(p.gate[1])}</p>
+    <div class="block"><h3>Channels that start here</h3>${chButtons(CHANNELS.filter((c) => c.phase === i))}</div>`;
+}
+
+function renderPanel() {
+  const s = state.sel;
+  panel.innerHTML = !s ? overview() : s.type === 'channel' ? channelPanel(byId[s.id]) : s.type === 'group' ? groupPanel(s.id) : s.type === 'unlock' ? unlockPanel(s.id)
+    : s.type === 'door' ? doorPanel(s.id) : phasePanel(s.id);
+  panel.classList.toggle('opening', !s);
+  panel.scrollTop = 0;
+}
+
+// ---- Interaction ----
+function touch() {
+  if (state.touched) return;
+  state.touched = true; state.demo = null;
+  document.getElementById('hint').classList.add('done');
+}
+function select(sel) {
+  touch();
+  state.sel = sel; state.hover = null;
+  renderPanel(); paint();
+}
+function go(str) {
+  const [type, id] = str.split(':');
+  select(type === 'none' ? null : { type, id: type === 'phase' ? Number(id) : id });
+}
+
+buildMap();
+const targetOf = (e) => { const g = e.target.closest('.ch'); return g ? { type: 'channel', id: g.dataset.ch } : null; };
+svg.addEventListener('click', (e) => {
+  const t = targetOf(e); if (!t) return;
+  const same = state.sel && state.sel.type === 'channel' && state.sel.id === t.id;
+  select(same ? null : t);
+});
+svg.addEventListener('keydown', (e) => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const t = targetOf(e); if (!t) return;
+  e.preventDefault(); select(t);
+});
+svg.addEventListener('pointerover', (e) => { const t = targetOf(e); if (t) { state.hover = t; paint(); } });
+svg.addEventListener('pointerout', (e) => { if (targetOf(e) && state.hover) { state.hover = null; paint(); } });
+panel.addEventListener('click', (e) => {
+  const v = e.target.closest('[data-view]');
+  if (v) { setView(v.dataset.view); return; }
+  const g = e.target.closest('[data-go]');
+  if (g) { go(g.dataset.go); return; }
+  const t = e.target.closest('[data-tab]');
+  if (t) { state.tab = t.dataset.tab; renderPanel(); document.getElementById(`tab-${state.tab}`)?.focus(); }
+});
+document.querySelector('.views').addEventListener('click', (e) => { const b = e.target.closest('.view'); if (b) setView(b.dataset.view); });
+matrix.addEventListener('click', (e) => {
+  const g = e.target.closest('[data-go]'); if (!g) return;
+  const [type, id] = g.dataset.go.split(':');
+  const same = state.sel && state.sel.type === type && String(state.sel.id) === id;
+  go(same ? 'none' : g.dataset.go);
+  document.getElementById(type === 'unlock' ? `col-${id}` : `row-${id}`)?.focus();
+  e.stopPropagation();
+});
+// Presenter keys: up/down step through the channels, Esc returns to the opening.
+document.addEventListener('keydown', (e) => {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  if (e.key === 'Escape') { select(null); return; }
+  // Inside the deck's iframe, left/right still turn the slides.
+  if (['ArrowRight', 'PageDown', 'ArrowLeft', 'PageUp'].includes(e.key)) {
+    try {
+      const deck = window.parent !== window && window.parent.Reveal;
+      if (deck) { e.preventDefault(); (e.key === 'ArrowRight' || e.key === 'PageDown') ? deck.next() : deck.prev(); }
+    } catch (err) { /* not in the deck */ }
+    return;
+  }
+  if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+  e.preventDefault();
+  const cur = state.sel && state.sel.type === 'channel' ? ORDER.findIndex((c) => c.id === state.sel.id) : -1;
+  const n = ORDER.length;
+  const next = e.key === 'ArrowDown' ? (cur + 1) % n : (cur <= 0 ? n - 1 : cur - 1);
+  select({ type: 'channel', id: ORDER[next].id });
+});
+
+renderPanel();
+paint();
+
+// ---- Lines draw in, then one channel at a time lights up until the first interaction ----
+if (!reduced) {
+  svg.classList.add('intro');
+  setTimeout(() => svg.classList.remove('intro'), 1700);
+  let k = 0;
+  const tick = () => {
+    if (state.touched) return;
+    state.demo = { type: 'channel', id: DEMO[k++ % DEMO.length] };
+    paint();
+    setTimeout(tick, 2600);
+  };
+  setTimeout(tick, 1900);
+}
+</script>

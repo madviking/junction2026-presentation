@@ -63,6 +63,14 @@ Note: Digital-clinic figure: Kujansivu et al., Scand J Prim Health Care 2026, re
 
 ---
 
+<!-- class: embed -->
+<iframe class="embed" src="/media/ways-in.html" title="How people find Silta: 15 channels in two groups. Click a channel for its evidence and plan, or open the who-has-to-say-yes table."></iframe>
+
+Note:
+Interactive. Two points: Silta is built to be discovered (each answer is its own page for search and AI assistants), and it has to earn trust from someone who finds it by chance (own language, no name or ID, official guidance). Click a channel for evidence and plan. "Who has to say yes" shows what can start today and what needs a county, doctors, nurses or a national body. Up/down step through channels, Esc returns to the opening, left/right change slide. Full version: /team/m/acquisition-paths.html.
+
+---
+
 ## Built this weekend
 
 Encore.ts · React + Mantine · PostgreSQL + pgvector on Aiven · Gemini API · ElevenLabs
