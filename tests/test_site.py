@@ -134,11 +134,13 @@ def test_pathway_embeds_data_and_step_charts(client):
     assert "/static/pathway.js" in html
     data = content.pathway()
     available = charts.by_id()
-    for prog in data["programmes"].values():
-        for step in prog["steps"].values():
-            for chart in step.get("charts", []):
-                assert chart in available, chart
-                assert f'id="pw-fig-{chart}"' in html
+    steps = [step for prog in data["programmes"].values() for step in prog["steps"].values()]
+    steps += list(data["symptom"].values())
+    assert any(step.get("charts") for step in data["symptom"].values())
+    for step in steps:
+        for chart in step.get("charts", []):
+            assert chart in available, chart
+            assert f'id="pw-fig-{chart}"' in html
 
 
 def test_archive_shows_every_figure_table_and_implications(client):

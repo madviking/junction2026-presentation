@@ -543,27 +543,32 @@
   },
   "s2": {
    "level": "ind",
-   "solo": "Surveys by origin, any care",
-   "title": "Reaching care is harder for some origin groups",
+   "solo": "Register (8 counties) and surveys, any care",
+   "title": "The first contact is moving to Finnish-language chat, and it reaches fewer of them",
    "big": [
     [
-     "5.5%",
-     "unmet need for a doctor's care, Somali origin",
-     ""
+     "4.8%",
+     "of residents have a native language other than Finnish or Swedish",
+     "a"
     ],
     [
-     "1.5%",
-     "general population",
-     ""
+     "3.0%",
+     "of public digital-clinic users do",
+     "b"
     ]
    ],
-   "finding": "Russian origin 15.2%, Kurdish 28.8% (THL Maamu 2010–12). People born in Africa and the Middle East have about a third of the odds of being satisfied with access to care (FinMonik 2018–19). Ages 18–64, by origin not language, not cancer-specific.",
-   "silta": "Who to contact in the person's region, a Finnish call script to read aloud, and the right to a free interpreter.",
+   "finding": "Counties now route first contact through chat-based digital clinics: a nurse chat in Finnish, usually starting with a symptom checker that writes a summary for the nurse. In the eight counties studied (2022–2025), people whose native language is not Finnish or Swedish made 0.12 digital-clinic contacts per person against 0.20 overall. They were also under-represented in traditional primary care (4.1% of its users). Surveys point the same way: unmet need for a doctor's care was 5.5% among Somali-origin, 15.2% Russian-origin and 28.8% Kurdish-origin adults against 1.5% overall (THL Maamu 2010–12), and people born in Africa and the Middle East have about a third of the odds of being satisfied with access to care (FinMonik 2018–19).",
+   "why": "All of this is about any care, not cancer. The register study is descriptive (no significance tests) and does not include Helsinki or Vantaa–Kerava, the most multilingual areas. Survey figures are by origin, ages 18–64. The study cites language skills and lack of strong e-identification as barriers to digital care.",
+   "silta": "No login and no bank ID. The person describes what they noticed in their own language and Silta writes the Finnish summary the clinic nurse already works from. It also gives who to contact in the region, a Finnish call script to read aloud, and the right to a free interpreter.",
    "county": [
-    "Record native language and interpreter need at first contact."
+    "Record native language and interpreter need at first contact.",
+    "Accept the Silta summary as an entry into the county's digital clinic."
    ],
-   "measure": "Survey only (FinMonik, MoniSuomi).",
-   "src": "IJERPH 2021 18(5):2229 (Maamu); Kuusio et al., BMC Health Serv Res 2022 (FinMonik)."
+   "measure": "Digital-clinic contacts per person among non-native speakers, from 0.12 towards 0.20, in the THL primary-care register linked to Statistics Finland language data (method and R code published with the study).",
+   "src": "Kujansivu et al., Scand J Prim Health Care 2026, doi:10.1080/02813432.2026.2686721; IJERPH 2021 18(5):2229 (Maamu); Kuusio et al., BMC Health Serv Res 2022 (FinMonik).",
+   "charts": [
+    "digital_clinic_use"
+   ]
   },
   "s3": {
    "level": "none",
