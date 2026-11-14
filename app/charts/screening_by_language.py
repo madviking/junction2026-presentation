@@ -9,6 +9,7 @@ CHART = {
     "subtitle": "Share of invited people who attended. Other-language invitees attend about 20 points less in every programme.",
     "source": "Finnish Cancer Registry, screening statistics 2024 (brain: sources/2026-11-14-cancerregistry-screening-by-language.md)",
     "order": 10,
+    "height": 260,
 }
 
 
@@ -18,8 +19,8 @@ def build(p: dict):
     fig = new_figure(p, yaxis={"range": [0, 100], "ticksuffix": "%", "gridcolor": p["line"],
                                "tickfont": {"color": p["muted"]}, "zeroline": False})
     series = (
-        ("Finnish, Swedish or Sámi", "domestic_pct", "domestic_invited", p["lake"]),
-        ("Other or unknown language", "other_pct", "other_invited", p["coral"]),
+        ("Finnish, Swedish or Sámi", "domestic_pct", "domestic_invited", p["reference"]),
+        ("Other or unknown language", "other_pct", "other_invited", p["lake"]),
     )
     for name, pct, invited, color in series:
         fig.add_trace(

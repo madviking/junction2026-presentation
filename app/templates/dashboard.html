@@ -2,9 +2,9 @@
 {% block title %}Data — {{ site.name }}{% endblock %}
 {% block body %}
 <main class="page-body silta-report">
-  <div class="container-xl">
+  <article class="silta-report-body">
     <header class="silta-report-head">
-      <p class="silta-eyebrow">Data</p>
+      <p class="silta-report-kicker">Silta · Data</p>
       <h1 class="silta-report-title">{{ story.title }}</h1>
       <p class="silta-report-lede">{{ story.lede }}</p>
     </header>
@@ -12,62 +12,63 @@
     {% for s in story.sections %}
     {% set item = charts.get(s.figure.chart) if s.figure else none %}
     <section class="silta-report-section" id="{{ s.id }}" aria-labelledby="h-{{ s.id }}">
-      <div class="silta-report-main">
-        <h2 class="silta-report-h2" id="h-{{ s.id }}">{{ s.title }}</h2>
-        {% if s.intro %}<p>{{ s.intro }}</p>{% endif %}
+      <h2 class="silta-report-h2" id="h-{{ s.id }}">{{ s.title }}</h2>
+      {% if s.intro %}<p>{{ s.intro }}</p>{% endif %}
 
-        {% if item %}
-        <figure class="silta-figure">
-          <figcaption>{{ s.figure.caption }}</figcaption>
-          <div class="silta-chart" data-chart="{{ item.chart.id }}" style="min-height: {{ item.chart.height }}px" role="img" aria-label="{{ s.figure.caption }} {{ item.chart.subtitle }}"></div>
-          <script type="application/json" id="fig-{{ item.chart.id }}">{"light": {{ item.figures.light | safe }}, "dark": {{ item.figures.dark | safe }}}</script>
-        </figure>
-        {% endif %}
+      {% if item %}
+      <figure class="silta-figure{% if s.figure.size == 'small' %} silta-figure-small{% endif %}">
+        <figcaption>{{ s.figure.caption }}</figcaption>
+        <div class="silta-chart" data-chart="{{ item.chart.id }}" style="min-height: {{ item.chart.height }}px" role="img" aria-label="{{ s.figure.caption }} {{ item.chart.subtitle }}"></div>
+        <script type="application/json" id="fig-{{ item.chart.id }}">{"light": {{ item.figures.light | safe }}, "dark": {{ item.figures.dark | safe }}}</script>
+      </figure>
+      {% endif %}
 
-        {% if s.list_html %}<ul class="silta-report-list">{% for li in s.list_html %}<li>{{ li | safe }}</li>{% endfor %}</ul>{% endif %}
-
-        {% if s.rows %}
-        <div class="table-responsive silta-figure">
-          <table class="table table-vcenter mb-0">
-            <thead><tr>{% for col in s.rows.columns %}<th>{{ col }}</th>{% endfor %}</tr></thead>
-            <tbody>{% for row in s.rows.body %}<tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>{% endfor %}</tbody>
+      {% if s.table %}
+      <figure class="silta-figure">
+        <figcaption>{{ s.table.caption }}</figcaption>
+        <div class="table-responsive">
+          <table class="silta-report-table">
+            <thead><tr>{% for col in s.table.columns %}<th{% if not loop.first %} class="num"{% endif %}>{{ col }}</th>{% endfor %}</tr></thead>
+            {% for g in s.table.groups %}
+            <tbody>
+              {% if g.name %}<tr class="group"><th colspan="{{ s.table.columns | length }}" scope="rowgroup">{{ g.name }}</th></tr>{% endif %}
+              {% for row in g.body %}<tr>{% for cell in row %}<td{% if not loop.first and cell[:1] in '0123456789+−' %} class="num"{% endif %}>{{ cell }}</td>{% endfor %}</tr>{% endfor %}
+            </tbody>
+            {% endfor %}
           </table>
         </div>
-        {% endif %}
+      </figure>
+      {% endif %}
 
-        {% if s.finding %}<p>{{ s.finding }}</p>{% endif %}
-        {% if s.callout %}<p class="silta-report-note">{{ s.callout }}</p>{% endif %}
-        {% if s.placeholder %}<p class="text-secondary">{{ s.placeholder }}</p>{% endif %}
+      {% if s.list_html %}<ul class="silta-report-list">{% for li in s.list_html %}<li>{{ li | safe }}</li>{% endfor %}</ul>{% endif %}
+      {% if s.finding %}<p>{{ s.finding }}</p>{% endif %}
+      {% if s.callout %}<p class="silta-report-note">{{ s.callout }}</p>{% endif %}
+      {% if s.placeholder %}<p class="silta-report-muted">{{ s.placeholder }}</p>{% endif %}
 
-        {% if s.details_html or s.source or item %}
-        <details class="silta-details">
-          <summary>Details and sources</summary>
-          <div class="silta-details-body">
-            {{ s.details_html | safe if s.details_html }}
-            {% if item %}
-            <div class="table-responsive">
-              <table class="table table-sm table-vcenter">
-                <thead><tr>{% for col in item.table.columns %}<th>{{ col }}</th>{% endfor %}</tr></thead>
-                <tbody>{% for row in item.table.rows %}<tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>{% endfor %}</tbody>
-              </table>
-            </div>
-            {% endif %}
-            {% if s.source %}<p>Source: {{ s.source }}</p>{% endif %}
+      {% if s.details_html or s.source or item %}
+      <details class="silta-details">
+        <summary>Details and sources</summary>
+        <div class="silta-details-body">
+          {{ s.details_html | safe if s.details_html }}
+          {% if item %}
+          <div class="table-responsive">
+            <table class="silta-report-table silta-report-table-sm">
+              <thead><tr>{% for col in item.table.columns %}<th>{{ col }}</th>{% endfor %}</tr></thead>
+              <tbody>{% for row in item.table.rows %}<tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>{% endfor %}</tbody>
+            </table>
           </div>
-        </details>
-        {% endif %}
-      </div>
-
-      {% if s.aside %}
-      <aside class="silta-report-aside" aria-label="{{ s.aside.title }}">
-        <p class="silta-aside-title">{{ s.aside.title }}</p>
-        {{ s.aside.body_html | safe }}
-      </aside>
+          {% endif %}
+          {% if s.source %}<p>Source: {{ s.source }}</p>{% endif %}
+        </div>
+      </details>
       {% endif %}
     </section>
     {% endfor %}
-  </div>
+  </article>
 </main>
+{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
 {% endblock %}
 {% block scripts %}
 <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>

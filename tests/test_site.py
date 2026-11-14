@@ -109,7 +109,7 @@ def test_every_chart_renders_both_themes_and_a_table():
 
 def test_dashboard_story_is_complete():
     sections = content.dashboard()["sections"]
-    assert len(sections) == 8  # summary + 7 numbered sections
+    assert len(sections) == 9  # summary + 8 numbered sections
     available = charts.by_id()
     for section in sections:
         assert section.get("title"), section["id"]
@@ -120,12 +120,13 @@ def test_dashboard_story_is_complete():
             assert section.get("source"), f"{section['id']} has no source"
 
 
-def test_dashboard_shows_every_figure_and_response(client):
+def test_dashboard_shows_every_figure_table_and_implications(client):
     html = client.get("/dashboard").text
     for section in content.dashboard()["sections"]:
         if section.get("figure"):
             assert f'data-chart="{section["figure"]["chart"]}"' in html
-    assert html.count('class="silta-report-aside"') >= 6
+    assert "Implications for Silta" in html
+    assert "Table 1. Attendance at each step" in html
 
 
 def test_tech_challenge_pages(client, tmp_path, monkeypatch):

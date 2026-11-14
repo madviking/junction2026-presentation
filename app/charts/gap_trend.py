@@ -9,13 +9,13 @@ CHART = {
     "subtitle": "Breast and cervical gaps widened from 2020 to 2024; colorectal (programme from 2022) is flat.",
     "source": "Finnish Cancer Registry native-language tables 2020–2024 (brain: sources/2026-11-14-cancerregistry-screening-by-language.md)",
     "order": 25,
-    "height": 300,
+    "height": 240,
 }
 
 
 def build(p: dict):
     rows = read_csv("screening_by_language.csv")
-    series = (("Cervical", p["coral"], "solid"), ("Breast", p["lake"], "solid"), ("Colorectal", p["reference"], "dot"))
+    series = (("Cervical", p["lake"], "dash"), ("Breast", p["lake"], "solid"), ("Colorectal", p["reference"], "dot"))
     fig = new_figure(
         p,
         showlegend=False,

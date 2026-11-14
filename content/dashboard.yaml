@@ -1,11 +1,12 @@
-# /dashboard: a short, report-style data story.
-# Each section: title (informational) → intro (links to the previous section) → one figure or
-# list → finding (one or two sentences) → folded details. `aside` = Silta's proposed response,
-# shown in the right-hand column. Every number traces to the brain repo (`source`).
-# `figure.chart` = a module name in app/charts/. `details` and `aside.body` are Markdown.
+# /dashboard: a short report-style data story.
+# Each section: title (informational) → intro (links to the previous section) → one figure,
+# table or list → finding → folded details. Findings stay neutral; Silta's proposed responses
+# are collected in the "Implications for Silta" section near the end.
+# Every number traces to the brain repo (`source`). `figure.chart` = a module in app/charts/;
+# `figure.size: small` keeps a chart narrow. `details` is Markdown.
 
 title: Cancer screening attendance by native language in Finland
-lede: A summary of public registry and survey data on who is missed by cancer screening, where in the pathway the gap appears, and how Silta proposes to respond. Figures, confidence intervals and sources are under “Details and sources” in each section.
+lede: A summary of public registry and survey data on who is missed by cancer screening, where in the pathway the gap appears, and what this implies for Silta. Figures, confidence intervals and sources are under “Details and sources” in each section.
 
 sections:
   - id: summary
@@ -16,12 +17,6 @@ sections:
       - The gap appears **at the first step**, attending the screening. Follow-up after an abnormal result is mostly equal.
       - The gap is **largest for people born in Africa**, and these groups also report the most difficulty reaching care.
       - The breast and cervical gaps have **widened since 2020**. About **16,500 screenings** are missed each year.
-    aside:
-      title: Silta
-      body: |
-        A multilingual mobile web app that helps people act on a screening letter or a symptom: what it means, where to go, and what to say in Finnish. Clinicians receive a short Finnish summary before the visit.
-
-        No login, no name; every answer links to its official source.
     details: |
       - **Burden:** 13,490 cancer deaths in 2024; breast, cervical, colorectal and lung cancer cause about a third (4,635). National cost of cancer €1.40 bn.
       - **Programmes:** breast for women aged 50–69, cervical for women aged 30–64, colorectal being extended to ages 56–74 by 2031.
@@ -33,14 +28,9 @@ sections:
     intro: The Cancer Registry records the native language of every person invited. Comparing the two groups shows the size of the gap the national goal refers to.
     figure:
       chart: screening_by_language
+      size: small
       caption: "Figure 1. Share of invited people who attended screening, by native language, 2024."
     finding: In every programme, people with another native language attend about 20 percentage points less often. That corresponds to about 16,500 missed screenings a year.
-    aside:
-      title: Proposed response
-      body: |
-        **Explain the letter, not just translate it.** A Norwegian trial found that letters in the recipient's own language made no difference (46.5% vs 47.4%).
-
-        Silta's “I got a letter I don't understand” route explains what the invitation means, how to book or rebook, and what the test involves, and gives a Finnish sentence to use on the phone.
     details: |
       - Gap in 2024: breast −22.4, cervical −19.9, colorectal −21.1 percentage points (95% confidence intervals within ±0.7).
       - Missed screenings = other-language invitees × (domestic rate − other rate): breast 5,556, cervical 6,844, colorectal 4,161.
@@ -49,22 +39,26 @@ sections:
 
   - id: pathway
     title: 2. Where in the screening pathway the gap appears
-    intro: "Screening has two steps where people can drop out: attending the screening, and attending follow-up if the result is abnormal. Figure 2 compares the same two groups as Figure 1 at both steps."
-    figure:
-      chart: pathway_steps
-      caption: "Figure 2. Attendance at each step, by native language. The distance between the dots is the gap."
-    finding: The gap is at the first step. Among people who do attend and get an abnormal result, follow-up is about equal for cervical screening. Colorectal screening is the exception, with a gap of 8.8 points at colonoscopy.
-    aside:
-      title: Proposed response
-      body: |
-        **Focus on the first invitation.** Only about 18% of people who skip a colorectal round attend the next one, so a first missed letter tends to become permanent.
-
-        **Support colorectal follow-up.** After a positive test, Silta explains what a colonoscopy is and how to prepare, and its “I am waiting and nothing is happening” route says when and whom to call.
+    intro: Screening has two steps where people can drop out. They can miss the screening itself, or, if the result is abnormal, miss the follow-up examination. Table 1 compares the same two groups as Figure 1 at both steps.
+    table:
+      caption: "Table 1. Attendance at each step, by native language (%)."
+      columns: [Step, "Finnish, Swedish or Sámi", Other language, Gap (points)]
+      groups:
+        - name: Step 1 — attended screening (2024)
+          body:
+            - [Breast, "83.2", "60.8", "−22.4"]
+            - [Cervical, "76.2", "56.3", "−19.9"]
+            - [Colorectal, "74.5", "53.4", "−21.1"]
+        - name: Step 2 — attended follow-up after an abnormal result
+          body:
+            - [Cervical — colposcopy (2024), "84.8", "87.1", "+2.3"]
+            - [Colorectal — colonoscopy (2022–2024), "77.1", "68.3", "−8.8"]
+    finding: The gap is at the first step. People who attend and receive an abnormal cervical result go on to follow-up at the same rate. Colorectal screening is the exception, with a gap of 8.8 points at colonoscopy. Missing the first step also tends to repeat; only about 18% of people who skip a colorectal round attend the next one.
     details: |
-      - Colorectal follow-up is pooled over 2022–2024 (95% CI for the gap 6.3–11.3) because yearly groups are small; 2024 alone is borderline (−4.0).
+      - Colorectal follow-up is pooled over 2022–2024 because yearly groups are small (95% CI for the gap 6.3–11.3); 2024 alone is borderline (−4.0). The other-language rate is weighted by the number of positives (371, 497, 495); the domestic rate is that rate plus the pooled gap.
       - Previous colorectal non-attenders attend the next round at 17.5% (men) and 19.0% (women), against 91–93% of previous attenders (2024).
       - Breast follow-up is not shown: the registry's measure is a referral rate, not attendance, and does not indicate a gap.
-      - Waiting time from a positive colorectal test to colonoscopy is about 1.9 months nationally and varies by county; this is a capacity question rather than one Silta can address.
+      - Cervical colposcopy: no significant difference (95% CI −0.6 to +5.2).
     source: Finnish Cancer Registry native-language tables 2022–2024, colorectal "by previous result" 2024 (brain notes/2026-11-14-0145-silta-deep-data-analysis.md §1, §4)
 
   - id: who
@@ -72,15 +66,9 @@ sections:
     intro: The registry also reports attendance by region of birth, which shows which groups make up the gap in Figure 1.
     figure:
       chart: screening_by_birth_region
-      caption: "Figure 3. Share of invited people who attended screening, by region of birth, 2024."
+      caption: "Figure 2. Share of invited people who attended screening, by region of birth, 2024."
     finding: People born in Africa attend least in every programme. In THL surveys, people born in Africa and the Middle East also report the most difficulty reaching care, so the barrier is not only the letter.
-    callout: "Case study, Somali speakers: Somali is the second most common foreign language in Helsinki. People of Somali origin report unmet need for a doctor's care 3–4 times as often as the general population (5.5% vs 1.5%)."
-    aside:
-      title: Proposed response
-      body: |
-        **Checked phrase cards for low-resource languages.** Speech AI performs poorly in Somali, so Silta uses phrases checked by native speakers, with recorded audio.
-
-        **Use the visit that already happens.** 95% of Somali-origin women saw a municipal health-centre doctor last. Silta's clinician view prompts the doctor to offer a self-sampling kit when cervical screening is overdue; in London, 56% took a kit offered in person against about 13% by post.
+    callout: "Case study, Somali speakers: Somali is the second most common foreign language in Helsinki. People of Somali origin report unmet need for a doctor's care 3–4 times as often as the general population (5.5% vs 1.5%), and 95% of Somali-origin women saw a municipal health-centre doctor at their last visit."
     details: |
       - **Access (THL FinMonik 2018–19, ages 18–64):** odds of being satisfied with access, compared with the general population: Middle East and North Africa 0.28–0.39, rest of Africa 0.35–0.43.
       - **Unmet need for a doctor's care (THL Maamu 2010–12, ages 18–64):** Somali origin 5.5%, Russian 15.2%, Kurdish 28.8%, general population 1.5%.
@@ -91,48 +79,34 @@ sections:
 
   - id: trend
     title: 4. Change over time, 2020–2024
-    intro: Figure 4 shows the gap from Figure 1 for each year since 2020. Over the same period the number of other-language invitees grew by a quarter to a third.
+    intro: Figure 3 shows the gap from Figure 1 for each year since 2020. Over the same period the number of other-language invitees grew by a quarter to a third.
     figure:
       chart: gap_trend
-      caption: "Figure 4. Attendance gap between domestic and other-language invitees, percentage points."
+      size: small
+      caption: "Figure 3. Attendance gap between Finnish/Swedish/Sámi and other-language invitees, percentage points."
     finding: The breast and cervical gaps widened by 2.5 and 4.3 points. The colorectal programme started in 2022, and its gap has not changed.
-    aside:
-      title: Proposed response
-      body: |
-        **Add languages without rebuilding.** Content is shared across languages; each new language is reviewed by a native speaker before it is marked as checked.
-
-        Languages already planned cover an estimated 60% of missed screenings.
     details: |
       - Change 2020→2024 with 95% CI: breast +2.5 (1.6–3.4), cervical +4.2 (3.4–5.0) percentage points. Colorectal 2022→2024: −0.6 (−1.7 to +0.4), not significant.
       - **2035 scenario:** with the gap unchanged, ageing and migration roughly double missed screenings, to about 31,500–38,600 a year. This holds 2024 rates constant and is not a forecast.
-      - The 60% language coverage is an estimate (eligible population × birth-region gap); the registry does not report individual languages.
-    source: Finnish Cancer Registry native-language tables 2020–2024; Statistics Finland 11rl projection (brain notes/2026-11-14-0145-silta-deep-data-analysis.md §1, §6, §7)
+    source: Finnish Cancer Registry native-language tables 2020–2024; Statistics Finland 11rl projection (brain notes/2026-11-14-0145-silta-deep-data-analysis.md §1, §6)
 
   - id: goals
     title: 5. National goals and how they are measured
     intro: The findings above correspond to three goals in the National Cancer Strategy. Each is already measured every year from existing registers.
-    rows:
+    table:
+      caption: "Table 2. National goals related to the findings."
       columns: [National goal, Measured by, Related finding]
-      body:
-        - [Equal screening attendance regardless of native language (sub-goal 1.3), Cancer Registry attendance by native language, Sections 1 and 4]
-        - [80% attendance in every programme in every county (Goal 2), THL Sotkanet screening indicators, Section 1]
-        - [Treatment within target times (Goal 3), Cancer Registry colonoscopy after a positive test, Section 2]
-    aside:
-      title: Proposed response
-      body: |
-        **No new data collection needed.** A county can follow Silta's effect with the indicators it already receives.
-
-        Silta adds anonymous counts of where people get stuck (language, route, step reached), which existing registers do not hold.
+      groups:
+        - body:
+            - [Equal screening attendance regardless of native language (sub-goal 1.3), Cancer Registry attendance by native language, Sections 1 and 4]
+            - [80% attendance in every programme in every county (Goal 2), THL Sotkanet screening indicators, Section 1]
+            - [Treatment within target times (Goal 3), Cancer Registry colonoscopy after a positive test, Section 2]
     details: |
       - Sotkanet indicators: 3620 (cervical), 3621 (breast), 6103 (colorectal).
     source: National Cancer Strategy 2026–2035 and roadmap 2026–2031; Cancer Registry; THL Sotkanet (brain sources/2026-11-13-astrazeneca-challenge-pdfs.md)
 
-  - id: impact
-    title: 6. Expected impact
-    placeholder: This section is being finalised. No estimates are shown until the method is agreed.
-
   - id: limits
-    title: 7. Limitations of the data
+    title: 6. Limitations of the data
     intro: The figures above come from public registers and surveys that were not designed for this question. These are the main limits on what they can show.
     list:
       - "**No figures for individual languages.** The registry reports only “other or unknown language”. Attendance among Somali speakers is not measured directly; we use region of birth and surveys instead."
@@ -140,13 +114,7 @@ sections:
       - "**Survey coverage.** The surveys include ages 18–64, ask about care in general rather than screening, and group people by origin rather than language. The Somali data was collected in 2010–12."
       - "**The symptom stage is not recorded.** Finland does not collect time from first symptom to diagnosis, and cancer stage is missing for almost half of lung cancer patients."
       - "**Small follow-up groups.** About 370–560 other-language people a year have an abnormal result, so three years are pooled."
-      - "**Estimates and scenarios.** The language coverage figure and the 2035 projection are model-based estimates, not measurements."
-    aside:
-      title: How Silta handles uncertainty
-      body: |
-        Silta does not diagnose or rate urgency; it shows what official sources say and links to them.
-
-        It prepares the visit but does not replace a professional interpreter.
+      - "**Estimates and scenarios.** The 2035 projection is a model-based scenario, not a measurement."
     details: |
       **What we do not claim**
 
@@ -178,3 +146,23 @@ sections:
       - Lung cancer quality report, Syöpäjärjestöt, April 2026
       - All captured sources and the analysis: team knowledge base (`madviking/junction2026`, folders `sources/` and `notes/`)
     source: brain notes/2026-11-14-0145-silta-deep-data-analysis.md; sources/2026-11-14-web-research-barriers-and-data-gaps.md; sources/2026-11-14-europepmc-unmet-need-and-access-by-origin.md
+
+  - id: implications
+    title: 7. Implications for Silta
+    intro: Each finding points to a specific design choice. These are proposals; their effect has not yet been tested.
+    list:
+      - "**The gap is at the invitation (§1, §2) → explain the letter, do not only translate it.** A Norwegian trial found that letters in the recipient's own language made no difference (46.5% vs 47.4%). Silta's “I got a letter I don't understand” route explains what the invitation means, how to book or rebook and what the test involves, with a Finnish sentence to use on the phone."
+      - "**Missing the first round repeats (§2) → focus on the first invitation** and on people who have just missed one."
+      - "**Colorectal follow-up has a gap (§2) → support the step after a positive test:** what a colonoscopy is, how to prepare, and when and whom to call if no appointment arrives."
+      - "**People born in Africa are most affected and report barriers to care (§3) → work where they already come.** Somali uses phrase cards checked by native speakers, with recorded audio, because speech AI performs poorly in Somali. At a health-centre visit, the clinician view can prompt an offer of a self-sampling kit when cervical screening is overdue; in London, 56% took a kit offered in person against about 13% by post."
+      - "**The gap is growing (§4) → add languages without rebuilding.** Content is shared across languages, and each language is reviewed by a native speaker before it is marked as checked."
+      - "**Goals are already measured (§5) → no new data collection.** A county can follow the effect with the indicators it already receives."
+    details: |
+      - Norway RCT (n = 11,347): invitation in the language of origin 46.5% vs standard 47.4%.
+      - London YouScreen (133 practices): 56% accepted a self-sampling kit offered during a visit for another reason, against about 13% response to kits sent by post.
+      - Silta does not diagnose or rate urgency; it shows what official sources say, links to them, and does not replace a professional interpreter.
+    source: brain ideas/silta.md; sources/2026-11-13-web-research-minorities-screening.md; notes/2026-11-14-0145-silta-deep-data-analysis.md §3, §4
+
+  - id: impact
+    title: 8. Expected impact
+    placeholder: This section is being finalised. No estimates are shown until the method is agreed.

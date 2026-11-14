@@ -11,7 +11,7 @@ CHART = {
     "source": "Finnish Cancer Registry, screening statistics 2024 (brain: sources/2026-11-14-cancerregistry-screening-by-language.md)",
     "order": 40,
     "wide": True,
-    "height": 300,
+    "height": 260,
 }
 
 PROGRAMMES = (("Breast", "breast_pct"), ("Cervical", "cervical_pct"), ("Colorectal", "colorectal_pct"))
@@ -26,7 +26,7 @@ def build(p: dict):
     fig.update_layout(template.layout, showlegend=False)
     for col, (name, key) in enumerate(PROGRAMMES, start=1):
         values = [float(r[key]) for r in rows][::-1]
-        colors = [p["lake"] if region == "Finland" else p["coral"] for region in regions]
+        colors = [p["reference"] if region == "Finland" else p["lake"] for region in regions]
         fig.add_trace(
             go.Bar(
                 x=values,
