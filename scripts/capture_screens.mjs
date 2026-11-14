@@ -4,8 +4,12 @@
 //   node scripts/capture_screens.mjs                      # app at http://localhost:5300
 //   SILTA_APP_URL=https://... node scripts/capture_screens.mjs
 //
+//   node scripts/capture_screens.mjs --with-matching      # also the Gemini read-back screens
+//
 // Every run starts new anonymous visits in that app's database (local: test data).
-// Output: content/media/screens/slider-*.png (375x812 CSS px at 2x).
+// --with-matching types three answers into "Describe in your own words", i.e. three paid
+// card-matching calls (Gemini Decision 1, well under one cent in total).
+// Output: content/media/screens/slider-*.png and partner-*.png (375x812 CSS px at 2x).
 import { createRequire } from 'node:module'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -29,11 +33,19 @@ const browser = await chromium.launch()
 const context = await browser.newContext({ viewport: { width: 375, height: 812 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true })
 const page = await context.newPage()
 
-async function shot(name) {
-  await page.evaluate(() => window.scrollTo(0, 0))
+/** Screenshot of the viewport: from the top, or with `focus` scrolled to the middle. */
+async function shot(name, focus) {
+  if (focus) await focus.evaluate((el) => el.scrollIntoView({ block: 'center' }))
+  else await page.evaluate(() => window.scrollTo(0, 0))
   await page.waitForTimeout(300)
-  await page.screenshot({ path: path.join(out, `slider-${name}.png`) })
-  console.log(`slider-${name}.png`)
+  const file = name.startsWith('partner-') ? `${name}.png` : `slider-${name}.png`
+  await page.screenshot({ path: path.join(out, file) })
+  console.log(file)
+}
+
+async function describe(words) {
+  await page.getByLabel('Describe in your own words').fill(words)
+  await page.getByRole('button', { name: 'Check', exact: true }).click()
 }
 
 async function startVisit(lang) {
@@ -71,5 +83,29 @@ const symptomCard = await text('ar', 'journey.outcome.describe.symptom.card')
 await page.getByRole('button', { name: symptomCard }).click()
 await page.getByRole('group', { name: await text('ar', 'ui.journey.body.label') }).waitFor()
 await shot('06-body-map-ar')
+
+if (process.argv.includes('--with-matching')) {
+  // Gemini Decision 1: own words -> read-back of one card; a question -> a reviewed answer card.
+  await startVisit('en')
+  await page.getByRole('button', { name: 'I have a symptom that worries me' }).click()
+  await describe('I found a hard lump in my left breast last week')
+  const symptomReadback = page.getByRole('group', { name: /^Did you mean/ })
+  await symptomReadback.waitFor({ timeout: 30000 })
+  await shot('partner-gemini-symptom', page.getByLabel('Describe in your own words'))
+  await symptomReadback.getByRole('button', { name: 'Yes' }).click()
+  await page.getByRole('button', { name: 'Continue', exact: true }).click()
+
+  await page.getByRole('button', { name: 'I live in Finland and have a home municipality' }).waitFor()
+  await describe('I study at the University of Helsinki')
+  const routeReadback = page.getByRole('group', { name: /^Did you mean/ })
+  await routeReadback.waitFor({ timeout: 30000 })
+  await shot('partner-gemini-route', page.getByLabel('Describe in your own words'))
+  await routeReadback.getByRole('button', { name: 'No' }).click()
+
+  await describe("They asked for my Kela card. I don't know what it is.")
+  const answer = page.getByRole('status').getByRole('group')
+  await answer.waitFor({ timeout: 30000 })
+  await shot('partner-gemini-question', page.getByLabel('Describe in your own words'))
+}
 
 await browser.close()

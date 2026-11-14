@@ -1,0 +1,27 @@
+{# Phone screenshot slider: native scroll-snap, driven by /static/slider.js (include it in the page's scripts block).
+   screens: list of {src, alt, caption}. label: the carousel's accessible name. #}
+{% macro phone_slider(screens, label) %}
+<section class="silta-slider" aria-roledescription="carousel" aria-label="{{ label }}">
+  <div class="silta-phone">
+    <div class="silta-slider-track" tabindex="0" aria-label="Screens (swipe or use the arrow keys)">
+      {% for s in screens %}
+      <figure class="silta-slide" role="group" aria-roledescription="slide" aria-label="{{ loop.index }} / {{ screens|length }}" data-caption="{{ s.caption }}">
+        <img src="{{ s.src }}" alt="{{ s.alt }}" width="375" height="812" loading="{{ 'eager' if loop.first else 'lazy' }}">
+      </figure>
+      {% endfor %}
+    </div>
+  </div>
+  <p class="silta-slider-caption" aria-live="polite">{{ screens[0].caption }}</p>
+  {% if screens|length > 1 %}
+  <div class="silta-slider-nav">
+    <button type="button" class="btn btn-icon" data-slider="prev" aria-label="Previous screen"><i class="ti ti-chevron-left"></i></button>
+    <div class="silta-slider-dots">
+      {% for s in screens %}
+      <button type="button" data-slider="{{ loop.index0 }}" aria-label="Screen {{ loop.index }}"{% if loop.first %} aria-current="true"{% endif %}></button>
+      {% endfor %}
+    </div>
+    <button type="button" class="btn btn-icon" data-slider="next" aria-label="Next screen"><i class="ti ti-chevron-right"></i></button>
+  </div>
+  {% endif %}
+</section>
+{% endmacro %}

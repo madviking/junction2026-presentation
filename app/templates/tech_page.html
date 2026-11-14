@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% from "_journey.html" import strip %}
+{% from "_slider.html" import phone_slider %}
 {% block title %}{{ page.meta.title }} — {{ site.name }}{% endblock %}
 {% block body %}
 {% set m = page.meta %}
@@ -20,7 +21,7 @@
       <h1 class="page-title silta-glance-claim">{{ m.summary or m.title }}</h1>
     </div>
 
-    <div class="silta-glance{% if m.screenshot %} has-shot{% endif %}">
+    <div class="silta-glance{% if m.screenshots or m.screenshot %} has-shot{% endif %}">
       <div class="silta-glance-main">
         <section aria-labelledby="fit-title">
           <h2 id="fit-title" class="silta-glance-title">Where {{ m.partner }} fits in Silta</h2>
@@ -53,7 +54,9 @@
         {% endif %}
       </div>
 
-      {% if m.screenshot %}
+      {% if m.screenshots %}
+      <div class="silta-glance-shot">{{ phone_slider(m.screenshots, m.partner ~ " in Silta, screen by screen") }}</div>
+      {% elif m.screenshot %}
       <figure class="silta-glance-shot">
         <div class="silta-phone"><img src="{{ m.screenshot }}" alt="{{ m.screenshot_alt or '' }}"></div>
         {% if m.screenshot_caption %}<figcaption>{{ m.screenshot_caption }}</figcaption>{% endif %}
@@ -78,3 +81,5 @@
   </div>
 </main>
 {% endblock %}
+
+{% block scripts %}<script src="/static/slider.js" defer></script>{% endblock %}

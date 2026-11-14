@@ -196,3 +196,15 @@ def test_landing_screen_slider_shows_every_screen(client):
         assert f'src="{screen["src"]}"' in html
         assert str(escape(screen["alt"])) in html
         assert f'aria-label="{i} / {len(screens)}"' in html
+
+
+@pytest.mark.parametrize("slug", ["elevenlabs", "gemini"])
+def test_partner_page_screen_slider(client, slug):
+    page = next(p for p in content.tech_challenges() if p["slug"] == slug)
+    screens = page["meta"]["screenshots"]
+    html = client.get(f"/tech/{slug}").text
+    assert 'class="silta-slider"' in html and "/static/slider.js" in html
+    for screen in screens:
+        assert (settings.content_dir() / screen["src"].removeprefix("/")).is_file(), screen["src"]
+        assert f'src="{screen["src"]}"' in html
+        assert str(escape(screen["alt"])) in html

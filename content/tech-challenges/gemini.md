@@ -30,9 +30,16 @@ planned:
 - Switch card matching to the direct Gemini API adapter
 - Generated answers from public Finnish health sources, with links
 - Evaluation in real resident wording, incl. Somali and Arabic
-screenshot: /media/screens/04-symptom-picker.png
-screenshot_alt: 'Silta''s ''What worries you?'' screen: a ''Describe in your own words'' box with a Check button above the symptom cards.'
-screenshot_caption: “Describe in your own words” goes to Gemini Decision 1. Nothing is chosen until the person taps Yes.
+screenshots:
+- src: /media/screens/partner-gemini-symptom.png
+  alt: "'I found a hard lump in my left breast last week' typed in; Silta asks 'Did you mean: A new lump or swelling?' with Yes and No."
+  caption: “I found a hard lump in my left breast last week” → one card, asked back. Nothing is chosen until the person taps Yes.
+- src: /media/screens/partner-gemini-route.png
+  alt: "'I study at the University of Helsinki' typed in; Silta asks 'Did you mean: I am a university or college student?'"
+  caption: The same call finds the route card. “I study at the University of Helsinki” → the student route.
+- src: /media/screens/partner-gemini-question.png
+  alt: "'They asked for my Kela card. I don't know what it is.' typed in; Silta shows a short reviewed answer to 'What is a Kela card?'"
+  caption: A question gets a reviewed answer card, not a guess. The step's cards stay on screen.
 ---
 ## How Silta uses Gemini
 
@@ -48,7 +55,7 @@ screenshot_caption: “Describe in your own words” goes to Gemini Decision 1. 
 - The thresholds for these rules are in `backend/cards/config.ts`.
 
 **Where it appears in the journey.** The same call serves three steps (`backend/cards/service.ts`):
-1. Describe: free text or a voice transcript → a symptom card.
+1. Describe: free text or a voice transcript → a symptom card. The step opens with a body figure and picture cards for people who read little; the "Describe in your own words" box sits under them and makes the same call (`frontend/src/features/journey/components/SymptomPicker.tsx`).
 2. Route: "I study at the University of Helsinki" → the right route card for the person's situation.
 3. Outcomes: "they gave me a time for next Tuesday" → the outcome card that moves the journey on.
 

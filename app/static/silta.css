@@ -219,6 +219,9 @@ body:has(.silta-report) { background: var(--silta-surface); }
 .silta-glance-shot { margin: 0; display: grid; gap: 10px; justify-items: center; }
 .silta-glance-shot .silta-phone { width: 240px; }
 .silta-glance-shot figcaption { color: var(--silta-muted); font-size: 14px; line-height: 1.4; text-align: center; }
+.silta-glance-shot .silta-slider { width: 240px; }
+.silta-glance-shot .silta-slider .silta-phone { width: 100%; }
+.silta-glance-shot .silta-slider-caption { font-size: 14px; }
 
 .silta-details { margin-top: 44px; padding-top: 24px; border-top: 1px solid var(--silta-line); max-width: 80ch; }
 .silta-drill { border-bottom: 1px solid var(--silta-line); }

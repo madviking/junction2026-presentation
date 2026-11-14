@@ -10,7 +10,7 @@ criteria_source: brain/challenges/tech/mlh-elevenlabs.md
 # Glance: rendered as visuals at the top of the page (see AGENTS.md, Tech-partner pages).
 fit:
   steps:
-    describe: Cards read aloud; spoken answers turned into text
+    describe: Picture cards read aloud; spoken answers become text
     route: Route cards read aloud
     visit: Visit-card next steps read aloud
     after: Outcome cards read aloud
@@ -35,15 +35,25 @@ planned:
 - Speech-to-text tried for real in the nine added languages
 - Human Somali recordings
 - Kurdish, cards-first with human recordings
-screenshot: /media/screens/04-symptom-picker.png
-screenshot_alt: 'Silta''s ''What worries you?'' screen: a speaker button on every card, a Tap to speak microphone and a free-text box.'
-screenshot_caption: Every speaker button plays ElevenLabs audio. Tap to speak sends the answer to ElevenLabs Scribe.
+screenshots:
+- src: /media/screens/slider-02-body-map.png
+  alt: "'What worries you?' with a body figure and big picture cards, each with a speaker button."
+  caption: For people who read little, every picture card has a speaker button that plays ElevenLabs audio.
+- src: /media/screens/slider-04-route.png
+  alt: "'Where do you get health care?' with a speaker button on each question and a Tap to speak microphone."
+  caption: Every question plays aloud. Tap to speak sends the answer to ElevenLabs Scribe.
+- src: /media/screens/slider-05-door.png
+  alt: "The call script: each Finnish sentence and its meaning, each with its own speaker button."
+  caption: The sentence to say on the phone. One button plays the Finnish, the other its meaning.
+- src: /media/screens/slider-06-body-map-ar.png
+  alt: "The same picture symptom screen in Arabic, right to left, with speaker buttons."
+  caption: The same cards in Arabic. Generated Arabic audio stays unchecked until a native speaker reviews it.
 ---
 ## How Silta uses ElevenLabs
 
 Many people Silta is for read Finnish poorly, and some read their own language poorly too. So every line in the resident app has a play button, and residents can answer by speaking. The backend module `backend/voice/` is the only place that calls ElevenLabs.
 
-- **Text-to-speech for every card and instruction.** Symptom cards, route cards, outcome cards and visit-card next steps play aloud in 13 languages: English, Finnish, Swedish, Russian, Estonian, Ukrainian, Arabic, Somali, Persian, Mandarin, Cantonese, Vietnamese and Thai. One model (`eleven_v4`) and one multilingual voice cover them all (`backend/voice/capabilities.ts`).
+- **Text-to-speech for every card and instruction.** Symptom cards, route cards, outcome cards and visit-card next steps play aloud in 13 languages: English, Finnish, Swedish, Russian, Estonian, Ukrainian, Arabic, Somali, Persian, Mandarin, Cantonese, Vietnamese and Thai. One model (`eleven_v4`) and one multilingual voice cover them all (`backend/voice/capabilities.ts`). The symptom step opens in a picture version for people who read little: a body figure to tap where it is, and big picture cards, each with the same play button (`frontend/src/features/journey/components/SymptomBodyPicker.tsx`).
 - **Generated once, then cached.** A clip is made the first time a text is played, stored in the database and keyed by a hash of the exact text. When an admin edits a text, the old clip is never played again (`backend/voice/service.ts`, `backend/voice/README.md`).
 - **Speech-to-text for answers.** A resident taps "Tap to speak", says what they noticed ("I found a lump in my breast"), and ElevenLabs Scribe turns it into text. The text goes through the same read-back as typed text: Silta asks "Did you mean: a new lump or swelling?" and nothing is chosen until the person taps Yes (`backend/voice/stt.ts`, `frontend/src/features/voice/`).
 - **Finnish health care words.** Every transcription sends Scribe our glossary as key terms (Kela-kortti, terveysasema, lähete, OmaKanta …, in Finnish and the person's language), so "Kela card" is not written as "Kellogg card". Known mishearings left in the transcript are fixed before matching (`backend/voice/stt.ts`, `backend/care_paths/domain/glossary.ts`). Key terms cost 20% more per transcription, counted in the usage rows.
@@ -51,7 +61,7 @@ Many people Silta is for read Finnish poorly, and some read their own language p
   - Every language except Somali: voice in and voice out.
   - Somali: audio out only. Voice input is refused on purpose, and Somali speakers use the cards.
 - **Human recordings win.** In the admin, a native speaker's recording can be uploaded for any text. Once approved it replaces the generated clip. Generated Somali audio can never be marked approved; only a human recording can (`backend/voice/admin.ts`).
-- **A phone line for people without the app.** The caller presses a number or just says their language (a keypad menu in ten languages, each line spoken in its own language). An ElevenLabs agent with Gemini as its brain then talks with the caller in that language and calls two live Silta endpoints as tools: compose the care path, and look up the doors, hours and interpreter rules in the caller's area. It reads the Finnish sentence slowly so the caller can repeat it to the health station. Voice recording is off. Simulated callers passed end to end against the deployed API in Russian, Arabic (chosen by keypad) and Ukrainian (chosen by voice); the number is attached, and a real outside call is the next proof (`scripts/phone_agent.py`, `docs/proof/2026-11-14/phone-agent.md`).
+- **A phone line for people without the app.** The caller presses a number or just says their language (a keypad menu in ten languages, each line spoken in its own language). An ElevenLabs agent with Gemini as its brain then talks with the caller in that language and calls two live Silta endpoints as tools: compose the care path, and look up the doors, hours and interpreter rules in the caller's area. It reads the Finnish sentence slowly so the caller can repeat it to the health station. Voice recording is off. Simulated callers passed end to end against the deployed API in Russian, Arabic (chosen by keypad) and Ukrainian (chosen by voice); a real call from a Finnish mobile reached the agent, the keypad press switched it to Finnish, and the voice started about 1.6 s after the caller stopped speaking (`scripts/phone_agent.py`, `docs/proof/2026-11-14/phone-agent.md`).
 - **Spend under control.** Every call writes a usage row with characters, seconds and cost. A spend cap stops new calls; stored audio keeps playing (`backend/voice/providers.config.ts`). After the overnight build, the usage page showed about $0.016 of ElevenLabs spend in the development database (`brain/notes/2026-11-14-0735-silta-app-walkthrough.md`).
 
 ## Architecture
@@ -77,6 +87,7 @@ Live (local app and tests):
 Planned or not yet done:
 - Running on the deployed app; today this runs locally.
 - Audio for texts built from several pieces (the door title with the place, time limits, the code line).
+- Audio for the body figure's question and body-part buttons; today only the picture cards under it play aloud.
 - Native-speaker review of the texts and audio in the 11 placeholder languages (all but English and Finnish; the nine added languages are machine-translated), and human Somali recordings. Speech-to-text has not yet been tried for real in the nine added languages. Nobody has yet listened to the generated clips to check pronunciation.
 - Kurdish, which ElevenLabs does not offer as voice output (`brain/sources/2026-11-13-elevenlabs-language-coverage.md`); planned cards-first with human recordings.
 - Zero-retention processing. It is enterprise-only, so ElevenLabs may keep request logs (`backend/voice/README.md`).
