@@ -623,6 +623,10 @@ html:has(.silta-pw-page), html:has(.silta-pw-page) body { height: 100%; overflow
 .pw-hint { display: flex; gap: 8px; align-items: baseline; font-size: 13.5px; }
 .pw-hint i { flex: none; width: 9px; height: 9px; border-radius: 50%; background: var(--silta-coral); display: inline-block; }
 .silta-pw-page[data-mode="impact"] .pw-hint i { background: var(--silta-lake); }
+/* Deck arrival (pathway.js): primed = hidden, ready to play when the deck shows the slide. */
+.pw-primed .pw-paths, .pw-primed .pw-for-analysis > .pw-pill, .pw-primed .pw-for-impact > .pw-pill,
+.pw-primed .pw-silta, .pw-primed .pw-over { opacity: 0; }
+.pw-sbar { transform-origin: 0 50%; }
 .pw-silta-tag { color: var(--silta-lake); }
 .pw-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 24px; }
 .pw-links { display: flex; gap: 20px; }

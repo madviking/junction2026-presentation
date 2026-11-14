@@ -70,17 +70,24 @@
         {% if s.notes %}<aside class="notes">{{ s.notes }}</aside>{% endif %}
       </section>
       {%- elif s.layout == 'intro' %}
-      {#- Silta's introduction: name, meaning and punchline from content/site.yaml, as on the front page. #}
+      {#- A centred entry slide. With kicker/title/line it introduces what follows; with none of them it
+          introduces Silta: name, meaning and punchline from content/site.yaml, as on the front page. #}
       <section class="l-intro"{% if s.id %} id="{{ s.id }}"{% endif %}>
         <div class="intro">
+          {%- if s.kicker or s.title or s.line %}
+          {% if s.kicker %}<p class="intro-kicker">{{ s.kicker }}</p>{% endif %}
+          {% if s.title %}<h2 class="intro-title">{{ s.title | safe }}</h2>{% endif %}
+          {% if s.line %}<p class="intro-line{% if not s.title %} solo{% endif %}">{{ s.line | safe }}</p>{% endif %}
+          {%- else %}
           <h2 class="intro-name">{{ site.name }}</h2>
           <p class="intro-meaning">{{ site.meaning }}</p>
           <p class="intro-claim">{{ site.punchline }}</p>
+          {%- endif %}
         </div>
         {% if s.notes %}<aside class="notes">{{ s.notes }}</aside>{% endif %}
       </section>
       {%- else %}
-      <section class="l-{{ s.layout }}"{% if s.id %} id="{{ s.id }}"{% endif %}>
+      <section class="l-{{ s.layout }}{% if s.kicker_intro %} kicker-intro{% endif %}"{% if s.id %} id="{{ s.id }}"{% endif %}>
         <div class="frame">
           <header class="rail">
             <span class="kicker">{{ s.kicker or '' }}</span>

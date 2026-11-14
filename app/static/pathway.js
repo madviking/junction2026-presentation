@@ -14,6 +14,7 @@
   var mode = location.hash === "#impact" ? "impact" : "analysis";
   var NS = "http://www.w3.org/2000/svg";
   var svg = root.querySelector("svg.pw-routes");
+  var pathsG = svg.querySelector(".pw-paths") || svg;
   var card = root.querySelector("[data-pw=panel]");
   var bandsEl = root.querySelector("[data-pw=bands]");
   var pop = document.getElementById("pw-pop"), popBody = root.querySelector("[data-pw=pop]"), popTitle = document.getElementById("pw-pop-title");
@@ -37,7 +38,7 @@
   D.nodes.forEach(function (n) {
     if (!(n.id in nodeX)) nodeX[n.id] = n.x;
     var g = el("g", {"class": "pw-node pw-" + n.level, tabindex: "0", role: "button", "data-id": n.id,
-      "aria-label": n.aria || n.label.join(" ")}, svg);
+      "aria-label": n.aria || n.label.join(" ")}, pathsG);
     el("circle", {"class": "pw-hit", cx: n.x, cy: n.y, r: 22}, g);
     el("circle", {"class": "pw-ring", cx: n.x, cy: n.y, r: 13}, g);
     el("circle", {"class": "pw-dot", cx: n.x, cy: n.y, r: 7}, g);
@@ -179,10 +180,61 @@
       show(CLOSE + '<span class="pw-tag pw-silta-tag">Where Silta helps</span><h3>' + esc(band.name) + "</h3><p>" + esc(band.text) + "</p>",
         side((band.x0 + band.x1) / 2));
     } else {
-      var lede = mode === "impact" ? esc(D.impact.lede) : D.page.lede;
-      show("<p>" + lede + '</p><p class="pw-hint"><i></i>' + esc(mode === "impact" ? D.impact.prompt : D.page.prompt) +
+      // At rest: the prompt only. The analysis view's lede is the deck slide before this one (/presentation#/routes)
+      // and stays in the "Limitations and sources" popup; the impact view keeps its own lede here.
+      var lede = mode === "impact" ? "<p>" + esc(D.impact.lede) + "</p>" : "";
+      show(lede + '<p class="pw-hint"><i></i>' + esc(mode === "impact" ? D.impact.prompt : D.page.prompt) +
         " Or select a Silta band.</p>", "rest");
     }
   }
   setMode(mode, true);
+
+  // Arrival animation, about 2.5 s: draw the routes left to right, pop in the gap labels, then the
+  // "Where Silta helps" bands and the prompt. In the deck the slide is in an iframe, so the deck says when:
+  // {silta: "play"} when the slide is shown, {silta: "prime"} (hide, ready to play) when another slide is.
+  // Standalone, it plays on load. Without messages (the PDF export) the diagram simply stays drawn.
+  var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var silta = root.querySelector(".pw-silta");
+  var anims = [], primeTimer = null;
+  function stopAnims() { anims.forEach(function (a) { a.cancel(); }); anims = []; }
+  function add(node, frames, opts) {
+    var a = node.animate(frames, Object.assign({fill: "backwards", easing: "ease-out"}, opts));
+    anims.push(a);
+  }
+  function prime() {
+    clearTimeout(primeTimer);
+    // Wait for the deck's fade out before hiding, so a slide being left does not blank mid-fade.
+    primeTimer = setTimeout(function () { stopAnims(); page.classList.add("pw-primed"); }, 700);
+  }
+  function play() {
+    clearTimeout(primeTimer);
+    stopAnims();
+    page.classList.remove("pw-primed");
+    if (still) return;
+    add(pathsG, [{clipPath: "inset(0 100% 0 0)"}, {clipPath: "inset(0 0 0 0)"}], {duration: 900, easing: "cubic-bezier(.4,0,.2,1)"});
+    var pills = svg.querySelectorAll(".pw-for-" + mode + " > .pw-pill");
+    pills.forEach(function (pill, i) {
+      var m = /translate\(([-\d.]+)[ ,]+([-\d.]+)\)/.exec(pill.getAttribute("transform") || "");
+      var at = m ? "translate(" + m[1] + "px, " + m[2] + "px)" : "";
+      add(pill, [{opacity: 0, transform: at + " scale(.6)"}, {opacity: 1, transform: at + " scale(1)"}],
+        {duration: 280, delay: 850 + i * 140, easing: "cubic-bezier(.3,1.4,.6,1)"});
+    });
+    var bandsAt = 850 + pills.length * 140 + 250;
+    add(silta, [{opacity: 0}, {opacity: 1}], {duration: 250, delay: bandsAt});
+    bands.forEach(function (b, i) {
+      add(b.btn, [{opacity: 0, transform: "scaleX(.2)"}, {opacity: 1, transform: "scaleX(1)"}],
+        {duration: 380, delay: bandsAt + 120 + i * 70, easing: "cubic-bezier(.4,0,.2,1)"});
+    });
+    add(card, [{opacity: 0}, {opacity: 1}], {duration: 300, delay: bandsAt + 200 + bands.length * 70});
+  }
+  if (window.parent !== window) {
+    window.addEventListener("message", function (e) {
+      if (e.origin !== location.origin || !e.data) return;
+      if (e.data.silta === "play") play();
+      else if (e.data.silta === "prime") prime();
+    });
+    window.parent.postMessage({silta: "ready?"}, location.origin);
+  } else {
+    play();
+  }
 })();

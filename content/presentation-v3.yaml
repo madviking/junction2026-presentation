@@ -77,7 +77,7 @@ slides:
     id: earlier
     kicker: Why it matters
     title: Found earlier, <em>treated more easily.</em>
-    line: "The earlier cancer is found, the easier and cheaper it is to treat. Screening finds it at the left end."
+    line: "The earlier cancer is found, the easier and cheaper it is to treat. Screening finds it before symptoms start; cervical screening, even before it becomes cancer."
     stages:
       - {tone: early, label: Precancer, text: "Cervical screening finds cell changes before they become cancer."}
       - {tone: early, label: Local, text: "Small, not spread. Simpler treatment."}
@@ -117,6 +117,12 @@ slides:
     source: "Treatment costs: Duodecim 2019 · Norwegian colorectal cost model"
     notes: "Earlier is easier and cheaper. Do not claim lives saved or net savings."
 
+  - layout: intro
+    id: routes
+    kicker: Three routes into cancer care
+    line: "A screening letter, a symptom, or a test a doctor orders. On every route, people with another native language meet gaps. <b>Only screening is counted by language: 57% of them attend, against 78%.</b>"
+    notes: "The entryway to the diagram. 57% vs 78%: other-language invitees vs Finnish, Swedish and Sámi speakers, all three programmes, 2024 (Finnish Cancer Registry). The other routes have studies by origin, not by language."
+
   - layout: embed
     id: pathway
     src: /presentation/pathway
@@ -130,8 +136,9 @@ slides:
   - layout: morph
     id: letter
     kicker: First way in · the letter
+    kicker_intro: true   # the kicker opens large in the centre, then moves to its place (deck-v3.js)
     path: 1
-    title: The letter becomes <em>a lesson.</em>
+    title: Turning invitations <em>into visits.</em>
     line: "Hodan scans the code on her letter. Silta explains the screening in Somali, with pictures and a voice."
     from: {kind: paper, src: /media/screens/v3/letter-fi.png, pos: "center bottom", alt: "The foot of Hodan's Finnish screening letter with the Silta QR code and one line in 14 languages."}
     screens:
@@ -169,6 +176,7 @@ slides:
   - layout: screens
     id: noticed
     kicker: Second way in · a symptom
+    kicker_intro: true
     path: 2
     title: "“I noticed <em>something.”</em>"
     line: "Olga, 58, has found a lump. She taps where it is, or says it in her own words. Silta never rates her symptoms."
@@ -200,12 +208,6 @@ slides:
             source: "Duodecim, 2019"
     source: "Olga is a composite person · screens from the running app"
     notes: "The second route into care. No Finnish data measures it by language, so it supports the screening story rather than leading it."
-
-  - layout: embed
-    id: ways-in
-    src: /media/ways-in.html
-    title: "How people find Silta: 15 channels. Click a channel for its evidence and plan."
-    notes: "How Hodan and Olga find Silta in the first place: the QR code on the letter, a help card or poster from their community, or asking their phone. Every answer is its own page per language, topic and county, so search engines and AI assistants can cite it. Nothing here needs the county."
 
   - layout: screens
     id: door
@@ -359,6 +361,19 @@ slides:
             source: "Finnish Cancer Registry"
     source: "EU MDR · GDPR · EU AI Act · Patient Act (785/1992)"
     notes: "Each rule is a design decision you can see in the product."
+
+  - layout: intro
+    id: reach
+    kicker: Getting Silta in front of people
+    title: How do Hodan and Olga <em>find Silta?</em>
+    line: "Through the letter they already get, a card or poster from their community, or by asking their phone. Fifteen channels, each with its evidence and a plan."
+    notes: "Silta only helps if people find it. The next slide maps every channel; click one for its evidence."
+
+  - layout: embed
+    id: ways-in
+    src: /media/ways-in.html
+    title: "How people find Silta: 15 channels. Click a channel for its evidence and plan."
+    notes: "How Hodan and Olga find Silta in the first place: the QR code on the letter, a help card or poster from their community, or asking their phone. Every answer is its own page per language, topic and county, so search engines and AI assistants can cite it. Nothing here needs the county."
 
   - layout: facts
     id: running

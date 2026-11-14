@@ -120,4 +120,50 @@
     stop()
   })
   addEventListener('resize', stop)
+
+  // Arrival animations (not in print or speaker view: the early return above covers both).
+  //  - .kicker-intro slides: the kicker opens large in the centre, then moves to its place while the
+  //    rest of the slide fades in. Only when arriving forward, so stepping back stays calm.
+  //  - embedded pages (the pathway diagram) animate in when their slide is shown: the deck sends
+  //    {silta: 'play'} to the frame, and {silta: 'prime'} to every other frame so it is ready, hidden,
+  //    before its slide fades in. A frame that loads late asks with {silta: 'ready?'}.
+  const SLIDE_W = 1280
+  const SLIDE_H = 720
+  function kickerIntro(section) {
+    const kicker = section.querySelector('.kicker')
+    if (!kicker || reduce) return
+    section.getAnimations({ subtree: true }).forEach((a) => a.cancel())
+    const scale = Reveal.getScale() || 1
+    const box = section.getBoundingClientRect()
+    const k = kicker.getBoundingClientRect()
+    const dx = SLIDE_W / 2 - (k.left + k.width / 2 - box.left) / scale
+    const dy = SLIDE_H / 2 - (k.top + k.height / 2 - box.top) / scale
+    const big = `translate(${dx}px, ${dy}px) scale(3)`
+    kicker.animate(
+      [{ transform: big, opacity: 0 }, { transform: big, opacity: 1, offset: 0.15 }, { transform: big, offset: 0.55 }, { transform: 'none' }],
+      { duration: 2000, easing: 'cubic-bezier(.5,.05,.3,1)' })
+    section.querySelectorAll('.rail .path, .frame > .body, .frame > .foot').forEach((el) => el.animate(
+      [{ opacity: 0 }, { opacity: 0, offset: 0.75 }, { opacity: 1 }],
+      { duration: 2400, easing: 'ease-out' }))
+  }
+  function frames() {
+    return [...document.querySelectorAll('.reveal .slides iframe.embed')]
+  }
+  function tell(frame, message) {
+    try { frame.contentWindow?.postMessage({ silta: message }, location.origin) } catch { /* not loaded yet */ }
+  }
+  function arrive(event) {
+    const current = event.currentSlide
+    const forward = !event.previousSlide || Reveal.getIndices(event.previousSlide).h < Reveal.getIndices(current).h
+    if (forward && current.classList.contains('kicker-intro')) kickerIntro(current)
+    frames().forEach((frame) => tell(frame, current.contains(frame) ? 'play' : 'prime'))
+  }
+  addEventListener('message', (event) => {
+    if (event.origin !== location.origin || event.data?.silta !== 'ready?') return
+    const frame = frames().find((f) => f.contentWindow === event.source)
+    if (frame) tell(frame, Reveal.getCurrentSlide()?.contains(frame) ? 'play' : 'prime')
+  })
+  Reveal.on('slidechanged', arrive)
+  if (Reveal.isReady()) arrive({ currentSlide: Reveal.getCurrentSlide() })
+  else Reveal.on('ready', (event) => arrive({ currentSlide: event.currentSlide }))
 })()
