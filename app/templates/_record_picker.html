@@ -1,0 +1,48 @@
+{#- Slide picker for /presentation/record (behaviour in app/static/deck-record.js, styles in the
+    "recording" section of app/static/deck-v3.css). One row per slide of content/presentation-video.yaml,
+    then the deck slides it does not list, unticked. -#}
+<div class="rp" id="record-picker" role="dialog" aria-modal="true" aria-labelledby="rp-title">
+  <div class="rp-panel">
+    <header class="rp-head">
+      <p class="rp-kicker">Recording mode</p>
+      <h1 class="rp-title" id="rp-title">{{ deck.title }}</h1>
+      <p class="rp-lead">Tick the slides for the video and drag them into order. The deck then plays full screen with no arrows or page numbers.</p>
+    </header>
+
+    <div class="rp-tools">
+      <button type="button" data-pick="all">All</button>
+      <button type="button" data-pick="none">None</button>
+      <button type="button" data-pick="reset">Default cut</button>
+      <span class="rp-count" aria-live="polite"></span>
+    </div>
+
+    <ol class="rp-list">
+      {%- for s in deck.slides %}
+      <li class="rp-row" data-id="{{ s.id }}" data-default="{{ 1 if s.video.on else 0 }}" data-order="{{ loop.index0 }}" draggable="true">
+        <span class="rp-grip" aria-hidden="true"></span>
+        <label class="rp-pick">
+          <input type="checkbox"{% if s.video.on %} checked{% endif %}>
+          <span class="rp-text">
+            <span class="rp-kick">{{ s.kicker or s.layout }}</span>
+            <span class="rp-label">{{ s.video.label }}</span>
+          </span>
+        </label>
+        {%- if s.video.origin == 'video' %}<span class="rp-tag video">Video only</span>
+        {%- elif s.video.unlisted %}<span class="rp-tag">Not in the cut</span>{% endif %}
+        <span class="rp-move">
+          <button type="button" data-move="-1" aria-label="Move {{ s.video.label }} up">↑</button>
+          <button type="button" data-move="1" aria-label="Move {{ s.video.label }} down">↓</button>
+        </span>
+      </li>
+      {%- endfor %}
+    </ol>
+
+    <label class="rp-option"><input type="checkbox" id="rp-drills"> Show the drill-in buttons at the foot of slides (The data, For Hodan …)</label>
+
+    <div class="rp-actions">
+      <button type="button" class="rp-start" data-start="full">Start full screen</button>
+      <button type="button" class="rp-window" data-start="window">Play in this window</button>
+    </div>
+    <p class="rp-keys">→ or space: next · ←: back · S: speaker notes in a second window · Esc: leave full screen · reload the page to come back here. The pointer hides when it stops moving.</p>
+  </div>
+</div>

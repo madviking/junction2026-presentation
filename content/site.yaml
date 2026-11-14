@@ -10,7 +10,7 @@ meaning: Finnish for “bridge”
 punchline: Equal cancer care for minorities in Finland starts before the first appointment.
 # One line under the punchline: what Silta does.
 lede: Silta takes a person from a symptom or a screening letter to the right service and a visit both sides understand, in their own language and without logging in.
-event: Junction 2026 · AstraZeneca — Equal Care Across Finland
+event: Junction 2026 — AstraZeneca — Equal Care Across Finland
 
 # Landing-page phone slider, in journey order. Recapture with `node scripts/capture_screens.mjs`
 # (needs the app running; see the script header).

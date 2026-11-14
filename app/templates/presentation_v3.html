@@ -57,14 +57,28 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
-  <link rel="stylesheet" href="/static/deck-v3.css">
+  <link rel="stylesheet" href="{{ asset('deck-v3.css') }}">
 </head>
-<body class="v3">
-  <a class="deck-home" href="/" aria-label="Back to the site">{{ site.name }}</a>
+{#- record: /presentation/record, the video cut (content/presentation-video.yaml). A slide picker
+    comes first (_record_picker.html, app/static/deck-record.js); the deck then plays without
+    arrows, page numbers, progress bar, site link or "next" hint. -#}
+<body class="v3{% if record %} record{% endif %}"{% if record %} data-record{% endif %}>
+  {% if not record %}<a class="deck-home" href="/" aria-label="Back to the site">{{ site.name }}</a>{% endif %}
   <div class="reveal">
     <div class="slides">
       {%- for s in deck.slides %}
-      {%- if s.layout == 'embed' %}
+      {%- if s.layout == 'film' %}
+      {#- Video only: one clip fills the slide; deck-v3.js plays it from the start when shown. #}
+      <section class="l-film" id="{{ s.id }}" data-background-color="#142028">
+        <video class="film" src="{{ s.src }}"{% if not s.sound %} muted{% endif %} playsinline preload="auto"></video>
+        {%- if s.overlay %}
+        {#- A lower third over the clip: the first line small (mono), the next lines large. Fades in, holds, fades out (deck-v3.css). #}
+        <div class="film-overlay">{% for line in s.overlay %}<p class="{{ 'film-overlay-kicker' if loop.first else 'film-overlay-title' }}">{{ line }}</p>{% endfor %}</div>
+        {%- endif %}
+        {% if s.source %}<p class="film-source">{{ s.source }}</p>{% endif %}
+        {% if s.notes %}<aside class="notes">{{ s.notes }}</aside>{% endif %}
+      </section>
+      {%- elif s.layout == 'embed' %}
       <section class="l-embed"{% if s.id %} id="{{ s.id }}"{% endif %}>
         <iframe class="embed" src="{{ s.src }}" title="{{ s.title }}"></iframe>
         {% if s.notes %}<aside class="notes">{{ s.notes }}</aside>{% endif %}
@@ -141,6 +155,16 @@
               {%- if s.logos %}
               <div class="logos">{% for l in s.logos %}<img src="{{ l.src }}" alt="{{ l.alt }}">{% endfor %}</div>
               {%- endif %}
+              {%- elif s.layout == 'fit' %}
+              {#- The routes into care, simplified: the front page's map (_paths_fit_map.html) and the
+                  four things Silta does, from site.yaml `paths_fit`. The routes draw in on arrival. #}
+              <figure class="fit">
+                {% with fit=site.paths_fit, map_class='fit-map', map_id=s.id ~ '-map', map_draw=true %}{% include "_paths_fit_map.html" %}{% endwith %}
+                <ol class="fit-steps">
+                  {%- for step in site.paths_fit.steps %}<li style="--i: {{ loop.index0 }}"><b>{{ step.title }}</b><span>{{ step.text }}</span></li>{% endfor %}
+                  {%- for item in site.paths_fit.planned['items'] %}<li class="planned" style="--i: {{ site.paths_fit.steps | length + loop.index0 }}"><b>{{ item }}</b><span>{{ site.paths_fit.planned.tag }}</span></li>{% endfor %}
+                </ol>
+              </figure>
               {%- elif s.layout == 'team' %}
               <div class="team">
                 <figure class="team-photo">{% if s.photo %}<img src="{{ s.photo }}" alt="The team: {{ s.people | map(attribute='name') | join(', ') }}">{% else %}<span>Team photo</span>{% endif %}</figure>
@@ -155,6 +179,7 @@
           </div>
 
           <footer class="foot">
+            {% if site.event %}<p class="event">{{ site.event }}</p>{% endif %}
             <div class="chips">
               {%- for d in s.drills or [] %}
               <button type="button" class="chip k-{{ d.kind }}" data-drill="{{ s.id }}-{{ loop.index }}" aria-haspopup="dialog"><i aria-hidden="true"></i>{{ d.label }}</button>
@@ -195,6 +220,10 @@
   </div>
   <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
-  <script src="/static/deck-v3.js"></script>
+  <script src="{{ asset('deck-v3.js') }}"></script>
+  {%- if record %}
+  {% include "_record_picker.html" %}
+  <script src="{{ asset('deck-record.js') }}"></script>
+  {%- endif %}
 </body>
 </html>

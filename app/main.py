@@ -109,6 +109,18 @@ def presentation(request: Request):
     )
 
 
+# The cut for the recorded video (content/presentation-video.yaml): a slide picker, then the
+# chosen slides full screen without arrows or page numbers. ?slides=a,b,c&drills=1 keeps a cut.
+@app.get("/presentation/record", response_class=HTMLResponse)
+def presentation_record(request: Request):
+    site = content.site()
+    return templates.TemplateResponse(
+        request,
+        "presentation_v3.html",
+        {"site": site, "deck": content.deck_video(site.get("name", "Silta")), "record": True},
+    )
+
+
 @app.get("/presentation/v3")
 def presentation_v3_redirect():
     return RedirectResponse("/presentation", status_code=307)
