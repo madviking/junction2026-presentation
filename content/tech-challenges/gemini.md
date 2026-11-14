@@ -23,10 +23,12 @@ live:
 - Card matching for symptoms, routes and outcomes (reached through OpenRouter today)
 - Read-back when confident, the cards when unsure
 - Identifiers removed before text leaves the backend
+- Answer cards for 14 Finnish health care words (Kela card, lähete, OmaKanta …)
 - Logged evaluation on synthetic English and Finnish input
 planned:
+- Phone line: Gemini 2.5 Flash drives the ElevenLabs phone agent (simulated call passes)
 - Switch card matching to the direct Gemini API adapter
-- Answers from public Finnish health sources, with links
+- Generated answers from public Finnish health sources, with links
 - Evaluation in real resident wording, incl. Somali and Arabic
 screenshot: /media/screens/04-symptom-picker.png
 screenshot_alt: 'Silta''s ''What worries you?'' screen: a ''Describe in your own words'' box with a Check button above the symptom cards.'
@@ -42,7 +44,8 @@ screenshot_caption: “Describe in your own words” goes to Gemini Decision 1. 
 
 - **Confident and clearly ahead:** Silta reads the card back as a question, "Did you mean: a new lump or swelling?". Nothing is chosen until the person taps Yes.
 - **Unsure, or two cards close together:** Silta shows the cards instead of guessing. Vague input such as "I just don't feel right" falls back to the cards.
-- The thresholds for both rules are in `backend/cards/config.ts`.
+- **A question, not an answer:** "They asked for my Kela card. I don't know what it is." Next to the step's cards, Gemini also sees one answer card per Finnish health care word and a "none of these" option. When the person asks what a word means, Silta shows a short reviewed answer that ends with the Finnish sentence to say, and the step's cards stay on screen. When the person only uses the word in a statement, the situation card still wins (`backend/care_paths/seed/glossary.yaml`, `backend/cards/prompts/match.ts`).
+- The thresholds for these rules are in `backend/cards/config.ts`.
 
 **Where it appears in the journey.** The same call serves three steps (`backend/cards/service.ts`):
 1. Describe: free text or a voice transcript → a symptom card.
@@ -71,7 +74,7 @@ screenshot_caption: “Describe in your own words” goes to Gemini Decision 1. 
 
 Live (local app, tests and one logged evaluation):
 - Card matching with Gemini Decision 1 in the running app, for symptoms, routes and outcomes, with the read-back and the fallback to cards (`brain/notes/2026-11-14-0735-silta-app-walkthrough.md`).
-- A live evaluation on a labelled set of synthetic English and Finnish inputs: every confident answer was correct and every vague input fell back to the cards (`docs/proof/2026-11-14/classifier-eval.md`). The set was written by the builder, so it shows the wiring and the guard rails, not an independent accuracy figure.
+- A live evaluation on a labelled set of 48 synthetic English and Finnish inputs: every confident answer was correct, all 5 questions about health care words got the right answer card, and every vague or off-topic input fell back to the cards, for $0.005 (`docs/proof/2026-11-14/classifier-eval.md`). The set was written by the builder, so it shows the wiring and the guard rails, not an independent accuracy figure.
 - The direct Gemini API adapter for both Decisions and `generateContent`, each proven with a live smoke call (`backend/llm/README.md`).
 
 In progress or planned:

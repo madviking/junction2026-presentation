@@ -25,9 +25,11 @@ numbers:
 live:
 - Text-to-speech in all 13 languages, cached, one real clip per language
 - Speech-to-text for English and Finnish, real calls
+- Speech-to-text biased towards Finnish health care words
 - Spoken answer to read-back, in browser tests
 - Admin upload and approval of human recordings
 planned:
+- Phone line: an ElevenLabs agent answers a real number (simulated call passes)
 - Running on the deployed app
 - Native-speaker review of the 11 placeholder languages' texts and audio
 - Speech-to-text tried for real in the nine added languages
@@ -44,10 +46,12 @@ Many people Silta is for read Finnish poorly, and some read their own language p
 - **Text-to-speech for every card and instruction.** Symptom cards, route cards, outcome cards and visit-card next steps play aloud in 13 languages: English, Finnish, Swedish, Russian, Estonian, Ukrainian, Arabic, Somali, Persian, Mandarin, Cantonese, Vietnamese and Thai. One model (`eleven_v4`) and one multilingual voice cover them all (`backend/voice/capabilities.ts`).
 - **Generated once, then cached.** A clip is made the first time a text is played, stored in the database and keyed by a hash of the exact text. When an admin edits a text, the old clip is never played again (`backend/voice/service.ts`, `backend/voice/README.md`).
 - **Speech-to-text for answers.** A resident taps "Tap to speak", says what they noticed ("I found a lump in my breast"), and ElevenLabs Scribe turns it into text. The text goes through the same read-back as typed text: Silta asks "Did you mean: a new lump or swelling?" and nothing is chosen until the person taps Yes (`backend/voice/stt.ts`, `frontend/src/features/voice/`).
+- **Finnish health care words.** Every transcription sends Scribe our glossary as key terms (Kela-kortti, terveysasema, lähete, OmaKanta …, in Finnish and the person's language), so "Kela card" is not written as "Kellogg card". Known mishearings left in the transcript are fixed before matching (`backend/voice/stt.ts`, `backend/care_paths/domain/glossary.ts`). Key terms cost 20% more per transcription, counted in the usage rows.
 - **Language by language, based on measured quality.** We checked ElevenLabs' published coverage before building. Scribe is rated excellent for Finnish, English, Swedish, Russian, Estonian, Ukrainian and Vietnamese, high for Persian, Mandarin and Cantonese, good for Arabic and Thai, but only moderate for Somali (25–50% word error rate) (`brain/sources/2026-11-13-elevenlabs-language-coverage.md`, `backend/voice/capabilities.ts`). So:
   - Every language except Somali: voice in and voice out.
   - Somali: audio out only. Voice input is refused on purpose, and Somali speakers use the cards.
 - **Human recordings win.** In the admin, a native speaker's recording can be uploaded for any text. Once approved it replaces the generated clip. Generated Somali audio can never be marked approved; only a human recording can (`backend/voice/admin.ts`).
+- **A phone line for people without the app.** The caller presses a number or just says their language (a keypad menu in ten languages, each line spoken in its own language). An ElevenLabs agent with Gemini as its brain then talks with the caller in that language and calls two live Silta endpoints as tools: compose the care path, and look up the doors, hours and interpreter rules in the caller's area. It reads the Finnish sentence slowly so the caller can repeat it to the health station. Voice recording is off. Simulated callers passed end to end against the deployed API in Russian, Arabic (chosen by keypad) and Ukrainian (chosen by voice); the number is attached, and a real outside call is the next proof (`scripts/phone_agent.py`, `docs/proof/2026-11-14/phone-agent.md`).
 - **Spend under control.** Every call writes a usage row with characters, seconds and cost. A spend cap stops new calls; stored audio keeps playing (`backend/voice/providers.config.ts`). After the overnight build, the usage page showed about $0.016 of ElevenLabs spend in the development database (`brain/notes/2026-11-14-0735-silta-app-walkthrough.md`).
 
 ## Architecture
@@ -66,7 +70,7 @@ Many people Silta is for read Finnish poorly, and some read their own language p
 
 Live (local app and tests):
 - Text-to-speech in all 13 languages, one real round trip per language, with caching (`docs/proof/2026-11-14/voice.md`).
-- Speech-to-text for English and Finnish with real calls; the Somali request is refused as designed (same file).
+- Speech-to-text for English and Finnish with real calls; the Somali request is refused as designed (same file). One live English call with the glossary key terms on `scribe_v3` returned "Kela card" (local backend, 14 Nov); whether the key terms improve accuracy on real speech is not yet measured.
 - Spoken input through to the read-back in the browser tests, using a test clip made with ElevenLabs text-to-speech (`frontend/e2e/`, `brain/notes/2026-11-14-0735-silta-app-walkthrough.md`).
 - Admin upload, approval and the rule that an approved human recording wins.
 

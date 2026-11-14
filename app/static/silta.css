@@ -84,6 +84,22 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .silta-phone img { display: block; width: 100%; border-radius: 24px; }
 [data-bs-theme="dark"] .silta-phone { background: #2a3a42; }
 
+/* landing phone slider (scroll-snap; script in landing.html) */
+.silta-slider { display: grid; justify-items: center; gap: 12px; width: 260px; }
+.silta-slider .silta-phone { width: 100%; }
+.silta-slider-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; border-radius: 24px; scrollbar-width: none; overscroll-behavior-x: contain; }
+.silta-slider-track::-webkit-scrollbar { display: none; }
+.silta-slider-track:focus-visible { outline: 3px solid var(--silta-lake); outline-offset: 4px; }
+.silta-slide { flex: 0 0 100%; margin: 0; scroll-snap-align: center; }
+.silta-slide img { display: block; width: 100%; height: auto; border-radius: 0; }
+.silta-slider-caption { margin: 0; min-height: 3.9em; color: var(--silta-ink); font-size: 15px; line-height: 1.3; text-align: center; text-wrap: balance; }
+.silta-slider-nav { display: flex; align-items: center; gap: 8px; }
+.silta-slider-dots { display: flex; gap: 2px; }
+.silta-slider-dots button { width: 24px; height: 24px; padding: 0; border: 0; background: none; cursor: pointer; display: grid; place-items: center; }
+.silta-slider-dots button::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--silta-line); transition: background-color .2s, transform .2s; }
+.silta-slider-dots button[aria-current="true"]::before { background: var(--silta-lake); transform: scale(1.3); }
+.silta-slider-dots button:focus-visible { outline: 2px solid var(--silta-lake); border-radius: 50%; }
+
 /* facts */
 .silta-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
 .silta-fact .card-body { display: grid; gap: 6px; align-content: start; }
@@ -152,6 +168,7 @@ body:has(.silta-report) { background: var(--silta-surface); }
 @media (max-width: 767.98px) {
   .silta-hero { grid-template-columns: 1fr; gap: 28px; padding-top: 24px; }
   .silta-phone { width: 200px; justify-self: center; }
+  .silta-slider { width: 220px; justify-self: center; }
   .container-xl { padding-left: 16px; padding-right: 16px; }
 }
 
