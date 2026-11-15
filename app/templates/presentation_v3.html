@@ -69,7 +69,7 @@
       {%- for s in deck.slides %}
       {%- if s.layout == 'film' %}
       {#- Video only: one clip fills the slide; deck-v3.js plays it from the start when shown. #}
-      <section class="l-film" id="{{ s.id }}" data-background-color="#142028">
+      <section class="l-film" id="{{ s.id }}" data-background-color="#142028"{% if s.exit %} data-exit="{{ s.exit }}"{% endif %}>
         <video class="film" src="{{ s.src }}"{% if not s.sound %} muted{% endif %} playsinline preload="auto"></video>
         {%- if s.overlay %}
         {#- A lower third over the clip: the first line small (mono), the next lines large. Fades in, holds, fades out (deck-v3.css). #}

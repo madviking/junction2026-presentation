@@ -6,6 +6,7 @@
   const RECORD = {
     controls: false, progress: false, slideNumber: false, hash: false, overview: false, help: false,
     margin: 0, // slides fill the screen's width; a 16:10 screen keeps bars only above and below
+    scrollActivationWidth: null, // never switch to reveal's phone scroll view, whatever the window size
     hideInactiveCursor: false, // deck-record.js hides the pointer, also over embedded pages
   }
   function boot(record) {
@@ -182,11 +183,48 @@
         })
       }
       filmVideos.forEach((video) => video.addEventListener('ended', () => {
-        if (!Reveal.getCurrentSlide()?.contains(video) || Reveal.isLastSlide()) return
+        const current = Reveal.getCurrentSlide()
+        if (!current?.contains(video) || Reveal.isLastSlide()) return
+        if (current.dataset.exit === 'black') { throughBlack(); return }
         Reveal.configure({ transitionSpeed: 'slow' })
         Reveal.next()
         setTimeout(() => Reveal.configure({ transitionSpeed: 'fast' }), 1300)
       }))
+
+      // data-exit="black" (a film slide's `exit: black`): moving on, by the clip ending or by a key, fades
+      // the screen slowly to black, changes slide under it, then fades in from black. Backwards stays plain.
+      const FADE_MS = 1100
+      const HOLD_MS = 350
+      let curtain = null
+      let fading = false
+      function throughBlack() {
+        if (fading || Reveal.isLastSlide()) return
+        fading = true
+        if (!curtain) {
+          curtain = document.createElement('div')
+          curtain.className = 'curtain'
+          curtain.style.setProperty('--fade', `${FADE_MS}ms`)
+          document.body.appendChild(curtain)
+          void curtain.offsetWidth
+        }
+        curtain.classList.add('on')
+        setTimeout(() => {
+          Reveal.next()
+          setTimeout(() => {
+            curtain.classList.remove('on')
+            setTimeout(() => { fading = false }, FADE_MS)
+          }, HOLD_MS)
+        }, FADE_MS)
+      }
+      // Capture phase on window: runs before reveal's own keyboard handler (as the sheets' handler does).
+      addEventListener('keydown', (event) => {
+        if (!['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'n', 'N', 'Enter'].includes(event.key)) return
+        if (event.key === ' ' && event.shiftKey) return
+        if (!fading && Reveal.getCurrentSlide()?.dataset.exit !== 'black') return
+        event.preventDefault()
+        event.stopPropagation()
+        throughBlack()
+      }, true)
 
       // The gap bars: each relative drop counts up from 0 while its bars grow (CSS), on every arrival.
       function countUp(section) {

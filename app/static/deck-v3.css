@@ -339,6 +339,9 @@ i.dom { background: var(--lake); } i.oth { background: var(--coral); }
 .film-overlay.rolling { animation: lower-third 7s ease-out 1s both; }
 .film-overlay.rolling .film-overlay-title { animation: lower-third-line 700ms ease-out 1.4s both; }
 @media (prefers-reduced-motion: reduce) { .film-overlay.rolling, .film-overlay.rolling .film-overlay-title { animation: none; opacity: 1; } }
+/* Fade through black (film `exit: black`, deck-v3.js): a full-screen curtain over the deck. */
+.curtain { position: fixed; inset: 0; z-index: 90; background: #000; opacity: 0; pointer-events: none; transition: opacity var(--fade, 1100ms) ease-in-out; }
+.curtain.on { opacity: 1; }
 .film-source {
   position: absolute; right: 24px; bottom: 16px; margin: 0;
   font: 500 var(--t-source)/1.3 var(--f-mono); color: rgba(255, 255, 255, 0.82);
