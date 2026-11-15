@@ -397,8 +397,8 @@ body:has(.silta-report) { background: var(--silta-surface); }
 .pw-more { justify-self: start; font: 700 14px var(--silta-font-body); color: var(--silta-ink); background: none; border: 1px solid var(--silta-line); border-radius: 999px; padding: 4px 14px; cursor: pointer; white-space: nowrap; }
 .pw-more:hover { border-color: var(--silta-ink); }
 
-.pw-legend { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 13px; color: var(--silta-muted); align-items: center; }
-.pw-legend svg { vertical-align: middle; margin-right: 6px; }
+.pw-legend { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 11.5px; color: var(--silta-muted); align-items: center; }
+.pw-legend svg { vertical-align: middle; margin-right: 4px; }
 .pw-gapkey { color: var(--silta-coral); font-weight: 700; }
 svg.pw-routes { display: block; width: 100%; height: auto; font-family: var(--silta-font-body); }
 .pw-routes text { fill: var(--silta-ink); font-size: 14px; }
@@ -652,7 +652,7 @@ html:has(.silta-pw-page), html:has(.silta-pw-page) body { height: 100%; overflow
   border-radius: 12px; box-shadow: 0 14px 34px -12px var(--pw-shadow); padding: 14px 18px; display: grid; gap: 6px; align-content: start; font-size: 15px; line-height: 1.45; }
 .pw-over p { margin: 0; }
 .pw-over h3 { font: 800 21px/1.15 var(--silta-font-display); margin: 2px 28px 2px 0; text-wrap: balance; }
-.pw-over.pw-at-right { top: 0; right: 0; }
+.pw-over.pw-at-right { top: 0; right: calc(-1 * max(0px, (100vw - 80px - (100vh - 285px) * 1000 / 420) / 2)); } /* right edge level with the view tabs (page padding 40px), not the narrower map */
 .pw-over.pw-at-left { top: 0; left: 0; }
 .pw-over.pw-at-rest { right: 0; bottom: 0; width: 360px; font-size: 14.5px; box-shadow: none; background: transparent; border: 0; padding: 0; color: var(--silta-muted); }
 .pw-over.pw-at-rest b { color: var(--silta-ink); }
@@ -666,7 +666,7 @@ html:has(.silta-pw-page), html:has(.silta-pw-page) body { height: 100%; overflow
 .pw-sbar { transform-origin: 0 50%; }
 .pw-silta-tag { color: var(--silta-lake); }
 .pw-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 24px; }
-.pw-links { display: flex; gap: 20px; }
+.pw-links { display: flex; gap: 20px; margin-right: 130px; } /* clear of the deck's page number and arrows, drawn over the slide's bottom right */
 .pw-textbtn { border: 0; background: none; padding: 0; cursor: pointer; color: var(--silta-lake); font: 700 14px var(--silta-font-body);
   text-decoration: underline; text-underline-offset: 3px; }
 .silta-pathway button:focus-visible, .silta-pw-page button:focus-visible, .pw-node:focus-visible .pw-ring { outline: 2px solid var(--silta-ink); outline-offset: 2px; opacity: 1; }
