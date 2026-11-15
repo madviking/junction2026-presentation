@@ -81,6 +81,9 @@
       {%- elif s.layout == 'embed' %}
       <section class="l-embed"{% if s.id %} id="{{ s.id }}"{% endif %}>
         <iframe class="embed" src="{{ media(s.src) }}" title="{{ s.title }}"></iframe>
+        {%- if print_pdf %}
+        <p class="print-online embed-online"><b>Interactive online</b> {{ s.title }} <a href="{{ deck_url }}#/{{ s.id }}">{{ deck_label }}#/{{ s.id }}</a></p>
+        {%- endif %}
         {% if s.notes %}<aside class="notes">{{ s.notes }}</aside>{% endif %}
       </section>
       {%- elif s.layout == 'intro' %}
@@ -202,6 +205,10 @@
               <button type="button" class="chip k-{{ d.kind }}" data-drill="{{ s.id }}-{{ loop.index }}" aria-haspopup="dialog"><i aria-hidden="true"></i>{{ d.label }}</button>
               {%- endfor %}
             </div>
+            {%- if print_pdf and s.drills %}
+            {#- The PDF hides the chips; name what sits behind them and where to open it. -#}
+            <p class="print-online"><b>Drill-downs online</b> {{ s.drills | map(attribute='label') | join(' · ') }} <a href="{{ deck_url }}#/{{ s.id }}">{{ deck_label }}#/{{ s.id }}</a></p>
+            {%- endif %}
             {% if s.source %}<p class="source">{{ s.source }}</p>{% endif %}
           </footer>
         </div>
@@ -230,6 +237,20 @@
         </div>
         {%- endfor %}
         {% if s.notes %}<aside class="notes">{{ s.notes }}</aside>{% endif %}
+      </section>
+      {%- endif %}
+      {%- if print_pdf and loop.first %}
+      {#- PDF only, right after the opener: the interactive deck online, with a QR code. #}
+      <section class="l-online" id="online">
+        <div class="online">
+          <div class="online-text">
+            <p class="intro-kicker">This PDF is a still copy</p>
+            <h2 class="intro-title">See the deck online for <em>interactive slides and data drill-downs.</em></h2>
+            <p class="online-line">Online, the chips under each slide open the person, county, euros and data behind it, and the routes map and the channels map open the evidence for every step when you click it.</p>
+            <p class="online-url"><a href="{{ deck_url }}">{{ deck_label }}</a></p>
+          </div>
+          <figure class="online-qr">{{ deck_qr }}<figcaption>Scan to open the deck</figcaption></figure>
+        </div>
       </section>
       {%- endif %}
       {%- endfor %}

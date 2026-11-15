@@ -116,9 +116,16 @@ def dashboard_redirect():
 # content/materials/silta-design-system.html). Earlier decks stay reachable.
 @app.get("/presentation", response_class=HTMLResponse)
 def presentation(request: Request):
-    return templates.TemplateResponse(
-        request, "presentation_v3.html", {"site": content.site(), "deck": content.deck_v3()}
-    )
+    site = content.site()
+    context = {"site": site, "deck": content.deck_v3()}
+    # ?print-pdf (the PDF export): add a page and per-slide links that send readers to the
+    # interactive deck online, since the PDF has no drill-in sheets or clickable embeds.
+    if "print-pdf" in request.query_params:
+        deck_url = content.link_url(site, "site").rstrip("/") + "/presentation"
+        context.update(
+            print_pdf=True, deck_url=deck_url, deck_label=deck_url.split("://", 1)[-1], deck_qr=qr_svg(deck_url)
+        )
+    return templates.TemplateResponse(request, "presentation_v3.html", context)
 
 
 # The cut for the recorded video (content/presentation-video.yaml): a slide picker, then the

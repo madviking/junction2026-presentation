@@ -575,3 +575,33 @@ i.dom { background: var(--lake); } i.oth { background: var(--coral); }
   .reveal section.present .safe-line li { animation: card-in 500ms ease-out both; animation-delay: calc(400ms + var(--i, 0) * 300ms); }
   .reveal section.present .safe-cols { animation: card-in 600ms ease-out 1400ms both; }
 }
+
+/* reveal's print stylesheet sets every section to auto height (1 px here, since the content is
+   absolutely placed); the frame and the centred layouts need the full 720 px. */
+html.print-pdf .reveal .slides .pdf-page > section { height: 720px !important; }
+/* Chrome writes blurred shadows into the PDF as flat semi-transparent boxes, which some viewers
+   (macOS Preview) show as grey rectangles behind phones, letters and photos. Paper gets none;
+   the path's current-step ring has no blur and stays. */
+html.print-pdf .reveal .slides * { box-shadow: none !important; }
+html.print-pdf .path li.now i { box-shadow: 0 0 0 4px var(--coral-soft) !important; }
+
+/* ---- PDF export only (/presentation?print-pdf; app/main.py sets print_pdf) -------------
+   A page after the opener sends readers to the interactive deck, and every slide with
+   drill-ins (or an interactive embed) names what is behind it and its address online. */
+.l-online .online {
+  position: absolute; inset: 0; padding: 0 120px;
+  display: flex; align-items: center; justify-content: space-between; gap: var(--s6);
+}
+.online-text { display: flex; flex-direction: column; gap: var(--s2); max-width: 760px; }
+.online-text .intro-title { font-size: 56px; }
+.online-line { font: 400 var(--t-line)/1.45 var(--f-body); color: var(--ink); text-wrap: pretty; }
+.online-url { margin-top: var(--s1) !important; font: 600 19px/1.3 var(--f-mono); white-space: nowrap; }
+.online-url a { color: var(--lake); text-decoration: none; }
+.online-qr { flex: none; display: flex; flex-direction: column; align-items: center; gap: var(--s1); margin: 0; padding: var(--s3); background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); }
+.online-qr svg { width: 240px; height: 240px; display: block; }
+.online-qr figcaption { font: 600 var(--t-label)/1 var(--f-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+
+.print-online { flex: 0 1 auto; min-width: 0; margin-right: auto !important; font: 500 var(--t-source)/1.35 var(--f-mono); color: var(--ink); }
+.print-online b { color: var(--coral); text-transform: uppercase; letter-spacing: 0.06em; margin-right: 6px; }
+.print-online a { color: var(--lake); text-decoration: none; margin-left: 6px; white-space: nowrap; }
+.embed-online { position: absolute; left: 0; right: 0; bottom: 0; margin: 0 !important; padding: 8px 24px; background: rgba(255, 255, 255, 0.94); border-top: 1px solid var(--line); font-size: 12px; }

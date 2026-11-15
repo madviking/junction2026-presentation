@@ -20,9 +20,9 @@ numbers:
 - value: 1 tap
   label: by the person before any match changes the journey
 live:
-- Card matching for symptoms, routes and outcomes, read back when confident (reached through OpenRouter today)
+- Card matching for symptoms, routes and outcomes, read back when confident
 - Gemini 2.5 Flash drives the ElevenLabs phone agent on a real number
-- Photo of a letter → what it is, the facts as printed and what to do, in the person's language (Gemini 3.1 Flash-Lite, image + JSON schema; reached through OpenRouter today)
+- Photo of a letter → what it is, the facts as printed and what to do, in the person's language (Gemini 3.1 Flash-Lite, image + JSON schema)
 - Identifiers removed before text leaves the backend
 screenshots:
 - src: /media/screens/partner-gemini-symptom.png
