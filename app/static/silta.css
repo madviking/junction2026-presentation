@@ -318,7 +318,7 @@ body:has(.silta-report) { background: var(--silta-surface); }
 .silta-glance-main { display: grid; gap: 28px; min-width: 0; }
 
 .silta-journey { display: grid; grid-template-columns: 5fr 2fr; gap: 12px 20px; }
-#fit-title.silta-glance-title { margin-bottom: 32px; }
+#fit-title.silta-glance-title { margin-bottom: 44px; }
 .silta-journey-group .silta-eyebrow { margin-bottom: 12px; }
 .silta-journey-group ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; height: calc(100% - 30px); }
 .silta-journey-resident ol { grid-template-columns: repeat(5, minmax(0, 1fr)); }
@@ -365,7 +365,7 @@ body:has(.silta-report) { background: var(--silta-surface); }
 .silta-mini-step { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; border: 1px dashed var(--silta-line); color: var(--silta-muted); font-size: 16px; opacity: .7; }
 .silta-mini-step.silta-mini-gap { margin-left: 12px; }
 .silta-mini-step[data-used="true"] { background: var(--silta-lake); border: 1px solid var(--silta-lake); color: var(--silta-bg); opacity: 1; }
-.silta-mini-legend { list-style: none; padding: 0; margin: 26px 0 0; display: flex; flex-wrap: wrap; gap: 4px 16px; color: var(--silta-muted); font-size: 14px; }
+.silta-mini-legend { list-style: none; padding: 0; margin: 36px 0 0; display: flex; flex-wrap: wrap; gap: 4px 16px; color: var(--silta-muted); font-size: 14px; }
 
 .silta-prose table { width: 100%; border-collapse: collapse; margin: 8px 0 16px; font-size: 15px; }
 .silta-prose th, .silta-prose td { border-bottom: 1px solid var(--silta-line); padding: 6px 8px; text-align: left; vertical-align: top; }
