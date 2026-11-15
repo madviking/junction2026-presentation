@@ -1,6 +1,6 @@
 ---
 title: Pitch video — voice-over for the record cut
-description: One continuous narration for /presentation/record, read at about 2.7 words a second over the 15-slide default cut, ending before 2:00. 268 words. Slide cues inline, timings, recording steps and what not to say.
+description: One continuous narration for /presentation/record, read at about 2.8 words a second over the 15-slide default cut, ending before 2:00. 290 words, with the technology behind it (ElevenLabs, Gemini, Aiven). Slide cues inline, timings, recording steps and what not to say.
 tags: [video, voice-over, script, record]
 author: Claude with the Silta team
 updated: 2026-11-15
@@ -8,7 +8,7 @@ updated: 2026-11-15
 
 # Pitch video: voice-over for the record cut
 
-**Hard limit 2:00.** One voice (Mea), about **2.7 words a second**, talking straight through. Pauses come at the ends of sentences, never between fragments. **268 words.**
+**Hard limit 2:00.** One voice (Mea), about **2.8 words a second**, talking straight through. Pauses come at the ends of sentences, never between fragments. **290 words.**
 The same lines are in `content/presentation-video.yaml`, in each slide's `notes`, so they also show in the speaker view (press **S** while the cut plays).
 
 ## The cut
@@ -29,46 +29,49 @@ Read it as one text. **[→ slide]** marks where the next slide comes in. Keep t
 >
 > **[→ `gap`]** She is not alone. People whose native language isn't Finnish or Swedish get the same letters, and twenty-seven percent fewer of them come, in every screening programme.
 >
-> **[→ `pathway-simple`]** Of the three ways into cancer care, only screening is measured by language, and the gap opens at its first step. That's where Silta works.
+> **[→ `pathway-simple`]** People reach cancer care in three ways, and the gap opens at the start, before anyone in health care has met them. That's where Silta works.
 >
 > **[→ `silta`]** Silta is Finnish for bridge.
 >
-> **[→ `letter`]** A translated letter alone made no difference in a Norwegian trial. So Hodan scans the code on her letter, **[→ once: the letter shrinks into the guide]** and Silta explains the screening in Somali, read aloud: what happens, that she can ask for a woman to take the sample, and what to say at the desk in Finnish.
+> **[→ `letter`]** Hodan scans the code on her letter, **[→ once: the letter shrinks into the guide]** and Silta explains the screening in Somali, read aloud: what happens, that she can ask for a woman to take the sample, and what to say at the visit, in Finnish.
 >
 > **[→ Film: Olga]** The second way in is a symptom. Olga is fifty-eight and has found a lump.
 > **[→ `noticed`, as the film ends]** She taps where it is, in Russian. Silta never rates her symptoms.
-> **[→ `door`]** It shows each of them the right service in their county and the Finnish sentences to say.
-> **[→ `visit`]** At the visit, the doctor reads Olga's answers in Finnish, on her own phone, with a request for a professional interpreter.
+> **[→ `door`]** It shows each of them the right service and the Finnish sentences to say.
+> **[→ `visit`]** At the visit, the doctor reads Olga's answers in Finnish, on her own phone.
 >
-> **[→ `county`]** A county can start without an IT project: one printed code on the letters it already sends, measured with the registry's attendance by native language.
+> **[→ `county`]** A county needs no IT project to join. It adds one printed code to the letters it already sends, and the registry's figures by native language show whether more people come.
 > **[→ `safe`]** Silta gives no diagnosis and stores no names.
-> **[→ `running`]** It already runs in fourteen languages.
+> **[→ `running`]** It already runs in fourteen languages. ElevenLabs reads it aloud, turns speech into text, and runs a phone line in the caller's language. Gemini matches a person's words to a card and asks first. It all runs on Aiven, in the EU.
 >
 > **[→ `close`]** We propose a pilot in Helsinki. Silta works before the first appointment, from today.
 > **[→ `team`]** Timo, Milla and Mea Railo.
 
-## Timing check (at 2.7 words a second)
+## Timing check (at 2.8 words a second)
 
 | Starts | Slide | Words |
 | --- | --- | --- |
 | 0:00 | Film: Hodan (15 s; the voice starts at 0:02) | 28 |
 | 0:15 | `hodan` | 10 |
-| 0:19 | `gap` | 28 |
-| 0:31 | `pathway-simple` | 25 |
-| 0:42 | `silta` | 5 |
-| 0:45 | `letter` | 49 |
-| 1:05 | Film: Olga (8 s) | 15 |
-| 1:13 | `noticed` | 12 |
-| 1:18 | `door` | 16 |
-| 1:25 | `visit` | 21 |
-| 1:33 | `county` | 25 |
-| 1:43 | `safe` | 8 |
-| 1:47 | `running` | 6 |
-| 1:52 | `close` | 14 |
+| 0:19 | `gap` | 27 |
+| 0:29 | `pathway-simple` | 26 |
+| 0:39 | `silta` | 5 |
+| 0:42 | `letter` | 38 |
+| 0:56 | Film: Olga (8 s) | 15 |
+| 1:04 | `noticed` | 12 |
+| 1:09 | `door` | 14 |
+| 1:14 | `visit` | 14 |
+| 1:20 | `county` | 32 |
+| 1:32 | `safe` | 8 |
+| 1:35 | `running` | 42 |
+| 1:51 | `close` | 14 |
 | 1:57 | `team` | 5 |
-| **about 1:59** | **end** | **268** |
+| **about 1:59** | **end** | **290** |
 
-**If a take runs over 2:00,** cut "It already runs in fourteen languages." first and let the screen reel speak for itself (about 3 s). If it is still over, cut "on her own phone" (about 1 s).
+This needs a brisk 2.8 words a second; at 2.7 the same text runs to about 2:02. **If a take runs over 2:00, cut in this order:**
+1. The spoken names on `team` (about 2 s; the names are on the slide).
+2. "Gemini matches a person's words to a card and asks first." (about 4 s)
+3. "on her own phone" (about 1 s)
 
 ## What the voice doesn't say
 
@@ -90,8 +93,7 @@ Read it as one text. **[→ slide]** marks where the next slide comes in. Keep t
 | Said | Source |
 | --- | --- |
 | 27% fewer, in every programme | Finnish Cancer Registry, screening by native language, 2024 (`gap`) |
-| Only screening is measured by language; the gap opens at its first step | Pathway slide, findings and limitations |
-| A translated letter made no difference | Randomised trial, Norway, n = 11,347: 46.5% vs 47.4% (`letter` → For the county) |
-| A woman to take the sample; a professional interpreter | Silta app: cervical guide, rights part; visit summary (`visit`) |
+| The gap opens at the start | Pathway slide: the measured gap is largest at attendance, the first step |
+| A woman to take the sample; the Finnish summary at the visit | Silta app: cervical guide, rights part; visit summary (`visit`) |
 | No diagnosis, no names | EU MDR Rule 11 · GDPR Art. 9 (`safe`) |
-| 14 languages | Silta app, counted 14 Nov 2026 (`running`) |
+| 14 languages; ElevenLabs reads aloud, turns speech into text, runs the phone line; Gemini matches words to a card and asks; Aiven, in the EU | Silta app; `running` → Gemini, ElevenLabs and Aiven drill-ins |

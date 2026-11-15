@@ -61,28 +61,28 @@ slides:
     label: "Where Silta fits: the routes into care, simplified"
     kicker: Where Silta fits
     title: Three ways into cancer care.
-    notes: "VO (0:31): Of the three ways into cancer care, only screening is measured by language, and the gap opens at its first step. That's where Silta works. (The front page's map: all three routes meet at the diagnostic exam; specialist care is planned next.)"
+    notes: "VO (0:30): People reach cancer care in three ways, and the gap opens at the start, before anyone in health care has met them. That's where Silta works. (The front page's map: all three routes meet at the diagnostic exam; specialist care is planned next.)"
   - use: pathway
     skip: true
   - use: silta
-    notes: "VO (0:42): Silta is Finnish for bridge."
+    notes: "VO (0:40): Silta is Finnish for bridge."
   - use: letter
-    notes: "VO (0:45): A translated letter alone made no difference in a Norwegian trial. So Hodan scans the code on her letter, [→ once: the letter shrinks into the guide] and Silta explains the screening in Somali, read aloud: what happens, that she can ask for a woman to take the sample, and what to say at the desk in Finnish."
+    notes: "VO (0:42): Hodan scans the code on her letter, [→ once: the letter shrinks into the guide] and Silta explains the screening in Somali, read aloud: what happens, that she can ask for a woman to take the sample, and what to say at the visit, in Finnish."
   - layout: film
     id: olga-film
     label: "Film: Olga notices something (8 s)"
     src: /team/m/video-assets/generated/olga-01-she-notices.mp4
-    notes: "8 s, no sound. Olga at the mirror, her hand over her chest. The deck moves on to her symptom screens when the clip ends. VO (1:05): The second way in is a symptom. Olga is fifty-eight and has found a lump."
+    notes: "8 s, no sound. Olga at the mirror, her hand over her chest. The deck moves on to her symptom screens when the clip ends. VO (0:56): The second way in is a symptom. Olga is fifty-eight and has found a lump."
   - use: noticed
-    notes: "VO (1:13): She taps where it is, in Russian. Silta never rates her symptoms."
+    notes: "VO (1:04): She taps where it is, in Russian. Silta never rates her symptoms."
   - use: door
-    notes: "VO (1:18): It shows each of them the right service in their county and the Finnish sentences to say."
+    notes: "VO (1:09): It shows each of them the right service and the Finnish sentences to say."
   - use: visit
-    notes: "VO (1:25): At the visit, the doctor reads Olga's answers in Finnish, on her own phone, with a request for a professional interpreter."
+    notes: "VO (1:14): At the visit, the doctor reads Olga's answers in Finnish, on her own phone."
   - use: county
-    notes: "VO (1:33): A county can start without an IT project: one printed code on the letters it already sends, measured with the registry's attendance by native language."
+    notes: "VO (1:20): A county needs no IT project to join. It adds one printed code to the letters it already sends, and the registry's figures by native language show whether more people come."
   - use: safe
-    notes: "VO (1:43): Silta gives no diagnosis and stores no names."
+    notes: "VO (1:32): Silta gives no diagnosis and stores no names."
   - use: reach
     skip: true   # out of the 2:00 cut (video-voiceover.md)
     animate: words   # kicker, then the title, then the line word by word
@@ -91,7 +91,7 @@ slides:
     skip: true   # the discovery part is out of the 2:00 cut
     notes: "Not in the 2:00 cut (discovery). No VO line."
   - use: running
-    notes: "VO (1:47): It already runs in fourteen languages. [Let the reel play.]"
+    notes: "VO (1:36): It already runs in fourteen languages. ElevenLabs reads it aloud, turns speech into text, and runs a phone line in the caller's language. Gemini matches a person's words to a card and asks first. It all runs on Aiven, in the EU. [Let the reel play.]"
   - use: close
     notes: "VO (1:52): We propose a pilot in Helsinki. Silta works before the first appointment, from today."
   - use: team
