@@ -4,3 +4,6 @@ __pycache__/
 .pytest_cache/
 .env
 .DS_Store
+
+# README screenshot captures (scripts/capture_readme_screens.mjs); only the composed images are kept
+docs/readme/raw/
