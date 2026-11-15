@@ -40,14 +40,14 @@ slides:
     overlay:
       - "Junction 2026 — AstraZeneca — Equal Care Across Finland"
       - "3rdGen team Railo"
-    notes: "15 s, no sound. Start the voice-over as she opens the envelope; the deck moves on when the clip ends. VO (0:00, start ~3 s in): This is Hodan. / Fifty-four, in Helsinki for years. Her language is Somali. / This is her second invitation to cervical cancer screening."
-  # Voice-over: every `notes` below starting "VO" is the narrator's line for that slide (press S while
-  # the cut plays). Script, timings and the 2:00 cut: content/materials/video-voiceover.md.
+    notes: "15 s, no sound. Start the voice-over as she opens the envelope; the deck moves on when the clip ends. VO (0:02): This is Hodan. She is fifty-four, has lived in Helsinki for years, and her language is Somali. This is her second invitation to cervical cancer screening, in Finnish."
+  # Voice-over: the "VO" part of each `notes` is the narrator's line for that slide (press S while the
+  # cut plays). One continuous narration, about 2.7 words a second: content/materials/video-voiceover.md.
   - use: hodan
     head_image: ~   # the film plays just before, so no still under the text
-    notes: "VO (0:15, 5 s): She puts it away. // And doesn't go."
+    notes: "VO (0:15): She puts it in a drawer, and she doesn't go."
   - use: gap
-    notes: "VO (0:20, 11 s): She is not alone. / When your native language isn't Finnish or Swedish, the same letter brings twenty-seven percent fewer people. / In every programme."
+    notes: "VO (0:19): She is not alone. People whose native language isn't Finnish or Swedish get the same letters, and twenty-seven percent fewer of them come, in every screening programme."
   - use: earlier
     skip: true   # out of the 2:00 cut (video-voiceover.md)
     notes: "Not in the 2:00 cut (video-voiceover.md). No VO line."
@@ -61,37 +61,38 @@ slides:
     label: "Where Silta fits: the routes into care, simplified"
     kicker: Where Silta fits
     title: Three ways into cancer care.
-    notes: "VO (0:31, 10 s): Three ways lead into cancer care. / The gap opens at the very first step, before any appointment. / That's where Silta works. (The front page's map: all three routes meet at the diagnostic exam; specialist care is planned next.)"
+    notes: "VO (0:31): Of the three ways into cancer care, only screening is measured by language, and the gap opens at its first step. That's where Silta works. (The front page's map: all three routes meet at the diagnostic exam; specialist care is planned next.)"
   - use: pathway
     skip: true
   - use: silta
-    notes: "VO (0:41, 4 s): Silta. / Finnish for “bridge”."
+    notes: "VO (0:42): Silta is Finnish for bridge."
   - use: letter
-    notes: "VO (0:45, 11 s): Hodan scans the code on her letter. [→ once: the letter shrinks into the guide] / Silta explains the screening in Somali, read aloud: / what happens, and her rights."
+    notes: "VO (0:45): A translated letter alone made no difference in a Norwegian trial. So Hodan scans the code on her letter, [→ once: the letter shrinks into the guide] and Silta explains the screening in Somali, read aloud: what happens, that she can ask for a woman to take the sample, and what to say at the desk in Finnish."
   - layout: film
     id: olga-film
     label: "Film: Olga notices something (8 s)"
     src: /team/m/video-assets/generated/olga-01-she-notices.mp4
-    notes: "8 s, no sound. Olga at the mirror, her hand over her chest. The deck moves on to her symptom screens when the clip ends. VO (0:56): A second way in. / Olga, fifty-eight, has found a lump."
+    notes: "8 s, no sound. Olga at the mirror, her hand over her chest. The deck moves on to her symptom screens when the clip ends. VO (1:05): The second way in is a symptom. Olga is fifty-eight and has found a lump."
   - use: noticed
-    notes: "VO (1:04, 6 s): She taps where it is, in Russian. / Silta never rates her symptoms."
+    notes: "VO (1:13): She taps where it is, in Russian. Silta never rates her symptoms."
   - use: door
-    notes: "VO (1:10, 6 s): It shows each of them the right service, / and the Finnish words to say."
+    notes: "VO (1:18): It shows each of them the right service in their county and the Finnish sentences to say."
   - use: visit
-    notes: "VO (1:16, 6 s): At the visit, the doctor reads her answers in Finnish."
+    notes: "VO (1:25): At the visit, the doctor reads Olga's answers in Finnish, on her own phone, with a request for a professional interpreter."
   - use: county
-    notes: "VO (1:22, 9 s): For a county, it starts with no IT project and no personal data: / one printed code on letters it already sends."
+    notes: "VO (1:33): A county can start without an IT project: one printed code on the letters it already sends, measured with the registry's attendance by native language."
   - use: safe
-    notes: "VO (1:31, 5 s): Not a medical device. / No names stored. / AI that asks first."
+    notes: "VO (1:43): Silta gives no diagnosis and stores no names."
   - use: reach
     skip: true   # out of the 2:00 cut (video-voiceover.md)
     animate: words   # kicker, then the title, then the line word by word
     notes: "Not in the 2:00 cut (video-voiceover.md). No VO line."
   - use: ways-in
-    notes: "VO (1:36, 5 s): People find it through the letter, / their community, / or their phone."
+    skip: true   # the discovery part is out of the 2:00 cut
+    notes: "Not in the 2:00 cut (discovery). No VO line."
   - use: running
-    notes: "VO (1:41, 6 s): And it's already running, / in fourteen languages. [Let the reel play.]"
+    notes: "VO (1:47): It already runs in fourteen languages. [Let the reel play.]"
   - use: close
-    notes: "VO (1:47, 8 s): Our ask: / a Helsinki pilot, measured with the registry's own numbers. // Silta works before the first appointment. / From today."
+    notes: "VO (1:52): We propose a pilot in Helsinki. Silta works before the first appointment, from today."
   - use: team
-    notes: "VO (1:55, 3 s): Timo, Milla and Mea Railo. Cut the export at 1:58."
+    notes: "VO (1:57): Timo, Milla and Mea Railo. The export must end before 2:00."

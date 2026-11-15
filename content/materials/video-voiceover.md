@@ -1,6 +1,6 @@
 ---
 title: Pitch video — voice-over for the record cut
-description: Word-for-word voice-over for /presentation/record, timed slide by slide to stay under 2:00. 216 words. Includes the recommended 16-slide cut (untick earlier, routes, reach), recording steps and what not to say.
+description: One continuous narration for /presentation/record, read at about 2.7 words a second over the 15-slide default cut, ending before 2:00. 268 words. Slide cues inline, timings, recording steps and what not to say.
 tags: [video, voice-over, script, record]
 author: Claude with the Silta team
 updated: 2026-11-15
@@ -8,72 +8,90 @@ updated: 2026-11-15
 
 # Pitch video: voice-over for the record cut
 
-**Hard limit 2:00** (the organisers say they will be strict). Target: **1:57**. **216 words** in all, one calm voice.
-The same lines are in `content/presentation-video.yaml` as each slide's `notes`, so the narrator can read them in the speaker view (press **S** while the cut plays).
+**Hard limit 2:00.** One voice (Mea), about **2.7 words a second**, talking straight through. Pauses come at the ends of sentences, never between fragments. **268 words.**
+The same lines are in `content/presentation-video.yaml`, in each slide's `notes`, so they also show in the speaker view (press **S** while the cut plays).
 
-## The cut: three slides left out
+## The cut
 
-With every slide ticked (19 entries), the cut runs **about 2:09** at a pace a viewer can follow, because the two films alone take 23 s. The default cut therefore leaves these three unticked (`skip: true` in `presentation-video.yaml`), so **Default cut** in the picker gives the 16 slides below:
+The default cut is the **15 entries** below. The picker's **Default cut** button gives exactly these. Left out (`skip: true`):
+- `earlier`: the judges know that early detection matters.
+- `routes`: it shows 57% vs 78% right after the voice says 27%, and 78 − 57 = 21 reads as an error.
+- `pathway`: the data-heavy map. The simple map plays instead.
+- `reach` and `ways-in`: the discovery part.
 
-| Left out | Why it can go |
-| --- | --- |
-| `earlier` (Found earlier) | The judges know early detection matters. It costs 6 s. |
-| `routes` (Three routes, intro) | The simplified map that follows says the same thing. This slide also shows **57% vs 78%** right after the voice says **27%**, and 78 − 57 = 21 looks like an error. |
-| `reach` (How do they find Silta?) | The 15-channels map right after it carries the point. |
+## Read-through
 
-Open the cut directly:
+Read it as one text. **[→ slide]** marks where the next slide comes in. Keep talking through slide changes and through the headings that fly in; don't wait for them.
 
-```
-/presentation/record?slides=hodan-film,hodan,gap,pathway-simple,silta,letter,olga-film,noticed,door,visit,county,safe,ways-in,running,close,team
-```
+> **[Film: Hodan. Start about 2 s in, as she opens the envelope.]**
+> This is Hodan. She is fifty-four, has lived in Helsinki for years, and her language is Somali. This is her second invitation to cervical cancer screening, in Finnish.
+> **[→ `hodan`, as the film ends]** She puts it in a drawer, and she doesn't go.
+>
+> **[→ `gap`]** She is not alone. People whose native language isn't Finnish or Swedish get the same letters, and twenty-seven percent fewer of them come, in every screening programme.
+>
+> **[→ `pathway-simple`]** Of the three ways into cancer care, only screening is measured by language, and the gap opens at its first step. That's where Silta works.
+>
+> **[→ `silta`]** Silta is Finnish for bridge.
+>
+> **[→ `letter`]** A translated letter alone made no difference in a Norwegian trial. So Hodan scans the code on her letter, **[→ once: the letter shrinks into the guide]** and Silta explains the screening in Somali, read aloud: what happens, that she can ask for a woman to take the sample, and what to say at the desk in Finnish.
+>
+> **[→ Film: Olga]** The second way in is a symptom. Olga is fifty-eight and has found a lump.
+> **[→ `noticed`, as the film ends]** She taps where it is, in Russian. Silta never rates her symptoms.
+> **[→ `door`]** It shows each of them the right service in their county and the Finnish sentences to say.
+> **[→ `visit`]** At the visit, the doctor reads Olga's answers in Finnish, on her own phone, with a request for a professional interpreter.
+>
+> **[→ `county`]** A county can start without an IT project: one printed code on the letters it already sends, measured with the registry's attendance by native language.
+> **[→ `safe`]** Silta gives no diagnosis and stores no names.
+> **[→ `running`]** It already runs in fourteen languages.
+>
+> **[→ `close`]** We propose a pilot in Helsinki. Silta works before the first appointment, from today.
+> **[→ `team`]** Timo, Milla and Mea Railo.
 
-## Script
+## Timing check (at 2.7 words a second)
 
-`/` short pause · `//` full pause · **bold** = lean on it · [brackets] = what you do
+| Starts | Slide | Words |
+| --- | --- | --- |
+| 0:00 | Film: Hodan (15 s; the voice starts at 0:02) | 28 |
+| 0:15 | `hodan` | 10 |
+| 0:19 | `gap` | 28 |
+| 0:31 | `pathway-simple` | 25 |
+| 0:42 | `silta` | 5 |
+| 0:45 | `letter` | 49 |
+| 1:05 | Film: Olga (8 s) | 15 |
+| 1:13 | `noticed` | 12 |
+| 1:18 | `door` | 16 |
+| 1:25 | `visit` | 21 |
+| 1:33 | `county` | 25 |
+| 1:43 | `safe` | 8 |
+| 1:47 | `running` | 6 |
+| 1:52 | `close` | 14 |
+| 1:57 | `team` | 5 |
+| **about 1:59** | **end** | **268** |
 
-| Time | Slide | Sec | Voice-over | Words |
-| --- | --- | --- | --- | --- |
-| 0:00 | **Film: Hodan** | 15 | [Wait about 3 s, until she opens the envelope.] This is Hodan. / Fifty-four, in Helsinki for years. Her language is Somali. / This is her second invitation to cervical cancer screening. | 21 |
-| 0:15 | `hodan` | 5 | [The letter slides into the drawer.] She puts it away. // And doesn't go. | 7 |
-| 0:20 | `gap` | 11 | She is not alone. / When your native language isn't Finnish or Swedish, the same letter brings **twenty-seven percent** fewer people. / In every programme. | 23 |
-| 0:31 | `pathway-simple` | 10 | Three ways lead into cancer care. / The gap opens at the very first step, before any appointment. / That's where Silta works. | 21 |
-| 0:41 | `silta` | 4 | Silta. / Finnish for "bridge". | 4 |
-| 0:45 | `letter` | 11 | [Press → once after "letter": it shrinks into the guide.] Hodan scans the code on her letter. / Silta explains the screening in Somali, read aloud: / what happens, and her rights. | 20 |
-| 0:56 | **Film: Olga** | 8 | A second way in. / Olga, fifty-eight, has found a lump. | 10 |
-| 1:04 | `noticed` | 6 | She taps where it is, in Russian. / Silta never rates her symptoms. | 12 |
-| 1:10 | `door` | 6 | It shows each of them the right service, / and the Finnish words to say. | 14 |
-| 1:16 | `visit` | 6 | At the visit, the doctor reads her answers in Finnish. | 10 |
-| 1:22 | `county` | 9 | For a county, it starts with no IT project and no personal data: / one printed code on letters it already sends. | 21 |
-| 1:31 | `safe` | 5 | Not a medical device. / No names stored. / AI that asks first. | 11 |
-| 1:36 | `ways-in` | 5 | People find it through the letter, / their community, / or their phone. | 11 |
-| 1:41 | `running` | 6 | And it's already running, / in fourteen languages. [Let the screen reel play.] | 7 |
-| 1:47 | `close` | 8 | Our ask: / a Helsinki pilot, measured with the registry's own numbers. // Silta works before the first appointment. / From today. | 19 |
-| 1:55 | `team` | 3 | Timo, Milla and Mea Railo. | 5 |
-| **1:58** | | | **Cut the export here, under 2:00.** | **216** |
+**If a take runs over 2:00,** cut "It already runs in fourteen languages." first and let the screen reel speak for itself (about 3 s). If it is still over, cut "on her own phone" (about 1 s).
 
-**Pace:** about 2.2 words a second. Each line ends with room to breathe. On a slide whose heading flies in (`gap`, `door`, `visit`, `county`, `safe`, `running`, `close`), start speaking as the heading lands, not before.
+## What the voice doesn't say
 
-## What the voice does not say, and why
-
-- **"Once people are inside, follow-up is equal"** (in the earlier video plan). Breast follow-up isn't measured by language, and after a positive bowel test there is a gap (68% vs 77% have the colonoscopy). The script says only that the gap opens at the first step.
-- **"Silta works at the door"** (in the earlier video plan). The deck's close now reads "before the first appointment".
-- **57 vs 78 next to 27%.** That is why `routes` is unticked.
-- **"Human-recorded" Somali audio.** The Somali audio is generated and marked unchecked; "read aloud" is accurate.
+- **"Once people are inside, follow-up is equal."** Breast follow-up isn't measured by language, and after a positive bowel test there is a gap (68% vs 77% have the colonoscopy).
+- **"Silta works at the door."** The deck's close says "before the first appointment".
+- **"Human-recorded" Somali audio.** The Somali audio is generated and marked unchecked.
 - **Lives saved, savings, or that language causes the gap.**
 
 ## Recording
 
-1. Open the cut URL above. Leave "Show the footer" and "Show the drill-in buttons" unticked. Click Start (it goes full screen).
-2. Record the screen at 1080p. Press → on each slide's cue. The films move on by themselves when they end.
-3. Record the voice separately, in a quiet room, reading from this table or the speaker view (S). Lay it over the capture and nudge each slide's cut to its line.
-4. **The disclaimer must be in the video somewhere** (the record cut leaves it out): *"Hodan and Olga are composite people. Scenes are AI-generated and illustrative."* The end card or a small caption on the Hodan film both work. It doesn't count against the words above, and it is safest on screen rather than spoken.
+1. Open `/presentation/record` (the **Record the video** card on the team page). Click **Default cut**, leave the footer and the drill-in buttons unticked, then click Start.
+2. Record the screen at 1080p. Press → at each **[→]**. The films move on by themselves.
+3. Record the voice in one take, in a quiet room, reading the text above. Then nudge the slide cuts to the voice, not the other way round.
+4. **The disclaimer must be in the video** (the record cut leaves it out): *"Hodan and Olga are composite people. Scenes are AI-generated and illustrative."* A small caption on the Hodan film or an end card both work.
 5. Export, check the length is **under 2:00**, then put the link in `content/site.yaml` → `video.url`.
 
 ## Sources for what is said
 
-| Said | Source (on the deck) |
+| Said | Source |
 | --- | --- |
-| 27% fewer, every programme | Finnish Cancer Registry, screening by native language, 2024 (`gap`) |
-| The gap opens at the first step | Pathway slide: only screening is measured by language, and the gap is largest at attendance |
+| 27% fewer, in every programme | Finnish Cancer Registry, screening by native language, 2024 (`gap`) |
+| Only screening is measured by language; the gap opens at its first step | Pathway slide, findings and limitations |
+| A translated letter made no difference | Randomised trial, Norway, n = 11,347: 46.5% vs 47.4% (`letter` → For the county) |
+| A woman to take the sample; a professional interpreter | Silta app: cervical guide, rights part; visit summary (`visit`) |
+| No diagnosis, no names | EU MDR Rule 11 · GDPR Art. 9 (`safe`) |
 | 14 languages | Silta app, counted 14 Nov 2026 (`running`) |
-| Not a medical device, no names, AI asks first | EU MDR Rule 11 · GDPR Art. 9 · EU AI Act (`safe`) |
