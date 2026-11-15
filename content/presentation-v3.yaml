@@ -454,21 +454,37 @@ slides:
     drills:
       - kind: data
         label: Gemini
-        title: Gemini asks instead of guessing
+        title: Gemini understands people's own words
         items:
-          - text: "Matches a person's own words to one card and asks back; reads a photo of a letter into a fixed format; runs the phone line. No urgency decision is left to the model."
+          - text: "<b>Understands what people say.</b> Someone types or says “I found a hard lump last week”. Gemini picks the matching card and Silta asks back. Nothing changes until the person taps Yes."
+            source: "Silta app: card matching"
+          - text: "<b>Reads a letter from a photo.</b> It says what the letter is, the key facts as printed, and what to do, in the person's language."
+            source: "Silta app: letter reader"
+          - text: "<b>Runs the phone line.</b> Gemini 2.5 Flash is the brain of the phone agent that answers callers."
+            source: "Silta phone line"
+          - text: "<b>Never decides urgency.</b> Routes come from reviewed content, and names and numbers are removed before any text reaches Gemini."
             source: "Silta app"
       - kind: data
         label: ElevenLabs
-        title: Voice for people who don't read
+        title: A voice for people who don't read
         items:
-          - text: "Reads Silta aloud in 14 languages, listens in 13, and answers a phone line in the caller's language. Somali uses cards instead of voice input on purpose, and its generated audio stays unchecked until a native speaker's recording is approved. Each clip is generated once and cached."
-            source: "Silta app"
+          - text: "<b>Reads everything aloud</b> in 14 languages, card by card."
+            source: "Silta app: text-to-speech"
+          - text: "<b>Listens</b> in 13 languages and reads back what it heard. Somali uses cards instead, on purpose."
+            source: "Silta app: speech-to-text"
+          - text: "<b>Answers a phone line</b> on a real number, in the caller's language."
+            source: "Silta phone line"
+          - text: "<b>Each clip is made once and cached.</b> A native speaker's recording replaces the generated one once it's approved."
+            source: "Silta admin"
       - kind: data
         label: Aiven
         title: One database, in the EU, with no personal data
         items:
-          - text: "API and app on Aiven Runtime; content, audio, visit codes, service paths and county figures in one Aiven for PostgreSQL with pgvector. Every green push redeploys."
+          - text: "<b>Runs the app.</b> The API and the resident app run on Aiven Runtime, and every green push redeploys."
+            source: "Aiven Runtime"
+          - text: "<b>Remembers everything in one database:</b> texts in 14 languages with their versions, audio clips, anonymous visit codes, service paths and county counts, in one Aiven for PostgreSQL in the EU."
+            source: "Aiven for PostgreSQL"
+          - text: "<b>Stores no personal data:</b> no names, ID numbers, phone numbers or emails."
             source: "Silta app"
     source: "Counts from the Silta code base, 14 November 2026"
     notes: "Re-count tests before the final submission."
