@@ -125,7 +125,7 @@ slides:
   - layout: intro
     id: routes
     kicker: Three routes into cancer care
-    line: "A screening letter, a symptom, or a test a doctor orders. On every route, people with another native language meet gaps. <b>Only screening is counted by language: 57% of them attend, against 78%.</b>"
+    line: "A screening letter, a symptom, or a test a doctor orders. On every route, people with another native language meet gaps. <b>Screening shows the gap: 78% of Finnish, Swedish and Sámi speakers attend, but only 57% of everyone else.</b>"
     notes: "The entryway to the diagram. 57% vs 78%: other-language invitees vs Finnish, Swedish and Sámi speakers, all three programmes, 2024 (Finnish Cancer Registry). The other routes have studies by origin, not by language."
 
   - layout: embed
@@ -405,9 +405,9 @@ slides:
     kicker_intro: true
     title: Already <em>running.</em>
     line: "A live product on real data, not a mock-up."
-    # Screen reel under the line: the resident app and the admin views spin past and stop on the
-    # first screen (deck: one 4 s spin per arrival; video cut: starts as fast, then slows down gradually). Desktop screens from
-    # `node scripts/capture_running_screens.mjs`, phones from capture_v3_screens.mjs. First = rest screen.
+    # Screen reel under the line: the resident app and the admin views run past, fast at first, then
+    # slowing down gradually and running on (both versions). Desktop screens from
+    # `node scripts/capture_running_screens.mjs`, phones from capture_v3_screens.mjs.
     reel_label: "Screens from the live Silta app and its admin: resident steps, county service paths, the journey editor, texts, audio and versions."
     reel:
       - /media/screens/running/admin-service-paths.png

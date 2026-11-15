@@ -40,12 +40,20 @@ slides:
     overlay:
       - "Junction 2026 — AstraZeneca — Equal Care Across Finland"
       - "3rdGen team Railo"
-    notes: "15 s, no sound. Start the voice-over as she opens the envelope; the deck moves on when the clip ends."
+    notes: "15 s, no sound. Start the voice-over as she opens the envelope; the deck moves on when the clip ends. VO (0:00, start ~3 s in): This is Hodan. / Fifty-four, in Helsinki for years. Her language is Somali. / This is her second invitation to cervical cancer screening."
+  # Voice-over: every `notes` below starting "VO" is the narrator's line for that slide (press S while
+  # the cut plays). Script, timings and the 2:00 cut: content/materials/video-voiceover.md.
   - use: hodan
     head_image: ~   # the film plays just before, so no still under the text
+    notes: "VO (0:15, 5 s): She puts it away. // And doesn't go."
   - use: gap
+    notes: "VO (0:20, 11 s): She is not alone. / When your native language isn't Finnish or Swedish, the same letter brings twenty-seven percent fewer people. / In every programme."
   - use: earlier
+    skip: true   # out of the 2:00 cut (video-voiceover.md)
+    notes: "Not in the 2:00 cut (video-voiceover.md). No VO line."
   - use: routes
+    skip: true   # out of the 2:00 cut: shows 57% vs 78% right after the VO says 27%
+    notes: "Not in the 2:00 cut: it shows 57% vs 78% right after the VO says 27%. No VO line."
     animate: words   # the line builds up sentence by sentence, the numbers count up, the finding is highlighted
   # The simpler pathway slide plays by default; the data-heavy one stays in the picker, unticked.
   - layout: fit
@@ -53,24 +61,37 @@ slides:
     label: "Where Silta fits: the routes into care, simplified"
     kicker: Where Silta fits
     title: Three ways into cancer care.
-    notes: "The front page's map. A screening letter, a symptom, or a test a doctor orders: all three meet at the diagnostic exam. Silta works before it; specialist care is planned next."
+    notes: "VO (0:31, 10 s): Three ways lead into cancer care. / The gap opens at the very first step, before any appointment. / That's where Silta works. (The front page's map: all three routes meet at the diagnostic exam; specialist care is planned next.)"
   - use: pathway
     skip: true
   - use: silta
+    notes: "VO (0:41, 4 s): Silta. / Finnish for “bridge”."
   - use: letter
+    notes: "VO (0:45, 11 s): Hodan scans the code on her letter. [→ once: the letter shrinks into the guide] / Silta explains the screening in Somali, read aloud: / what happens, and her rights."
   - layout: film
     id: olga-film
     label: "Film: Olga notices something (8 s)"
     src: /team/m/video-assets/generated/olga-01-she-notices.mp4
-    notes: "8 s, no sound. Olga at the mirror, her hand over her chest. The deck moves on to her symptom screens when the clip ends."
+    notes: "8 s, no sound. Olga at the mirror, her hand over her chest. The deck moves on to her symptom screens when the clip ends. VO (0:56): A second way in. / Olga, fifty-eight, has found a lump."
   - use: noticed
+    notes: "VO (1:04, 6 s): She taps where it is, in Russian. / Silta never rates her symptoms."
   - use: door
+    notes: "VO (1:10, 6 s): It shows each of them the right service, / and the Finnish words to say."
   - use: visit
+    notes: "VO (1:16, 6 s): At the visit, the doctor reads her answers in Finnish."
   - use: county
+    notes: "VO (1:22, 9 s): For a county, it starts with no IT project and no personal data: / one printed code on letters it already sends."
   - use: safe
+    notes: "VO (1:31, 5 s): Not a medical device. / No names stored. / AI that asks first."
   - use: reach
+    skip: true   # out of the 2:00 cut (video-voiceover.md)
     animate: words   # kicker, then the title, then the line word by word
+    notes: "Not in the 2:00 cut (video-voiceover.md). No VO line."
   - use: ways-in
+    notes: "VO (1:36, 5 s): People find it through the letter, / their community, / or their phone."
   - use: running
+    notes: "VO (1:41, 6 s): And it's already running, / in fourteen languages. [Let the reel play.]"
   - use: close
+    notes: "VO (1:47, 8 s): Our ask: / a Helsinki pilot, measured with the registry's own numbers. // Silta works before the first appointment. / From today."
   - use: team
+    notes: "VO (1:55, 3 s): Timo, Milla and Mea Railo. Cut the export at 1:58."
