@@ -383,6 +383,18 @@ slides:
             source: "National Cancer Strategy 2026–2035, section 2.5"
           - text: "<b>Hodan and Olga are composite people.</b> The registry records language and birth region, not religion."
             source: "Finnish Cancer Registry"
+      - kind: data
+        label: Sources
+        title: Four rules, and what each one means for Silta
+        items:
+          - text: "<b>EU MDR, Rule 11.</b> Software that gives information used for decisions about diagnosis or treatment is a medical device. Silta gives general guidance and names the type of service to contact; it never rates urgency or says what might be wrong, so it is designed to stay outside the rule."
+            source: "Regulation (EU) 2017/745, Annex VIII, Rule 11"
+          - text: "<b>GDPR, Article 9.</b> Health data and anything that reveals ethnic origin, which a native language can, need extra protection. Silta asks for no name, ID, phone or email; the visit code is stored hashed and expires, and counties see only anonymous counts."
+            source: "Regulation (EU) 2016/679, Article 9"
+          - text: "<b>EU AI Act.</b> People must know when they deal with AI, and AI used for triage counts as high-risk. In Silta, Gemini only suggests a card or reads a letter; the person confirms with one tap, and the route comes from reviewed content, not the model."
+            source: "Regulation (EU) 2024/1689"
+          - text: "<b>Patient Act, section 5.</b> A patient has the right to information about their care and, when staff do not speak their language, interpretation is to be arranged as far as possible. Silta's visit summary flags the interpreter need first; it prepares the visit and does not replace an interpreter."
+            source: "Act on the Status and Rights of Patients (785/1992), section 5"
     source: "EU MDR · GDPR · EU AI Act · Patient Act (785/1992)"
     notes: "Each rule is a design decision you can see in the product."
 
