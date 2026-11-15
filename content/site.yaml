@@ -187,7 +187,7 @@ links:
   screening_letter:
     label: Example screening letter
     url: https://fond-useful-corgi.eur-1.aiven.app/letter/cervical/en
-    description: A cervical screening invitation as a Helsinki resident gets it, with the Silta QR code at the bottom. Printable; all versions are on the printouts page.
+    description: A cervical cancer screening invitation as a Helsinki resident gets it, with the Silta QR code at the bottom. Printable; all versions are on the printouts page.
     icon: mail-opened
     action: Open the letter
     short: In 14 languages, with a QR code
@@ -195,7 +195,7 @@ links:
     preview:
       kind: paper
       src: /media/screens/v3/letter-fi.png
-      alt: "The Finnish cervical screening invitation: the time, place and PIN, and at the bottom a QR code box."
+      alt: "The Finnish cervical cancer screening invitation: the time, place and PIN, and at the bottom a QR code box."
       zoom_src: /media/screens/try/letter-fi-qr.png
       caption: Finnish letter, QR code at the bottom
   # The product's own demo phone line (Twilio number on the ElevenLabs agent
@@ -230,7 +230,7 @@ links:
     preview:
       kind: browser
       src: /media/screens/try/county.png
-      alt: "The Helsinki county view: foreign-language share of residents 21.2 %, and breast and cervical screening participation."
+      alt: "The Helsinki county view: foreign-language share of residents 21.2 %, and breast and cervical cancer screening participation."
   admin:
     label: Admin
     url: https://fond-useful-corgi.eur-1.aiven.app/admin

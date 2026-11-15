@@ -107,7 +107,7 @@ def test_try_page_is_visual(client):
 
 
 def test_screening_letter_printout_links_every_language(client):
-    assert "Example cervical screening letter" in client.get("/printouts").text
+    assert "Example cervical cancer screening letter" in client.get("/printouts").text
     response = client.get("/printouts/cervical-screening-letter.md")
     assert response.status_code == 200
     assert "<svg" in response.text  # QR code to the guide
@@ -373,6 +373,7 @@ def test_deck_v3_uses_one_layout_system(client):
         assert not re.search(r"brain |sources/|backend/|\.md\b", slide.get("source", "")), slide["id"]
         images = [slide.get("letter"), slide.get("qr"), (slide.get("from") or {}).get("src"), (slide.get("head_image") or {}).get("src")]
         images += [s["src"] for s in slide.get("screens", [])] + [l["src"] for l in slide.get("logos", [])]
+        images += slide.get("reel", [])
         for src in filter(None, images):
             assert (settings.content_dir() / src.removeprefix("/")).is_file(), src
         for i, drill in enumerate(slide.get("drills", []), start=1):
@@ -414,6 +415,8 @@ def test_record_page_has_picker_and_no_chrome(client):
     html = client.get("/presentation/record").text
     assert 'id="record-picker"' in html and "/static/deck-record.js" in html and "data-record" in html
     assert 'class="deck-home"' not in html
+    assert 'id="rp-foot"' in html and 'id="rp-drills"' in html  # footer and drill-ins: options, off by default
+    assert 'id="rp-foot" checked' not in html
     assert html.count('class="rp-row"') == len(deck["slides"])
     for slide in deck["slides"]:
         assert f'id="{slide["id"]}"' in html and f'data-id="{slide["id"]}"' in html
@@ -441,7 +444,7 @@ def test_both_decks_carry_the_event_line_in_the_foot(client):
     event = content.site()["event"]
     for path in ("/presentation", "/presentation/record"):
         html = client.get(path).text
-        assert html.count(f'<p class="event">{escape(event)}</p>') == html.count('<footer class="foot">') > 0, path
+        assert html.count(f'<p class="event">{escape(event)}</p>') == html.count('<footer class="foot') > 0, path
 
 
 def test_landing_keeps_the_routes_map(client):

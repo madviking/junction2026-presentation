@@ -28,7 +28,19 @@ def asset(path: str) -> str:
     return f"/static/{path}?v={version}"
 
 
+def media(path: str) -> str:
+    """A /media/... URL with the file's modification time as a version (embedded pages, so a changed page is fetched again)."""
+    if not path.startswith("/media/"):
+        return path
+    try:
+        version = int((settings.content_dir() / path.lstrip("/")).stat().st_mtime)
+    except OSError:
+        return path
+    return f"{path}?v={version}"
+
+
 templates.env.globals["asset"] = asset
+templates.env.globals["media"] = media
 
 NAV = (
     ("home", "/", "Silta", "home"),

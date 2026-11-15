@@ -50,7 +50,7 @@
     {"id": "atvisit", "name": "At the visit", "x0": 220, "x1": 730, "steps": ["attend", "fork", "visit", "diag"],
      "text": "A visit card and flash cards show symptoms and questions with very little Finnish."},
     {"id": "clinician", "name": "For the clinician", "x0": 40, "x1": 430, "steps": ["fork", "visit"],
-     "text": "A one-screen Finnish summary, preferences known in advance, and a prompt to offer a home self-sampling kit when cervical screening is overdue."},
+     "text": "A one-screen Finnish summary, preferences known in advance, and a prompt to offer a home self-sampling kit when cervical cancer screening is overdue."},
     {"id": "after", "name": "After the visit", "x0": 370, "x1": 890, "steps": ["follow", "fork", "diag", "treat"],
      "text": "Tells people what happens next, how long it usually takes, and when to call if nothing arrives."}
   ],
@@ -170,8 +170,8 @@
     "steps": {
       "letter": {
         "title": "Every invitation is already paid for",
-        "text": "The three programmes sent 1,058,326 invitations in 2024, 78,914 of them to people whose native language is not Finnish, Swedish or Sámi. A breast screening invitation costs about €31 including the booked mammogram slot, paid whether or not the person comes. Unused breast slots are worth up to €1.95M a year, €0.30M of it for other-language invitees.",
-        "src": "Syöpäsäätiö / Nordic Healthcare Group cost statistics 2024 (breast screening €10.59M); Finnish Cancer Registry invitations 2024."
+        "text": "The three programmes sent 1,058,326 invitations in 2024, 78,914 of them to people whose native language is not Finnish, Swedish or Sámi. A breast cancer screening invitation costs about €31 including the booked mammogram slot, paid whether or not the person comes. Unused breast slots are worth up to €1.95M a year, €0.30M of it for other-language invitees.",
+        "src": "Syöpäsäätiö / Nordic Healthcare Group cost statistics 2024 (breast cancer screening €10.59M); Finnish Cancer Registry invitations 2024."
       },
       "attend": {
         "title": "251,000 people not reached a year",
@@ -340,7 +340,7 @@
       "THL, national unit costs of social and health services 2023–2024.",
       "Lehtinen et al., Duodecim 2019;135:953–60 (breast cancer costs by stage).",
       "Joranger et al., Eur J Health Econ 2020;21:321–334 (colorectal cancer costs by stage).",
-      "Virtanen, Anttila, Nieminen, BMC Women's Health 2015 (cervical screening and self-sampling costs); YouScreen pilot, London.",
+      "Virtanen, Anttila, Nieminen, BMC Women's Health 2015 (cervical cancer screening and self-sampling costs); YouScreen pilot, London.",
       "Syöpäsäätiö / Nordic Healthcare Group cancer cost statistics 2024; STM screening decree memo (colorectal programme cost).",
       "Ministry of Finance, wellbeing services county funding model, 20 Aug 2025 (foreign-language criterion).",
       "City of Helsinki and Länsi-Uusimaa client fees 2026; Kela private doctor reimbursement 2026.",

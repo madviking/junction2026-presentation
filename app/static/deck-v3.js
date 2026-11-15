@@ -149,6 +149,9 @@
         const kicker = section.querySelector('.kicker')
         if (!kicker || reduce) return
         section.getAnimations({ subtree: true }).forEach((a) => a.cancel())
+        // Cancelling also stops the slide's own CSS build-ups (cards); .intro-running starts them again
+        // after the intro (deck-v3.css). Cleared when the slide is left (arrive).
+        section.classList.add('intro-running')
         const scale = Reveal.getScale() || 1
         const box = section.getBoundingClientRect()
         const k = kicker.getBoundingClientRect()
@@ -227,13 +230,13 @@
       }, true)
 
       // The gap bars: each relative drop counts up from 0 while its bars grow (CSS), on every arrival.
-      function countUp(section) {
+      function countUp(section, introDelay) {
         section.querySelectorAll('.stage .gapbar-rel').forEach((el, i) => {
           const final = el.dataset.final ?? (el.dataset.final = el.textContent)
           const match = final.match(/^(\D*)(\d+)(.*)$/)
           if (!match || reduce) return
           const [, pre, num, post] = match
-          const delay = 150 + i * 120
+          const delay = introDelay + 150 + i * 120
           const duration = 900
           el.textContent = `${pre}0${post}`
           const t0 = performance.now() + delay
@@ -245,13 +248,123 @@
           requestAnimationFrame(step)
         })
       }
+      // Screen reel (.reel): the strip is copied twice so it can run one full loop (its first screen
+      // comes round again exactly where it started). Deck: one spin of REEL_SPIN_MS per arrival, fast at
+      // first and slowing to a stop on the first screen; it starts once the kicker intro has opened the
+      // slide. Video cut (record): starts at REEL_PX_PER_S and slows down gradually (coast) while shown.
+      const REEL_SPIN_MS = 4000
+      const REEL_PX_PER_S = 900
+      // Video cut: the reel starts at REEL_PX_PER_S and slows gradually towards REEL_END_PX_PER_S
+      // (half the gap closes every REEL_EASE_S seconds), then keeps drifting at that pace while shown.
+      const REEL_END_PX_PER_S = 70
+      const REEL_EASE_S = 2.2
+      function coast(track, loop, current, delay) {
+        const run = (track.dataset.run = String(Number(track.dataset.run || 0) + 1))
+        const k = Math.LN2 / REEL_EASE_S
+        let x = 0
+        const t0 = performance.now() + delay // starts once the slide's intro has shown it
+        let last = t0
+        const step = (now) => {
+          if (track.dataset.run !== run || Reveal.getCurrentSlide() !== current) { track.style.transform = ''; return }
+          if (now < t0) { requestAnimationFrame(step); return }
+          const t = (now - t0) / 1000
+          const v = REEL_END_PX_PER_S + (REEL_PX_PER_S - REEL_END_PX_PER_S) * Math.exp(-k * t)
+          x = (x + v * (now - last) / 1000) % loop
+          last = now
+          track.style.transform = `translateX(${-x}px)`
+          requestAnimationFrame(step)
+        }
+        requestAnimationFrame(step)
+      }
+      async function reels(current, introDelay) {
+        document.querySelectorAll('.reel-track').forEach((track) => track.getAnimations().forEach((a) => a.cancel()))
+        const track = current.querySelector('.reel-track')
+        if (!track || reduce) return
+        const count = Number(track.dataset.count || (track.dataset.count = track.children.length))
+        if (track.children.length === count) {
+          const originals = [...track.children]
+          for (let copy = 0; copy < 2; copy++) originals.forEach((img) => {
+            const clone = img.cloneNode()
+            clone.setAttribute('aria-hidden', 'true')
+            track.appendChild(clone)
+          })
+        }
+        // Widths need every screen loaded (img.decode() can hang in some browsers, so wait on load).
+        await Promise.all([...track.querySelectorAll('img')].map((img) => img.complete || new Promise((done) => {
+          img.addEventListener('load', done, { once: true })
+          img.addEventListener('error', done, { once: true })
+        })))
+        if (Reveal.getCurrentSlide() !== current) return
+        const loop = track.children[count].offsetLeft - track.children[0].offsetLeft
+        const spin = [{ transform: 'translateX(0)' }, { transform: `translateX(${-loop}px)` }]
+        if (record) coast(track, loop, current, introDelay)
+        else track.animate(spin, { duration: REEL_SPIN_MS, delay: introDelay, easing: 'cubic-bezier(0.2, 0.75, 0.3, 1)', fill: 'both' })
+      }
+      // data-animate="words" (intro slides in the video cut): the line rises in word by word, with a pause
+      // after each sentence (longer before the <b> finding); numbers count up as their word appears, then
+      // the finding is highlighted (CSS). Replays on every arrival.
+      const WORD_MS = 75
+      const SENTENCE_PAUSE_MS = 650
+      function wordsIn(section) {
+        const line = section.querySelector('.intro-line')
+        if (!line || reduce) return
+        if (!line.dataset.split) {
+          line.dataset.split = '1'
+          const split = (node) => [...node.childNodes].forEach((child) => {
+            if (child.nodeType === Node.ELEMENT_NODE) { split(child); return }
+            if (child.nodeType !== Node.TEXT_NODE) return
+            const frag = document.createDocumentFragment()
+            child.textContent.split(/(\s+)/).forEach((part) => {
+              if (!part) return
+              if (/^\s+$/.test(part)) { frag.append(part); return }
+              const w = document.createElement('span')
+              w.className = 'w'
+              w.textContent = part
+              frag.append(w)
+            })
+            child.replaceWith(frag)
+          })
+          split(line)
+        }
+        // With a title (CSS rises it in after the kicker) the line waits until the title is in.
+        let t = section.querySelector('.intro-title') ? 1500 : 500
+        let prev = null
+        line.querySelectorAll('.w').forEach((w) => {
+          if (prev && /[.!?:]$/.test(prev.textContent)) t += SENTENCE_PAUSE_MS
+          if (prev && !prev.closest('b') && w.closest('b')) t += SENTENCE_PAUSE_MS / 2
+          w.style.setProperty('--d', `${t}ms`)
+          const m = w.textContent.match(/^(\D*)(\d+)(\D*)$/)
+          if (m) {
+            const final = w.dataset.final ?? (w.dataset.final = w.textContent)
+            const [, pre, num, post] = final.match(/^(\D*)(\d+)(\D*)$/)
+            w.textContent = `${pre}0${post}`
+            const t0 = performance.now() + t
+            const step = (now) => {
+              const k = Math.min(1, Math.max(0, (now - t0) / 900))
+              w.textContent = `${pre}${Math.round(Number(num) * (1 - (1 - k) ** 3))}${post}`
+              if (k < 1) requestAnimationFrame(step)
+            }
+            requestAnimationFrame(step)
+          }
+          t += WORD_MS
+          prev = w
+        })
+        line.querySelectorAll('b').forEach((b) => b.style.setProperty('--hl', `${t + 300}ms`))
+        section.classList.remove('words-in')
+        void section.offsetWidth // restart the CSS build-up
+        section.classList.add('words-in')
+      }
       function arrive(event) {
         const current = event.currentSlide
+        document.querySelectorAll('.intro-running').forEach((el) => { if (el !== current) el.classList.remove('intro-running') })
         const forward = !event.previousSlide || Reveal.getIndices(event.previousSlide).h < Reveal.getIndices(current).h
-        if (forward && current.classList.contains('kicker-intro')) kickerIntro(current)
+        const intro = forward && current.classList.contains('kicker-intro') && !reduce
+        if (intro) kickerIntro(current)
+        reels(current, intro ? 1500 : 300)
         frames().forEach((frame) => tell(frame, current.contains(frame) ? 'play' : 'prime'))
         films(current)
-        countUp(current)
+        countUp(current, intro ? 2000 : 0)
+        if (current.dataset.animate === 'words') wordsIn(current)
       }
       addEventListener('message', (event) => {
         if (event.origin !== location.origin || event.data?.silta !== 'ready?') return

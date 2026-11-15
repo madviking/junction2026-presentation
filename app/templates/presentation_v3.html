@@ -80,13 +80,13 @@
       </section>
       {%- elif s.layout == 'embed' %}
       <section class="l-embed"{% if s.id %} id="{{ s.id }}"{% endif %}>
-        <iframe class="embed" src="{{ s.src }}" title="{{ s.title }}"></iframe>
+        <iframe class="embed" src="{{ media(s.src) }}" title="{{ s.title }}"></iframe>
         {% if s.notes %}<aside class="notes">{{ s.notes }}</aside>{% endif %}
       </section>
       {%- elif s.layout == 'intro' %}
       {#- A centred entry slide. With kicker/title/line it introduces what follows; with none of them it
           introduces Silta: name, meaning and punchline from content/site.yaml, as on the front page. #}
-      <section class="l-intro"{% if s.id %} id="{{ s.id }}"{% endif %}>
+      <section class="l-intro"{% if s.id %} id="{{ s.id }}"{% endif %}{% if s.animate %} data-animate="{{ s.animate }}"{% endif %}>
         <div class="intro">
           {%- if s.kicker or s.title or s.line %}
           {% if s.kicker %}<p class="intro-kicker">{{ s.kicker }}</p>{% endif %}
@@ -118,6 +118,8 @@
               {% if s.line %}<p class="line">{{ s.line | safe }}</p>{% endif %}
               {% if s.who %}<p class="who">{{ s.who }}</p>{% endif %}
               {% if s.head_image %}<figure class="head-image"><img src="{{ s.head_image.src }}" alt="{{ s.head_image.alt }}"></figure>{% endif %}
+              {#- Screen reel: deck-v3.js loops the strip and spins it once per arrival (keeps scrolling in the video cut). -#}
+              {% if s.reel %}<div class="reel" role="img" aria-label="{{ s.reel_label or 'Screens from Silta' }}"><div class="reel-track">{% for src in s.reel %}<img src="{{ src }}" alt="" decoding="async">{% endfor %}</div></div>{% endif %}
             </div>
 
             <div class="stage">
@@ -179,7 +181,7 @@
             </div>
           </div>
 
-          <footer class="foot">
+          <footer class="foot{% if s.drills %} has-drills{% endif %}">
             {% if site.event %}<p class="event">{{ site.event }}</p>{% endif %}
             <div class="chips">
               {%- for d in s.drills or [] %}

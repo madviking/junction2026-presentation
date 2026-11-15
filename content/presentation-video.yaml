@@ -24,6 +24,9 @@
 # about 6 s and fades out; the first line small, the rest large), notes. The AI-footage disclaimer
 # lives elsewhere in the video, not on these slides.
 #
+# `animate: words` (intro slides): on arrival the kicker fades in, then the title if there is one, then the line rises in word by word with a
+# pause after each sentence, numbers count up as they appear and the <b> part gets a highlight.
+
 # Layout `fit` (deck v3 layout): the front page's simplified map of the routes into care, with the
 # steps where Silta helps (text from site.yaml `paths_fit`).
 
@@ -43,13 +46,13 @@ slides:
   - use: gap
   - use: earlier
   - use: routes
+    animate: words   # the line builds up sentence by sentence, the numbers count up, the finding is highlighted
   # The simpler pathway slide plays by default; the data-heavy one stays in the picker, unticked.
   - layout: fit
     id: pathway-simple
     label: "Where Silta fits: the routes into care, simplified"
     kicker: Where Silta fits
     title: Three ways into cancer care.
-    line: "Silta helps on each one, until the <b>diagnostic exam</b>."
     notes: "The front page's map. A screening letter, a symptom, or a test a doctor orders: all three meet at the diagnostic exam. Silta works before it; specialist care is planned next."
   - use: pathway
     skip: true
@@ -66,6 +69,7 @@ slides:
   - use: county
   - use: safe
   - use: reach
+    animate: words   # kicker, then the title, then the line word by word
   - use: ways-in
   - use: running
   - use: close

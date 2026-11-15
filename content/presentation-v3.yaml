@@ -28,11 +28,11 @@ gap_trend:
 slides:
   - layout: opener
     id: hodan
-    kicker: Helsinki · cervical screening
+    kicker: Helsinki · cervical cancer screening
     title: Meet Hodan.
-    line: "She is 54 and has lived in Helsinki for years. Her language is Somali. She opens her second invitation to cervical screening, puts it away, and doesn't go."
+    line: "She is 54 and has lived in Helsinki for years. Her language is Somali. She opens her second invitation to cervical cancer screening, puts it away, and doesn't go."
     letter: /media/screens/v3/letter-fi.png
-    letter_alt: "A cervical screening invitation in Finnish, addressed to Hodan Warsame in Helsinki."
+    letter_alt: "A cervical cancer screening invitation in Finnish, addressed to Hodan Warsame in Helsinki."
     # A still from the opening film, under the text; fades in shortly after the slide. The video cut
     # (presentation-video.yaml) turns it off, since the film itself plays just before.
     head_image: {src: /media/photos/hodan-opens-letter.webp, alt: "Hodan in her kitchen, opening the envelope."}
@@ -42,6 +42,7 @@ slides:
   - layout: number
     id: gap
     kicker: She is not alone
+    kicker_intro: true
     title: "Same letter.<br><em>27% fewer come.</em>"
     line: "People whose native language is not Finnish or Swedish attend cancer screening far less, in every programme."
     drills:
@@ -58,10 +59,10 @@ slides:
         title: Women like Hodan attend least
         items:
           - value: "19% vs 67%"
-            text: "Somali-origin women vs Finnish women attending cervical screening."
+            text: "Somali-origin women vs Finnish women attending cervical cancer screening."
             source: "Peer-reviewed study of migrant-origin women in Finland (PMC7663516)"
           - value: "46% vs 73%"
-            text: "Africa-born vs Finland-born women, cervical screening 2019–2023: still <b>26% lower</b> after adjusting for age, education and residence."
+            text: "Africa-born vs Finland-born women, cervical cancer screening 2019–2023: still <b>26% lower</b> after adjusting for age, education and residence."
             source: "Finnish Cancer Registry study, November 2026"
       - kind: county
         label: For the county
@@ -71,7 +72,7 @@ slides:
             text: "foreign-language residents in Helsinki, 21.2% of the city. Somali is its second-largest foreign language."
             source: "Statistics Finland, population by language 2025"
           - value: "51%"
-            text: "of Finland's foreign-language residents live in Helsinki, Vantaa–Kerava and Länsi-Uusimaa, the three areas with the lowest breast-screening attendance."
+            text: "of Finland's foreign-language residents live in Helsinki, Vantaa–Kerava and Länsi-Uusimaa, the three areas with the lowest breast cancer screening attendance."
             source: "Statistics Finland 2025 · Sotkanet"
     source: "Finnish Cancer Registry, 2024"
     notes: "The 27% is relative, not percentage points: breast 83.2 vs 60.8, cervical 76.2 vs 56.3, colorectal 74.5 vs 53.4."
@@ -79,10 +80,11 @@ slides:
   - layout: stages
     id: earlier
     kicker: Why it matters
+    kicker_intro: true
     title: Found earlier, <em>treated more easily.</em>
-    line: "The earlier cancer is found, the easier and cheaper it is to treat. Screening finds it before symptoms start; cervical screening, even before it becomes cancer."
+    line: "The earlier cancer is found, the easier and cheaper it is to treat. Screening finds it before symptoms start; cervical cancer screening, even before it becomes cancer."
     stages:
-      - {tone: early, label: Precancer, text: "Cervical screening finds cell changes before they become cancer."}
+      - {tone: early, label: Precancer, text: "Cervical cancer screening finds cell changes before they become cancer."}
       - {tone: early, label: Local, text: "Small, not spread. Simpler treatment."}
       - {tone: late, label: Spread nearby, text: "Lymph nodes involved. More treatment."}
       - {tone: late, label: Advanced, text: "Hardest to treat, highest cost."}
@@ -95,7 +97,7 @@ slides:
         title: What a missed screening means for her
         items:
           - value: "1.8×"
-            text: "Women who skip cervical screening have about 1.8 times the cervical cancer rate of women who attend."
+            text: "Women who skip cervical cancer screening have about 1.8 times the cervical cancer rate of women who attend."
             source: "Our analysis of Finnish Cancer Registry data, 2020–2024"
       - kind: county
         label: For the county
@@ -145,7 +147,7 @@ slides:
     line: "Hodan scans the code on her letter. Silta explains the screening in Somali, with pictures and a voice."
     from: {kind: paper, src: /media/screens/v3/letter-fi.png, pos: "center bottom", alt: "The foot of Hodan's Finnish screening letter with the Silta QR code and one line in 14 languages."}
     screens:
-      - {src: /media/screens/v3/guide-so-start.png, alt: "The cervical screening guide in Somali: an envelope picture, a short introduction with a listen button and five parts."}
+      - {src: /media/screens/v3/guide-so-start.png, alt: "The cervical cancer screening guide in Somali: an envelope picture, a short introduction with a listen button and five parts."}
       - {src: /media/screens/v3/guide-so-why.png, alt: "Part 1 of 5 in Somali, 'Why it matters', with a picture and a listen button."}
     drills:
       - kind: person
@@ -171,7 +173,7 @@ slides:
         title: Booked slots that stay empty
         items:
           - value: "up to €1.95M"
-            text: "a year: breast-screening slots booked for people who do not come (upper bound; units overbook)."
+            text: "a year: breast cancer screening slots booked for people who do not come (upper bound; units overbook)."
             source: "Our calculation from Cancer Registry data and Ministry unit costs"
     source: "Screens from the running app"
     notes: "Press → once: the letter shrinks away and the guide appears in its place."
@@ -287,6 +289,7 @@ slides:
   - layout: cards
     id: county
     kicker: For the wellbeing services county
+    kicker_intro: true
     title: What's in it <em>for the county.</em>
     line: "More people screened, better-prepared visits and data it never had, without an IT project or personal data."
     cards:
@@ -334,6 +337,7 @@ slides:
   - layout: cards
     id: safe
     kicker: Trust
+    kicker_intro: true
     title: Safe to use <em>today.</em>
     line: "Built to stay on the right side of medical-device, privacy and AI rules, so people can use it before any county joins."
     cards:
@@ -356,7 +360,7 @@ slides:
         label: What we don't claim
         title: Said out loud, so the numbers can be trusted
         items:
-          - text: "<b>Language is not proven to cause the gap.</b> It survives controls for breast and colorectal screening; for cervical, municipal variation tracks unemployment."
+          - text: "<b>Language is not proven to cause the gap.</b> It survives controls for breast and colorectal cancer screening; for cervical, municipal variation tracks unemployment."
             source: "Our analysis of Cancer Registry and Statistics Finland data"
           - text: "<b>No lives-saved figures.</b> We show cost per screening and break-even points only."
             source: "Our analysis"
@@ -383,8 +387,34 @@ slides:
   - layout: facts
     id: running
     kicker: Built this weekend
+    kicker_intro: true
     title: Already <em>running.</em>
     line: "A live product on real data, not a mock-up."
+    # Screen reel under the line: the resident app and the admin views spin past and stop on the
+    # first screen (deck: one 4 s spin per arrival; video cut: starts as fast, then slows down gradually). Desktop screens from
+    # `node scripts/capture_running_screens.mjs`, phones from capture_v3_screens.mjs. First = rest screen.
+    reel_label: "Screens from the live Silta app and its admin: resident steps, county service paths, the journey editor, texts, audio and versions."
+    reel:
+      - /media/screens/running/admin-service-paths.png
+      - /media/screens/v3/path-need.png
+      - /media/screens/running/admin-journey.png
+      - /media/screens/v3/path-route.png
+      - /media/screens/running/admin-area-steps.png
+      - /media/screens/v3/guide-so-start.png
+      - /media/screens/running/county-helsinki.png
+      - /media/screens/v3/olga-cards-ru.png
+      - /media/screens/running/admin-content.png
+      - /media/screens/v3/path-door.png
+      - /media/screens/running/admin-area-metrics.png
+      - /media/screens/v3/path-script.png
+      - /media/screens/running/admin-service-paths-compare.png
+      - /media/screens/v3/guide-so-visit.png
+      - /media/screens/running/admin-audio.png
+      - /media/screens/v3/path-card-so.png
+      - /media/screens/running/admin-area-doors.png
+      - /media/screens/v3/olga-summary-fi.png
+      - /media/screens/running/admin-versions.png
+      - /media/screens/v3/path-visit.png
     facts:
       - {value: "14", label: "languages, every card read aloud"}
       - {value: "316", label: "automated tests, backend and end-to-end"}
@@ -418,7 +448,8 @@ slides:
 
   - layout: close
     id: close
-    kicker: Helsinki pilot
+    kicker: Regional pilot
+    kicker_intro: true
     title: Silta works before the first appointment, <em>from today.</em>
     line: "Hodan's next letter carries a QR code. A pilot in Helsinki: the code on the invitations and Silta at the health stations, measured with the registry's attendance by native language."
     letter: /media/screens/v3/letter-fi.png
@@ -432,10 +463,9 @@ slides:
     kicker: The team
     title: Built by <em>a family.</em>
     line: "Three Railos at one table this weekend: product and pitch, backend and data, design and story."
-    photo: ""   # /media/team.jpg when the photo is ready
+    photo: /media/photos/team-railo.jpg   # brightened and warmed from the original
     people:
-      - {name: Timo Railo, role: "Product, architecture, pitch"}
-      - {name: Mea Railo, role: "Backend, data"}
-      - {name: Milla Railo, role: "UX, design, video, data storytelling"}
-    source: "Junction 2026 · AstraZeneca — Equal Care Across Finland"
-    notes: "Add the photo as content/media/team.jpg and set photo: /media/team.jpg."
+      - {name: Timo Railo, role: Dad}
+      - {name: Milla Railo, role: Big Sister}
+      - {name: Mea Railo, role: Little Sister}
+    notes: "Close on the people who built it."

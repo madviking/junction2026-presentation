@@ -174,6 +174,19 @@ dt { color: var(--muted); } dd { margin: 0; }
   .pulse.live { animation: pulse 1.3s ease-out infinite; transform-box: fill-box; transform-origin: center; }
   .hint i { animation: blink 1.3s ease-in-out infinite; }
 }
+/* In the deck (an iframe; the deck sends {silta: 'prime'} and {silta: 'play'}): primed = hidden and
+   ready; building = the arrival order: the title, then the two boxes on the right one after the other,
+   then the map (its lines draw in). The recording version (deck body[data-record]) keeps the boxes to
+   their titles. */
+.primed .top, .primed .idea, .primed .map { opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .building .top { animation: rise .8s ease-out both; }
+  .building .idea { animation: rise .7s ease-out both; animation-delay: calc(1000ms + var(--k, 0) * 700ms); }
+  .building .map { animation: appear .6s ease-out 2600ms both; }
+}
+.record .idea p { display: none; }
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } }
+@keyframes appear { from { opacity: 0; } }
 @keyframes draw { to { stroke-dashoffset: 0; } }
 @keyframes flow { to { stroke-dashoffset: -16; } }
 @keyframes pulse { 0% { transform: scale(1); opacity: .9; } 100% { transform: scale(3.4); opacity: 0; } }
@@ -291,9 +304,9 @@ const CHANNELS = [
     unlock: { now: 2, county: 1, doctor: 0, nurse: 0, national: 1 },
     summary: 'Trusted people from the community introduce Silta in their own language. The channel with the strongest evidence.',
     why: [
-      { n: 'OR 1.90', t: 'breast, cervical and bowel screening with community-based health workers; people never screened before gained most', src: 'cdc-chw', strength: 'strong' },
-      { n: 'OR 2.25', t: 'colorectal screening with community health worker programmes in ethnic-minority populations (10 studies); multicomponent programmes worked best', src: 'chw-crc', strength: 'strong' },
-      { n: '27.4% vs 11.9%', t: 'colorectal screening with a language-concordant navigator (US community health centres)', src: 'navigator', strength: 'strong' },
+      { n: 'OR 1.90', t: 'breast, cervical and bowel cancer screening with community-based health workers; people never screened before gained most', src: 'cdc-chw', strength: 'strong' },
+      { n: 'OR 2.25', t: 'colorectal cancer screening with community health worker programmes in ethnic-minority populations (10 studies); multicomponent programmes worked best', src: 'chw-crc', strength: 'strong' },
+      { n: '27.4% vs 11.9%', t: 'colorectal cancer screening with a language-concordant navigator (US community health centres)', src: 'navigator', strength: 'strong' },
       { n: '42%', t: 'had a mammogram within 6 months after mosque-based peer education (Chicago pilot, n = 58, no control group)', src: 'mosque', strength: 'indicative' },
     ],
     plan: {
@@ -398,7 +411,7 @@ const CHANNELS = [
     unlock: { now: 1, county: 1, doctor: 1, nurse: 2, national: 1 },
     summary: 'When a doctor\'s appointment is booked for someone with limited Finnish, the nurse sends a Silta link. The person fills in the checklist in their language; the doctor gets a Finnish summary.',
     why: [
-      { n: '+13.8 pp', t: 'breast screening with patient navigation (RR 1.50, 42 RCTs, about 39,000 people); cervical about +15.6 pp. Navigation is often nurse-delivered: the closest evidence we have.', src: 'nav-jama', strength: 'strong' },
+      { n: '+13.8 pp', t: 'breast cancer screening with patient navigation (RR 1.50, 42 RCTs, about 39,000 people); cervical about +15.6 pp. Navigation is often nurse-delivered: the closest evidence we have.', src: 'nav-jama', strength: 'strong' },
       { n: 'Same length', t: 'consultations when patients prepare questions in advance: they ask more without the visit getting longer (overview of 11 systematic reviews)', src: 'qpl', strength: 'strong' },
       { n: '32 vs 28 min', t: 'provider time for interpreted vs non-interpreted visits (US). This is the time a prepared summary can win back.', src: 'interp-time', strength: 'moderate' },
       { n: 'Gap', t: 'No study found on nurse-sent pre-visit links. The pilot would produce the first evidence.', src: null, strength: 'gap' },
@@ -418,7 +431,7 @@ const CHANNELS = [
     summary: 'A QR code and short link in the invitation and SMS reminder, landing on "what is this letter" in the person\'s language with a booking step.',
     why: [
       { n: '46.5% vs 47.4%', t: 'translated invitation vs standard: no effect. The QR must lead to an action (book, rebook, kit), not only an explanation.', src: 'norway-letter', strength: 'strong' },
-      { n: '64.4% vs 59.1%', t: 'first breast-screening attendance with an SMS reminder 48 h before (London RCT, n = 2,240); women in the most deprived areas gained most', src: 'sms-london', strength: 'strong' },
+      { n: '64.4% vs 59.1%', t: 'first breast cancer screening attendance with an SMS reminder 48 h before (London RCT, n = 2,240); women in the most deprived areas gained most', src: 'sms-london', strength: 'strong' },
       { n: '+17%', t: 'total attendance when a self-sampling kit was the first reminder (31 Finnish municipalities)', src: 'fi-selfsample', strength: 'strong' },
       { n: 'Gap', t: 'No study found on QR codes in screening invitations. Measuring scans per 1,000 letters in the pilot would be new evidence.', src: null, strength: 'gap' },
     ],
@@ -438,7 +451,7 @@ const CHANNELS = [
     why: [
       { n: '56% vs ~13%', t: 'took an HPV self-sampling kit offered during a GP visit, vs response to postal kits; 65% returned it', src: 'youscreen', strength: 'strong' },
       { n: '+7.2 pp', t: 'median screening gain from provider reminders, the same prompt the clinician view gives', src: 'provider-reminder', strength: 'strong' },
-      { n: 'OR 1.07', t: 'bowel screening uptake with a GP-endorsed invitation in England (57.5% → 58.2%, ~265,000 people): small per person, real at national scale', src: 'ascend', strength: 'strong' },
+      { n: 'OR 1.07', t: 'bowel cancer screening uptake with a GP-endorsed invitation in England (57.5% → 58.2%, ~265,000 people): small per person, real at national scale', src: 'ascend', strength: 'strong' },
       { n: '60% vs 18%', t: 'would use an app their doctor recommended vs one recommended by family (US survey, 2012)', src: 'app-rec', strength: 'indicative' },
       { n: 'More visits', t: 'foreign-background residents in big Finnish cities make more primary-care doctor visits than others: many chances to offer', src: 'thl-visits', strength: 'moderate' },
     ],
@@ -491,10 +504,10 @@ const CHANNELS = [
 const SOURCES = {
   'cdc-chw': { label: 'Community health workers and cancer screening, meta-analysis of 30 studies', url: 'https://www.pubmed.gov/29080378/' },
   'guide-chw': { label: 'Community Preventive Services Task Force, CHW interventions, 76 studies', url: 'https://pubmed.ncbi.nlm.nih.gov/36543699/' },
-  'navigator': { label: 'Language-concordant patient navigation RCT, colorectal screening', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC2628981' },
+  'navigator': { label: 'Language-concordant patient navigation RCT, colorectal cancer screening', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC2628981' },
   'kela-occ': { label: 'Kela, occupational health care costs and coverage 2024', url: 'https://www.kela.fi/tietotarjotin/1434746-tyoterveyshuollon-kustannukset-olivat-vuonna-2024-noin-600-euroa-tyontekijaa-kohti' },
   'stat-sectors': { label: 'Statistics Finland, employment of people with foreign background', url: 'https://stat.fi/en/publication/cm6uhzyb4edzf07uqd79p16ku' },
-  'chw-crc': { label: 'Rana et al., CHW-led colorectal screening in ethnic minorities, meta-analysis', url: 'https://chwcentral.org/resources/effectiveness-of-community-health-worker-led-interventions-in-enhancing-colorectal-cancer-screening-uptake-in-racial-and-ethnic-minority-populations-a-systematic-review-and-meta-analysis/' },
+  'chw-crc': { label: 'Rana et al., CHW-led colorectal cancer screening in ethnic minorities, meta-analysis', url: 'https://chwcentral.org/resources/effectiveness-of-community-health-worker-led-interventions-in-enhancing-colorectal-cancer-screening-uptake-in-racial-and-ethnic-minority-populations-a-systematic-review-and-meta-analysis/' },
   'mosque': { label: 'UChicago Medicine, mosque-based peer education pilot', url: 'https://www.uchicagomedicine.org/forefront/cancer-articles/faith-based-messaging-leads-to-more-mammograms-for-muslim-women' },
   'noticeboard': { label: 'Waiting-room notice boards and leaflets, UK general practice', url: 'https://pubmed.ncbi.nlm.nih.gov/7843520/' },
   'qr-poster': { label: 'QR-code poster for influenza vaccination, 2022', url: 'https://doaj.org/article/0b4f9681f3614a8c97d2b8c4ee91057e' },
@@ -507,8 +520,8 @@ const SOURCES = {
   'nav-jama': { label: 'Patient navigation and cancer screening, 42 RCTs, JAMA Intern Med 2025', url: 'https://researchexchange.ocrahope.org/papers/jamainternmed-2025-1590' },
   'qpl': { label: 'Question prompt lists: overview of reviews (2019) and meta-analysis (2024)', url: 'https://www.pubmed.gov/38492095/' },
   'interp-time': { label: 'Interpreter use and visit length, US primary care', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC1494905' },
-  'sms-london': { label: 'SMS reminder before first breast screening, London RCT, Br J Cancer 2015', url: 'https://news.cancerresearchuk.org/2015/03/19/text-message-reminders-boost-breast-cancer-screening-attendance/' },
-  'ascend': { label: 'ASCEND trial, GP-endorsed bowel screening invitation, Br J Cancer 2016', url: 'https://www.imperial.ac.uk/department-surgery-cancer/csprg/about-our-studies/ascend/ascend-research-summary/' },
+  'sms-london': { label: 'SMS reminder before first breast cancer screening, London RCT, Br J Cancer 2015', url: 'https://news.cancerresearchuk.org/2015/03/19/text-message-reminders-boost-breast-cancer-screening-attendance/' },
+  'ascend': { label: 'ASCEND trial, GP-endorsed bowel cancer screening invitation, Br J Cancer 2016', url: 'https://www.imperial.ac.uk/department-surgery-cancer/csprg/about-our-studies/ascend/ascend-research-summary/' },
   'stat-ai': { label: 'Statistics Finland, use of generative AI 2025 (12 Nov 2025)', url: 'https://stat.fi/julkaisu/cmh32zpp67l1z07w6yfukiiqd' },
   'kff-ai': { label: 'KFF tracking poll on health information and trust, 2026 (US)', url: 'https://www.kff.org/health-information-trust/new-kff-tracking-poll-on-health-information-and-trust-finds-one-in-three-adults-have-used-ai-chatbots-for-health-advice/' },
   'pew-ai': { label: 'Pew Research, Google users click less when an AI summary appears (2025)', url: 'https://www.pewresearch.org/short-reads/2025/07/22/google-users-are-less-likely-to-click-on-links-when-an-ai-summary-appears-in-the-results/' },
@@ -527,7 +540,7 @@ const SOURCES = {
   'interp-errors': { label: 'Flores et al., interpreter errors in paediatric emergency care', url: 'https://pubmed.ncbi.nlm.nih.gov/22424655/' },
   'provider-reminder': { label: 'CDC / Community Guide, provider reminder interventions', url: 'https://cdc.gov/cancer/php/ebi-planning-guides/provider-reminder-planning-guide.html' },
   'norway-letter': { label: 'Norway RCT, invitation in language of origin, n = 11,347', url: 'https://portal.research.lu.se/en/publications/effect-of-invitation-letter-in-language-of-origin-on-screening-at/' },
-  'fit-reminders': { label: 'Reminder interventions for FIT colorectal screening, reviews', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9285860' },
+  'fit-reminders': { label: 'Reminder interventions for FIT colorectal cancer screening, reviews', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9285860' },
   'fi-selfsample': { label: 'HPV self-sampling as reminder, 31 Finnish municipalities', url: 'https://link.springer.com/content/pdf/10.1186/s12885-016-2246-9.pdf' },
   'youscreen': { label: 'YouScreen, HPV self-sampling offered in 133 London GP practices', url: 'https://oldweb.eveappeal.org.uk/blog/piloting-hpv-self-sampling-tests-in-primary-care-shown-to-be-a-game-changer-for-people-who-have-not-attended-cervical-screening/' },
   'thl-visits': { label: 'THL 17/2018, health service use of foreign-background residents', url: 'https://core.ac.uk/download/158573636.pdf' },
@@ -717,7 +730,7 @@ const statList = (list) => `<div class="stats">${list.map((w) => `<div class="st
 function overview() {
   const lang = LANG_EVIDENCE[0];
   const extra = { discover: '', trust: `Care in the patient's own language improved outcomes in ${esc(lang.n)} studies (<a href="${esc(lang.url)}" target="_blank" rel="noopener">${esc(lang.short)}</a>). ` };
-  const idea = (k) => `<section class="idea ${k}">
+  const idea = (k) => `<section class="idea ${k}" style="--k: ${k === 'trust' ? 1 : 0}">
       <h2>${esc(GROUPS[k].title)}</h2><p>${esc(GROUPS[k].text)}</p>
       <p class="small">${extra[k]}<button type="button" class="textbtn" data-go="group:${k}">See the ${GROUPS[k].ids.length} channels</button></p></section>`;
   return idea('discover') + idea('trust');
@@ -863,16 +876,46 @@ renderPanel();
 paint();
 
 // ---- Lines draw in, then one channel at a time lights up until the first interaction ----
-if (!reduced) {
-  svg.classList.add('intro');
-  setTimeout(() => svg.classList.remove('intro'), 1700);
+// Standalone this plays on load. In the deck it waits for {silta: 'play'} and builds up in order
+// (CSS .building): title, the boxes on the right, then the map; {silta: 'prime'} hides it again.
+let timers = [];
+const later = (ms, fn) => timers.push(setTimeout(fn, ms));
+function stopTimers() { timers.forEach(clearTimeout); timers = []; }
+function intro(mapAt) {
+  stopTimers();
+  if (reduced) return;
+  later(mapAt, () => { svg.classList.remove('intro'); void svg.getBoundingClientRect(); svg.classList.add('intro'); });
+  later(mapAt + 1700, () => svg.classList.remove('intro'));
   let k = 0;
   const tick = () => {
     if (state.touched) return;
     state.demo = { type: 'channel', id: DEMO[k++ % DEMO.length] };
     paint();
-    setTimeout(tick, 2600);
+    later(2600, tick);
   };
-  setTimeout(tick, 1900);
+  later(mapAt + 1900, tick);
+}
+const body = document.body;
+if (window.parent !== window) {
+  try { if (window.parent.document.body.hasAttribute('data-record')) body.classList.add('record'); } catch (err) { /* not the deck */ }
+  // No class until the deck speaks: without messages (the PDF export) the slide simply stays drawn.
+  window.addEventListener('message', (e) => {
+    if (e.origin !== location.origin || !e.data || !e.data.silta) return;
+    if (e.data.silta === 'prime') {
+      stopTimers();
+      if (!state.touched) { state.sel = null; state.demo = null; renderPanel(); paint(); }
+      body.classList.remove('building');
+      body.classList.add('primed');
+    } else if (e.data.silta === 'play') {
+      body.classList.remove('primed', 'building');
+      void body.offsetWidth; // restart the build-up
+      body.classList.add('building');
+      intro(2600);
+      later(4000, () => body.classList.remove('building'));
+    }
+  });
+  window.parent.postMessage({ silta: 'ready?' }, location.origin);
+} else {
+  intro(0);
 }
 </script>

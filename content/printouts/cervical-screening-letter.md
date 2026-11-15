@@ -1,5 +1,5 @@
 ---
-title: Example cervical screening letter — 14 languages
+title: Example cervical cancer screening letter — 14 languages
 description: Sample screening invitation with the Silta QR code, in 14 languages.
 qr: screening_guide
 tags: [screening, letter, cervical, languages]
@@ -44,4 +44,4 @@ Each letter page has a print button and a language picker.
 
 Prefer to talk? The Silta phone line answers in the caller's language: **+1 878 425 5777**.
 
-Sources: City of Helsinki and HUS cervical screening pages (checked 14 Nov 2026); Norway RCT in `brain/sources/2026-11-13-web-research-minorities-screening.md`. Translations other than English and Finnish are machine-made and not yet checked by native speakers.
+Sources: City of Helsinki and HUS cervical cancer screening pages (checked 14 Nov 2026); Norway RCT in `brain/sources/2026-11-13-web-research-minorities-screening.md`. Translations other than English and Finnish are machine-made and not yet checked by native speakers.

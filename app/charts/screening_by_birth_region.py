@@ -7,7 +7,7 @@ from app.charts import FONT, new_figure, read_csv
 
 CHART = {
     "title": "Attendance by region of birth, 2024",
-    "subtitle": "People born in Africa attend breast and colorectal screening at just over half the rate of people born in Finland.",
+    "subtitle": "People born in Africa attend breast and colorectal cancer screening at just over half the rate of people born in Finland.",
     "source": "Finnish Cancer Registry, screening statistics 2024 (brain: sources/2026-11-14-cancerregistry-screening-by-language.md)",
     "order": 40,
     "wide": True,

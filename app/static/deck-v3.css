@@ -86,11 +86,27 @@ html, body { background: var(--paper); color: var(--ink); }
 @keyframes head-image-in { from { opacity: 0; transform: translateY(8px); } }
 .stage { position: relative; min-height: 0; display: flex; align-items: center; justify-content: center; }
 
+/* Screen reel under the head's line (the "running" slide): one strip of app and admin screens at one
+   height. At rest the first screen (16:10) sits centred; deck-v3.js spins the strip one full loop on
+   arrival and stops there, or keeps it scrolling in the video cut. Both edges fade out. */
+.reel {
+  --reel-h: 224px;
+  margin: 0 -10px; padding: 10px 0; overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 32px, #000 calc(100% - 32px), transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 32px, #000 calc(100% - 32px), transparent);
+}
+.reel-track { display: flex; gap: 12px; width: max-content; height: var(--reel-h); padding-left: calc(50% - 0.8 * var(--reel-h)); will-change: transform; }
+.reel-track img { flex: none; box-sizing: border-box; height: 100%; width: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--white); box-shadow: 0 4px 14px rgba(20, 32, 40, 0.12); }
+
 /* foot */
 .foot { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); border-top: 1px solid var(--line); padding-top: 10px; }
 .chips { display: flex; gap: var(--s1); flex-wrap: nowrap; flex: none; margin-right: auto; }
 .chip { white-space: nowrap; }
 /* The event line (site.yaml `event`) on the left of every framed slide; chips follow it, the source sits right. */
+/* With drill-in chips in the foot the event line steps aside; the recording version shows it again
+   when its chips are hidden. */
+.foot.has-drills .event { display: none; }
+.record.playing:not(.show-drills) .foot.has-drills .event { display: block; }
 .event { flex: none; font: 600 var(--t-source)/1.35 var(--f-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
 .source { font: 500 var(--t-source)/1.35 var(--f-mono); color: var(--muted); text-align: right; max-width: 520px; min-width: 0; flex: 0 1 auto; opacity: 0.85; }
 
@@ -251,6 +267,23 @@ i.dom { background: var(--lake); } i.oth { background: var(--coral); }
 .intro-line.solo { max-width: 900px; margin-top: var(--s1) !important; font: 700 34px/1.3 var(--f-display); letter-spacing: -0.01em; text-wrap: balance; }
 .intro-line b { color: var(--coral); }
 
+/* data-animate="words" (intro slides, set in the video cut): deck-v3.js splits the line into words and
+   replays the build-up on every arrival. Each word rises in at its own --d; the <b> finding gets a soft
+   highlight that sweeps across it (--hl) once its last word is in. */
+.l-intro .w { display: inline-block; }
+@media screen and (prefers-reduced-motion: no-preference) {
+  .words-in .intro-kicker { animation: word-in 700ms cubic-bezier(.2,.7,.2,1) both; }
+  .words-in .intro-title { animation: word-in 900ms cubic-bezier(.2,.7,.2,1) 400ms both; }
+  .words-in .w { animation: word-in 650ms cubic-bezier(.2,.7,.2,1) both; animation-delay: var(--d, 0ms); }
+  .words-in .intro-line b {
+    background: linear-gradient(var(--coral-soft), var(--coral-soft)) no-repeat 0 92% / 0% 0.42em;
+    -webkit-box-decoration-break: clone; box-decoration-break: clone;
+    animation: highlight 900ms cubic-bezier(.4,0,.2,1) both; animation-delay: var(--hl, 0ms);
+  }
+}
+@keyframes word-in { from { opacity: 0; transform: translateY(0.45em); filter: blur(6px); } }
+@keyframes highlight { to { background-size: 100% 0.42em; } }
+
 /* kicker-intro: on arrival the kicker opens large in the centre, then moves to its place while the
    rest of the slide fades in (deck-v3.js). The kicker needs a box to scale. */
 .kicker-intro .kicker { display: inline-block; transform-origin: 50% 50%; }
@@ -315,8 +348,9 @@ i.dom { background: var(--lake); } i.oth { background: var(--coral); }
 
 /* ---- layout: team ------------------------------------------------------------------- */
 .team { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s3); width: 100%; }
-.team-photo { height: 320px; border-radius: var(--radius); overflow: hidden; background: var(--white); border: 2px dashed var(--line); display: flex; align-items: center; justify-content: center; }
-.team-photo img { width: 100%; height: 100%; object-fit: cover; }
+.team-photo { height: 360px; border-radius: var(--radius); overflow: hidden; background: var(--white); border: 2px dashed var(--line); display: flex; align-items: center; justify-content: center; }
+.team-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 62%; }
+.team-photo:has(img) { border: 0; box-shadow: var(--shadow); }
 .team-photo span { font: 600 var(--t-label)/1 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 .people { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s3); }
 .people li { display: grid; gap: 6px; border-top: 3px solid var(--coral); padding-top: var(--s2); }
@@ -357,11 +391,14 @@ i.dom { background: var(--lake); } i.oth { background: var(--coral); }
 
 /* ---- recording: /presentation/record ------------------------------------------------
    deck-record.js: a slide picker first, then the chosen slides with no chrome. The drill-in chips
-   stay in place but hidden unless "show-drills"; the pointer hides when idle. The deck ground
+   are hidden unless "show-drills", the footer unless "show-foot"; the pointer hides when idle. The deck ground
    (--paper) fills the bars around the 16:9 slide on a 16:10 screen. */
 .record .reveal { visibility: hidden; }
 .record.playing .reveal { visibility: visible; }
 .record.playing:not(.show-drills) .foot .chips { display: none; }
+/* The footer (event line, source, rule) is off unless "show-foot"; it keeps its space, so slides don't shift. */
+.record.playing:not(.show-foot) .foot { border-top-color: transparent; }
+.record.playing:not(.show-foot) .foot > :not(.chips) { visibility: hidden; }
 .record.idle, .record.idle * { cursor: none !important; }
 .record.idle iframe.embed { pointer-events: none; }
 
@@ -420,7 +457,7 @@ i.dom { background: var(--lake); } i.oth { background: var(--coral); }
 .l-fit .title { white-space: nowrap; }
 .l-fit .stage { align-items: stretch; }
 /* The map takes the height the steps leave and keeps its shape (centred), so nothing reaches the foot. */
-.fit { width: 100%; height: 100%; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: var(--s2); }
+.fit { width: 100%; height: 100%; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: var(--s4); }
 .fit-map { display: block; width: 100%; height: 100%; min-height: 0; font-family: var(--f-body); }
 .fit-map .fit-zone { fill: var(--lake-soft); }
 .fit-map .fit-zone-label { font: 800 22px var(--f-display); fill: var(--lake); }
@@ -452,6 +489,11 @@ i.dom { background: var(--lake); } i.oth { background: var(--coral); }
 @keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 @keyframes pop { from { opacity: 0; transform: scale(0.4); } }
 @keyframes card-in { from { opacity: 0; transform: translateY(12px); } }
+@keyframes card-in-late { from { opacity: 0; transform: translateY(12px); } }
+/* *-late: the same build-ups restarted after a kicker intro (a cancelled CSS animation only restarts
+   under a new name). */
+@keyframes grow-x-late { from { transform: scaleX(0); } }
+@keyframes fade-in-late { from { opacity: 0; } }
 @media screen and (prefers-reduced-motion: no-preference) {
   .reveal section.present .gapbar-track i, .sheet:not([hidden]) .gapbar-track i {
     transform-origin: left center; animation: grow-x 900ms cubic-bezier(.2,.7,.2,1) both;
@@ -463,6 +505,15 @@ i.dom { background: var(--lake); } i.oth { background: var(--coral); }
   .reveal section.present .gapbar-track b, .sheet:not([hidden]) .gapbar-track b { animation-delay: 1000ms; }
   .reveal section.present .gapbar-rel, .sheet:not([hidden]) .gapbar-rel { animation: fade-in 300ms ease-out 100ms both; }
   .reveal section.present .legend, .sheet:not([hidden]) .legend { animation: fade-in 500ms ease-out 1100ms both; }
+  /* After a kicker intro (2.4 s, deck-v3.js) the gap bars build up once the slide has faded in. */
+  .reveal section.present.intro-running .stage .gapbar-track i { animation-name: grow-x-late; }
+  .reveal section.present.intro-running .stage :is(.gapbar-track b, .gapbar-rel, .legend) { animation-name: fade-in-late; }
+  .reveal section.present.intro-running .stage .gapbar:nth-child(1) .gapbar-track i { animation-delay: 2150ms; }
+  .reveal section.present.intro-running .stage .gapbar:nth-child(2) .gapbar-track i { animation-delay: 2270ms; }
+  .reveal section.present.intro-running .stage .gapbar:nth-child(3) .gapbar-track i { animation-delay: 2390ms; }
+  .reveal section.present.intro-running .stage .gapbar-track b { animation-delay: 3000ms; }
+  .reveal section.present.intro-running .stage .gapbar-rel { animation-delay: 2100ms; }
+  .reveal section.present.intro-running .stage .legend { animation-delay: 3100ms; }
 
   .sheet:not([hidden]) .trend .line { stroke-dasharray: 1; animation: draw 1400ms ease-in-out 200ms both; }
   .sheet:not([hidden]) .trend .dot, .sheet:not([hidden]) .trend .end { animation: fade-in 400ms ease-out 1500ms both; }
@@ -477,6 +528,14 @@ i.dom { background: var(--lake); } i.oth { background: var(--coral); }
   .reveal section.present .fit-map .fit-zone-care, .reveal section.present .fit-map .fit-zone-label-care, .reveal section.present .fit-map .fit-zone-tag { animation: fade-in 600ms ease-out 1400ms both; }
   /* Cards slides: the cards fade in one at a time, in reading order. */
   .reveal section.present.l-cards .card { animation: card-in 600ms ease-out both; animation-delay: calc(500ms + var(--i, 0) * 450ms); }
-  .reveal section.present .fit-steps li { animation: fade-in 500ms ease-out both; }
-  .reveal section.present .fit-steps li { animation-delay: calc(1800ms + var(--i, 0) * 120ms); }
+  /* After a kicker intro (2.4 s, deck-v3.js) the cards start once the slide has faded in. */
+  .reveal section.present.l-cards.intro-running .card { animation-name: card-in-late; animation-delay: calc(2200ms + var(--i, 0) * 450ms); }
+  /* Recording version, the Silta slide: the punchline fades in first, then the name and its meaning. */
+  .record .reveal section.present .intro-claim { animation: card-in 900ms ease-out 300ms both; }
+  .record .reveal section.present .intro-name { animation: card-in 900ms ease-out 1700ms both; }
+  .record .reveal section.present .intro-meaning { animation: fade-in 700ms ease-out 2200ms both; }
+  /* Order on the fit slide: the map draws (0–2 s), then the title fades in, then the steps one by one. */
+  .reveal section.present.l-fit .head { animation: card-in 700ms ease-out 2100ms both; }
+  .reveal section.present .fit-steps li { animation: card-in 500ms ease-out both; }
+  .reveal section.present .fit-steps li { animation-delay: calc(2900ms + var(--i, 0) * 180ms); }
 }

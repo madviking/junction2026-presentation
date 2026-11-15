@@ -1,7 +1,7 @@
 // /presentation/record: the slide picker for the recorded video, then the deck without chrome.
 // Rows (app/templates/_record_picker.html) can be ticked and dragged (or moved with ↑ ↓). Start puts
 // the page in full screen (it needs the click), keeps only the ticked slides in the picked order,
-// writes the cut to the address (?slides=a,b,c&drills=1) and boots the deck (deck-v3.js).
+// writes the cut to the address (?slides=a,b,c&foot=1&drills=1) and boots the deck (deck-v3.js).
 // In the speaker view (?receiver, press S) the cut from the address plays straight away.
 (function () {
   const params = new URLSearchParams(location.search)
@@ -10,6 +10,7 @@
   const slides = document.querySelector('.reveal .slides')
   const sections = new Map([...slides.children].map((s) => [s.id, s]))
   const drills = document.getElementById('rp-drills')
+  const foot = document.getElementById('rp-foot')
   const count = picker.querySelector('.rp-count')
 
   const rows = () => [...list.children]
@@ -37,11 +38,13 @@
       list.appendChild(r)
     })
     drills.checked = false
+    foot.checked = false
     update()
   }
 
   if (params.get('slides')) applyCut(params.get('slides').split(','))
   drills.checked = params.get('drills') === '1'
+  foot.checked = params.get('foot') === '1'
   update()
 
   picker.addEventListener('change', update)
@@ -93,6 +96,7 @@
     if (!ids.length) return
     if (full && document.fullscreenEnabled) document.documentElement.requestFullscreen().catch(() => {})
     const query = new URLSearchParams({ slides: ids.join(',') })
+    if (foot.checked) query.set('foot', '1')
     if (drills.checked) query.set('drills', '1')
     // Commas stay readable in the address.
     if (!params.has('receiver')) history.replaceState(null, '', `${location.pathname}?${query.toString().replace(/%2C/g, ',')}`)
@@ -101,6 +105,7 @@
 
   function start(ids) {
     document.body.classList.toggle('show-drills', drills.checked)
+    document.body.classList.toggle('show-foot', foot.checked)
     sections.forEach((section) => section.remove())
     ids.forEach((id) => { if (sections.has(id)) slides.appendChild(sections.get(id)) })
     picker.remove()
