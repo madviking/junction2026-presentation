@@ -248,15 +248,12 @@
           requestAnimationFrame(step)
         })
       }
-      // Screen reel (.reel): the strip is copied twice so it can run one full loop (its first screen
-      // comes round again exactly where it started). Deck: one spin of REEL_SPIN_MS per arrival, fast at
-      // first and slowing to a stop on the first screen; it starts once the kicker intro has opened the
-      // slide. Video cut (record): starts at REEL_PX_PER_S and slows down gradually (coast) while shown.
-      const REEL_SPIN_MS = 4000
+      // Screen reel (.reel): the strip is copied twice so it can loop without a seam (its first screen
+      // comes round again exactly where it started). It starts once the kicker intro has opened the slide.
       const REEL_PX_PER_S = 900
-      // Video cut: the reel starts at REEL_PX_PER_S and slows gradually towards REEL_END_PX_PER_S
-      // (half the gap closes every REEL_EASE_S seconds), then keeps drifting at that pace while shown.
-      const REEL_END_PX_PER_S = 70
+      // Both versions: the reel starts at REEL_PX_PER_S and slows gradually towards REEL_END_PX_PER_S
+      // (half the gap closes every REEL_EASE_S seconds), then keeps running at that pace while shown.
+      const REEL_END_PX_PER_S = 110
       const REEL_EASE_S = 2.2
       function coast(track, loop, current, delay) {
         const run = (track.dataset.run = String(Number(track.dataset.run || 0) + 1))
@@ -296,9 +293,7 @@
         })))
         if (Reveal.getCurrentSlide() !== current) return
         const loop = track.children[count].offsetLeft - track.children[0].offsetLeft
-        const spin = [{ transform: 'translateX(0)' }, { transform: `translateX(${-loop}px)` }]
-        if (record) coast(track, loop, current, introDelay)
-        else track.animate(spin, { duration: REEL_SPIN_MS, delay: introDelay, easing: 'cubic-bezier(0.2, 0.75, 0.3, 1)', fill: 'both' })
+        coast(track, loop, current, introDelay)
       }
       // data-animate="words" (intro slides in the video cut): the line rises in word by word, with a pause
       // after each sentence (longer before the <b> finding); numbers count up as their word appears, then

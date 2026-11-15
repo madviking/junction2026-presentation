@@ -411,6 +411,7 @@ i.dom { background: var(--lake); } i.oth { background: var(--coral); }
 .rp-kicker { margin: 0; font: 600 var(--t-label)/1 var(--f-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--coral); }
 .rp-title { margin: var(--s1) 0 0; font: 800 40px/1.1 var(--f-display); }
 .rp-lead { margin: var(--s1) 0 0; color: var(--muted); }
+.rp-script { color: var(--lake); font-weight: 700; text-underline-offset: 3px; }
 .rp button {
   font: 600 var(--t-small)/1 var(--f-body); color: var(--ink); cursor: pointer;
   background: var(--white); border: 1.5px solid var(--line); border-radius: 999px; padding: 8px 14px;

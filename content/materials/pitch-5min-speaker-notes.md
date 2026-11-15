@@ -1,15 +1,22 @@
 ---
-title: 5-minute pitch — speaker notes and demo flow
-description: AstraZeneca judging, Sun 15 Nov 14:00. Run sheet, verbatim script, live demo with fallbacks, Q&A, numbers card. Merged from three drafts (Opus 5.5 lead, Fable, Opus) after a debate round.
+title: 5-minute pitch — speaker notes and demo flow (V2)
+description: V2, aligned with the latest deck v3 (headings that fly in, Regional pilot close, team photo). AstraZeneca judging, Sun 15 Nov 14:00. Run sheet, verbatim script, live demo with fallbacks, Q&A, numbers card. Shares its lines with the video voice-over.
 tags: [pitch, demo, speaker-notes, astrazeneca]
 author: Claude with the Silta team
 updated: 2026-11-15
 ---
 
-# Silta — 5-minute pitch: speaker notes and demo flow
+# Silta — 5-minute pitch: speaker notes and demo flow · V2
 
 **AstraZeneca judging, Sunday 15 Nov, 14:00.** Judges: AstraZeneca marketing and business excellence (non-technical, Finnish-speaking).
-**Target 4:30, hard stop 5:00.** The printable mindmap of this talk is [pitch-5min-mindmap.html](pitch-5min-mindmap.html).
+**Target 4:33, hard stop 5:00.** The printable mindmap of this talk is [pitch-5min-mindmap.html](pitch-5min-mindmap.html). The recorded video uses the same lines, shortened: [video-voiceover.md](video-voiceover.md).
+
+**What changed in V2 (deck as of 15 Nov, 01:00):**
+- **Headings fly in.** On `gap`, `door`, `visit`, `county`, `safe`, `running` and `close`, the small heading opens large in the centre for about 2 s when you arrive going forward, then the slide builds. Mea presses a beat *before* Timo's line, and Timo's first words land as the heading settles. The gap bars also build on every arrival.
+- **`gap` opens on "She is not alone".** Timo says it as the heading flies in.
+- **The close is headed "Regional pilot"**, and the **team slide now has the photo** (Dad · Big Sister · Little Sister). One more → on "Thank you" ends on the three of you; it costs 3 s of the margin.
+- **"Cervical cancer screening"** everywhere, as the deck now says it.
+- **New last-resort fallback:** the exported 2-minute video, played from the laptop.
 
 | Rubric | Weight | Where we win it |
 | --- | --- | --- |
@@ -25,7 +32,7 @@ updated: 2026-11-15
 
 1. **Message:** People with another native language get the same screening letter, and 27% fewer of them come. The gap opens at the letter, before anyone in care sees them.
 2. **What Silta does:** one printed code on that letter opens the screening explained in their language, read aloud, with the Finnish words to say at the desk.
-3. **Ask (said twice, at 1:35 and at the close):** a pilot in Helsinki. The code on one cervical screening invitation batch, Silta at the health stations, measured as attendance per 100 invited, by native language, against a batch without it.
+3. **Ask (said twice, at 1:35 and at the close):** a pilot in Helsinki. The code on one cervical cancer screening invitation batch, Silta at the health stations, measured as attendance per 100 invited, by native language, against a batch without it.
 4. **The wow moment:** a Somali screen, and then the phone says in Finnish *"Toivoisin, että näytteen ottaa nainen."* The judges are the other side, and they understand her.
 5. **One voice.** Timo speaks. Mea drives the laptop. Milla hands out the letters and holds the backup phone.
 
@@ -65,16 +72,17 @@ updated: 2026-11-15
 | Clock | Sec | Scene | On screen | Mea does |
 | --- | --- | --- | --- | --- |
 | 0:00 | 20 | **A** `hodan` (T1) | "Meet Hodan." The letter sinks into the drawer | Cmd+R at the start |
-| 0:20 | 25 | **B** `gap` | "Same letter. 27% fewer come." Three bar pairs | → on "Hodan is not alone" |
+| 0:20 | 25 | **B** `gap` | Heading "She is not alone" flies in (2 s), then "Same letter. 27% fewer come." and the bars build | → right after "doesn't go", one beat before Timo speaks |
 | 0:45 | 45 | **C** `pathway` (T2) | Three routes; the map draws in about 5 s | **Tab** on "where does the gap open". Don't click the map |
 | 1:30 | 15 | **D** `silta` (still T2) | "Silta. Finnish for bridge." | → on "So we built Silta" |
 | 1:45 | 25 | **E** `letter` | The letter with its QR code. On the second → it shrinks and the Somali guide screens appear | → on "Here it is". Wait 2 s for the heading. → again on "Why not just translate" |
 | 2:10 | 20 | **F1** live guide (T3) | The Somali guide: picture, intro, five parts | **Tab** on "Let me show you". ▶ on "she doesn't have to read". Stop after about 4 s. Scroll slowly |
 | 2:30 | 35 | **F2** rights (T4) | Her rights and the Finnish sentences | **Tab** on "This is her rights". ▶ on the Finnish phrase on "here is the bridge" |
 | 3:05 | 20 | **G** `visit` (T5) | Olga: Russian cards, then the Finnish summary | **Tab** on "the second way in" |
-| 3:25 | 40 | **H** `county` + drill | Four cards, then the "How a county joins" sheet | → on "what does a county have to do". Click the **How a county joins** chip on "Step zero". **Esc** on "measures it" |
-| 4:05 | 25 | **I** `close` (T6) | The letter rises from the drawer with the QR strip | **Tab**, then → at once, on "So here is our ask" |
-| **4:30** | | end | Close slide stays up for Q&A | 30 s margin |
+| 3:25 | 40 | **H** `county` + drill | Four cards, then the "How a county joins" sheet | → a beat before "what does a county have to do" (the heading flies in, the cards build). Click the **How a county joins** chip on "Step zero", once the cards have landed. **Esc** on "measures it" |
+| 4:05 | 25 | **I** `close` (T6) | "Regional pilot" flies in; the letter rises from the drawer with the QR strip | **Tab**, then → at once, on "So here is our ask" |
+| 4:30 | 3 | `team` | The family photo: Dad · Big Sister · Little Sister | → on "Thank you" |
+| **4:33** | | end | The team photo stays up; for Q&A press ← to the close | 27 s margin |
 
 **Time checks for Timo:** off the pathway by 1:30. Demo over by 3:05. County slide on by 3:25.
 **If late:** if the demo ends at 3:15 or later, skip G (Olga): Mea presses Tab, then → straight away. If still late at 4:15, drop the €400k sentence; it is in Q&A anyway.
@@ -88,11 +96,11 @@ updated: 2026-11-15
 ### A · 0:00–0:20 · `hodan` · 44 words
 [Timo holds up a printed letter.]
 > Meet Hodan. / She is fifty-four. She has lived in Helsinki for years. Her language is Somali.
-> This is her second invitation to cervical screening. / The same letter you have in your hands.
+> This is her second invitation to cervical cancer screening. / The same letter you have in your hands.
 > She opens it. / Puts it in a drawer. / And doesn't go. //
 
 ### B · 0:20–0:45 · `gap` · 60 words
-> Hodan is not alone. [→]
+> [→ as Timo finishes A; wait for the heading to fly in] She is not alone.
 > This is the Finnish Cancer Registry's own data. People whose native language is not Finnish or Swedish get the same letter, / and **27 percent** fewer of them come.
 > Breast. Cervical. Colorectal. Every programme.
 > That is about **sixteen and a half thousand** screenings missed every year. / And for breast and cervical screening, the gap has grown since 2020.
@@ -134,21 +142,22 @@ updated: 2026-11-15
 > Silta never rates a symptom and never diagnoses.
 
 ### H · 3:25–4:05 · `county` · 86 words
-> So what does a county have to do? [→] / Almost nothing. That's the point.
-> Step zero: [click "How a county joins"] Silta works today, on its own.
+> [→ just before speaking: the heading flies in, then the four cards build] So what does a county have to do? / Almost nothing. That's the point.
+> Step zero: [click "How a county joins" once the cards have landed, about 3 s in] Silta works today, on its own.
 > Step one: print the code on the invitation letters. / No IT project. No integration. No personal data.
 > Step two: posters and visit-prep cards at the health stations.
 > And the county measures it [Esc] with a table it already gets: / the registry's attendance by native language.
 > The money already has a line: the national cancer roadmap sets aside **400,000 euros** for multilingual screening communication.
 
-### I · 4:05–4:30 · `close` · 64 words
-> So here is our ask. [Tab, →: the letter rises]
-> A pilot in Helsinki. / The code on one cervical screening invitation batch. Silta at the health stations.
+### I · 4:05–4:33 · `close` → `team` · 64 words
+> So here is our ask. [Tab, →: "Regional pilot" flies in, the letter rises]
+> A pilot in Helsinki. / The code on one cervical cancer screening invitation batch. Silta at the health stations.
 > And we count how many more come, per hundred invited, by native language, / against a batch without it.
 > AstraZeneca: / help us open that door. //
-> [Take the letter back out.] Hodan's next letter carries a code. / This time, she knows what it says. // Thank you.
+> [Take the letter back out.] Hodan's next letter carries a code. / This time, she knows what it says. //
+> [→: the team photo] Thank you.
 
-**Total: about 570 spoken words** (about 3:55), plus about 10 s of audio and about 25 s of switches and pauses, for **about 4:30**. Rehearse twice with a stopwatch. If a run goes over 4:40, shorten C first: drop the bowel-test sentence.
+**Total: about 570 spoken words** (about 3:55), plus about 10 s of audio and about 28 s of switches, heading animations and pauses, for **about 4:33**. Rehearse twice with a stopwatch. If a run goes over 4:40, shorten C first: drop the bowel-test sentence.
 
 ---
 
@@ -193,6 +202,7 @@ updated: 2026-11-15
 | The pathway map is blank | Nothing | Say C as written. The words carry the insight |
 | The arrow keys stop working | Someone clicked inside the map. Click the slide margin, or the small arrow at the bottom right | nothing |
 | The whole site is down | Local deck (`make up`) or the PDF; the demo becomes the `letter` screenshots | "The live link is on the letter in your hands." |
+| Nothing on the laptop works | Play the exported 2-minute video from the desktop, then take questions | "Here is the two-minute version. Then let's talk about the pilot." |
 | A judge interrupts mid-demo | Keep going | "Good question, right after this." |
 
 ---
@@ -229,11 +239,12 @@ A (15 s) → B (25 s) → one line of C: "The gap opens at the first step, befor
 
 ---
 
-## 9. Open issues for the team before 13:00
+## 9. Check before 13:00
 
-- **Fixed locally, not yet deployed:** the v3 deck no longer says "human-recorded" Somali audio (the `noticed` and ElevenLabs drills). It now says what the code does: cards instead of voice input, and generated audio that stays unchecked until a native speaker's recording is approved. Deck v2 (`/presentation/v2`) and some internal materials still carry the old claim.
-- **Close slide: already consistent.** The live deck reads "Silta works before the first appointment, from today", the same as the repo.
-- **Rehearse the tab plan once on the projector.** Check that T6 → plays the rising letter and that Cmd+R on T1 replays the opener.
+- **The live deck must match this script.** The tabs open the live site, and the team's latest deck edits (headings flying in, "Regional pilot", the team photo, the Somali audio wording) only reach it with a push to `main`. After the deploy, click through T1–T6 once.
+- **Rehearse the tab plan once on the projector.** Check that Cmd+R on T1 replays the opener, that T6 → plays "Regional pilot" and the rising letter, and that the next → shows the team photo.
+- **Have the exported video on the laptop desktop** as the last-resort fallback.
+- **Somali audio:** never say "human-recorded". Deck v2 (`/presentation/v2`) and some internal materials still make that claim; v3 no longer does.
 
 ---
 
@@ -252,3 +263,5 @@ Three independent drafts (Opus 5.5 lead, Fable, Opus), then one debate round in 
 | Follow-up wording | Cervical: no significant difference. Breast: not said. Bowel: a second, smaller gap, said without numbers | Opus and lead both corrected their own wording |
 | Ask target | Helsinki only; Länsi-Uusimaa for Q&A | Opus |
 | Somali audio | Don't say "human-recorded" | all agreed |
+
+**V2 (15 Nov, about 01:00):** aligned with the latest deck v3: heading animations and when to press, the "Regional pilot" close, the team photo as the last frame, "cervical cancer screening" wording, and the video as the last-resort fallback. The video voice-over ([video-voiceover.md](video-voiceover.md)) reuses these lines.

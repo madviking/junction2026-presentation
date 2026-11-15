@@ -124,6 +124,11 @@ def test_team_requires_password_when_set(client, monkeypatch):
     assert client.get("/team/m/concept/silta-v2.html").status_code == 401
 
 
+def test_team_page_launches_recording_mode(client):
+    html = client.get("/team").text
+    assert 'href="/presentation/record"' in html and "Record the video" in html
+
+
 def test_team_fails_closed_in_production_without_password(client, monkeypatch):
     monkeypatch.setenv("APP_ENV", "production")
     assert client.get("/team").status_code == 503
@@ -414,6 +419,7 @@ def test_record_page_has_picker_and_no_chrome(client):
     deck = content.deck_video()
     html = client.get("/presentation/record").text
     assert 'id="record-picker"' in html and "/static/deck-record.js" in html and "data-record" in html
+    assert 'href="/team/m/video-voiceover.md"' in html  # the voice-over script, one click away
     assert 'class="deck-home"' not in html
     assert 'id="rp-foot"' in html and 'id="rp-drills"' in html  # footer and drill-ins: options, off by default
     assert 'id="rp-foot" checked' not in html
