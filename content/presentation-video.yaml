@@ -19,8 +19,8 @@
 # Layout `film` (video only): one clip fills the slide and plays from the start each time the slide
 # is shown, muted unless `sound: true`. When it ends the deck fades on to the next slide by itself
 # (or press → to move on earlier). Keys: src, label (picker name), source (optional small line in the
-# corner), exit (`black`: leaving the slide, by the clip ending or by a keypress, fades slowly to
-# black and then from black into the next slide), overlay (lines of a lower third that fades in about 1 s after the clip starts, holds
+# corner), exit (default `black`: leaving the slide, by the clip ending or by a keypress, fades
+# slowly to black and then from black into the next slide; `plain` for a normal slow fade), overlay (lines of a lower third that fades in about 1 s after the clip starts, holds
 # about 6 s and fades out; the first line small, the rest large), notes. The AI-footage disclaimer
 # lives elsewhere in the video, not on these slides.
 #
@@ -34,12 +34,12 @@ slides:
     id: hodan-film
     label: "Film: Hodan opens the letter (15 s)"
     src: /team/m/video-assets/generated/hodan-01-opening-the-letter.mp4
-    exit: black
     overlay:
       - "Junction 2026 — AstraZeneca — Equal Care Across Finland"
       - "3rdGen team Railo"
     notes: "15 s, no sound. Start the voice-over as she opens the envelope; the deck moves on when the clip ends."
   - use: hodan
+    head_image: ~   # the film plays just before, so no still under the text
   - use: gap
   - use: earlier
   - use: routes

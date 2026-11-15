@@ -371,7 +371,7 @@ def test_deck_v3_uses_one_layout_system(client):
         assert slide["layout"] in allowed, slide["id"]
         assert f'id="{slide["id"]}"' in html
         assert not re.search(r"brain |sources/|backend/|\.md\b", slide.get("source", "")), slide["id"]
-        images = [slide.get("letter"), slide.get("qr"), (slide.get("from") or {}).get("src")]
+        images = [slide.get("letter"), slide.get("qr"), (slide.get("from") or {}).get("src"), (slide.get("head_image") or {}).get("src")]
         images += [s["src"] for s in slide.get("screens", [])] + [l["src"] for l in slide.get("logos", [])]
         for src in filter(None, images):
             assert (settings.content_dir() / src.removeprefix("/")).is_file(), src
@@ -447,3 +447,8 @@ def test_both_decks_carry_the_event_line_in_the_foot(client):
 def test_landing_keeps_the_routes_map(client):
     html = client.get("/").text
     assert 'class="silta-fit-map"' in html and "pathLength" not in html
+
+
+def test_hodan_still_only_in_the_main_deck(client):
+    assert "/media/photos/hodan-opens-letter.webp" in client.get("/presentation").text
+    assert "/media/photos/hodan-opens-letter.webp" not in client.get("/presentation/record").text

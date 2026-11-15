@@ -77,6 +77,13 @@ html, body { background: var(--paper); color: var(--ink); }
 .line { font: 400 var(--t-line)/1.4 var(--f-body); color: var(--ink); text-wrap: pretty; }
 .line b, .line strong { color: var(--coral); font-weight: 700; }
 .who { font: 500 var(--t-label)/1.4 var(--f-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+/* head_image: a photo under the text (e.g. the opener's still of Hodan); fades in after the slide. */
+.head-image { margin: 0; }
+.head-image img { display: block; width: 100%; height: 210px; object-fit: cover; object-position: 50% 30%; border-radius: var(--radius); box-shadow: var(--shadow); }
+@media screen and (prefers-reduced-motion: no-preference) {
+  .reveal section.present .head-image { animation: head-image-in 1000ms ease-out 600ms both; }
+}
+@keyframes head-image-in { from { opacity: 0; transform: translateY(8px); } }
 .stage { position: relative; min-height: 0; display: flex; align-items: center; justify-content: center; }
 
 /* foot */
@@ -444,6 +451,7 @@ i.dom { background: var(--lake); } i.oth { background: var(--coral); }
 @keyframes fade-in { from { opacity: 0; } }
 @keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 @keyframes pop { from { opacity: 0; transform: scale(0.4); } }
+@keyframes card-in { from { opacity: 0; transform: translateY(12px); } }
 @media screen and (prefers-reduced-motion: no-preference) {
   .reveal section.present .gapbar-track i, .sheet:not([hidden]) .gapbar-track i {
     transform-origin: left center; animation: grow-x 900ms cubic-bezier(.2,.7,.2,1) both;
@@ -467,6 +475,8 @@ i.dom { background: var(--lake); } i.oth { background: var(--coral); }
   .reveal section.present .fit-map .fit-node:not(.fit-node-care) { animation-delay: 300ms; }
   .reveal section.present .fit-map .fit-node-care { animation-delay: 1500ms; }
   .reveal section.present .fit-map .fit-zone-care, .reveal section.present .fit-map .fit-zone-label-care, .reveal section.present .fit-map .fit-zone-tag { animation: fade-in 600ms ease-out 1400ms both; }
+  /* Cards slides: the cards fade in one at a time, in reading order. */
+  .reveal section.present.l-cards .card { animation: card-in 600ms ease-out both; animation-delay: calc(500ms + var(--i, 0) * 450ms); }
   .reveal section.present .fit-steps li { animation: fade-in 500ms ease-out both; }
   .reveal section.present .fit-steps li { animation-delay: calc(1800ms + var(--i, 0) * 120ms); }
 }

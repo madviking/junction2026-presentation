@@ -33,6 +33,9 @@ slides:
     line: "She is 54 and has lived in Helsinki for years. Her language is Somali. She opens her second invitation to cervical screening, puts it away, and doesn't go."
     letter: /media/screens/v3/letter-fi.png
     letter_alt: "A cervical screening invitation in Finnish, addressed to Hodan Warsame in Helsinki."
+    # A still from the opening film, under the text; fades in shortly after the slide. The video cut
+    # (presentation-video.yaml) turns it off, since the film itself plays just before.
+    head_image: {src: /media/photos/hodan-opens-letter.webp, alt: "Hodan in her kitchen, opening the envelope."}
     source: "Hodan is a composite of the women in the data that follows."
     notes: "Open on a person, not a number. Let the letter slide into the drawer before speaking."
 
@@ -212,6 +215,7 @@ slides:
   - layout: screens
     id: door
     kicker: Both ways · the right service
+    kicker_intro: true
     path: 4
     title: The right service, <em>and the words to say.</em>
     line: "Hodan needs to rebook her screening; Olga needs an assessment. Silta shows each the right service and the Finnish sentences to say."
@@ -244,6 +248,7 @@ slides:
   - layout: screens
     id: visit
     kicker: Both ways · at the visit
+    kicker_intro: true
     path: 5
     title: Understood <em>at the visit.</em>
     line: "Olga describes it in Russian. At the visit she shows the doctor a Finnish summary on her own phone."

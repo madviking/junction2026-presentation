@@ -191,7 +191,7 @@
         setTimeout(() => Reveal.configure({ transitionSpeed: 'fast' }), 1300)
       }))
 
-      // data-exit="black" (a film slide's `exit: black`): moving on, by the clip ending or by a key, fades
+      // data-exit="black" (every film slide unless its `exit` says otherwise): moving on, by the clip ending or by a key, fades
       // the screen slowly to black, changes slide under it, then fades in from black. Backwards stays plain.
       const FADE_MS = 1100
       const HOLD_MS = 350
