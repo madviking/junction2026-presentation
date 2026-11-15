@@ -261,7 +261,7 @@ links:
 
 # YouTube, Vimeo or a direct .mp4 URL. Leave empty until the video is up.
 video:
-  url: ""
+  url: /media/video/silta.mp4
   caption: Pitch video, under 2 minutes.
 
 challenges:

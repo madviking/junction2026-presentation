@@ -33,7 +33,7 @@ def basic(password: str) -> dict:
         ("/team/m/silta-design-system.html", "Silta Design System"),
         ("/presentation", "Meet Hodan."),
         ("/presentation/v1", "A bridge to cancer care"),
-        ("/video", "The video is not up yet"),
+        ("/video", "/media/video/silta.mp4"),
         ("/try", "For residents"),
         ("/printouts", "one-page summary"),
         ("/printouts/one-pager.md", "<svg"),
