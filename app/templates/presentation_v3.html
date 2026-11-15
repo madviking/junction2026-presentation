@@ -149,6 +149,20 @@
                 <article class="card" style="--i: {{ loop.index0 }}">{% if c.tag %}<span class="card-tag">{{ c.tag }}</span>{% endif %}<h3>{{ c.title }}</h3><p>{{ c.text | safe }}</p></article>
                 {%- endfor %}
               </div>
+              {%- elif s.layout == 'safe' %}
+              {#- Front page's "Regulation and rollout": Today / Next / Later labels from site.yaml `rollout.stages` (detail in the "What's next" sheet),
+                  then what Silta does and does not do (this slide's `does` / `does_not`). #}
+              <div class="safe">
+                <ol class="safe-line" aria-label="Rollout">
+                  {%- for st in site.rollout.stages %}
+                  <li class="st-{{ st.state }}" style="--i: {{ loop.index0 }}"><i aria-hidden="true"></i><span class="safe-when">{{ st.when }} · {{ st.status }}</span><b>{{ st.title }}</b></li>
+                  {%- endfor %}
+                </ol>
+                <div class="safe-cols">
+                  <div class="safe-col does"><h3>Silta does</h3><ul>{% for it in s.does %}<li><span class="safe-mark" aria-hidden="true">✓</span><span>{{ it.text }}{% if it.note %} <small>{{ it.note }}</small>{% endif %}</span></li>{% endfor %}</ul></div>
+                  <div class="safe-col doesnt"><h3>Silta does not</h3><ul>{% for it in s.does_not %}<li><span class="safe-mark" aria-hidden="true">✕</span><span>{{ it.text }}{% if it.note %} <small>{{ it.note }}</small>{% endif %}</span></li>{% endfor %}</ul></div>
+                </div>
+              </div>
               {%- elif s.layout == 'facts' %}
               <div class="facts n{{ s.facts | length }}">
                 {%- for f in s.facts %}<div class="fact"><span class="fact-value">{{ f.value }}</span><span class="fact-label">{{ f.label }}</span></div>{% endfor %}

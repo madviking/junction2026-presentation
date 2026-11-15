@@ -331,17 +331,32 @@ slides:
     source: "National Cancer Strategy 2026–2035, sub-goal 1.3: equal screening, whatever your native language"
     notes: "Ask: a Helsinki pilot of steps 1–2, measured with the registry table the county already gets."
 
-  - layout: cards
+  - layout: safe
     id: safe
     kicker: Trust
     title: Safe to use <em>today.</em>
     line: "Built to stay on the right side of medical-device, privacy and AI rules, so people can use it before any county joins."
-    cards:
-      - {tag: EU MDR Rule 11, title: Not a medical device, text: "No diagnosis, no urgency rating. An Urgent help button on every screen leads to 112."}
-      - {tag: GDPR Art. 9, title: No personal data, text: "No names, IDs, phones or emails. A code that expires."}
-      - {tag: EU AI Act, title: AI that asks first, text: "Gemini suggests; the person confirms with one tap."}
-      - {tag: Patient Act §5, title: Interpreter first, text: "The summary asks for a free professional interpreter."}
+    # Laid out like the front page's "Regulation and rollout": the Today / Next / Later line comes from
+    # `rollout.stages` in content/site.yaml (shared), the two columns from here. `note` = the rule it keeps.
+    does:
+      - text: Explains it in your language
+      - {text: "AI suggests, you confirm", note: EU AI Act}
+      - {text: Asks for an interpreter, note: "Patient Act §5"}
+    does_not:
+      - {text: Diagnose or rate urgency, note: EU MDR}
+      - {text: Ask who you are, note: GDPR}
+      - text: Let AI choose the route
     drills:
+      - kind: data
+        label: What's next
+        title: Live today, ready for a county, then inside the care pathway
+        items:
+          - text: "<b>Today, live:</b> 14 languages, read aloud. Body map and picture cards, the right service and the words to say in Finnish, a visit card, a screening-letter guide and a phone line."
+            source: "Silta app"
+          - text: "<b>Next, built and needs a pilot:</b> a QR code on screening letters, a one-screen Finnish summary for the clinic, and the county view by stage and language."
+            source: "Silta app"
+          - text: "<b>Later, planned:</b> patient-record prompts, Terveyskylä guidance by article ID, the county as data controller, and clinical and native-speaker review of every language."
+            source: "Silta roadmap"
       - kind: data
         label: How it's enforced
         title: Rules built into the product

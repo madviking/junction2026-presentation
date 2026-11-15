@@ -480,3 +480,38 @@ i.dom { background: var(--lake); } i.oth { background: var(--coral); }
   .reveal section.present .fit-steps li { animation: fade-in 500ms ease-out both; }
   .reveal section.present .fit-steps li { animation-delay: calc(1800ms + var(--i, 0) * 120ms); }
 }
+
+/* ---- layout: safe (trust slide, like the front page's "Regulation and rollout") ---------
+   Head on top, then one white panel: the Today / Next / Later line (solid lake = live, hollow = built,
+   dashed grey = planned), a hairline, and what Silta does / does not do with the rule as a small tag. */
+.l-safe .body { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); row-gap: var(--s3); }
+.l-safe .head { gap: var(--s2); padding-top: 0; }
+.l-safe .line { max-width: 900px; }
+.l-safe .stage { align-items: start; }
+.safe { width: 100%; background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: var(--s3) var(--s4) var(--s4); }
+.safe-line { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s4); border-bottom: 1px solid var(--line); }
+.reveal .safe-line { margin: 0 0 var(--s3); padding: 0 0 var(--s3); } /* beats reveal's default ol margin and padding */
+.safe-line li { position: relative; padding-top: 36px; display: grid; gap: 4px; align-content: start; }
+.safe-line li i { position: absolute; left: 0; top: 0; width: 18px; height: 18px; border-radius: 50%; background: var(--white); border: 3px solid var(--lake); z-index: 1; }
+.safe-line li::before { content: ""; position: absolute; left: 9px; right: calc(-1 * var(--s4) - 9px); top: 7.5px; height: 3px; background: var(--lake); }
+.safe-line li:last-child::before { right: 0; }
+.safe-line .st-live i { background: var(--lake); }
+.safe-line .st-pilot::before, .safe-line .st-planned::before { height: 2.5px; background: repeating-linear-gradient(90deg, var(--muted) 0 9px, transparent 9px 16px); }
+.safe-line .st-planned i { border: 2.5px dashed var(--muted); }
+.safe-when { font: 600 var(--t-label)/1.2 var(--f-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.safe-line .st-live .safe-when { color: var(--lake); }
+.safe-line b { font: 800 22px/1.15 var(--f-display); color: var(--ink); }
+.safe-line .st-planned b { color: var(--muted); }
+.safe-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s5); }
+.safe-col h3 { font: 600 var(--t-label)/1 var(--f-mono); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: var(--s2); }
+.safe-col.does h3, .safe-col.does .safe-mark { color: var(--lake); }
+.safe-col.doesnt h3, .safe-col.doesnt .safe-mark { color: var(--coral); }
+.reveal .safe-col ul { list-style: none; display: grid; gap: 14px; margin: 0; padding: 0; }
+.safe-col li { display: grid; grid-template-columns: 24px 1fr; gap: 8px; font: 400 21px/1.3 var(--f-body); color: var(--ink); }
+.safe-col .safe-mark { font-weight: 700; }
+.safe-col small { font: 500 12px var(--f-mono); letter-spacing: 0.04em; color: var(--muted); white-space: nowrap; margin-left: 4px; }
+@media screen and (prefers-reduced-motion: no-preference) {
+  /* The line's steps appear left to right, then the two columns. */
+  .reveal section.present .safe-line li { animation: card-in 500ms ease-out both; animation-delay: calc(400ms + var(--i, 0) * 300ms); }
+  .reveal section.present .safe-cols { animation: card-in 600ms ease-out 1400ms both; }
+}

@@ -366,7 +366,7 @@ def test_deck_v3_uses_one_layout_system(client):
     html = client.get("/presentation").text
     assert "/static/deck-v3.css" in html and "/static/deck-v3.js" in html
     assert html.count("<section") == len(deck["slides"])
-    allowed = {"opener", "number", "stages", "embed", "intro", "morph", "screens", "cards", "facts", "close", "team"}
+    allowed = {"opener", "number", "stages", "embed", "intro", "morph", "screens", "cards", "safe", "facts", "close", "team"}
     for slide in deck["slides"]:
         assert slide["layout"] in allowed, slide["id"]
         assert f'id="{slide["id"]}"' in html
